@@ -475,6 +475,7 @@ WITH
     -- Left join from Contact on to Account for Site
   LEFT JOIN
     `data-warehouse-289815.salesforce_raw.Account` A_region
+    
   ON
     C.Region__c = A_region.Id
   WHERE
