@@ -1,6 +1,7 @@
 -- Only select Contact records corresponding to valid student records
 WITH ValidStudentContact AS (
   SELECT
+    C.Id AS Contact_Id,
     C.*
   EXCEPT(
       Id,
@@ -13,8 +14,6 @@ WITH ValidStudentContact AS (
       npsp__Exclude_from_Household_Name__c,
       npsp__Deceased__c
     ),
-    C.Id AS Contact_Id,
-   
     RT.Name AS Contact_Record_Type_Name,
     A_Site.Name AS site,
     A_Region.Name AS region,
