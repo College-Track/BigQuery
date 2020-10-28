@@ -32,7 +32,8 @@ WITH Contact_AT AS(
       Site__c,
       Total_Bank_Book_Earnings_current__c,
       Credits_Accumulated_Most_Recent__c,
-      Legacy_Salesforce_ID__c
+      Legacy_Salesforce_ID__c,
+      Legacy_Import_ID__c
     ),
     RT.Name AS AT_Record_Type_Name,
     A_School.Name AS School_Name,
