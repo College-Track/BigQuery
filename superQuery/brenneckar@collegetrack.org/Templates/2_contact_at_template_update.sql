@@ -18,7 +18,6 @@ WITH Contact_AT AS(
       LastModifiedDate,
       LastModifiedById
     ),
-    
     RT.Name AS AT_Record_Type_Name,
     A_School.Name AS School_Name,
     GAS.Name AS GAS_Name,
