@@ -39,6 +39,16 @@ joined_on_track AS (
     LEFT JOIN previous_as PS ON PS.Contact_Id = CS.Contact_ID
     LEFT JOIN prev_prev_as PPS ON PPS.Contact_Id = CS.Contact_ID
 )
-
-SELECT *
-FROM joined_on_track
+SELECT
+  Contact_Id,
+  current_as_on_track,
+  previous_as_on_track,
+  prev_prev_as_on_track,
+  CASE
+    WHEN current_as_on_track IS NOT NULL THEN current_as_on_track
+    WHEN previous_as_on_track IS NOT NULL THEN previous_as_on_track
+    WHEN prev_prev_as_on_track IS NOT NULL THEN prev_prev_as_on_track
+    ELSE NULL
+  END AS most_recent_on_track
+FROM
+  joined_on_track
