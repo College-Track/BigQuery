@@ -152,7 +152,7 @@ prev_term_on_track AS (
     Previous_AS__c = True
 )
 SELECT
-  *,
+  GD.*,
   CASE
     WHEN Overall_Rubric_Color = "Red" THEN 1
     WHEN Overall_Rubric_Color = "Yellow" THEN 2
