@@ -45,6 +45,7 @@ WITH ValidStudentContact AS (
       WHEN A_Site.Name LIKE '%Ward 8%' THEN 'WARD 8'
       WHEN A_Site.Name LIKE '%Durant%' THEN 'PGC'
       WHEN A_Site.Name LIKE '%New Orleans%' THEN 'NOLA'
+      WHEN A_Site.Name LIKE '%Crenshaw%' THEN 'CREN'
       ELSE A_Site.Name
     END site_abrev,
     CASE
@@ -59,6 +60,7 @@ WITH ValidStudentContact AS (
       WHEN A_Site.Name LIKE '%Ward 8%' THEN 'Ward 8'
       WHEN A_Site.Name LIKE '%Durant%' THEN 'The Durant Center'
       WHEN A_Site.Name LIKE '%New Orleans%' THEN 'New Orleans'
+      WHEN A_Site.Name LIKE '%Crenshaw%' THEN 'Crenshaw'
       ELSE A_Site.Name
     END site_short
   FROM
