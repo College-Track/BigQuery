@@ -31,7 +31,8 @@ WITH Contact_AT AS(
       Reason_For_Leaving_Dismissal__c,
       Site__c,
       Total_Bank_Book_Earnings_current__c,
-      Credits_Accumulated_Most_Recent__c
+      Credits_Accumulated_Most_Recent__c,
+      Legacy_Salesforce_ID__c
     ),
     RT.Name AS AT_Record_Type_Name,
     A_School.Name AS School_Name,
