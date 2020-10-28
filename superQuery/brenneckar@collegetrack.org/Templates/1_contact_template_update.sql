@@ -1,6 +1,5 @@
-  -- Only select Contact records corresponding to valid student records
-WITH
-  ValidStudentContact AS (
+-- Only select Contact records corresponding to valid student records
+WITH ValidStudentContact AS (
   SELECT
     C.Id AS Contact_Id,
     C.AccountId,
@@ -414,20 +413,16 @@ WITH
       WHEN A_Region.Name LIKE '%Los Angeles%' THEN 'Los Angeles'
       WHEN A_Region.Name LIKE '%New Orleans%' THEN 'New Orleans'
       WHEN A_Region.Name LIKE '%DC%' THEN 'Washington DC'
-    ELSE
-    A_Region.Name
-  END
-    region_short,
+      ELSE A_Region.Name
+    END region_short,
     CASE
       WHEN A_Region.Name LIKE '%Northern California%' THEN 'NOR CAL'
       WHEN A_Region.Name LIKE '%Colorado%' THEN 'CO'
       WHEN A_Region.Name LIKE '%Los Angeles%' THEN 'LA'
       WHEN A_Region.Name LIKE '%New Orleans%' THEN 'NOLA'
       WHEN A_Region.Name LIKE '%DC%' THEN 'DC'
-    ELSE
-    A_Region.Name
-  END
-    region_abrev,    
+      ELSE A_Region.Name
+    END region_abrev,
     CASE
       WHEN A_Site.Name LIKE '%Denver%' THEN 'DEN'
       WHEN A_Site.Name LIKE '%Aurora%' THEN 'AUR'
@@ -440,10 +435,8 @@ WITH
       WHEN A_Site.Name LIKE '%Ward 8%' THEN 'WARD 8'
       WHEN A_Site.Name LIKE '%Durant%' THEN 'PGC'
       WHEN A_Site.Name LIKE '%New Orleans%' THEN 'NOLA'
-    ELSE
-    A_Site.Name
-  END
-    site_abrev,
+      ELSE A_Site.Name
+    END site_abrev,
     CASE
       WHEN A_Site.Name LIKE '%Denver%' THEN 'Denver'
       WHEN A_Site.Name LIKE '%Aurora%' THEN 'Aurora'
@@ -456,36 +449,23 @@ WITH
       WHEN A_Site.Name LIKE '%Ward 8%' THEN 'Ward 8'
       WHEN A_Site.Name LIKE '%Durant%' THEN 'The Durant Center'
       WHEN A_Site.Name LIKE '%New Orleans%' THEN 'New Orleans'
-    ELSE
-    A_Site.Name
-  END
-    site_short
+      ELSE A_Site.Name
+    END site_short
   FROM
-    `data-warehouse-289815.salesforce_raw.Contact` C
-    -- Left join from Contact on to Record Type ID
-  LEFT JOIN
-    `data-warehouse-289815.salesforce_raw.RecordType` RT
-  ON
-    C.RecordTypeId = RT.Id
-    -- Left join from Contact on to Account for Site
-  LEFT JOIN
-    `data-warehouse-289815.salesforce_raw.Account` A_Site
-  ON
-    C.SITE__c = A_Site.Id
-    -- Left join from Contact on to Account for Site
-  LEFT JOIN
-    `data-warehouse-289815.salesforce_raw.Account` A_region
-    
-  ON
-    C.Region__c = A_region.Id
+    `data-warehouse-289815.salesforce_raw.Contact` C -- Left join from Contact on to Record Type ID
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.RecordType` RT ON C.RecordTypeId = RT.Id -- Left join from Contact on to Account for Site
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_Site ON C.SITE__c = A_Site.Id -- Left join from Contact on to Account for Site
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_region ON C.Region__c = A_region.Id
   WHERE
     -- Filter out test records from the Contact object
-    ( C.SITE__c != '0011M00002GdtrEQAR')
-    -- Filter out non-active student records from the Contact object
-    AND ( RT.Name = 'Student: High School'
+    (C.SITE__c != '0011M00002GdtrEQAR') -- Filter out non-active student records from the Contact object
+    AND (
+      RT.Name = 'Student: High School'
       OR RT.Name = 'Student: Post-Secondary'
-      OR RT.Name = 'Student: Alumni') )
+      OR RT.Name = 'Student: Alumni'
+    )
+)
 SELECT
-*
+  *
 FROM
   ValidStudentContact
