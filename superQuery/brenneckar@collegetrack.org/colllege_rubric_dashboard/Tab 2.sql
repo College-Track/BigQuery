@@ -42,6 +42,5 @@ SELECT
   end AS total
 FROM
   contact_at
-  WHERE Financial_Aid_Package__c IS NOT NULL
 LIMIT
   10
