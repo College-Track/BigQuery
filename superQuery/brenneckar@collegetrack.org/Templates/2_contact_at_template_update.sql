@@ -34,7 +34,7 @@ WITH Contact_AT AS(
       Credits_Accumulated_Most_Recent__c,
       Legacy_Salesforce_ID__c,
       Legacy_Import_ID__c,
-      IsDeleted
+      IsDeleted,
       SystemModstamp,
       LastViewedDate,
       LastReferencedDate,
