@@ -35,10 +35,10 @@ WITH Contact_AT AS(
       Legacy_Salesforce_ID__c,
       Legacy_Import_ID__c,
       IsDeleted
---       SystemModstamp,
---       LastViewedDate,
---       LastReferencedDate,
---       Current_CCA_Viewing__c
+      SystemModstamp,
+      LastViewedDate,
+      LastReferencedDate,
+      Current_CCA_Viewing__c
     ),
     RT.Name AS AT_Record_Type_Name,
     A_School.Name AS School_Name,
