@@ -27,8 +27,13 @@ WITH contact_at AS (
       WHEN SPLIT(Loans__c, "_") [OFFSET(1)] = "Y" THEN 2
       WHEN SPLIT(Loans__c, "_") [OFFSET(1)] = "R" THEN 1
       ELSE NULL
-    END AS question_finance_Loans_score,
-    )
-    SELECT *
-    FROM contact_at
-    LIMIT 10
+    END AS question_finance_Loans_score
+  FROM
+    `data-warehouse-289815.sfdc_templates.contact_at_template`
+)
+SELECT
+  *
+FROM
+  contact_at
+LIMIT
+  10
