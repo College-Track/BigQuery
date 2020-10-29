@@ -1,7 +1,6 @@
 WITH contact_at AS (
   SELECT
     Contact_Id,
-    Financial_Aid_Package__c,
     CASE
       WHEN Financial_Aid_Package__c IS NULL THEN NULL
       WHEN Financial_Aid_Package__c = "N/A" THEN NULL
@@ -10,7 +9,6 @@ WITH contact_at AS (
       WHEN SPLIT(Financial_Aid_Package__c, "_") [OFFSET(1)] = "R" THEN 1
       ELSE NULL
     END AS question_finance_Financial_Aid_Package_score,
-    Filing_Status__c,
     CASE
       WHEN Filing_Status__c IS NULL THEN NULL
       WHEN Filing_Status__c = "N/A" THEN NULL
@@ -19,7 +17,6 @@ WITH contact_at AS (
       WHEN SPLIT(Filing_Status__c, "_") [OFFSET(1)] = "R" THEN 1
       ELSE NULL
     END AS question_finance_Filing_Status_score,
-    Loans__c,
     CASE
       WHEN Loans__c IS NULL THEN NULL
       WHEN Loans__c = "N/A" THEN NULL
