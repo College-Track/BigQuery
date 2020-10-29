@@ -1,7 +1,6 @@
 WITH college_application_AT AS
     (
     SELECT
-    A_T.*,
     A_T.ACT_English_highest_official__c ,
     A_T.ACT_Highest_Composite_Single_Sitting__c ,
     A_T.ACT_Highest_Composite_official__c,
@@ -560,8 +559,8 @@ WITH college_application_AT AS
     --Join  college applications data with contact_at template
     LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` AS A_T
     ON CA.Student__c = A_T.Student__c
-    --LIMIT 50
     )
 
 SELECT *
 FROM college_application_AT
+LIMIT 50
