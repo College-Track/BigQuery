@@ -62,12 +62,14 @@ WITH ValidStudentContact AS (
       WHEN A_Site.Name LIKE '%New Orleans%' THEN 'New Orleans'
       WHEN A_Site.Name LIKE '%Crenshaw%' THEN 'Crenshaw'
       ELSE A_Site.Name
-    END site_short
+    END site_short,
+    STATUS.Status AS College_Track_Status_Name
   FROM
     `data-warehouse-289815.salesforce_raw.Contact` C -- Left join from Contact on to Record Type ID
     LEFT JOIN `data-warehouse-289815.salesforce_raw.RecordType` RT ON C.RecordTypeId = RT.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_Site ON C.SITE__c = A_Site.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_region ON C.Region__c = A_region.Id
+    LEFT JOIN `data-warehouse-289815.roles.ct_status` STATUS ON STATUS.api_name = C.College_Track_Status__c
   WHERE
     -- Filter out test records from the Contact object
     (C.SITE__c != '0011M00002GdtrEQAR') -- Filter out non-active student records from the Contact object
