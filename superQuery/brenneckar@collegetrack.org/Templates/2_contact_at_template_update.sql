@@ -33,7 +33,12 @@ WITH Contact_AT AS(
       Total_Bank_Book_Earnings_current__c,
       Credits_Accumulated_Most_Recent__c,
       Legacy_Salesforce_ID__c,
-      Legacy_Import_ID__c
+      Legacy_Import_ID__c,
+      IsDeleted,
+      SystemModstamp,
+      LastViewedDate,
+      LastReferencedDate,
+      Current_CCA_Viewing__c
     ),
     RT.Name AS AT_Record_Type_Name,
     A_School.Name AS School_Name,
