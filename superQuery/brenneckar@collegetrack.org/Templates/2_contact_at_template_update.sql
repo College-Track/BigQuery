@@ -60,4 +60,3 @@ SELECT
   *
 FROM
   Contact_AT
-  LIMIT 10
