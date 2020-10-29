@@ -12,34 +12,34 @@ WITH Contact_AT AS(
     A.Grade__c AS AT_Grade__c,
     A.Legacy_Import_ID__c AS AT_Legacy_Import_ID__c,
     A.Legacy_Salesforce_ID__c AS AT_Legacy_Salesforce_ID__c,
---     A.*
---   EXCEPT(
---       Id,
---       Name,
---       RecordTypeId,
---       CreatedDate,
---       CreatedById,
---       LastModifiedDate,
---       LastModifiedById,
---       LastActivityDate,
---       Anticipated_Date_of_Graduation_4_year__c,
---       Admin_Temp_1__c,
---       Enrollment_Status__c,
---       Grade__c,
---       Parent_Email_1__c,
---       Parent_Email_2__c,
---       Reason_For_Leaving_Dismissal__c,
---       Site__c,
---       Total_Bank_Book_Earnings_current__c,
---       Credits_Accumulated_Most_Recent__c,
---       Legacy_Salesforce_ID__c,
---       Legacy_Import_ID__c,
---       IsDeleted,
+    A.*
+  EXCEPT(
+      Id,
+      Name,
+      RecordTypeId,
+      CreatedDate,
+      CreatedById,
+      LastModifiedDate,
+      LastModifiedById,
+      LastActivityDate,
+      Anticipated_Date_of_Graduation_4_year__c,
+      Admin_Temp_1__c,
+      Enrollment_Status__c,
+      Grade__c,
+      Parent_Email_1__c,
+      Parent_Email_2__c,
+      Reason_For_Leaving_Dismissal__c,
+      Site__c,
+      Total_Bank_Book_Earnings_current__c,
+      Credits_Accumulated_Most_Recent__c,
+      Legacy_Salesforce_ID__c,
+      Legacy_Import_ID__c,
+      IsDeleted
 --       SystemModstamp,
 --       LastViewedDate,
 --       LastReferencedDate,
 --       Current_CCA_Viewing__c
---     ),
+    ),
     RT.Name AS AT_Record_Type_Name,
     A_School.Name AS School_Name,
     GAS.Name AS GAS_Name,
@@ -60,3 +60,4 @@ SELECT
   *
 FROM
   Contact_AT
+  LIMIT 10
