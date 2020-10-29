@@ -27,6 +27,9 @@ WITH contact_at AS (
     END AS question_finance_Loans_score,
   FROM
     `data-warehouse-289815.sfdc_templates.contact_at_template`
+  WHERE
+    AT_Record_Type_Name = "College/University Semester"
+    AND Current_CT_Status__c = "Active: Post-Secondary"
 )
 SELECT
   *,
@@ -43,4 +46,4 @@ SELECT
 FROM
   contact_at
 LIMIT
-  10
+  1000
