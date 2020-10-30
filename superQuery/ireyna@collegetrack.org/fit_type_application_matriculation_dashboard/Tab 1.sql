@@ -655,3 +655,4 @@ FROM fit_type_application
     Name,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
+LIMIT 100
