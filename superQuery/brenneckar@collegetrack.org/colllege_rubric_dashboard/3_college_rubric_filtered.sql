@@ -84,7 +84,8 @@ WITH contact_at AS (
     Scholarship_Requirements__c,
     `data-studio-260217.college_rubric.format_question_as_num`(Scholarship_Requirements__c) AS question_finance_Scholarship_Requirements_score,
     Familial_Responsibility__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Familial_Responsibility__c) AS question_finance_Familial_Responsibility_score,
+        `data-studio-260217.college_rubric.format_question_as_num`(Familial_Responsibility__c) AS question_finance_Familial_Responsibility_score,
+
     eFund__c,
     `data-studio-260217.college_rubric.format_question_as_num`(eFund__c) AS question_finance_eFund_score,
     Repayment_Plan__c,
@@ -201,167 +202,100 @@ task AS (
 ),
 total_valid_questions AS(
   SELECT
-    Contact_Id,
-    GAS_Name,
-    CASE
-      WHEN question_finance_Financial_Aid_Package_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Filing_Status_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Loans_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Free_Checking_Account_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Scholarship_Requirements_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Familial_Responsibility_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_eFund_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Repayment_Plan_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Loan_Exit_score IS NOT NULL THEN 1
-      ELSE 0
-    END + CASE
-      WHEN question_finance_Repayment_Policies_score IS NOT NULL THEN 1
-      ELSE 0
-    END AS num_valid_finance_questions
+  *,
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_finance') AS count_finance,
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_academic') AS count_academic,
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_wellness') AS count_wellness,
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_career') AS count_career
+    
   FROM
     contact_at
 ),
 score_calculation AS (
   SELECT
-    Contact_Id,
-    GAS_Name,
-    (
-      IFNULL(question_finance_Financial_Aid_Package_score, 0) + IFNULL(question_finance_Filing_Status_score, 0) + IFNULL(question_finance_Loans_score, 0) + IFNULL(question_finance_Ability_to_Pay_score, 0) + IFNULL(question_finance_Free_Checking_Account_score, 0) + IFNULL(
-        question_finance_Scholarship_Requirements_score,
-        0
-      ) + IFNULL(
-        question_finance_Familial_Responsibility_score,
-        0
-      ) + IFNULL(question_finance_eFund_score, 0) + IFNULL(question_finance_Repayment_Plan_score, 0) + IFNULL(question_finance_Loan_Exit_score, 0) + IFNULL(question_finance_Repayment_Policies_score, 0)
-    ) / 11 AS financial_score,
-    (
-      IFNULL(question_academic_Standing_score, 0) + IFNULL(question_academic_Study_Resources_score, 0) + IFNULL(question_academic_Course_Materials_score, 0) + IFNULL(
-        question_academic_Transfer_2Year_Schools_Only_score,
-        0
-      ) + IFNULL(
-        question_academic_Academic_Networking_50_Cred_score,
-        0
-      ) + IFNULL(question_academic_Degree_Plan_score, 0) + IFNULL(
-        question_academic_X075_Credit_Completion_Juniors_score,
-        0
-      ) + IFNULL(question_academic_Courseload_score, 0) + IFNULL(
-        question_academic_X5_Credit_Completion_Seniors_score,
-        0
-      )
-    ) / 9 AS academic_score,
-    (
-      IFNULL(question_wellness_Commitment_score, 0) + IFNULL(question_wellness_Campus_Outlook_score, 0) + IFNULL(
-        question_wellness_Extracurricular_Activity_score,
-        0
-      ) + IFNULL(question_wellness_Support_Network_score, 0) + IFNULL(question_wellness_Time_Management_score, 0) + IFNULL(question_wellness_Personal_WellBeing_score, 0) + IFNULL(question_wellness_Housing_Food_score, 0) + IFNULL(question_wellness_Social_Stability_score, 0) + IFNULL(question_wellness_Oncampus_Housing_score, 0) + IFNULL(question_wellness_FamilyDependents_score, 0)
-    ) / 10 AS wellness_score,
-    (
-      IFNULL(
-        question_career_Finding_Opportunities_75_score,
-        0
-      ) + IFNULL(question_career_ResumeCover_Letter_score, 0) + IFNULL(
-        question_career_Career_Counselor_25_credits_score,
-        0
-      ) + IFNULL(
-        question_career_Career_Field_2550_credits_score,
-        0
-      ) + IFNULL(question_career_Resources_2550_credits_score, 0) + IFNULL(question_career_Internship_5075_credits_score, 0) + IFNULL(question_career_Internships_score, 0) + IFNULL(
-        question_career_PostGraduate_Plans_5075_creds_score,
-        0
-      ) + IFNULL(
-        question_career_Post_Graduate_Opportunities_75_cred_score,
-        0
-      ) + IFNULL(
-        question_career_Alumni_Network_75_credits_score,
-        0
-      )
-    ) / 10 AS career_score,
+    *,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_finance') / count_finance  AS finance_score,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_academic') / count_academic  AS academic_score,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_wellness') / count_wellness  AS wellness_score,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_career') / count_career  AS career_score
+    
+    
   FROM
-    contact_at
-),
-overall_score_calc AS (
-  SELECT
-    Contact_Id,
-    GAS_Name,
-    (
-      (financial_score * 11) + (academic_score * 9) + (wellness_score * 10) + (career_score * 10)
-    ) / 40 AS overall_score
-  FROM
-    score_calculation
+    total_valid_questions
 )
-SELECT
-  CAT.*,
-  score_calculation.financial_score,
-  score_calculation.academic_score,
-  score_calculation.wellness_score,
-  score_calculation.career_score,
-  overall_score_calc.overall_score,
-  CASE
-    WHEN CAT.Overall_Rubric_Color = "Red" THEN 1
-    WHEN CAT.Overall_Rubric_Color = "Yellow" THEN 2
-    WHEN CAT.Overall_Rubric_Color = "Green" THEN 3
-    ELSE 4
-  END AS Overall_Rubric_Color_sort,
-  CASE
-    WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 30 THEN "Less than 30 Days"
-    WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 60 THEN "30 - 60 Days"
-    WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) > 60 THEN "60+ Days"
-  END AS last_contact_range,
-  CASE
-    WHEN score_calculation.financial_score = 0 THEN "No Data"
-    WHEN score_calculation.financial_score <= 1.66 THEN "Red"
-    WHEN score_calculation.financial_score <= 2.22 THEN "Yellow"
-    WHEN score_calculation.financial_score > 2.22 THEN "Green"
-    ELSE "No Data"
-  END AS financial_score_color,
-  CASE
-    WHEN score_calculation.academic_score = 0 THEN "No Data"
-    WHEN score_calculation.academic_score <= 1.66 THEN "Red"
-    WHEN score_calculation.academic_score <= 2.22 THEN "Yellow"
-    WHEN score_calculation.academic_score > 2.22 THEN "Green"
-    ELSE "No Data"
-  END AS academic_score_color,
-  CASE
-    WHEN score_calculation.wellness_score = 0 THEN "No Data"
-    WHEN score_calculation.wellness_score <= 1.66 THEN "Red"
-    WHEN score_calculation.wellness_score <= 2.22 THEN "Yellow"
-    WHEN score_calculation.wellness_score > 2.22 THEN "Green"
-    ELSE "No Data"
-  END AS wellness_score_color,
-  CASE
-    WHEN score_calculation.career_score = 0 THEN "No Data"
-    WHEN score_calculation.career_score <= 1.66 THEN "Red"
-    WHEN score_calculation.career_score <= 2.22 THEN "Yellow"
-    WHEN score_calculation.career_score > 2.22 THEN "Green"
-    ELSE "No Data"
-  END AS career_score_color,
-  CASE
-    WHEN overall_score_calc.overall_score = 0 THEN "No Data"
-    WHEN overall_score_calc.overall_score <= 1.66 THEN "Red"
-    WHEN overall_score_calc.overall_score <= 2.22 THEN "Yellow"
-    WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
-    ELSE "No Data"
-  END AS overall_score_color,
-FROM
-  contact_at CAT
-  LEFT JOIN task ON task.WhoId = CAT.Contact_Id
-  LEFT JOIN score_calculation ON score_calculation.Contact_Id = CAT.Contact_Id
-  AND score_calculation.GAS_Name = CAT.GAS_Name
-  LEFT JOIN overall_score_calc ON overall_score_calc.Contact_Id = CAT.Contact_Id
-  AND overall_score_calc.GAS_Name = CAT.GAS_Name
+SELECT 
+Contact_Id,
+count_finance,
+finance_score
+FROM score_calculation
+LIMIT 1000
+-- overall_score_calc AS (
+--   SELECT
+--     Contact_Id,
+--     GAS_Name,
+--     (
+--       (financial_score * 11) + (academic_score * 9) + (wellness_score * 10) + (career_score * 10)
+--     ) / 40 AS overall_score
+--   FROM
+--     score_calculation
+-- )
+-- SELECT
+--   CAT.*,
+--   score_calculation.financial_score,
+--   score_calculation.academic_score,
+--   score_calculation.wellness_score,
+--   score_calculation.career_score,
+--   overall_score_calc.overall_score,
+--   CASE
+--     WHEN CAT.Overall_Rubric_Color = "Red" THEN 1
+--     WHEN CAT.Overall_Rubric_Color = "Yellow" THEN 2
+--     WHEN CAT.Overall_Rubric_Color = "Green" THEN 3
+--     ELSE 4
+--   END AS Overall_Rubric_Color_sort,
+--   CASE
+--     WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 30 THEN "Less than 30 Days"
+--     WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 60 THEN "30 - 60 Days"
+--     WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) > 60 THEN "60+ Days"
+--   END AS last_contact_range,
+--   CASE
+--     WHEN score_calculation.financial_score = 0 THEN "No Data"
+--     WHEN score_calculation.financial_score <= 1.66 THEN "Red"
+--     WHEN score_calculation.financial_score <= 2.22 THEN "Yellow"
+--     WHEN score_calculation.financial_score > 2.22 THEN "Green"
+--     ELSE "No Data"
+--   END AS financial_score_color,
+--   CASE
+--     WHEN score_calculation.academic_score = 0 THEN "No Data"
+--     WHEN score_calculation.academic_score <= 1.66 THEN "Red"
+--     WHEN score_calculation.academic_score <= 2.22 THEN "Yellow"
+--     WHEN score_calculation.academic_score > 2.22 THEN "Green"
+--     ELSE "No Data"
+--   END AS academic_score_color,
+--   CASE
+--     WHEN score_calculation.wellness_score = 0 THEN "No Data"
+--     WHEN score_calculation.wellness_score <= 1.66 THEN "Red"
+--     WHEN score_calculation.wellness_score <= 2.22 THEN "Yellow"
+--     WHEN score_calculation.wellness_score > 2.22 THEN "Green"
+--     ELSE "No Data"
+--   END AS wellness_score_color,
+--   CASE
+--     WHEN score_calculation.career_score = 0 THEN "No Data"
+--     WHEN score_calculation.career_score <= 1.66 THEN "Red"
+--     WHEN score_calculation.career_score <= 2.22 THEN "Yellow"
+--     WHEN score_calculation.career_score > 2.22 THEN "Green"
+--     ELSE "No Data"
+--   END AS career_score_color,
+--   CASE
+--     WHEN overall_score_calc.overall_score = 0 THEN "No Data"
+--     WHEN overall_score_calc.overall_score <= 1.66 THEN "Red"
+--     WHEN overall_score_calc.overall_score <= 2.22 THEN "Yellow"
+--     WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
+--     ELSE "No Data"
+--   END AS overall_score_color,
+-- FROM
+--   contact_at CAT
+--   LEFT JOIN task ON task.WhoId = CAT.Contact_Id
+--   LEFT JOIN score_calculation ON score_calculation.Contact_Id = CAT.Contact_Id
+--   AND score_calculation.GAS_Name = CAT.GAS_Name
+--   LEFT JOIN overall_score_calc ON overall_score_calc.Contact_Id = CAT.Contact_Id
+--   AND overall_score_calc.GAS_Name = CAT.GAS_Name
