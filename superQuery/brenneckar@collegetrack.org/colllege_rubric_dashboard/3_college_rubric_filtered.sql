@@ -4,13 +4,13 @@ WITH contact_at AS (
     Full_Name__c,
     GAS_Name,
     Current_School_Type__c,
-    CASE
-      WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh"
-      WHEN Credits_Accumulated_Most_Recent__c <.25 THEN "Frosh"
-      WHEN Credits_Accumulated_Most_Recent__c <.5 THEN "Sophomore"
-      WHEN Credits_Accumulated_Most_Recent__c <.75 THEN "Junior"
-      WHEN Credits_Accumulated_Most_Recent__c >=.75 THEN "Senior"
-    END AS college_class,
+     CASE
+    WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh"
+    WHEN Credits_Accumulated_Most_Recent__c <.25 THEN "Frosh"
+    WHEN Credits_Accumulated_Most_Recent__c <.5 THEN "Sophomore"
+    WHEN Credits_Accumulated_Most_Recent__c <.75 THEN "Junior"
+    WHEN Credits_Accumulated_Most_Recent__c >=.75 THEN "Senior"
+  END AS college_class,
     CASE
       WHEN CAT.finance_score = 0 THEN "No Data"
       WHEN CAT.finance_score <= 1.66 THEN "Red"
