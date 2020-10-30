@@ -566,9 +566,9 @@ contact_data AS
 (
 SELECT contact_id, Full_Name__c, High_School_Class__c, Site_Text__c AS site_full, site_short, region AS region_full, region_short, GPA_Cumulative__c AS CGPA_11th
 FROM college_application_AT 
-GROUP BY contact_id, Full_Name__c, High_School_Class__c, Site_Text__c AS site_full, site_short, region AS region_full, region_short, GPA_Cumulative__c AS CGPA_11th
 LIMIT 50
 ) 
 
 SELECT *
 FROM Contact_data
+GROUP BY contact_id, Full_Name__c, High_School_Class__c, site_full, site_short, region_full, region_short, CGPA_11th
