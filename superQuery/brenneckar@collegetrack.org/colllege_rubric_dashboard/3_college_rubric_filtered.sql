@@ -235,7 +235,7 @@ overall_score_calc AS (
     Contact_Id,
     GAS_Name,
     (
-      (IFNULL(finance_score,0) * count_finance) + (IFNULL(academic_score,0) * count_academic) + (IFNULL(wellness_score,0) * count_wellness) + (IFNULL(career_score,0) * count_career)
+      (IFNULL(finance_score, 0) * count_finance) + (IFNULL(academic_score, 0) * count_academic) + (IFNULL(wellness_score, 0) * count_wellness) + (IFNULL(career_score, 0) * count_career)
     ) AS total_raw_score,
     (
       count_finance + count_academic + count_wellness + count_career
@@ -285,17 +285,9 @@ joined_data AS (
       WHEN CAT.career_score > 2.22 THEN "Green"
       ELSE "No Data"
     END AS career_score_color,
-    -- CASE
-    --   WHEN overall_score_calc.overall_score = 0 THEN "No Data"
-    --   WHEN overall_score_calc.overall_score <= 1.66 THEN "Red"
-    --   WHEN overall_score_calc.overall_score <= 2.22 THEN "Yellow"
-    --   WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
-    --   ELSE "No Data"
-    -- END AS overall_score_color,
     overall_score_calc.total_raw_score,
     overall_score_calc.total_count,
     overall_score_calc.total_raw_score / overall_score_calc.total_count AS overall_score,
-
   FROM
     score_calculation CAT
     LEFT JOIN task ON task.WhoId = CAT.Contact_Id
@@ -303,15 +295,13 @@ joined_data AS (
     AND overall_score_calc.GAS_Name = CAT.GAS_Name
 )
 SELECT
-  Contact_Id,
-  finance_score,
-  academic_score,
-  wellness_score,
-  career_score,
-  total_raw_score,
-  total_count,
-  overall_score
+  *,
+  CASE
+    WHEN overall_score = 0 THEN "No Data"
+    WHEN overall_score <= 1.66 THEN "Red"
+    WHEN overall_score <= 2.22 THEN "Yellow"
+    WHEN overall_score > 2.22 THEN "Green"
+    ELSE "No Data"
+  END AS overall_score_color,
 FROM
   joined_data
-WHERE
-  Loans__c IS NOT NULL
