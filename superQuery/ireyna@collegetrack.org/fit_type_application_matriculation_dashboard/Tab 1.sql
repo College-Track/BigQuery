@@ -560,7 +560,8 @@ WITH college_application_AT AS (
     CA.Type_of_School__c,
     CA.admission_status__c
   FROM
-    `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA --Join  college applications data with contact_at template
+    `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
+    --Join  college applications data with contact_at template
     LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` AS A_T ON CA.Student__c = A_T.Student__c
 ),
 
@@ -575,6 +576,12 @@ contact_overview AS (
     region AS region_full,
     region_short,
     GPA_Cumulative__c AS CGPA_11th,
+    CASE
+      WHEN GPA_Cumulative__c < 3 THEN "Below 3.0"
+      WHEN GPA_Cumulative__c < 3.25 THEN "3.0 - 3.24"
+      WHEN GPA_Cumulative__c >= 3.25 THEN "3.25+"
+      ELSE "Missing"
+    END AS CGPA_11th_bucket,
     Readiness_English_Official__c,
     Readiness_Math_Official__c,
     Readiness_Composite_Off__c,
@@ -582,24 +589,11 @@ contact_overview AS (
     Ethnic_background__c,
     Indicator_Low_Income__c,
     First_Generation_FY20__c
+    Indicator_Completed_CT_HS_Program__c
   FROM
     college_application_AT
-  GROUP BY
-  contact_id,
-  Full_Name__c,
-  High_School_Class__c,
-  site_full,
-  site_short,
-  region_full,
-  region_short,
-  CGPA_11th,
-  Readiness_English_Official__c,
-  Readiness_Math_Official__c,
-  Readiness_Composite_Off__c,
-  Gender__c,
-  Ethnic_background__c,
-  Indicator_Low_Income__c,
-  First_Generation_FY20__c
+    WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+
 ),
 
 fit_type_application AS
@@ -616,6 +610,11 @@ SELECT
     app.college_id,
     accnt.Name AS account_name,
     Application_status__c,
+     CASE
+        WHEN Application_status__c = "Applied" THEN "Applications"
+        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
+        ELSE "N/A"
+        END AS application_bucket,
     admission_status__c,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
@@ -646,5 +645,6 @@ WHERE
     account_name,
     Application_status__c,
     admission_status__c,
+    application_bucket,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
