@@ -70,87 +70,119 @@ WITH contact_at AS (
     Advising_Rubric_Financial_Success__c,
     Advising_Rubric_Wellness__c,
     Credit_Accumulation_Pace__c,
-    -- Individual Questions
+    -- Rubric Questions
+    -- Finance
     Financial_Aid_Package__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Financial_Aid_Package__c) AS question_finance_Financial_Aid_Package_score,
     Filing_Status__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Filing_Status__c) AS question_finance_Filing_Status_score,
     Loans__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Loans__c) AS question_finance_Loans_score,
     Ability_to_Pay__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Ability_to_Pay__c) AS question_finance_Ability_to_Pay_score,
     Free_Checking_Account__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Free_Checking_Account__c) AS question_finance_Free_Checking_Account_score,
     Scholarship_Requirements__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Scholarship_Requirements__c) AS question_finance_Scholarship_Requirements_score,
     Familial_Responsibility__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Familial_Responsibility__c) AS question_finance_Familial_Responsibility_score,
     eFund__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(eFund__c) AS question_finance_eFund_score,
-    Repayment_Plan__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Repayment_Plan__c) AS question_finance_Repayment_Plan_score,
-    Loan_Exit__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Loan_Exit__c) AS question_finance_Loan_Exit_score,
-    Repayment_Policies__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Repayment_Policies__c) AS question_finance_Repayment_Policies_score,
+    -- Seniors Only
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c >= 75 THEN Repayment_Plan__c
+      ELSE "N/A"
+    END AS Repayment_Plan__c,
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c >= 75 THEN Loan_Exit__c
+      ELSE "N/A"
+    END AS Loan_Exit__c,
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c >= 75 THEN Repayment_Policies__c
+      ELSE "N/A"
+    END AS Repayment_Policies__c,
+    -- Academics
     Standing__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Standing__c) AS question_academic_Standing_score,
     Study_Resources__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Study_Resources__c) AS question_academic_Study_Resources_score,
     Course_Materials__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Course_Materials__c) AS question_academic_Course_Materials_score,
     Transfer_2Year_Schools_Only__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Transfer_2Year_Schools_Only__c) AS question_academic_Transfer_2Year_Schools_Only_score,
-    Academic_Networking_50_Cred__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Academic_Networking_50_Cred__c) AS question_academic_Academic_Networking_50_Cred_score,
+    -- Below 50% Credis
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c < 50 THEN Academic_Networking_50_Cred__c
+      ELSE "N/A"
+    END AS Academic_Networking_50_Cred__c,
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c >= 50 THEN Academic_Networking_over_50_Credits__c
+      ELSE "N/A"
+    END AS Academic_Networking_over_50_Credits__c,
     Degree_Plan__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Degree_Plan__c) AS question_academic_Degree_Plan_score,
-    X075_Credit_Completion_Juniors__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(X075_Credit_Completion_Juniors__c) AS question_academic_X075_Credit_Completion_Juniors_score,
+    -- Juniors Only
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c >= 50
+      AND Credits_Accumulated_Most_Recent__c < 75 THEN X075_Credit_Completion_Juniors__c
+      ELSE "N/A"
+    END AS X075_Credit_Completion_Juniors__c,
+    -- Seniors Only
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c >= 75 THEN X5_Credit_Completion_Seniors__c
+      ELSE "N/A"
+    END AS X5_Credit_Completion_Seniors__c,
     Courseload__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Courseload__c) AS question_academic_Courseload_score,
-    X5_Credit_Completion_Seniors__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(X5_Credit_Completion_Seniors__c) AS question_academic_X5_Credit_Completion_Seniors_score,
+    -- Wellness
     Commitment__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Commitment__c) AS question_wellness_Commitment_score,
     Campus_Outlook__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Campus_Outlook__c) AS question_wellness_Campus_Outlook_score,
     Extracurricular_Activity__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Extracurricular_Activity__c) AS question_wellness_Extracurricular_Activity_score,
     Support_Network__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Support_Network__c) AS question_wellness_Support_Network_score,
     Time_Management__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Time_Management__c) AS question_wellness_Time_Management_score,
     Personal_WellBeing__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Personal_WellBeing__c) AS question_wellness_Personal_WellBeing_score,
     Housing_Food__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Housing_Food__c) AS question_wellness_Housing_Food_score,
     Social_Stability__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Social_Stability__c) AS question_wellness_Social_Stability_score,
     Oncampus_Housing__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Oncampus_Housing__c) AS question_wellness_Oncampus_Housing_score,
     FamilyDependents__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(FamilyDependents__c) AS question_wellness_FamilyDependents_score,
-    Finding_Opportunities_75__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Finding_Opportunities_75__c) AS question_career_Finding_Opportunities_75_score,
+    -- Career
+    -- Juniors Only
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c < 75
+      AND Credits_Accumulated_Most_Recent__c >= 50 THEN Finding_Opportunities_75__c
+      ELSE "N/A"
+    END AS Finding_Opportunities_75__c,
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c < 75
+      AND Credits_Accumulated_Most_Recent__c >= 50 THEN Internship_5075_credits__c
+      ELSE "N/A"
+    END AS Internship_5075_credits__c, 
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c < 75
+      AND Credits_Accumulated_Most_Recent__c >= 50 THEN PostGraduate_Plans_5075_creds__c
+      ELSE "N/A"
+    END AS PostGraduate_Plans_5075_creds__c,     
+    
+    -- Sophmoores Only
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c < 50
+      AND Credits_Accumulated_Most_Recent__c >= 25 THEN Career_Counselor_25_credits__c
+      ELSE "N/A"
+    END AS Career_Counselor_25_credits__c, 
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c < 50
+      AND Credits_Accumulated_Most_Recent__c >= 25 THEN Career_Field_2550_credits__c
+      ELSE "N/A"
+    END AS Career_Field_2550_credits__c,     
+    
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c < 50
+      AND Credits_Accumulated_Most_Recent__c >= 25 THEN Resources_2550_credits__c
+      ELSE "N/A"
+    END AS Resources_2550_credits__c,         
+    -- Seniors Only
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c <= 75 THEN Internships__c
+      ELSE "N/A"
+    END AS Internships__c,  
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c <= 75 THEN Alumni_Network_75_credits__c
+      ELSE "N/A"
+    END AS Alumni_Network_75_credits__c,  
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c <= 75 THEN Post_Graduate_Opportunities_75_cred__c
+      ELSE "N/A"
+    END AS Post_Graduate_Opportunities_75_cred__c,  
+    -- All 
     ResumeCover_Letter__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(ResumeCover_Letter__c) AS question_career_ResumeCover_Letter_score,
-    Career_Counselor_25_credits__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Career_Counselor_25_credits__c) AS question_career_Career_Counselor_25_credits_score,
-    Career_Field_2550_credits__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Career_Field_2550_credits__c) AS question_career_Career_Field_2550_credits_score,
-    Resources_2550_credits__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Resources_2550_credits__c) AS question_career_Resources_2550_credits_score,
-    Internship_5075_credits__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Internship_5075_credits__c) AS question_career_Internship_5075_credits_score,
-    Internships__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Internships__c) AS question_career_Internships_score,
-    PostGraduate_Plans_5075_creds__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(PostGraduate_Plans_5075_creds__c) AS question_career_PostGraduate_Plans_5075_creds_score,
-    Post_Graduate_Opportunities_75_cred__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Post_Graduate_Opportunities_75_cred__c) AS question_career_Post_Graduate_Opportunities_75_cred_score,
-    Alumni_Network_75_credits__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Alumni_Network_75_credits__c) AS question_career_Alumni_Network_75_credits_score,
+    
+    -- COVID - not used
     Enrollment_COVID19__c,
     CollegeUniversity_Response_COVID19__c,
     Online_Coursework_COVID19__c,
@@ -198,15 +230,74 @@ task AS (
   GROUP BY
     WhoId
 ),
+calc_question_scores AS (
+  SELECT
+    *,
+    `data-studio-260217.college_rubric.format_question_as_num`(Financial_Aid_Package__c) AS question_finance_Financial_Aid_Package_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Filing_Status__c) AS question_finance_Filing_Status_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Loans__c) AS question_finance_Loans_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Ability_to_Pay__c) AS question_finance_Ability_to_Pay_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Free_Checking_Account__c) AS question_finance_Free_Checking_Account_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Scholarship_Requirements__c) AS question_finance_Scholarship_Requirements_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Familial_Responsibility__c) AS question_finance_Familial_Responsibility_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(eFund__c) AS question_finance_eFund_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Repayment_Plan__c) AS question_finance_Repayment_Plan_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Loan_Exit__c) AS question_finance_Loan_Exit_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Repayment_Policies__c) AS question_finance_Repayment_Policies_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Standing__c) AS question_academic_Standing_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Study_Resources__c) AS question_academic_Study_Resources_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Course_Materials__c) AS question_academic_Course_Materials_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Transfer_2Year_Schools_Only__c) AS question_academic_Transfer_2Year_Schools_Only_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Academic_Networking_50_Cred__c) AS question_academic_Academic_Networking_50_Cred_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Academic_Networking_over_50_Credits__c) AS question_academic_Academic_Networking_over_50_Credits_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Degree_Plan__c) AS question_academic_Degree_Plan_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(X075_Credit_Completion_Juniors__c) AS question_academic_X075_Credit_Completion_Juniors_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Courseload__c) AS question_academic_Courseload_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(X5_Credit_Completion_Seniors__c) AS question_academic_X5_Credit_Completion_Seniors_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Commitment__c) AS question_wellness_Commitment_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Campus_Outlook__c) AS question_wellness_Campus_Outlook_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Extracurricular_Activity__c) AS question_wellness_Extracurricular_Activity_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Support_Network__c) AS question_wellness_Support_Network_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Time_Management__c) AS question_wellness_Time_Management_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Personal_WellBeing__c) AS question_wellness_Personal_WellBeing_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Housing_Food__c) AS question_wellness_Housing_Food_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Social_Stability__c) AS question_wellness_Social_Stability_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Oncampus_Housing__c) AS question_wellness_Oncampus_Housing_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(FamilyDependents__c) AS question_wellness_FamilyDependents_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Finding_Opportunities_75__c) AS question_career_Finding_Opportunities_75_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(ResumeCover_Letter__c) AS question_career_ResumeCover_Letter_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Career_Counselor_25_credits__c) AS question_career_Career_Counselor_25_credits_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Career_Field_2550_credits__c) AS question_career_Career_Field_2550_credits_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Resources_2550_credits__c) AS question_career_Resources_2550_credits_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Internship_5075_credits__c) AS question_career_Internship_5075_credits_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Internships__c) AS question_career_Internships_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(PostGraduate_Plans_5075_creds__c) AS question_career_PostGraduate_Plans_5075_creds_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Post_Graduate_Opportunities_75_cred__c) AS question_career_Post_Graduate_Opportunities_75_cred_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Alumni_Network_75_credits__c) AS question_career_Alumni_Network_75_credits_score,
+  FROM
+    contact_at
+),
 total_valid_questions AS(
   SELECT
     *,
-    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_finance') AS count_finance,
-    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_academic') AS count_academic,
-    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_wellness') AS count_wellness,
-    `data-studio-260217.college_rubric.calc_num_valid_questions`(TO_JSON_STRING(contact_at), 'question_career') AS count_career
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(
+      TO_JSON_STRING(calc_question_scores),
+      'question_finance'
+    ) AS count_finance,
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(
+      TO_JSON_STRING(calc_question_scores),
+      'question_academic'
+    ) AS count_academic,
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(
+      TO_JSON_STRING(calc_question_scores),
+      'question_wellness'
+    ) AS count_wellness,
+    `data-studio-260217.college_rubric.calc_num_valid_questions`(
+      TO_JSON_STRING(calc_question_scores),
+      'question_career'
+    ) AS count_career
   FROM
-    contact_at
+    calc_question_scores
 ),
 score_calculation AS (
   SELECT
@@ -287,7 +378,7 @@ joined_data AS (
     END AS career_score_color,
     overall_score_calc.total_raw_score,
     overall_score_calc.total_count,
-    overall_score_calc.total_raw_score / NULLIF(overall_score_calc.total_count,0) AS overall_score,
+    overall_score_calc.total_raw_score / NULLIF(overall_score_calc.total_count, 0) AS overall_score,
   FROM
     score_calculation CAT
     LEFT JOIN task ON task.WhoId = CAT.Contact_Id
