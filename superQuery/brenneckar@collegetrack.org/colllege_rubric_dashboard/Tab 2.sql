@@ -1,6 +1,6 @@
 SELECT Contact_Id,
 question_finance_Financial_Aid_Package_score,
-question_finance_Filing_Status_score
+question_finance_Filing_Status_score,
 question_academic_Study_Resources_score
 FROM `data-studio-260217.college_rubric.filtered_college_rubric`
 WHERE question_finance_Financial_Aid_Package_score IS NOT NULL
