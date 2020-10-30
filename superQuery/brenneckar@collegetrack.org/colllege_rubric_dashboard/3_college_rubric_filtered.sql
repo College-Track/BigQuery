@@ -185,7 +185,7 @@ WITH contact_at AS (
   WHERE
     (
       Current_AS__c = TRUE
-      OR Previous_AS__c = TRUE
+    --   OR Previous_AS__c = TRUE
     )
     AND AT_Record_Type_Name = "College/University Semester"
     AND Current_CT_Status__c = "Active: Post-Secondary"
@@ -304,11 +304,10 @@ SELECT
   Financial_Aid_Package__c,
   Filing_Status__c,
   Loans__c,
---   question_finance_Financial_Aid_Package_score,
---   question_finance_Filing_Status_score,
---   question_finance_Loans_score,
-  
---   finance_score,
---   count_finance
+  --   question_finance_Financial_Aid_Package_score,
+  --   question_finance_Filing_Status_score,
+  --   question_finance_Loans_score,
+  --   finance_score,
+  --   count_finance
 FROM
   contact_at
