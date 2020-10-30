@@ -462,8 +462,7 @@ WITH college_application_AT AS (
     A_T.Starting_Semester__c,
     A_T.Student_Has_IEP__c,
     A_T.Student_Starting_Grade__c,
-    A_T.Student__c,
-    #id,
+    A_T.Student__c,#id,
     A_T.Student_s_Start_Academic_Year__c,
     A_T.Study_Resources__c,
     A_T.Term__c,
@@ -489,7 +488,7 @@ WITH college_application_AT AS (
     A_T.Year_1_College_Math_Course_Other__c,
     A_T.Year_Fraction_Since_HS_Grad__c,
     A_T.Years_Since_HS_Grad__c,
-    Years_to_Complete_4Year_Degree__c,
+    A_T.Years_to_Complete_4Year_Degree__c,
     A_T.college_applications_all_fit_types__c,
     A_T.eFund__c,
     A_T.of_Best_Fit_College_Applications__c,
@@ -552,8 +551,7 @@ WITH college_application_AT AS (
     CA.Strategic_Type__c AS match_type, #match type
     CA.Student_ACT_Highest_Composite_Single_Sit__c,
     CA.Student_GPA_Cumulative__c,
-    CA.Student_ID_Number__c,
-    #if student is accepted to college
+    CA.Student_ID_Number__c, #if student is accepted to college
     CA.Student_SAT_Highest_Comp_Single_Sit__c,
     CA.Submitted_Proof_Of_College_Admissions__c,
     CA.Transcripts__c,
@@ -622,28 +620,52 @@ SELECT
     FROM college_application_AT AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
     ON app.college_id = accnt.id
+    WHERE Type_of_School__c = "4 Year"
+),
+
+fit_type_matriculation AS
+(
+SELECT
+    contact_id,
+    Full_Name__c,
+    High_School_Class__c,
+    Site_Text__c AS site_full,
+    site_short,
+    region AS region_full,
+    region_short,
+    School_Name,
+    Predominant_Degree_Awarded__c,
+    aff.Situational_Fit_Type__c,
+    aff.Fit_Type_Current__c,
+    aff.Fit_Type__c AS fit_type_affiliation,
+    aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation
+  
+    FROM college_application_AT AS app
+    JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
+    ON app.Affiliation_Record_ID__c = aff.Id
+    
+    WHERE AT_Grade__c = "Year 1"
+    AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25)
+    AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
+    AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
+   
 )
 
 
 SELECT
   *
-  EXCEPT (college_id)
-FROM fit_type_application
-WHERE 
-    High_School_Class__c > "2017" AND
-    Application_status__c = "Applied"
-   GROUP BY
-    contact_id,
+FROM fit_type_matriculation
+GROUP BY
+contact_id,
     Full_Name__c,
     High_School_Class__c,
     site_full,
     site_short,
     region_full,
     region_short,
-    college_app_id,
-    account_name,
-    Application_status__c,
-    admission_status__c,
-    acceptance_group,
-    College_Fit_Type_Applied__c,
-    Fit_Type_Enrolled__c
+    School_Name,
+    Predominant_Degree_Awarded__c,
+    Situational_Fit_Type__c,
+    Fit_Type_Current__c,
+    fit_type_affiliation,
+    fit_type_start_of_affiliation
