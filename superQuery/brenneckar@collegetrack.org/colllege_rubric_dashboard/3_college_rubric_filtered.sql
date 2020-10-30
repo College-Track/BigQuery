@@ -76,7 +76,7 @@ WITH contact_at AS (
     Filing_Status__c,
     `data-studio-260217.college_rubric.format_question_as_num`(Filing_Status__c) AS question_finance_Filing_Status_score,
     Loans__c,
-    `data-studio-260217.college_rubric.format_question_as_num`(Filing_Status__c) AS question_finance_Loans_score,
+    `data-studio-260217.college_rubric.format_question_as_num`(Loans__c) AS question_finance_Loans_score,
     Ability_to_Pay__c,
     `data-studio-260217.college_rubric.format_question_as_num`(Ability_to_Pay__c) AS question_finance_Ability_to_Pay_score,
     Free_Checking_Account__c,
