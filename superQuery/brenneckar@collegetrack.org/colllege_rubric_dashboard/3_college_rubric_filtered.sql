@@ -85,7 +85,6 @@ WITH contact_at AS (
     `data-studio-260217.college_rubric.format_question_as_num`(Scholarship_Requirements__c) AS question_finance_Scholarship_Requirements_score,
     Familial_Responsibility__c,
         `data-studio-260217.college_rubric.format_question_as_num`(Familial_Responsibility__c) AS question_finance_Familial_Responsibility_score,
-
     eFund__c,
     `data-studio-260217.college_rubric.format_question_as_num`(eFund__c) AS question_finance_eFund_score,
     Repayment_Plan__c,
@@ -214,7 +213,7 @@ total_valid_questions AS(
 score_calculation AS (
   SELECT
     *,
-    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_finance')   AS finance_score,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_finance') / NULLIF( count_finance, 0 )   AS finance_score,
     `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_academic')   AS academic_score,
     `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_wellness')   AS wellness_score,
     `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_career')   AS career_score
