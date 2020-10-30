@@ -236,9 +236,10 @@ overall_score_calc AS (
     GAS_Name,
     (
       (finance_score * count_finance) + (academic_score * count_academic) + (wellness_score * count_wellness) + (career_score * count_career)
-    ) / (
+    ) AS total_raw_score,
+    (
       count_finance + count_academic + count_wellness + count_career
-    ) AS overall_score
+    ) AS total_count
   FROM
     score_calculation
 ),
@@ -284,14 +285,14 @@ joined_data AS (
       WHEN CAT.career_score > 2.22 THEN "Green"
       ELSE "No Data"
     END AS career_score_color,
-    CASE
-      WHEN overall_score_calc.overall_score = 0 THEN "No Data"
-      WHEN overall_score_calc.overall_score <= 1.66 THEN "Red"
-      WHEN overall_score_calc.overall_score <= 2.22 THEN "Yellow"
-      WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
-      ELSE "No Data"
-    END AS overall_score_color,
-    overall_score_calc.overall_score
+    -- CASE
+    --   WHEN overall_score_calc.overall_score = 0 THEN "No Data"
+    --   WHEN overall_score_calc.overall_score <= 1.66 THEN "Red"
+    --   WHEN overall_score_calc.overall_score <= 2.22 THEN "Yellow"
+    --   WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
+    --   ELSE "No Data"
+    -- END AS overall_score_color,
+    -- overall_score_calc.overall_score
   FROM
     score_calculation CAT
     LEFT JOIN task ON task.WhoId = CAT.Contact_Id
@@ -300,30 +301,10 @@ joined_data AS (
 )
 SELECT
   Contact_Id,
-  Financial_Aid_Package__c,
-  question_finance_Financial_Aid_Package_score,
-  Filing_Status__c,
-  question_finance_Filing_Status_score,
-  Loans__c,
-  question_finance_Loans_score,
-  Ability_to_Pay__c,
-  question_finance_Ability_to_Pay_score,
-  Free_Checking_Account__c,
-  question_finance_Free_Checking_Account_score,
-  Scholarship_Requirements__c,
-  question_finance_Scholarship_Requirements_score,
-  Familial_Responsibility__c,
-  question_finance_Familial_Responsibility_score,
-  eFund__c,
-  question_finance_eFund_score,
-  Repayment_Plan__c,
-  question_finance_Repayment_Plan_score,
-  Loan_Exit__c,
-  question_finance_Loan_Exit_score,
-  Repayment_Policies__c,
-  question_finance_Repayment_Policies_score,
-    finance_score,
-    count_finance
+ 
+  finance_score,
+  count_finance,
+  total_raw_score
 FROM
   joined_data
 WHERE
