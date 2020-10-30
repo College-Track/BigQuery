@@ -284,6 +284,7 @@ EXCEPT(submetric, key, value),
     WHEN key = "question_academic_Course_Materials_score" THEN "Course Materials"
     WHEN key = "question_academic_Transfer_2Year_Schools_Only_score" THEN "Transfer - 2 Year Schools Only"
     WHEN key = "question_academic_Academic_Networking_50_Cred_score" THEN "Academic Networking"
+    WHEN key = "question_Academic_Networking_over_50_Credits_score" THEN "Academic Networking - Junior + Senior"
     WHEN key = "question_academic_Degree_Plan_score" THEN "Degree Plan"
     WHEN key = "question_academic_X075_Credit_Completion_Juniors_score" THEN "75% Credit Completion - Juniors"
     WHEN key = "question_academic_Courseload_score" THEN "Courseload"
