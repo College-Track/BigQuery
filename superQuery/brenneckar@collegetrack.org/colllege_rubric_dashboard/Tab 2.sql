@@ -49,4 +49,4 @@ SELECT
 FROM
   contact_at
 LIMIT
-  50
+  5
