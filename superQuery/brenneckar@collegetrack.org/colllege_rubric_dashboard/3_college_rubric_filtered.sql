@@ -300,5 +300,9 @@ FROM
  )
  SELECT Contact_Id, 
  overall_score,
+ finance_score,
+ academic_score,
+ wellness_score, 
+ career_score,
  overall_score_color
  FROM joined_data
