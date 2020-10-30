@@ -304,11 +304,11 @@ SELECT
   Financial_Aid_Package__c,
   Filing_Status__c,
   Loans__c,
-  question_finance_Financial_Aid_Package_score,
-  question_finance_Filing_Status_score,
-  question_finance_Loans_score,
+--   question_finance_Financial_Aid_Package_score,
+--   question_finance_Filing_Status_score,
+--   question_finance_Loans_score,
   
-  finance_score,
-  count_finance
+--   finance_score,
+--   count_finance
 FROM
-  joined_data
+  contact_at
