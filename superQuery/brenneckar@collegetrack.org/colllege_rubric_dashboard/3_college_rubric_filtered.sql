@@ -230,82 +230,70 @@ score_calculation AS (
     ) / NULLIF(count_career, 0) AS career_score
   FROM
     total_valid_questions
-)
-SELECT
-  Contact_Id,
-  count_finance,
-  finance_score,
-  academic_score
+),
+overall_score_calc AS (
+  SELECT
+    Contact_Id,
+    GAS_Name,
+    (
+      (finance_score * count_finance) + (academic_score * count_academic) + (wellness_score * count_wellness) + (career_score * count_career)
+    ) / (
+      count_finance + count_academic + count_wellness + count_career
+    ) AS overall_score
 FROM
   score_calculation
-LIMIT
-  1000 -- overall_score_calc AS (
-  --   SELECT
-  --     Contact_Id,
-  --     GAS_Name,
-  --     (
-  --       (financial_score * 11) + (academic_score * 9) + (wellness_score * 10) + (career_score * 10)
-  --     ) / 40 AS overall_score
-  --   FROM
-  --     score_calculation
-  -- )
-  -- SELECT
-  --   CAT.*,
-  --   score_calculation.financial_score,
-  --   score_calculation.academic_score,
-  --   score_calculation.wellness_score,
-  --   score_calculation.career_score,
-  --   overall_score_calc.overall_score,
-  --   CASE
-  --     WHEN CAT.Overall_Rubric_Color = "Red" THEN 1
-  --     WHEN CAT.Overall_Rubric_Color = "Yellow" THEN 2
-  --     WHEN CAT.Overall_Rubric_Color = "Green" THEN 3
-  --     ELSE 4
-  --   END AS Overall_Rubric_Color_sort,
-  --   CASE
-  --     WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 30 THEN "Less than 30 Days"
-  --     WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 60 THEN "30 - 60 Days"
-  --     WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) > 60 THEN "60+ Days"
-  --   END AS last_contact_range,
-  --   CASE
-  --     WHEN score_calculation.financial_score = 0 THEN "No Data"
-  --     WHEN score_calculation.financial_score <= 1.66 THEN "Red"
-  --     WHEN score_calculation.financial_score <= 2.22 THEN "Yellow"
-  --     WHEN score_calculation.financial_score > 2.22 THEN "Green"
-  --     ELSE "No Data"
-  --   END AS financial_score_color,
-  --   CASE
-  --     WHEN score_calculation.academic_score = 0 THEN "No Data"
-  --     WHEN score_calculation.academic_score <= 1.66 THEN "Red"
-  --     WHEN score_calculation.academic_score <= 2.22 THEN "Yellow"
-  --     WHEN score_calculation.academic_score > 2.22 THEN "Green"
-  --     ELSE "No Data"
-  --   END AS academic_score_color,
-  --   CASE
-  --     WHEN score_calculation.wellness_score = 0 THEN "No Data"
-  --     WHEN score_calculation.wellness_score <= 1.66 THEN "Red"
-  --     WHEN score_calculation.wellness_score <= 2.22 THEN "Yellow"
-  --     WHEN score_calculation.wellness_score > 2.22 THEN "Green"
-  --     ELSE "No Data"
-  --   END AS wellness_score_color,
-  --   CASE
-  --     WHEN score_calculation.career_score = 0 THEN "No Data"
-  --     WHEN score_calculation.career_score <= 1.66 THEN "Red"
-  --     WHEN score_calculation.career_score <= 2.22 THEN "Yellow"
-  --     WHEN score_calculation.career_score > 2.22 THEN "Green"
-  --     ELSE "No Data"
-  --   END AS career_score_color,
-  --   CASE
-  --     WHEN overall_score_calc.overall_score = 0 THEN "No Data"
-  --     WHEN overall_score_calc.overall_score <= 1.66 THEN "Red"
-  --     WHEN overall_score_calc.overall_score <= 2.22 THEN "Yellow"
-  --     WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
-  --     ELSE "No Data"
-  --   END AS overall_score_color,
-  -- FROM
-  --   contact_at CAT
-  --   LEFT JOIN task ON task.WhoId = CAT.Contact_Id
-  --   LEFT JOIN score_calculation ON score_calculation.Contact_Id = CAT.Contact_Id
-  --   AND score_calculation.GAS_Name = CAT.GAS_Name
-  --   LEFT JOIN overall_score_calc ON overall_score_calc.Contact_Id = CAT.Contact_Id
-  --   AND overall_score_calc.GAS_Name = CAT.GAS_Name
+) 
+
+SELECT
+  CAT.* ,
+  CASE
+    WHEN CAT.Overall_Rubric_Color = "Red" THEN 1
+    WHEN CAT.Overall_Rubric_Color = "Yellow" THEN 2
+    WHEN CAT.Overall_Rubric_Color = "Green" THEN 3
+    ELSE 4
+  END AS Overall_Rubric_Color_sort,
+  CASE
+    WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 30 THEN "Less than 30 Days"
+    WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 60 THEN "30 - 60 Days"
+    WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) > 60 THEN "60+ Days"
+  END AS last_contact_range,
+  CASE
+    WHEN CAT.finance_score = 0 THEN "No Data"
+    WHEN CAT.finance_score <= 1.66 THEN "Red"
+    WHEN CAT.finance_score <= 2.22 THEN "Yellow"
+    WHEN CAT.finance_score > 2.22 THEN "Green"
+    ELSE "No Data"
+  END AS financial_score_color,
+  CASE
+    WHEN CAT.academic_score = 0 THEN "No Data"
+    WHEN CAT.academic_score <= 1.66 THEN "Red"
+    WHEN CAT.academic_score <= 2.22 THEN "Yellow"
+    WHEN CAT.academic_score > 2.22 THEN "Green"
+    ELSE "No Data"
+  END AS academic_score_color,
+  CASE
+    WHEN CAT.wellness_score = 0 THEN "No Data"
+    WHEN CAT.wellness_score <= 1.66 THEN "Red"
+    WHEN CAT.wellness_score <= 2.22 THEN "Yellow"
+    WHEN CAT.wellness_score > 2.22 THEN "Green"
+    ELSE "No Data"
+  END AS wellness_score_color,
+  CASE
+    WHEN CAT.career_score = 0 THEN "No Data"
+    WHEN CAT.career_score <= 1.66 THEN "Red"
+    WHEN CAT.career_score <= 2.22 THEN "Yellow"
+    WHEN CAT.career_score > 2.22 THEN "Green"
+    ELSE "No Data"
+  END AS career_score_color,
+  CASE
+    WHEN overall_score_calc.overall_score = 0 THEN "No Data"
+    WHEN overall_score_calc.overall_score <= 1.66 THEN "Red"
+    WHEN overall_score_calc.overall_score <= 2.22 THEN "Yellow"
+    WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
+    ELSE "No Data"
+  END AS overall_score_color,
+FROM
+  score_calculation CAT
+  LEFT JOIN task ON task.WhoId = CAT.Contact_Id
+  LEFT JOIN overall_score_calc ON overall_score_calc.Contact_Id = CAT.Contact_Id
+  AND overall_score_calc.GAS_Name = CAT.GAS_Name
