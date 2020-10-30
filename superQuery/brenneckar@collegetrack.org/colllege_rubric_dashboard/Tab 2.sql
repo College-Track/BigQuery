@@ -1,6 +1,7 @@
 WITH contact_at AS (
   SELECT
     Contact_Id,
+    `data-studio-260217.college_rubric.format_question_as_num`(Financial_Aid_Package__c) as TEST,
     CASE
       WHEN Financial_Aid_Package__c IS NULL THEN NULL
       WHEN Financial_Aid_Package__c = "N/A" THEN NULL
