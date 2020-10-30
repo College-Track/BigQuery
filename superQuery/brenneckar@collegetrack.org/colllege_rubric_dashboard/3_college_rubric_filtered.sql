@@ -311,3 +311,4 @@ SELECT
   --   count_finance
 FROM
   contact_at
+  WHERE Loans__c IS NOT NULL
