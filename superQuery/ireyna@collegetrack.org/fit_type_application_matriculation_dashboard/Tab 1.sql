@@ -571,4 +571,4 @@ LIMIT 50
 
 SELECT *
 FROM Contact_data
-GROUP BY contact_id, Full_Name__c, High_School_Class__c, site_full, site_short, region_full, region_short, CGPA_11th
+--GROUP BY contact_id, Full_Name__c, High_School_Class__c, site_full, site_short, region_full, region_short, CGPA_11th
