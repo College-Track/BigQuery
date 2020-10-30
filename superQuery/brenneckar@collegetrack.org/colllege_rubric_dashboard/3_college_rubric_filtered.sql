@@ -214,10 +214,10 @@ total_valid_questions AS(
 score_calculation AS (
   SELECT
     *,
-    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_finance') / count_finance  AS finance_score,
-    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_academic') / count_academic  AS academic_score,
-    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_wellness') / count_wellness  AS wellness_score,
-    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_career') / count_career  AS career_score
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_finance')   AS finance_score,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_academic')   AS academic_score,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_wellness')   AS wellness_score,
+    `data-studio-260217.college_rubric.calc_section_score`(TO_JSON_STRING(total_valid_questions), 'question_career')   AS career_score
     
     
   FROM
