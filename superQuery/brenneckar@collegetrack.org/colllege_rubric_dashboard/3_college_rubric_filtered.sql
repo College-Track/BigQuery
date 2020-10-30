@@ -310,5 +310,5 @@ SELECT
   --   finance_score,
   --   count_finance
 FROM
-  contact_at
+  joined_data
   WHERE Loans__c IS NOT NULL
