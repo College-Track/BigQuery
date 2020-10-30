@@ -612,7 +612,7 @@ SELECT
     Application_status__c,
      CASE
         WHEN Application_status__c = "Applied" THEN "Applications"
-        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
+        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
         ELSE "N/A"
         END AS application_bucket,
     admission_status__c,
