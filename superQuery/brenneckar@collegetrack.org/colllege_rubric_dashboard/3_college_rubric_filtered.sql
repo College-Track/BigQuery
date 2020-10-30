@@ -242,8 +242,7 @@ overall_score_calc AS (
     ) AS overall_score
 FROM
   score_calculation
-) 
-
+), joined_data AS (
 SELECT
   CAT.* ,
   CASE
@@ -297,3 +296,7 @@ FROM
   LEFT JOIN task ON task.WhoId = CAT.Contact_Id
   LEFT JOIN overall_score_calc ON overall_score_calc.Contact_Id = CAT.Contact_Id
   AND overall_score_calc.GAS_Name = CAT.GAS_Name
+ )
+ SELECT Contact_Id, 
+ overall_score
+ FROM joined_data
