@@ -48,4 +48,4 @@ SELECT
 FROM
   contact_at
 LIMIT
-  10
+  5
