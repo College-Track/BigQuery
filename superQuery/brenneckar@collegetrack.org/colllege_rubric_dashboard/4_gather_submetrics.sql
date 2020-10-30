@@ -312,11 +312,11 @@ EXCEPT(submetric, key, value),
     ELSE key
   END AS question,
   CASE
-    WHEN value IS NULL THEN "No Data"
+    WHEN value IS NULL THEN "N/A"
     WHEN value = "3" THEN "Green"
     WHEN value = "2" THEN "Yellow"
-    WHEN value = "1" THEN "Red"
-    ELSE "No Data"
+    WHEN value = "0" THEN "Missing Data"
+    ELSE "N/A"
   END AS question_color,
   value AS question_score
 FROM
