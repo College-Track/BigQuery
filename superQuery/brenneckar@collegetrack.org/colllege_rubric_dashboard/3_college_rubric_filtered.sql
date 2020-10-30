@@ -301,7 +301,8 @@ joined_data AS (
 SELECT
   Contact_Id,
   Financial_Aid_Package__c,
-  question_finance_Financial_Aid_Package_score Filing_Status__c,
+  question_finance_Financial_Aid_Package_score,
+  Filing_Status__c,
   question_finance_Filing_Status_score,
   Loans__c,
   question_finance_Loans_score,
