@@ -612,10 +612,9 @@ SELECT
     Application_status__c,
     admission_status__c,
      CASE
-        WHEN Application_status__c = "Applied" THEN "Applications"
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
         ELSE "N/A"
-        END AS application_bucket,
+        END AS acceptance_group,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
     
@@ -645,6 +644,6 @@ WHERE
     account_name,
     Application_status__c,
     admission_status__c,
-    application_bucket,
+    acceptance_group,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
