@@ -5,6 +5,24 @@ WITH contact_at AS (
     GAS_Name,
     Current_School_Type__c,
     CASE
+      WHEN Latest_Reciprocal_Communication_Date__c IS NULL THEN "No Data"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        Latest_Reciprocal_Communication_Date__c,
+        DAY
+      ) <= 30 THEN "Less than 30 Days"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        Latest_Reciprocal_Communication_Date__c,
+        DAY
+      ) <= 60 THEN "30 - 60 Days"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        Latest_Reciprocal_Communication_Date__c,
+        DAY
+      ) > 60 THEN "60+ Days"
+    END AS last_contact_range,
+    CASE
       WHEN Current_School_Type__c = "Predominantly bachelor's-degree granting" THEN " 4-Year"
       WHEN Current_School_Type__c = "Predominantly associate's-degree granting" THEN " 2-Year"
       WHEN Current_School_Type__c = "Predominantly certificate-degree granting" THEN " Less Than 2-Year"
@@ -347,7 +365,7 @@ joined_data AS (
       WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 30 THEN "Less than 30 Days"
       WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) <= 60 THEN "30 - 60 Days"
       WHEN DATE_DIFF(CURRENT_DATE(), task.last_contact, DAY) > 60 THEN "60+ Days"
-    END AS last_contact_range,
+    END AS last_outreach_range,
     CASE
       WHEN CAT.finance_score = 0 THEN "No Data"
       WHEN CAT.finance_score <= 1.66 THEN "Red"
