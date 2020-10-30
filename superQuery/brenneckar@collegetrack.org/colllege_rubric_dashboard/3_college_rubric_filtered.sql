@@ -292,7 +292,8 @@ joined_data AS (
     --   WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
     --   ELSE "No Data"
     -- END AS overall_score_color,
-    -- overall_score_calc.overall_score
+    overall_score_calc.total_raw_score,
+    overall_score_calc.total_count
   FROM
     score_calculation CAT
     LEFT JOIN task ON task.WhoId = CAT.Contact_Id
@@ -301,10 +302,10 @@ joined_data AS (
 )
 SELECT
   Contact_Id,
- 
   finance_score,
   count_finance,
-  total_raw_score
+  total_raw_score,
+  total_count
 FROM
   joined_data
 WHERE
