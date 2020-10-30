@@ -299,6 +299,6 @@ FROM
   AND overall_score_calc.GAS_Name = CAT.GAS_Name
  )
  SELECT Contact_Id, 
- 
+ overall_score,
  overall_score_color
  FROM joined_data
