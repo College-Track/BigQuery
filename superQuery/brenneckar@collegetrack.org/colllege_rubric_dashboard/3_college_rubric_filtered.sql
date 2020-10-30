@@ -293,7 +293,9 @@ joined_data AS (
     --   ELSE "No Data"
     -- END AS overall_score_color,
     overall_score_calc.total_raw_score,
-    overall_score_calc.total_count
+    overall_score_calc.total_count,
+    overall_score_calc.total_raw_score / overall_score_calc.total_count AS overall_score,
+
   FROM
     score_calculation CAT
     LEFT JOIN task ON task.WhoId = CAT.Contact_Id
@@ -307,7 +309,8 @@ SELECT
   wellness_score,
   career_score,
   total_raw_score,
-  total_count
+  total_count,
+  overall_score
 FROM
   joined_data
 WHERE
