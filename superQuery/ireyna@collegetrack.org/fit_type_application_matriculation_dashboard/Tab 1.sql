@@ -614,7 +614,8 @@ SELECT
     region_short,
     college_app_id,
     app.college_id,
-    accnt.Name,
+    accnt.Name AS account_name,
+    Application_status__c,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
     
@@ -633,7 +634,8 @@ SELECT
     region_short,
     college_app_id,
     app.college_id,
-    accnt.Name,
+    account_name,
+    Application_status__c,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
 )
@@ -643,7 +645,9 @@ SELECT
   *
   EXCEPT (college_id)
 FROM fit_type_application
-WHERE High_School_Class__c > "2017"
+WHERE 
+    High_School_Class__c > "2017" AND
+    Application_status__c = "Applied"
    GROUP BY
     contact_id,
     Full_Name__c,
@@ -653,6 +657,7 @@ WHERE High_School_Class__c > "2017"
     region_full,
     region_short,
     college_app_id,
-    Name,
+    account_name,
+    Application_status__c,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
