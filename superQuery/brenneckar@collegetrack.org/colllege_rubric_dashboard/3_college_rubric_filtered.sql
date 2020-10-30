@@ -287,7 +287,7 @@ joined_data AS (
     END AS career_score_color,
     overall_score_calc.total_raw_score,
     overall_score_calc.total_count,
-    overall_score_calc.total_raw_score / overall_score_calc.total_count AS overall_score,
+    overall_score_calc.total_raw_score / NULLIF(overall_score_calc.total_count,0) AS overall_score,
   FROM
     score_calculation CAT
     LEFT JOIN task ON task.WhoId = CAT.Contact_Id
