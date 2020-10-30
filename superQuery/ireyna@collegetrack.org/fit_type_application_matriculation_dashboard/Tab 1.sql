@@ -643,7 +643,7 @@ SELECT
   *
   EXCEPT (college_id)
 FROM fit_type_application
-WHERE High_School_Class__c > "2014"
+WHERE High_School_Class__c > "2017"
    GROUP BY
     contact_id,
     Full_Name__c,
