@@ -48,6 +48,6 @@ SELECT
 --   end AS total
 FROM
   contact_at
-  WHERE Financial_Aid_Package__c = "FAP_Y"
+  WHERE Financial_Aid_Package__c = "FAP_R"
 LIMIT
   5
