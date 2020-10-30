@@ -291,6 +291,7 @@ SELECT
     WHEN overall_score_calc.overall_score > 2.22 THEN "Green"
     ELSE "No Data"
   END AS overall_score_color,
+  overall_score_calc.overall_score
 FROM
   score_calculation CAT
   LEFT JOIN task ON task.WhoId = CAT.Contact_Id
@@ -298,5 +299,6 @@ FROM
   AND overall_score_calc.GAS_Name = CAT.GAS_Name
  )
  SELECT Contact_Id, 
- overall_score
+ 
+ overall_score_color
  FROM joined_data
