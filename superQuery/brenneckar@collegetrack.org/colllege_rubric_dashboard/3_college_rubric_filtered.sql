@@ -306,9 +306,9 @@ SELECT
   Loans__c,
     --  question_finance_Financial_Aid_Package_score,
     --  question_finance_Filing_Status_score,
-     question_finance_Loans_score
-  --   finance_score,
-  --   count_finance
+     question_finance_Loans_score,
+     finance_score,
+     count_finance
 FROM
   joined_data
   WHERE Loans__c IS NOT NULL
