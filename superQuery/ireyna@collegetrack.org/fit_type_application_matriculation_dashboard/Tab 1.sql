@@ -656,4 +656,3 @@ WHERE High_School_Class__c > "2017"
     Name,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
-LIMIT 100
