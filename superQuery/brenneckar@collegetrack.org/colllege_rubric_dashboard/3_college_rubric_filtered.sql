@@ -235,7 +235,7 @@ overall_score_calc AS (
     Contact_Id,
     GAS_Name,
     (
-      (finance_score * count_finance) + (academic_score * count_academic) + (wellness_score * count_wellness) + (career_score * count_career)
+      (IFNULL(finance_score,0) * count_finance) + (IFNULL(academic_score,0) * count_academic) + (IFNULL(wellness_score,0) * count_wellness) + (IFNULL(career_score,0) * count_career)
     ) AS total_raw_score,
     (
       count_finance + count_academic + count_wellness + count_career
