@@ -299,10 +299,7 @@ FROM
   AND overall_score_calc.GAS_Name = CAT.GAS_Name
  )
  SELECT Contact_Id, 
- overall_score,
- finance_score,
- academic_score,
- wellness_score, 
- career_score,
- overall_score_color
+  finance_score,
+ count_finance
+ 
  FROM joined_data
