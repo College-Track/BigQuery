@@ -303,7 +303,9 @@ joined_data AS (
 SELECT
   Contact_Id,
   finance_score,
-  count_finance,
+  academic_score,
+  wellness_score,
+  career_score,
   total_raw_score,
   total_count
 FROM
