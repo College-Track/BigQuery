@@ -35,6 +35,7 @@ WITH contact_at AS (
 )
 SELECT
   *,
+  TEST + 2
 --   case
 --     when question_finance_Loans_score IS NOT NULL then 1
 --     else 0
