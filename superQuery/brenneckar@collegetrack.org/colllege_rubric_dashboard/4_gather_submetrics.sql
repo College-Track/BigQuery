@@ -315,6 +315,7 @@ EXCEPT(submetric, key, value),
     WHEN value IS NULL THEN "N/A"
     WHEN value = "3" THEN "Green"
     WHEN value = "2" THEN "Yellow"
+    WHEN value = "1" THEN "Red"
     WHEN value = "0" THEN "Missing Data"
     ELSE "N/A"
   END AS question_color,
