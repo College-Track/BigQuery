@@ -184,8 +184,7 @@ WITH contact_at AS (
     `data-warehouse-289815.sfdc_templates.contact_at_template`
   WHERE
     (
-      Current_AS__c = TRUE
-    --   OR Previous_AS__c = TRUE
+      Current_AS__c = TRUE --   OR Previous_AS__c = TRUE
     )
     AND AT_Record_Type_Name = "College/University Semester"
     AND Current_CT_Status__c = "Active: Post-Secondary"
@@ -301,14 +300,30 @@ joined_data AS (
 )
 SELECT
   Contact_Id,
---   Financial_Aid_Package__c,
---   Filing_Status__c,
+  Financial_Aid_Package__c,
+  question_finance_Financial_Aid_Package_score Filing_Status__c,
+  question_finance_Filing_Status_score,
   Loans__c,
-    --  question_finance_Financial_Aid_Package_score,
-    --  question_finance_Filing_Status_score,
-     question_finance_Loans_score,
-     finance_score,
-     count_finance
+  question_finance_Loans_score,
+  Ability_to_Pay__c,
+  question_finance_Ability_to_Pay_score,
+  Free_Checking_Account__c,
+  question_finance_Free_Checking_Account_score,
+  Scholarship_Requirements__c,
+  question_finance_Scholarship_Requirements_score,
+  Familial_Responsibility__c,
+  question_finance_Familial_Responsibility_score,
+  eFund__c,
+  question_finance_eFund_score,
+  Repayment_Plan__c,
+  question_finance_Repayment_Plan_score,
+  Loan_Exit__c,
+  question_finance_Loan_Exit_score,
+  Repayment_Policies__c,
+  question_finance_Repayment_Policies_score 
+  --  finance_score,
+  --  count_finance
 FROM
   joined_data
-  WHERE Loans__c IS NOT NULL
+WHERE
+  Loans__c IS NOT NULL
