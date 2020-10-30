@@ -321,9 +321,9 @@ SELECT
   Loan_Exit__c,
   question_finance_Loan_Exit_score,
   Repayment_Policies__c,
-  question_finance_Repayment_Policies_score 
-  --  finance_score,
-  --  count_finance
+  question_finance_Repayment_Policies_score,
+    finance_score,
+    count_finance
 FROM
   joined_data
 WHERE
