@@ -651,7 +651,7 @@ SELECT
     
     WHERE AT_Grade__c = "Year 1"
    AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25)
-   --AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
+   AND app.RecordTypeId = "01246000000RNnQAAW" #College/University
    AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
    
 )
