@@ -643,12 +643,12 @@ SELECT
   -- Join with Affiliation object to pull in Fit Type (Start of Affiliation) for older students
     FROM college_application_AT AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
-    ON app.Affiliation__c = aff.Id
+    ON app.Affiliation_Record_ID__c = aff.Id
     
-    WHERE AT_Grade__c = "Year 1"
-    AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25)
-    AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
-    AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
+    --WHERE AT_Grade__c = "Year 1"
+   -- AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25)
+   -- AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
+   -- AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
    
 )
 
