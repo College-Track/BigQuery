@@ -12,7 +12,7 @@ WITH college_application_AT AS (
     A_T.ACT_Writing_highest_official__c,
     A_T.AT_Enrollment_Status__c,
     A_T.AT_Grade__c,
-    A_T.AT_Id,
+    A_T.AT_Id AS academic_term_id,
     A_T.AT_Name AS academic_term_name, #academic term name
     A_T.AT_RecordType_ID, #AT record type
     A_T.AT_Record_Type_Name, #academic record type (HS, college)
@@ -28,7 +28,7 @@ WITH college_application_AT AS (
     A_T.Academic_Standing__c,
     A_T.Academic_Year_4_Year_Degree_Earned__c,
     A_T.Academic_Year_Term_4Year_Degree_Earned__c,
-    A_T.Academic_Year__c AS academic_term_id, #academic year ID,
+    A_T.Academic_Year__c AS global_academic_term_id, #global academic year ID,
     A_T.Academic_Years_Completed_since_HS_Grad__c,
     A_T.AccountId,
     A_T.Actual_grad_school_graduation_year__c,
