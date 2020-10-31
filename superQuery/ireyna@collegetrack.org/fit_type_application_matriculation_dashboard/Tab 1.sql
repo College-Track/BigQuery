@@ -635,7 +635,6 @@ SELECT
     region_short,
     academic_term_name,
     academic_term_id,
-    Grade__c,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     Predominant_Degree_Awarded__c,
@@ -651,7 +650,7 @@ SELECT
     
     WHERE AT_Grade__c = "Year 1"
    AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25)
-   -- AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
+   AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
    AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
    
 )
@@ -671,7 +670,6 @@ contact_id,
     academic_term_name,
     academic_term_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
-    Grade__c,
     School_Name,
     Predominant_Degree_Awarded__c,
     Situational_Fit_Type__c,
