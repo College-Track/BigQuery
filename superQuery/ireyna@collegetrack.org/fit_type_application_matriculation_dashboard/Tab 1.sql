@@ -13,7 +13,7 @@ WITH college_application_AT AS (
     A_T.AT_Enrollment_Status__c,
     A_T.AT_Grade__c,
     A_T.AT_Id,
-    A_T.AT_Name, #academic term name
+    A_T.AT_Name AS academic_term_name, #academic term name
     A_T.AT_RecordType_ID, #AT record type
     A_T.AT_Record_Type_Name, #academic record type (HS, college)
     A_T.AY_End_Date,
@@ -633,6 +633,7 @@ SELECT
     site_short,
     region AS region_full,
     region_short,
+    academic_term_name,
     School_Name,
     Predominant_Degree_Awarded__c,
     aff.Situational_Fit_Type__c,
@@ -664,6 +665,7 @@ contact_id,
     site_short,
     region_full,
     region_short,
+    academic_term_name,
     School_Name,
     Predominant_Degree_Awarded__c,
     Situational_Fit_Type__c,
