@@ -14,7 +14,7 @@ WITH college_application_AT AS (
     A_T.AT_Grade__c,
     A_T.AT_Id AS academic_term_id,
     A_T.AT_Name AS academic_term_name, #academic term name
-    A_T.AT_RecordType_ID, #AT record type
+    A_T.AT_ID, #AT record type
     A_T.AT_Record_Type_Name, #academic record type (HS, college)
     A_T.AY_End_Date,
     A_T.AY_Start_Date,
