@@ -637,6 +637,7 @@ SELECT
     academic_term_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
+    app.RecordTypeId,
     Predominant_Degree_Awarded__c,
     aff.Situational_Fit_Type__c,
     aff.Fit_Type_Current__c,
@@ -650,7 +651,7 @@ SELECT
     
     WHERE AT_Grade__c = "Year 1"
    AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25)
-   AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
+   --AND app.RecordTypeId = "01246000000RNnHAAW" #College/University
    AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
    
 )
@@ -659,6 +660,7 @@ SELECT
 SELECT
   *
 FROM fit_type_matriculation
+
 GROUP BY
 contact_id,
     Full_Name__c,
@@ -671,6 +673,7 @@ contact_id,
     academic_term_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
+    RecordTypeId,
     Predominant_Degree_Awarded__c,
     Situational_Fit_Type__c,
     Fit_Type_Current__c,
