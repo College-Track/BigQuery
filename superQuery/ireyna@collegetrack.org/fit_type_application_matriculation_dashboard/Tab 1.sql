@@ -657,7 +657,43 @@ SELECT
 
 
 SELECT
-  *
+  c.*,
+  college_app_id,
+ app.college_id,
+ app.Name AS account_name,
+ Application_status__c,
+ admission_status__c,
+  CASE
+        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
+        ELSE "N/A"
+        END AS acceptance_group
+        
 FROM contact_overview AS c
 LEFT JOIN college_application_AT AS app
     ON app.X18_Digit_ID__c = c.Contact_Id
+GROUP BY    
+    c.contact_id,
+    c.Full_Name__c,
+    c.High_School_Class__c,
+    c.site_full,
+    c.site_short,
+    c.region_full,
+    c.region_short,
+    c.CGPA_11th,
+    CGPA_11th_bucket,
+    Readiness_English_Official__c,
+    Readiness_Math_Official__c,
+    Readiness_Composite_Off__c,
+    Gender__c,
+    Ethnic_background__c,
+    Indicator_Low_Income__c,
+    First_Generation_FY20__c,
+    Indicator_Completed_CT_HS_Program__c,
+    college_app_id,
+    app.college_id,
+    account_name,
+    Application_status__c,
+    admission_status__c,
+    acceptance_group,
+    College_Fit_Type_Applied__c,
+    Fit_Type_Enrolled__c
