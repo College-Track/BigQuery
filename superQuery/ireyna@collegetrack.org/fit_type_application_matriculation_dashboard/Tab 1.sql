@@ -85,8 +85,7 @@ WITH college_application_AT AS (
     A_T.CC_Advisor__c,
     A_T.CT_Coach__c,
     A_T.CT_Connect_Account_Created__c,
-    A_T.Calendar_Type__c,
-    #semester or quarter,
+    A_T.Calendar_Type__c, #semester or quarter,
     A_T.Campus_Outlook__c,
     A_T.Career_Counselor_25_credits__c,
     A_T.Career_Field_2550_credits__c,
@@ -659,23 +658,6 @@ SELECT
 
 SELECT
   *
-FROM fit_type_matriculation
-
-GROUP BY
-contact_id,
-    Full_Name__c,
-    High_School_Class__c,
-    site_full,
-    site_short,
-    region_full,
-    region_short,
-    academic_term_name,
-    academic_term_id,
-    Indicator_Years_Since_HS_Grad_to_Date__c,
-    School_Name,
-    RecordTypeId,
-    Predominant_Degree_Awarded__c,
-    Situational_Fit_Type__c,
-    Fit_Type_Current__c,
-    fit_type_affiliation,
-    fit_type_start_of_affiliation
+FROM contact_overview AS c
+LEFT JOIN college_application_AT AS app
+    ON app.X18_Digit_ID__c = c.Contact_Id
