@@ -49,7 +49,7 @@ WITH college_application_AT AS (
     A_T.Advising_Rubric_Wellness__c,
     A_T.Aff_Change_End_Date__c,
     A_T.Aff_Change_Start_Date__c,
-    A_T.Affiliation_Record_ID__c,
+    A_T.Affiliation_Record_ID__c AS Affiliation_id,
     A_T.Affiliation__c,
     A_T.Age__c,
     A_T.Aggressive_Scholarship_Strategy_Reason__c,
@@ -288,6 +288,7 @@ WITH college_application_AT AS (
     A_T.Grad_Degree_type__c,
     A_T.Grad_Program_Title_Description__c,
     A_T.Grade__c,
+    A_T.AT_Grade__c,
     A_T.Graduate_School__c,
     A_T.Graduated_2_Year_Degree__c,
     A_T.Graduated_4_Year_Degree_4_years__c,
@@ -299,7 +300,7 @@ WITH college_application_AT AS (
     A_T.Graduating_Semester__c,
     A_T.HIGH_SCHOOL_GRADUATING_CLASS__c,
     A_T.HS_Grad_Year__c,
-    --A_T.High_School_Class__c ,
+    CAST(A_T.High_School_Class__c AS FLOAT64) AS High_School_Class,
     A_T.High_School_Grade__c,
     A_T.High_School_Text__c,
     A_T.Highest_Level_of_Education_Achieved__c,
@@ -432,6 +433,7 @@ WITH college_application_AT AS (
     A_T.SAT_SuperScore_Official__c,
     A_T.STATESTUDENTID__c,
     A_T.STUDENTHASANIEP__c,
+    A_T.student_audit_status__c AS CT_status_AT,
     A_T.Schedule_Type_Reason__c,
     A_T.Schedule_Type__c,
     A_T.Scholarship_Requirements__c,
@@ -534,7 +536,7 @@ WITH college_application_AT AS (
     CA.Essay_1__c,
     CA.Fit_Type_Current__c,
     CA.Fit_Type_Enrolled__c,
-    CA.High_School_Class__c,
+    --CA.High_School_Class__c,
     CA.Id AS college_app_id,
     CA.Interview_Requirements__c,
     CA.Letter_of_Recommendation_1__c,
@@ -556,18 +558,19 @@ WITH college_application_AT AS (
     CA.Transcripts__c,
     CA.Type_of_School__c,
     CA.admission_status__c
-  FROM
-    `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
-    --Join  college applications data with contact_at template
-    LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` AS A_T ON CA.Student__c = A_T.Student__c
+  FROM `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
+    --Join  college applications data with contact_at_template
+  LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` AS A_T 
+        ON CA.Student__c = A_T.Student__c
 ),
 
---query for demographic and academics for overview
+--Table for demographic and academics from Contact
 contact_overview AS (
   SELECT
     contact_id,
     Full_Name__c,
-    High_School_Class__c,
+    College_Track_Status_Name,
+    High_School_Class,
     Site_Text__c AS site_full,
     site_short,
     region AS region_full,
@@ -587,18 +590,19 @@ contact_overview AS (
     Indicator_Low_Income__c,
     First_Generation_FY20__c
     Indicator_Completed_CT_HS_Program__c
-  FROM
-    college_application_AT
-    WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+    
+  FROM college_application_AT
+  WHERE Indicator_Completed_CT_HS_Program__c = TRUE
 
 ),
 
+--Table to pull in fields on college applications (Fit Type, Application/Admission Status)
 fit_type_application AS
 (
 SELECT
     contact_id,
     Full_Name__c,
-    High_School_Class__c,
+    High_School_Class,
     Site_Text__c AS site_full,
     site_short,
     region AS region_full,
@@ -606,6 +610,7 @@ SELECT
     college_app_id,
     app.college_id,
     accnt.Name AS account_name,
+    Type_of_School__c,
     Application_status__c,
     admission_status__c,
      CASE
@@ -618,82 +623,65 @@ SELECT
     --Join with Account object to pull in name of School/College
     FROM college_application_AT AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
-    ON app.college_id = accnt.id
-    WHERE Type_of_School__c = "4 Year"
+        ON app.college_id = accnt.id
+    WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+
 ),
 
+--Table to pull in Academic Term data to isolate Fall Year 1 (Matriculation) from contact_at_template. Affiliation join to pull in Fit Type fields
 fit_type_matriculation AS
 (
 SELECT
-    contact_id,
-    Full_Name__c,
-    High_School_Class__c,
+    matri.contact_id,
+    matri.Full_Name__c,
+    matri.High_School_Class__c,
     Site_Text__c AS site_full,
-    site_short,
-    region AS region_full,
-    region_short,
-    academic_term_name,
-    academic_term_id,
+    matri.site_short,
+    matri.region AS region_full,
+    matri.region_short,
+    AT_Name AS academic_term_name,
+    AT_Id AS academic_term_id,
+    AT_Grade__c,
+    student_audit_status__c AS ct_status_at,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
-    app.RecordTypeId,
-    Predominant_Degree_Awarded__c,
+    School_Predominant_Degree_Awarded__c,
+    Affiliation_Record_ID__c AS Affiliation_id,
+    npe5__Organization__c AS Affiliation_School_id,
     aff.Situational_Fit_Type__c,
+    --aff.Situational_Best_Fit_Context__c,
     aff.Fit_Type_Current__c,
     aff.Fit_Type__c AS fit_type_affiliation,
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation
 
-  -- Join with Affiliation object to pull in Fit Type (Start of Affiliation) for older students
-    FROM college_application_AT AS app
+--RIGHT join to align AT data with available college application data
+    FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS matri
+    RIGHT JOIN fit_type_application AS app
+      ON app.contact_id = matri.contact_id
+
+ --Join with Affiliation object to pull in Fit Type (Start of Affiliation) for older students
     LEFT JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
-    ON app.Affiliation_Record_ID__c = aff.Id
-    
-    WHERE AT_Grade__c = "Year 1"
-   AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25)
-   AND app.RecordTypeId = "01246000000RNnQAAW" #College/University
-   AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
-   
+        ON matri.Affiliation_Record_ID__c = aff.Id
+
+    WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+        AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
+        --AND High_School_Class__c IN ("2016", "2017", "2018", "2019", "2020") 
+        --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
+        --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
 )
 
-
 SELECT
-  c.*,
-  college_app_id,
- app.college_id,
- app.Name AS account_name,
- Application_status__c,
- admission_status__c,
-  CASE
-        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
-        ELSE "N/A"
-        END AS acceptance_group
-        
-FROM contact_overview AS c
-LEFT JOIN college_application_AT AS app
-    ON app.X18_Digit_ID__c = c.Contact_Id
-GROUP BY    
-    c.contact_id,
-    c.Full_Name__c,
-    c.High_School_Class__c,
-    c.site_full,
-    c.site_short,
-    c.region_full,
-    c.region_short,
-    c.CGPA_11th,
-    CGPA_11th_bucket,
-    Readiness_English_Official__c,
-    Readiness_Math_Official__c,
-    Readiness_Composite_Off__c,
-    Gender__c,
-    Ethnic_background__c,
-    Indicator_Low_Income__c,
-    First_Generation_FY20__c,
-    Indicator_Completed_CT_HS_Program__c,
-    college_app_id,
-    app.college_id,
-    account_name,
-    Application_status__c,
-    admission_status__c,
-    acceptance_group,
-    College_Fit_Type_Applied__c,
-    Fit_Type_Enrolled__c
+    app.*
+        EXCEPT (Full_Name__c,High_School_Class,site_full,site_short,region_full,region_short),
+    c.*,
+    matri.*
+        EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short)
+
+--Join contact demo and academic data to college application table   
+FROM fit_type_application AS app
+LEFT JOIN contact_overview AS c
+    ON app.Contact_Id = c.Contact_Id
+
+--Join academic term to pull Fall Year 1 (matriculation) data
+LEFT JOIN fit_type_matriculation AS matri
+    ON app.Contact_Id = matri.Contact_Id
