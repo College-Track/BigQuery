@@ -24,7 +24,7 @@ CASE
       WHEN Site LIKE '%Watts%' THEN 'Watts'
       WHEN Site LIKE '%Boyle Heights%' THEN 'Boyle Heights'
       WHEN Site LIKE '%Ward 8%' THEN 'Ward 8'
-      WHEN Site LIKE '%Durant%' THEN 'The Durant Center'
+      WHEN Site LIKE '%Durrant%' THEN 'The Durant Center'
       WHEN Site LIKE '%New Orleans%' THEN 'New Orleans'
       WHEN Site LIKE '%Crenshaw%' THEN 'Crenshaw'
       ELSE Site
