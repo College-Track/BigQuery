@@ -77,10 +77,10 @@ WITH gather_data AS (
       ELSE 0
     END AS sort_most_recent_gpa_bucket,
     CASE
-      WHEN ABS(Years_Since_HS_Grad__c) = 4 THEN 0 + (.33 / Year_Fraction_Since_HS_Grad__c)
-      WHEN ABS(Years_Since_HS_Grad__c) = 3 THEN 3 + (.33 / Year_Fraction_Since_HS_Grad__c)
-      WHEN ABS(Years_Since_HS_Grad__c) = 2 THEN 6 + (.33 / Year_Fraction_Since_HS_Grad__c)
-      WHEN ABS(Years_Since_HS_Grad__c) = 1 THEN 9 + (.33 / Year_Fraction_Since_HS_Grad__c)
+      WHEN ABS(Years_Since_HS_Grad__c) = 4 THEN 0 + (Year_Fraction_Since_HS_Grad__c / .33)
+      WHEN ABS(Years_Since_HS_Grad__c) = 3 THEN 3 + (Year_Fraction_Since_HS_Grad__c / .33)
+      WHEN ABS(Years_Since_HS_Grad__c) = 2 THEN 6 + (Year_Fraction_Since_HS_Grad__c / .33)
+      WHEN ABS(Years_Since_HS_Grad__c) = 1 THEN 9 + (Year_Fraction_Since_HS_Grad__c/ .33)
     END AS term_number,
     CASE
       WHEN CoVitality_Scorecard_Color_Most_Recent__c = "Red" THEN 1
