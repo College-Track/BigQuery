@@ -78,9 +78,9 @@ WITH gather_data AS (
     END AS sort_most_recent_gpa_bucket,
     CASE
       WHEN Years_Since_HS_Grad__c >= 0 THEN "N/A"
-      WHEN 100 / ABS(Years_Since_HS_Grad__c) <= Community_Service_Hours__c THEN "On Track"
-      WHEN 100 / ABS(Years_Since_HS_Grad__c) *.9 <= Community_Service_Hours__c THEN "Near On Track"
-      WHEN 100 / ABS(Years_Since_HS_Grad__c) *.9 > Community_Service_Hours__c THEN "Off Track"
+      WHEN 100 / (ABS(Years_Since_HS_Grad__c)/Year_Fraction_Since_HS_Grad__c) <= Community_Service_Hours__c THEN "On Track"
+      WHEN 100 / (ABS(Years_Since_HS_Grad__c)/Year_Fraction_Since_HS_Grad__c) *.85 <= Community_Service_Hours__c THEN "Near On Track"
+      WHEN 100 / (ABS(Years_Since_HS_Grad__c)/Year_Fraction_Since_HS_Grad__c) *.85 > Community_Service_Hours__c THEN "Off Track"
       ELSE "No Data"
     END AS community_service_bucket,
     CASE
