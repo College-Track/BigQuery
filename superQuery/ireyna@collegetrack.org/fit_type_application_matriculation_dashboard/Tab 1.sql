@@ -498,7 +498,7 @@ fit_type_matriculation AS
 SELECT
     matri.contact_id,
     matri.Full_Name__c,
-    matri.High_School_Class__c,
+    High_School_Class,
     Site_Text__c AS site_full,
     matri.site_short,
     matri.region AS region_full,
@@ -529,7 +529,7 @@ SELECT
 
     WHERE matri.Indicator_Completed_CT_HS_Program__c = TRUE
         AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
-        AND High_School_Class IN (2016, 2017, 2018, 2019, 2020) 
+        --High_School_Class IN (2016, 2017, 2018, 2019, 2020) 
         --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
         --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
 )
@@ -537,13 +537,14 @@ SELECT
 SELECT
     app.*,
     matri.*
-        EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id)
+        EXCEPT (Full_Name__c,High_School_Class,site_full,site_short,region_full,region_short,Contact_Id)
 
 --Join college application table to academic term data (matriculation table)
 FROM fit_type_application AS app
 LEFT JOIN fit_type_matriculation AS matri
     ON app.Contact_Id = matri.Contact_Id
-    
+WHERE APP.High_School_Class IN (2016, 2017, 2018, 2019, 2020)   
+
 GROUP BY
     app.contact_id,
     Full_Name__c,
