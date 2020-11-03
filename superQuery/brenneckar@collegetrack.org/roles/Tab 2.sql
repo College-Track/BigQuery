@@ -9,7 +9,7 @@ CASE
       WHEN Site LIKE '%Watts%' THEN 'WATTS'
       WHEN Site LIKE '%Boyle Heights%' THEN 'BH'
       WHEN Site LIKE '%Ward 8%' THEN 'WARD 8'
-      WHEN Site LIKE '%Durant%' THEN 'PGC'
+      WHEN Site LIKE '%Durrant%' THEN 'PGC'
       WHEN Site LIKE '%New Orleans%' THEN 'NOLA'
       WHEN Site LIKE '%Crenshaw%' THEN 'CREN'
       ELSE Site
