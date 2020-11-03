@@ -1,6 +1,3 @@
-SELECT
-  site_short, COUNT(Contact_Id) as cnt
-FROM
-  `data-studio-260217.rosters.filtered_roster` AS Master
-  GROUP BY site_short
-  ORDER BY cnt
+SELECT *
+FROM `data-warehouse-289815.salesforce_raw.User`
+WHERE Username = 'bakerrenneckar@gmail.com'
