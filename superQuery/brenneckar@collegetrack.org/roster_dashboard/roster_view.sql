@@ -1,5 +1,5 @@
 SELECT
-  Master.*
+  *
 FROM
   `data-studio-260217.rosters.filtered_roster` AS Master
 RIGHT JOIN (
@@ -13,6 +13,6 @@ RIGHT JOIN (
   ON
     Roles.Role_Id=Users.UserRoleId
   WHERE
-    LOWER(users.Email)=LOWER(SESSION_USER()) ) AS Permissions
+    LOWER(users.Email)=LOWER('bakerrenneckar@gmail.com') ) AS Permissions
 ON
   Master.site_short=Permissions.site_short
