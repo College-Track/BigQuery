@@ -82,7 +82,6 @@ WITH gather_data AS (
       WHEN ABS(Years_Since_HS_Grad__c) = 2 THEN 7 + (.33 / Year_Fraction_Since_HS_Grad__c)
       WHEN ABS(Years_Since_HS_Grad__c) = 1 THEN 10 + (.33 / Year_Fraction_Since_HS_Grad__c)
     END AS term_number,
-    
     CASE
       WHEN CoVitality_Scorecard_Color_Most_Recent__c = "Red" THEN 1
       WHEN CoVitality_Scorecard_Color_Most_Recent__c = "Blue" THEN 2
@@ -194,44 +193,55 @@ most_recent_on_track AS (
     END AS most_recent_on_track
   FROM
     joined_on_track
-)
-SELECT
-  GD.*,
-  CASE
-    WHEN Overall_Rubric_Color = "Red" THEN 1
-    WHEN Overall_Rubric_Color = "Yellow" THEN 2
-    WHEN Overall_Rubric_Color = "Green" THEN 3
-    ELSE 4
-  END AS Overall_Rubric_Color_sort,
-
-  CASE
-    WHEN Credit_Accumulation_Pace__c = "4-Year Track" THEN 1
-    WHEN Credit_Accumulation_Pace__c = "5-Year Track" THEN 2
-    WHEN Credit_Accumulation_Pace__c = "6-Year Track" THEN 3
-    WHEN Credit_Accumulation_Pace__c = "6+ Years" THEN 4
-    ELSE 5
-  END AS Credit_Accumulation_Pace_sort,
-  CASE
-    WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh"
-    WHEN Credits_Accumulated_Most_Recent__c <.25 THEN "Frosh"
-    WHEN Credits_Accumulated_Most_Recent__c <.5 THEN "Sophomore"
-    WHEN Credits_Accumulated_Most_Recent__c <.75 THEN "Junior"
-    WHEN Credits_Accumulated_Most_Recent__c >=.75 THEN "Senior"
-  END AS college_class,
-  CASE
-    WHEN last_contact_range = "Less than 30 Days" THEN 1
-    WHEN last_contact_range = "30 - 60 Days" THEN 2
-    WHEN last_contact_range = "60+ Days" THEN 3
-    ELSE 4
-  END AS last_contact_range_sort,
-  MROT.most_recent_on_track,
-  CASE
+),
+modify_data AS (
+  SELECT
+    GD.*,
+    CASE
+      WHEN Overall_Rubric_Color = "Red" THEN 1
+      WHEN Overall_Rubric_Color = "Yellow" THEN 2
+      WHEN Overall_Rubric_Color = "Green" THEN 3
+      ELSE 4
+    END AS Overall_Rubric_Color_sort,
+    CASE
+      WHEN Credit_Accumulation_Pace__c = "4-Year Track" THEN 1
+      WHEN Credit_Accumulation_Pace__c = "5-Year Track" THEN 2
+      WHEN Credit_Accumulation_Pace__c = "6-Year Track" THEN 3
+      WHEN Credit_Accumulation_Pace__c = "6+ Years" THEN 4
+      ELSE 5
+    END AS Credit_Accumulation_Pace_sort,
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh"
+      WHEN Credits_Accumulated_Most_Recent__c <.25 THEN "Frosh"
+      WHEN Credits_Accumulated_Most_Recent__c <.5 THEN "Sophomore"
+      WHEN Credits_Accumulated_Most_Recent__c <.75 THEN "Junior"
+      WHEN Credits_Accumulated_Most_Recent__c >=.75 THEN "Senior"
+    END AS college_class,
+    CASE
+      WHEN last_contact_range = "Less than 30 Days" THEN 1
+      WHEN last_contact_range = "30 - 60 Days" THEN 2
+      WHEN last_contact_range = "60+ Days" THEN 3
+      ELSE 4
+    END AS last_contact_range_sort,
+    MROT.most_recent_on_track,
+    CASE
       WHEN Years_Since_HS_Grad__c >= 0 THEN "N/A"
       WHEN Community_Service_Hours__c >= (8.33 * term_number) THEN "On Track"
-      WHEN Community_Service_Hours__c >= ((8.33 * term_number) * .85) THEN "Near On Track"
-      WHEN Community_Service_Hours__c < ((8.33 * term_number) * .85) THEN "Off Track"
+      WHEN Community_Service_Hours__c >= ((8.33 * term_number) *.85) THEN "Near On Track"
+      WHEN Community_Service_Hours__c < ((8.33 * term_number) *.85) THEN "Off Track"
       ELSE "No Data"
     END AS community_service_bucket
-FROM
-  gather_data GD
-  LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
+  FROM
+    gather_data GD
+    LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
+)
+SELECT
+  *,
+  CASE
+    WHEN community_service_bucket = "On Track" THEN 1
+    WHEN community_service_bucket = "Near On Track" THEN 2
+    WHEN community_service_bucket = "Off Track" THEN 3
+    ELSE 0
+  END AS sort_community_service_bucket,
+from
+  modify_data
