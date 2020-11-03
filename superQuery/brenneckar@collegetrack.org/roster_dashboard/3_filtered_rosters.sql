@@ -77,12 +77,12 @@ WITH gather_data AS (
       ELSE 0
     END AS sort_most_recent_gpa_bucket,
     CASE
-      WHEN Years_Since_HS_Grad__c >= 0 THEN "N/A"
-      WHEN 100 / (ABS(Years_Since_HS_Grad__c)/Year_Fraction_Since_HS_Grad__c) <= Community_Service_Hours__c THEN "On Track"
-      WHEN 100 / (ABS(Years_Since_HS_Grad__c)/Year_Fraction_Since_HS_Grad__c) *.85 <= Community_Service_Hours__c THEN "Near On Track"
-      WHEN 100 / (ABS(Years_Since_HS_Grad__c)/Year_Fraction_Since_HS_Grad__c) *.85 > Community_Service_Hours__c THEN "Off Track"
-      ELSE "No Data"
-    END AS community_service_bucket,
+      WHEN ABS(Years_Since_HS_Grad__c) = 4 THEN 0 + (.33 / Year_Fraction_Since_HS_Grad__c)
+      WHEN ABS(Years_Since_HS_Grad__c) = 3 THEN 4 + (.33 / Year_Fraction_Since_HS_Grad__c)
+      WHEN ABS(Years_Since_HS_Grad__c) = 2 THEN 7 + (.33 / Year_Fraction_Since_HS_Grad__c)
+      WHEN ABS(Years_Since_HS_Grad__c) = 1 THEN 10 + (.33 / Year_Fraction_Since_HS_Grad__c)
+    END AS term_number,
+    
     CASE
       WHEN CoVitality_Scorecard_Color_Most_Recent__c = "Red" THEN 1
       WHEN CoVitality_Scorecard_Color_Most_Recent__c = "Blue" THEN 2
@@ -203,12 +203,7 @@ SELECT
     WHEN Overall_Rubric_Color = "Green" THEN 3
     ELSE 4
   END AS Overall_Rubric_Color_sort,
-  CASE
-    WHEN community_service_bucket = "On Track" THEN 1
-    WHEN community_service_bucket = "Near On Track" THEN 2
-    WHEN community_service_bucket = "Off Track" THEN 3
-    ELSE 0
-  END AS sort_community_service_bucket,
+
   CASE
     WHEN Credit_Accumulation_Pace__c = "4-Year Track" THEN 1
     WHEN Credit_Accumulation_Pace__c = "5-Year Track" THEN 2
@@ -229,7 +224,14 @@ SELECT
     WHEN last_contact_range = "60+ Days" THEN 3
     ELSE 4
   END AS last_contact_range_sort,
-  MROT.most_recent_on_track
+  MROT.most_recent_on_track,
+  CASE
+      WHEN Years_Since_HS_Grad__c >= 0 THEN "N/A"
+      WHEN Community_Service_Hours__c >= (8.33 * term_number) THEN "On Track"
+      WHEN Community_Service_Hours__c >= ((8.33 * term_number) * .85) THEN "Near On Track"
+      WHEN Community_Service_Hours__c < ((8.33 * term_number) * .85) THEN "Off Track"
+      ELSE "No Data"
+    END AS community_service_bucket
 FROM
   gather_data GD
   LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
