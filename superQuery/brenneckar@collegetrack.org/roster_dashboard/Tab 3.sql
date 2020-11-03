@@ -1,5 +1,5 @@
 SELECT
-  * 
+  master.site_short
 FROM
   `data-studio-260217.rosters.filtered_roster` AS Master
 RIGHT JOIN (
@@ -16,3 +16,5 @@ RIGHT JOIN (
     LOWER(users.Email)=LOWER(SESSION_USER()) ) AS Permissions
 ON
   Master.site_short=Permissions.site_short
+  
+GROUP BY master.site_short
