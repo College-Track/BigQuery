@@ -1,4 +1,4 @@
-SELECT *,
+SELECT * EXCEPT(site_short, site_abrev),
 CASE
       WHEN Site LIKE '%Denver%' THEN 'DEN'
       WHEN Site LIKE '%Aurora%' THEN 'AUR'
