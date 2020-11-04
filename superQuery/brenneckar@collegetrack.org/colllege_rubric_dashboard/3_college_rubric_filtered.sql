@@ -1,17 +1,21 @@
 WITH contact_at AS (
   SELECT
     Contact_Id,
-    AT_Id,
+    CONCAT(
+      "https://ctgraduates.lightning.force.com/lightning/r/Academic_Semester__c/",
+      AT_Id,
+      "/view"
+    ) AS at_url,
     Full_Name__c,
     GAS_Name,
     Current_School_Type__c,
-     CASE
-    WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh"
-    WHEN Credits_Accumulated_Most_Recent__c <25 THEN "Frosh"
-    WHEN Credits_Accumulated_Most_Recent__c <50 THEN "Sophomore"
-    WHEN Credits_Accumulated_Most_Recent__c <75 THEN "Junior"
-    WHEN Credits_Accumulated_Most_Recent__c >=75 THEN "Senior"
-  END AS college_class,
+    CASE
+      WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh"
+      WHEN Credits_Accumulated_Most_Recent__c < 25 THEN "Frosh"
+      WHEN Credits_Accumulated_Most_Recent__c < 50 THEN "Sophomore"
+      WHEN Credits_Accumulated_Most_Recent__c < 75 THEN "Junior"
+      WHEN Credits_Accumulated_Most_Recent__c >= 75 THEN "Senior"
+    END AS college_class,
     CASE
       WHEN Latest_Reciprocal_Communication_Date__c IS NULL THEN "No Data"
       WHEN DATE_DIFF(
@@ -168,46 +172,43 @@ WITH contact_at AS (
       WHEN Credits_Accumulated_Most_Recent__c < 75
       AND Credits_Accumulated_Most_Recent__c >= 50 THEN Internship_5075_credits__c
       ELSE "N/A"
-    END AS Internship_5075_credits__c, 
+    END AS Internship_5075_credits__c,
     CASE
       WHEN Credits_Accumulated_Most_Recent__c < 75
       AND Credits_Accumulated_Most_Recent__c >= 50 THEN PostGraduate_Plans_5075_creds__c
       ELSE "N/A"
-    END AS PostGraduate_Plans_5075_creds__c,     
-    
+    END AS PostGraduate_Plans_5075_creds__c,
     -- Sophmoores Only
     CASE
       WHEN Credits_Accumulated_Most_Recent__c < 50
       AND Credits_Accumulated_Most_Recent__c >= 25 THEN Career_Counselor_25_credits__c
       ELSE "N/A"
-    END AS Career_Counselor_25_credits__c, 
+    END AS Career_Counselor_25_credits__c,
     CASE
       WHEN Credits_Accumulated_Most_Recent__c < 50
       AND Credits_Accumulated_Most_Recent__c >= 25 THEN Career_Field_2550_credits__c
       ELSE "N/A"
-    END AS Career_Field_2550_credits__c,     
-    
+    END AS Career_Field_2550_credits__c,
     CASE
       WHEN Credits_Accumulated_Most_Recent__c < 50
       AND Credits_Accumulated_Most_Recent__c >= 25 THEN Resources_2550_credits__c
       ELSE "N/A"
-    END AS Resources_2550_credits__c,         
+    END AS Resources_2550_credits__c,
     -- Seniors Only
     CASE
       WHEN Credits_Accumulated_Most_Recent__c <= 75 THEN Internships__c
       ELSE "N/A"
-    END AS Internships__c,  
+    END AS Internships__c,
     CASE
       WHEN Credits_Accumulated_Most_Recent__c <= 75 THEN Alumni_Network_75_credits__c
       ELSE "N/A"
-    END AS Alumni_Network_75_credits__c,  
+    END AS Alumni_Network_75_credits__c,
     CASE
       WHEN Credits_Accumulated_Most_Recent__c <= 75 THEN Post_Graduate_Opportunities_75_cred__c
       ELSE "N/A"
-    END AS Post_Graduate_Opportunities_75_cred__c,  
-    -- All 
+    END AS Post_Graduate_Opportunities_75_cred__c,
+    -- All
     ResumeCover_Letter__c,
-    
     -- COVID - not used
     Enrollment_COVID19__c,
     CollegeUniversity_Response_COVID19__c,
