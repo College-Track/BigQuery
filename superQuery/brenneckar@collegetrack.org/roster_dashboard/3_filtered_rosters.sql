@@ -1,6 +1,7 @@
 WITH gather_data AS (
   SELECT
     Contact_Id,
+    SITE__c,
     CONCAT(
       "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
       Contact_Id,
