@@ -1,6 +1,7 @@
 WITH contact_at AS (
   SELECT
     Contact_Id,
+    AT_Id,
     Full_Name__c,
     GAS_Name,
     Current_School_Type__c,
