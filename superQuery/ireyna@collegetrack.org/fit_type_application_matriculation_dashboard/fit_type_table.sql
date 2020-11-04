@@ -1,4 +1,14 @@
 #Join College Application data with contact_at_template to pull in Contact and Academic Term fields: base college app filtered table
+/*
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+--OPTIONS
+    (
+    description="raw contact object data"
+    )
+AS
+*/
+
+/*
 WITH college_application_AT AS (
   SELECT
     A_T.ACT_English_highest_official__c,
@@ -411,9 +421,9 @@ WITH college_application_AT AS (
   LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` AS A_T 
         ON CA.Student__c = A_T.Student__c
 ),
-
+*/
 --Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
-fit_type_application AS
+WITH fit_type_application AS
 (
 SELECT
 
@@ -457,7 +467,7 @@ SELECT
     Fit_Type_Enrolled__c
     
     --Join with Account object to pull in name of School/College
-    FROM college_application_AT AS app
+    FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.college_id = accnt.id
     WHERE Indicator_Completed_CT_HS_Program__c = TRUE
@@ -516,7 +526,7 @@ FROM fit_type_application AS app
 --Join academic term data (matriculation table) to college application data
 LEFT JOIN fit_type_matriculation AS matri
     ON app.Contact_Id = matri.Contact_Id
-WHERE APP.High_School_Class IN (2016, 2017, 2018, 2019, 2020)   
+--WHERE APP.High_School_Class IN (2016, 2017, 2018, 2019, 2020)   
 
 GROUP BY
     app.contact_id,
