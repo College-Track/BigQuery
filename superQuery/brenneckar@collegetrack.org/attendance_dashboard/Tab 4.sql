@@ -12,7 +12,8 @@ WITH name_score AS (
 SELECT
   Id,
   dosage_split,
-  Attendance_Numerator__c
+  Attendance_Numerator__c,
+  test
 FROM
   name_score
   CROSS JOIN UNNEST(name_score.dosage_combined) AS dosage_split
