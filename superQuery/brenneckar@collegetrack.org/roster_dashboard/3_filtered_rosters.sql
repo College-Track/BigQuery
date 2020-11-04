@@ -212,11 +212,11 @@ modify_data AS (
       ELSE 5
     END AS Credit_Accumulation_Pace_sort,
     CASE
-      WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh"
-      WHEN Credits_Accumulated_Most_Recent__c <.25 THEN "Frosh"
-      WHEN Credits_Accumulated_Most_Recent__c <.5 THEN "Sophomore"
-      WHEN Credits_Accumulated_Most_Recent__c <.75 THEN "Junior"
-      WHEN Credits_Accumulated_Most_Recent__c >=.75 THEN "Senior"
+      WHEN Credits_Accumulated_Most_Recent__c IS NULL THEN "Frosh (0 - 24% Credits)"
+      WHEN Credits_Accumulated_Most_Recent__c <.25 THEN "Frosh (0 - 24% Credits)"
+      WHEN Credits_Accumulated_Most_Recent__c <.5 THEN "Sophomore (25% - 49% Credits)"
+      WHEN Credits_Accumulated_Most_Recent__c <.75 THEN "Junior (50% - 74% Credits)"
+      WHEN Credits_Accumulated_Most_Recent__c >=.75 THEN "Senior (75% + Credits)"
     END AS college_class,
     CASE
       WHEN last_contact_range = "Less than 30 Days" THEN 1
