@@ -5,7 +5,7 @@ WITH name_score AS (
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c`)
   SELECT
-    Id, dosage_combined, dosage_split
+    Id, dosage_split
   FROM
     name_score
     CROSS JOIN UNNEST(name_score.dosage_combined) AS dosage_split;
