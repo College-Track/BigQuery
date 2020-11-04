@@ -1,5 +1,5 @@
 SELECT
-  *
+  Master.*
 FROM
   `data-studio-260217.college_rubric.submetric_questions` AS Master
 RIGHT JOIN (
