@@ -3,7 +3,7 @@ WITH name_score AS (
     Id,
     SPLIT(Workshop_Dosage_Type__c, ';') AS dosage_combined,
     Attendance_Numerator__c,
-    SPLUT("test;") as test
+    SPLIT("test;") as test
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c`
   LIMIT
