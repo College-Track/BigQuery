@@ -54,10 +54,14 @@ SELECT
   SUM(CM.met_attendance_goal) AS met_attendance_goal,
   SUM(CM.met_cs_goal) AS met_cs_goal,
   SUM(CM.met_college_app_goal) as met_college_app_goal,
-  MAX(SC.senior_count) as senior_count
+  MAX(SC.senior_count) as senior_count,
+  MAX(Account.College_Track_High_School_Capacity__c) AS hs_capacity,
+  MAX(Account.College_Track_FY_HS_Planned_Enrollment__c) AS  hs_budget_capacity
 FROM
   calculate_metrics CM
    LEFT JOIN senior_count SC ON SC.site_short = CM.site_short
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` Account ON Account.Id = CM.SITE__c
+
 GROUP BY
   SITE__c,
   region_short,
