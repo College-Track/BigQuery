@@ -4,9 +4,9 @@ WITH name_score AS (
     SPLIT(Workshop_Dosage_Type__c, ';') AS dosage_combined,
     Attendance_Numerator__c
   FROM
-    `data-warehouse-289815.salesforce_raw.Class_Attendance__c`)
+    `data-warehouse-289815.salesforce_raw.Class_Attendance__c`
      LIMIT
-    10
+    10)
   SELECT
     Id, dosage_split,Attendance_Numerator__c
   FROM
