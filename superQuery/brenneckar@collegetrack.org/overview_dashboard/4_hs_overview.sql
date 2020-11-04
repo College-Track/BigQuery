@@ -46,6 +46,7 @@ senior_count AS (
 SELECT
   CM.region_short,
   CM.site_short,
+  CM.SITE__c,
   COUNT(CM.Contact_Id) AS student_count,
   SUM(CM.met_gpa_goal) AS met_gpa_goal,
   SUM(CM.met_covi_goal) AS met_covi_goal,
