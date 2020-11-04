@@ -5,9 +5,9 @@ WITH name_score AS (
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c`)
   SELECT
-    *
+    Id, 
   FROM
     name_score
-    CROSS JOIN UNNEST(name_score.Dosage) AS score;
+    CROSS JOIN UNNEST(name_score.Dosage) AS dosage;
   LIMIT
     10
