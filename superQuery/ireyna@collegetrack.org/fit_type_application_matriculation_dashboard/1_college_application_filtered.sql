@@ -413,4 +413,4 @@ AS
   FROM `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
     --Join  college applications data with contact_at_template
   LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` AS A_T 
-        ON CA.Student__c = A_T.Contact_id
+        ON CA.Student__c = A_T.Student__c
