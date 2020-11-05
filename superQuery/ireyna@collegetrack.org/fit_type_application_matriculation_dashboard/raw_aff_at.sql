@@ -4,7 +4,7 @@ SELECT
     term.Affiliation__c,
     aff.id,
     term.Name,
-    term.Fit_Type__c,
+    term.Fit_Type__c AS fit_type_affiliation_at,
     aff.Fit_Type__c AS fit_type_affiliation,
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation,
     aff.Fit_Type_Current__c,
