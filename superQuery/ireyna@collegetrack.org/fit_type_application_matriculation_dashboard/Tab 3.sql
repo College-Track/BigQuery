@@ -16,7 +16,7 @@ SELECT
 
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
  --Join with Affiliation object
-    RIGHT JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
+    FULL JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
         ON term.Affiliation_Record_ID__c = aff.Id
 
     --WHERE term.Indicator_Completed_CT_HS_Program__c = TRUE
