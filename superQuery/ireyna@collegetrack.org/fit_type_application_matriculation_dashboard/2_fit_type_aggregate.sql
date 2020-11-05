@@ -1,3 +1,14 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+
+--Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
 WITH fit_type_application AS
 (
 SELECT
@@ -73,6 +84,7 @@ SELECT
     --aff.Situational_Best_Fit_Context__c,
     aff.Fit_Type_Current__c,
     aff.Fit_Type__c AS fit_type_affiliation,
+    matri.Fit_Type__c AS fit_type_affiliation_at,
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation
 
 --RIGHT join to align AT data with available college application data
@@ -143,4 +155,5 @@ GROUP BY
     Situational_Fit_Type__c,
     Fit_Type_Current__c,
     fit_type_affiliation,
+    fit_type_affiliation_at,
     fit_type_start_of_affiliation
