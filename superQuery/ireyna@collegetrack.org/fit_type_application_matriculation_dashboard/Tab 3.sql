@@ -11,7 +11,7 @@ SELECT
     --aff.Situational_Best_Fit_Context__c,
     --aff.Fit_Type_Current__c,
     --aff.Fit_Type__c AS fit_type_affiliation,
-    --term.Fit_Type__c AS fit_type_affiliation_at,
+    term.Fit_Type__c AS fit_type_affiliation_at,
     --aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation
 
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
