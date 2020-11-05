@@ -64,13 +64,13 @@ SELECT
 fit_type_matriculation AS
 (
 SELECT
-    matri.contact_id,
-    matri.Full_Name__c,
+    term.contact_id,
+    term.Full_Name__c,
     High_School_Class,
     Site_Text__c AS site_full,
-    matri.site_short,
-    matri.region AS region_full,
-    matri.region_short,
+    term.site_short,
+    term.region AS region_full,
+    term.region_short,
     AT_Name AS academic_term_name,
     AT_Id AS academic_term_id,
     AT_Grade__c,
@@ -84,19 +84,19 @@ SELECT
     --aff.Situational_Best_Fit_Context__c,
     aff.Fit_Type_Current__c,
     aff.Fit_Type__c AS fit_type_affiliation,
-    matri.Fit_Type__c AS fit_type_affiliation_at,
+    term.Fit_Type__c AS fit_type_affiliation_at,
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation
 
---RIGHT join to align AT data with available college application data
-    FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS matri
+--Join to align AT data with available college application data
+    FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
     RIGHT JOIN fit_type_application AS app
-      ON app.contact_id = matri.contact_id
+      ON app.contact_id = term.contact_id
 
  --Join with Affiliation object to pull in Fit Type (Start of Affiliation) for older students
     LEFT JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
-        ON matri.Affiliation_Record_ID__c = aff.Id
+        ON term.Affiliation_Record_ID__c = aff.Id
 
-    WHERE matri.Indicator_Completed_CT_HS_Program__c = TRUE
+    WHERE term.Indicator_Completed_CT_HS_Program__c = TRUE
         AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
         --High_School_Class IN (2016, 2017, 2018, 2019, 2020) 
         --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
