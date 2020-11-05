@@ -2,6 +2,8 @@
 
 #test query to see if affiliation data comes through (not null) without referencing application_filtered table
 SELECT
+    AT_Name AS academic_term_name,
+    term.AT_Id AS academic_term_id,
     Affiliation_Record_ID__c AS Affiliation_id,
     aff.id,
     npe5__Organization__c AS Affiliation_School_id,
