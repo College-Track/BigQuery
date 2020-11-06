@@ -60,7 +60,7 @@ WITH gather_data AS(
       OR CAT.College_Track_Status_Name = 'Onboarding'
       OR CAT.College_Track_Status_Name = 'Leave of Absence'
     ) 
-    AND WSA.Date__c >= 2019-08-01
+    AND WSA.Date__c >= "2019-08-01"
 )
 SELECT *
 FROM gather_data
