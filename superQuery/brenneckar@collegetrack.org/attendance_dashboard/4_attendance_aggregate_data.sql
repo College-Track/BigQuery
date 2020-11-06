@@ -5,7 +5,7 @@ SELECT
   SUM(Attendance_Denominator__c) AS Attendance_Denominator,
   SUM(mod_numerator) AS mod_numerator,
   SUM(mod_denominator) AS mod_denominator,
-  Date__c,
+--   Date__c,
   Student_High_School_Class__c,
   Workshop_Dosage_Type__c,
   dosage_split,
@@ -30,7 +30,7 @@ WHERE
 GROUP BY
   Student_Site__c,
   Workshop_Display_Name__c,
-  Date__c,
+--   Date__c,
   Student_High_School_Class__c,
   Workshop_Dosage_Type__c,
   GPA_Bucket,
