@@ -35,5 +35,5 @@ FROM
     FROM
       gather_attendance
   ) AS gather_attendance
-  CROSS JOIN date_month
+  CROSS JOIN gather_attendance
   LEFT JOIN mod_dosage ON all_names.id = mod_dosage.id
