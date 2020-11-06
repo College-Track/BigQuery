@@ -4,7 +4,8 @@ WITH gather_attendance AS (
     Workshop_Dosage_Type__c,
     SPLIT(RTRIM(Workshop_Dosage_Type__c, ";"), ';') AS dosage_combined,
     Attendance_Numerator__c,
-    Attendance_Denominator__c
+    Attendance_Denominator__c,
+    0 AS group_count
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c`
   WHERE
@@ -21,7 +22,23 @@ WITH gather_attendance AS (
   FROM
     gather_attendance
     CROSS JOIN UNNEST(gather_attendance.dosage_combined) AS dosage_split
+),
+create_col_number AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY Id
+      ORDER BY
+        Id
+    ) - 1 As group_count,
+  from
+    mod_dosage
 )
-
-SELECT *,     ROW_NUMBER() OVER (PARTITION BY Id ORDER BY Id) - 1 As C_NO,
-from mod_dosage
+SELECT
+  MD.*,
+  GA.Attendance_Numerator__c,
+  GA.Attendance_Denominator__c
+FROM
+  create_col_number MD
+  LEFT JOIN gather_attendance GA ON GA.Id = MD.Id
+  AND MD.group_count = GA.group_count
