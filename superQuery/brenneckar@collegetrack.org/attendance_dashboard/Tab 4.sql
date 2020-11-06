@@ -36,7 +36,8 @@ create_col_number AS (
 SELECT
   MD.*,
   GA.Attendance_Numerator__c,
-  GA.Attendance_Denominator__c
+  GA.Attendance_Denominator__c,
+  GA.Id AS ws_id
 FROM
   create_col_number MD
   LEFT JOIN gather_attendance GA ON GA.Id = MD.Id
