@@ -71,7 +71,7 @@ mod_dosage AS (
     Attendance_Denominator__c AS mod_denominator
   FROM
     gather_data
-    CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
+    -- CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
 ),
 
 
