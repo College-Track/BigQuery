@@ -86,21 +86,23 @@ create_col_number AS (
     mod_dosage
 )
 
+SELECT *
+FROM create_col_number
 
-SELECT
-  MD.WSA_Id AS new_id,
-  MD.mod_numerator,
-  MD.mod_denominator,
-  MD.dosage_split,
-  GD.WSA_Id,
-  GD.Workshop_Dosage_Type__c,
-  GD.Attendance_Numerator__c,
-  GD.Attendance_Denominator__c
---   GD.* EXCEPT(dosage_combined)
+-- SELECT
+--   MD.WSA_Id AS new_id,
+--   MD.mod_numerator,
+--   MD.mod_denominator,
+--   MD.dosage_split,
+--   GD.WSA_Id,
+--   GD.Workshop_Dosage_Type__c,
+--   GD.Attendance_Numerator__c,
+--   GD.Attendance_Denominator__c
+-- --   GD.* EXCEPT(dosage_combined)
 
---   MD.dosage_split
-FROM
-  create_col_number MD
-  LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
-  AND MD.group_count = GD.group_count
- ORDER BY GD.WSA_Id
+-- --   MD.dosage_split
+-- FROM
+--   create_col_number MD
+--   LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
+--   AND MD.group_count = GD.group_count
+--  ORDER BY GD.WSA_Id
