@@ -4,6 +4,7 @@ WITH name_score AS (
     Workshop_Dosage_Type__c,
     SPLIT(RTRIM(Workshop_Dosage_Type__c, ";"), ';') AS dosage_combined,
     Attendance_Numerator__c,
+    Attendance_Denominator__c
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c`
     WHERE Current_AT__c = TRUE
@@ -15,7 +16,8 @@ SELECT
   Id,
   Workshop_Dosage_Type__c,
   dosage_split,
-  Attendance_Numerator__c
+  Attendance_Numerator__c,
+  Attendance_Denominator__c
  
 FROM
   name_score
