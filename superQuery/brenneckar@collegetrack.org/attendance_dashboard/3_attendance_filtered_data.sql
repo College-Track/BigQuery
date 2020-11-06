@@ -123,9 +123,10 @@ create_col_number AS (
     mod_dosage
 )
 SELECT
-  MD.*,
-  GA.Attendance_Numerator__c,
-  GA.Attendance_Denominator__c
+  GA.*,
+  MD.mod_numerator,
+  MD.mod_denominator,
+  MD.dosage_split
 FROM
   create_col_number MD
   LEFT JOIN gather_attendance GA ON GA.Id = MD.Id
