@@ -20,7 +20,7 @@ WITH gather_attendance AS (
     Attendance_Denominator__c AS mod_denominator
   FROM
     gather_attendance
-    CROSS JOIN UNNEST(name_score.dosage_combined) AS dosage_split
+    CROSS JOIN UNNEST(gather_attendance.dosage_combined) AS dosage_split
 )
 SELECT
   mod_dosage.Id,
