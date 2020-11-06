@@ -17,7 +17,7 @@ SELECT
   Composite_Readiness_Most_Recent__c,
   Region,
   region_abrev,
-  Outcome__c,
+--   Outcome__c,
   COUNT(Student__c) AS record_count
 FROM
   `data-studio-260217.attendance_dashboard.tmp_filtered_attendance`
@@ -36,10 +36,9 @@ GROUP BY
   site_abrev,
   Workshop_Global_Academic_Semester__c,
 --   Class__c,
-  Workshop_Global_Academic_Semester__c,
   Composite_Readiness_Most_Recent__c,
   Region,
   region_abrev,
-  Outcome__c,
+--   Outcome__c,
   dosage_split
   ORDER BY Workshop_Dosage_Type__c
