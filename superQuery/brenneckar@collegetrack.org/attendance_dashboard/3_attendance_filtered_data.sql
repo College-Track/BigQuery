@@ -63,7 +63,7 @@ WITH gather_data AS(
 )
 SELECT *
 FROM gather_data
-LIMIT 10
+-- LIMIT 10
 -- mod_dosage AS (
 --   SELECT
 --     WSA_Id,
