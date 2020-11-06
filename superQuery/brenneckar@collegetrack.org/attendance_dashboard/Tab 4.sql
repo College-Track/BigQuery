@@ -2,8 +2,7 @@ WITH name_score AS (
   SELECT
     Id,
     Workshop_Dosage_Type__c,
-    RTRIM(Workshop_Dosage_Type__c, ";") as example,
-    SPLIT(Workshop_Dosage_Type__c, ';') AS dosage_combined,
+    SPLIT(RTRIM(Workshop_Dosage_Type__c, ";"), ';') AS dosage_combined,
     Attendance_Numerator__c,
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c`
