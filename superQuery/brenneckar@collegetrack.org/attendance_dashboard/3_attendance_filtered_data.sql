@@ -87,9 +87,10 @@ create_col_number AS (
     mod_dosage
 )
 
-SELECT *
+SELECT COUNT(WSA_ID)
 FROM create_col_number
-ORDER BY WSA_Id
+-- ORDER BY WSA_Id
+
 
 -- SELECT
 --   MD.WSA_Id AS new_id,
