@@ -92,7 +92,7 @@ create_col_number AS (
 
 , final_pull AS (
 SELECT
-  MD.*,
+  MD.* EXCEPT(dosage_combined),
   GD.Attendance_Numerator__c,
   GD.Attendance_Denominator__c
 --   GD.* EXCEPT(dosage_combined)
