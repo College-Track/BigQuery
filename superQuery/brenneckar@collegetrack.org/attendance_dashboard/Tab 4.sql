@@ -13,6 +13,7 @@ WITH name_score AS (
 SELECT
 
   Id,
+  Workshop_Dosage_Type__c,
   dosage_split,
   Attendance_Numerator__c
  
