@@ -91,7 +91,7 @@ create_col_number AS (
 -- FROM gather_data
 -- -- ORDER BY WSA_Id
 
-
+, final_pull AS (
 SELECT
   MD.WSA_Id AS new_id,
   MD.mod_numerator,
@@ -108,6 +108,9 @@ FROM
   create_col_number MD
   LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
   AND MD.group_count = GD.group_count
-   WHERE WSA_ID IS NULL
-  
  ORDER BY GD.WSA_Id
+)
+
+SELECT *
+FROM final_pull
+WHERE WSA_ID IS NULL
