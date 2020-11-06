@@ -10,8 +10,7 @@ WITH gather_attendance AS (
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c`
   WHERE
     Current_AT__c = TRUE
-  LIMIT
-    1000
+
 ), mod_dosage AS (
   SELECT
     Id,
