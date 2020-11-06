@@ -35,5 +35,5 @@ FROM
     FROM
       gather_attendance
   ) AS gather_attendance
-  CROSS JOIN gather_attendance
+  CROSS JOIN mod_dosage
   LEFT JOIN mod_dosage ON all_names.id = mod_dosage.id
