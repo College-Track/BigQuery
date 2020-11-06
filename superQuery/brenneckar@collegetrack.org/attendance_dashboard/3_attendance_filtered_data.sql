@@ -26,7 +26,7 @@ WITH gather_data AS(
     -- status.Status,
     WSA.Academic_Semester__c,
     REPLACE(
-      CAT.Global_Academic_Semester__c,
+      CAT.GAS_Name,
       ' (Semester)',
       ''
     ) AS Workshop_Global_Academic_Semester__c,
