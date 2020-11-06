@@ -105,6 +105,6 @@ FROM
  ORDER BY GD.WSA_Id
 )
 
-SELECT COUNT()*
+SELECT COUNT(*)
 FROM final_pull
 WHERE region_abrev IS NULL
