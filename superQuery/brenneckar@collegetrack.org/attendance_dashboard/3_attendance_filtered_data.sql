@@ -89,7 +89,7 @@ create_col_number AS (
 
 
 SELECT
-  GD.*,
+  GD.* EXCEPT(dosage_combined),
   MD.mod_numerator,
   MD.mod_denominator,
 --   MD.dosage_split
