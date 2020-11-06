@@ -25,6 +25,8 @@ WHERE
   Attendance_Excluded__c = FALSE
   AND Workshop_Dosage_Type__c IS NOT NULL
   AND (Attendance_Denominator__c > 0 OR Attendance_Numerator__c > 0)
+  AND  Workshop_Display_Name__c = "Catch All Senior Office Hour - Komal"
+
 GROUP BY
   Student_Site__c,
   Workshop_Display_Name__c,
