@@ -65,7 +65,6 @@ WITH gather_data AS(
 mod_dosage AS (
   SELECT
     WSA_Id,
-    Workshop_Dosage_Type__c,
     dosage_split,
     Attendance_Numerator__c AS mod_numerator,
     Attendance_Denominator__c AS mod_denominator
@@ -93,7 +92,11 @@ SELECT
   MD.mod_numerator,
   MD.mod_denominator,
   MD.dosage_split,
-  GD.* EXCEPT(dosage_combined)
+  GD.WSA_Id,
+  GD.Dosage_Type__c,
+  GD.Attendance_Numerator__c,
+  GD.Attendance_Denominator__c
+--   GD.* EXCEPT(dosage_combined)
 
 --   MD.dosage_split
 FROM
