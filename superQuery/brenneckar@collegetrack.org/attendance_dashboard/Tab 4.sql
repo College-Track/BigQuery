@@ -11,11 +11,11 @@ WITH name_score AS (
     1000
 )
 SELECT
-*
---   Id,
---   dosage_split,
---   Attendance_Numerator__c
+
+  Id,
+  dosage_split,
+  Attendance_Numerator__c
  
 FROM
   name_score
---   CROSS JOIN UNNEST(name_score.dosage_combined) AS dosage_split
+  CROSS JOIN UNNEST(name_score.dosage_combined) AS dosage_split
