@@ -34,6 +34,6 @@ FROM
       DISTINCT id
     FROM
       gather_attendance
-  ) AS all_names
+  ) AS gather_attendance
   CROSS JOIN date_month
   LEFT JOIN mod_dosage ON all_names.id = mod_dosage.id
