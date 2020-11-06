@@ -23,4 +23,5 @@ WITH gather_attendance AS (
     CROSS JOIN UNNEST(gather_attendance.dosage_combined) AS dosage_split
 )
 
-SELECT * from mod_dosage
+SELECT *,     ROW_NUMBER() OVER (PARTITION BY Id ORDER BY Id) - 1 As C_NO,
+from mod_dosage
