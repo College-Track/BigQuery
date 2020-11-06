@@ -1,6 +1,6 @@
 WITH gather_attendance AS(
   SELECT
-    Attendance.Id,
+    Attendance.Id AS WSA_Id,
     Workshop_Dosage_Type__c,
     SPLIT(RTRIM(Workshop_Dosage_Type__c, ";"), ';') AS dosage_combined,
     Attendance_Numerator__c,
@@ -102,7 +102,7 @@ WITH gather_attendance AS(
 ),
 mod_dosage AS (
   SELECT
-    Id,
+    WSA_Id,
     Workshop_Dosage_Type__c,
     dosage_split,
     Attendance_Numerator__c AS mod_numerator,
@@ -115,9 +115,9 @@ create_col_number AS (
   SELECT
     *,
     ROW_NUMBER() OVER (
-      PARTITION BY Id
+      PARTITION BY WSA_Id
       ORDER BY
-        Id
+        WSA_Id
     ) - 1 As group_count,
   from
     mod_dosage
@@ -129,5 +129,5 @@ SELECT
   MD.dosage_split
 FROM
   create_col_number MD
-  LEFT JOIN gather_attendance GA ON GA.Id = MD.Id
+  LEFT JOIN gather_attendance GA ON GA.WSA_Id = MD.WSA_Id
   AND MD.group_count = GA.group_count
