@@ -109,3 +109,4 @@ FROM
   LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
   AND MD.group_count = GD.group_count
  ORDER BY GD.WSA_Id
+ WHERE WSA_ID IS NULL
