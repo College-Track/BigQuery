@@ -46,7 +46,8 @@ WITH gather_data AS(
     CAT.site_abrev,
     CAT.Indicator_Sem_Attendance_Above_80__c,
     CAT.region,
-    CAT.region_abrev
+    CAT.region_abrev,
+    CAT.College_Track_Status_Name
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c` AS WSA
     LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` CAT
@@ -54,11 +55,11 @@ WITH gather_data AS(
     
   WHERE
     Student_Site__c != 'College Track Arlen'
-    -- AND (
-    --   status.Status = 'Current CT HS Student'
-    --   OR status.Status = 'Onboarding'
-    --   OR status.Status = 'Leave of Absence'
-    -- )
+    AND (
+      CAT.College_Track_Status_Name = 'Current CT HS Student'
+      OR CAT.College_Track_Status_Name = 'Onboarding'
+      OR CAT.College_Track_Status_Name = 'Leave of Absence'
+    )
 )
 SELECT *
 FROM gather_data
