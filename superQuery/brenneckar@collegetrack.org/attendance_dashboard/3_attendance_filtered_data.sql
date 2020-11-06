@@ -87,7 +87,7 @@ create_col_number AS (
     mod_dosage
 )
 
-SELECT COUNT(WSA_ID)
+SELECT COUNT(DISTINCT(WSA_ID))
 FROM gather_data
 -- ORDER BY WSA_Id
 
