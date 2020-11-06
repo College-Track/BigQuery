@@ -4,7 +4,7 @@ SELECT
   SUM(Attendance_Numerator__c) AS Attendance_Numerator,
   SUM(Attendance_Denominator__c) AS Attendance_Denominator,
   SUM(mod_numerator) AS mod_numerator,
-  SUM(mod_numerator) AS mod_denominator,
+  SUM(mod_denominator) AS mod_denominator,
   Date__c,
   Student_High_School_Class__c,
   Workshop_Dosage_Type__c,
