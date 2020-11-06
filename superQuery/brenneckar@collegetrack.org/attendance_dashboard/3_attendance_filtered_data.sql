@@ -65,6 +65,7 @@ WITH gather_data AS(
 mod_dosage AS (
   SELECT
     WSA_Id,
+    Workshop_Dosage_Type__c,
     dosage_split,
     Attendance_Numerator__c AS mod_numerator,
     Attendance_Denominator__c AS mod_denominator
