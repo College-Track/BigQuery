@@ -88,7 +88,7 @@ create_col_number AS (
 )
 
 SELECT COUNT(DISTINCT(WSA_ID))
-FROM create_col_number
+FROM mod_dosage
 -- ORDER BY WSA_Id
 
 
