@@ -86,12 +86,15 @@ create_col_number AS (
   from
     mod_dosage
 )
-SELECT
-  GD.*,
-  MD.mod_numerator,
-  MD.mod_denominator,
-  MD.dosage_split
-FROM
-  create_col_number MD
-  LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
-  AND MD.group_count = GD.group_count
+
+SELECT *
+FROM create_col_number
+-- SELECT
+--   GD.*,
+--   MD.mod_numerator,
+--   MD.mod_denominator,
+--   MD.dosage_split
+-- FROM
+--   create_col_number MD
+--   LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
+--   AND MD.group_count = GD.group_count
