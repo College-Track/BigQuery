@@ -88,7 +88,7 @@ create_col_number AS (
 )
 
 SELECT COUNT(WSA_ID)
-FROM create_col_number
+FROM gather_data
 -- ORDER BY WSA_Id
 
 
