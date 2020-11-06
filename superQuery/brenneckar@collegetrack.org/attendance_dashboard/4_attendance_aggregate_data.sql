@@ -42,3 +42,4 @@ GROUP BY
   region_abrev,
   Outcome__c,
   dosage_split
+  ORDER BY Workshop_Dosage_Type__c
