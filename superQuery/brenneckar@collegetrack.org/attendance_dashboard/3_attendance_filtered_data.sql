@@ -93,7 +93,7 @@ SELECT
   MD.mod_denominator,
   MD.dosage_split,
   GD.WSA_Id,
-  GD.Dosage_Type__c,
+  GD.Workshop_Dosage_Type__c,
   GD.Attendance_Numerator__c,
   GD.Attendance_Denominator__c
 --   GD.* EXCEPT(dosage_combined)
