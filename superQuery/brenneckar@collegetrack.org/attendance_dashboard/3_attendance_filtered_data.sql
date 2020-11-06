@@ -61,38 +61,37 @@ WITH gather_data AS(
       OR CAT.College_Track_Status_Name = 'Leave of Absence'
     ) 
     AND WSA.Date__c >= "2019-08-01"
+),
+mod_dosage AS (
+  SELECT
+    WSA_Id,
+    Workshop_Dosage_Type__c,
+    dosage_split,
+    Attendance_Numerator__c AS mod_numerator,
+    Attendance_Denominator__c AS mod_denominator
+  FROM
+    gather_data
+    CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
+),
+
+
+create_col_number AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY WSA_Id
+      ORDER BY
+        WSA_Id
+    ) - 1 As group_count,
+  from
+    mod_dosage
 )
-SELECT *
-FROM gather_data
--- LIMIT 10
--- mod_dosage AS (
---   SELECT
---     WSA_Id,
---     Workshop_Dosage_Type__c,
---     dosage_split,
---     Attendance_Numerator__c AS mod_numerator,
---     Attendance_Denominator__c AS mod_denominator
---   FROM
---     gather_attendance
---     CROSS JOIN UNNEST(gather_attendance.dosage_combined) AS dosage_split
--- ),
--- create_col_number AS (
---   SELECT
---     *,
---     ROW_NUMBER() OVER (
---       PARTITION BY WSA_Id
---       ORDER BY
---         WSA_Id
---     ) - 1 As group_count,
---   from
---     mod_dosage
--- )
--- SELECT
---   GA.*,
---   MD.mod_numerator,
---   MD.mod_denominator,
---   MD.dosage_split
--- FROM
---   create_col_number MD
---   LEFT JOIN gather_attendance GA ON GA.WSA_Id = MD.WSA_Id
---   AND MD.group_count = GA.group_count
+SELECT
+  GD.*,
+  MD.mod_numerator,
+  MD.mod_denominator,
+  MD.dosage_split
+FROM
+  create_col_number MD
+  LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
+  AND MD.group_count = GD.group_count
