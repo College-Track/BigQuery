@@ -10,9 +10,10 @@ WITH name_score AS (
     1000
 )
 SELECT
-  Id,
-  dosage_split,
-  Attendance_Numerator__c
+*
+--   Id,
+--   dosage_split,
+--   Attendance_Numerator__c
  
 FROM
   name_score
