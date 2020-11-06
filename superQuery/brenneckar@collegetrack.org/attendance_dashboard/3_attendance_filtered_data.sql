@@ -89,6 +89,7 @@ create_col_number AS (
 
 SELECT *
 FROM create_col_number
+WHERE group_count > 1
 ORDER BY WSA_Id
 -- SELECT
 --   GD.*,
