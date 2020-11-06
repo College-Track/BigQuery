@@ -22,18 +22,5 @@ WITH gather_attendance AS (
     gather_attendance
     CROSS JOIN UNNEST(gather_attendance.dosage_combined) AS dosage_split
 )
-SELECT
-  mod_dosage.Id,
-  gather_attendance.Workshop_Dosage_Type__c,
-  mod_dosage.dosage_split,
-  mod_dosage.mod_numerator,
-  mod_dosage_mod_denominator
-FROM
-  (
-    SELECT
-      DISTINCT id
-    FROM
-      gather_attendance
-  ) AS gather_attendance
-  CROSS JOIN mod_dosage
-  LEFT JOIN mod_dosage ON all_names.id = mod_dosage.id
+
+SELECT * from mod_dosage
