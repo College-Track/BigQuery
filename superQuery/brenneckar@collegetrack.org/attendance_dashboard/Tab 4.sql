@@ -16,4 +16,4 @@ SELECT
  
 FROM
   name_score
-  CROSS JOIN UNNEST(name_score.dosage_combined) AS dosage_split
+--   CROSS JOIN UNNEST(name_score.dosage_combined) AS dosage_split
