@@ -7,7 +7,6 @@ OPTIONS
     )
 AS
 
-
 --Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
 WITH fit_type_application AS
 (
@@ -66,38 +65,35 @@ fit_type_matriculation AS
 SELECT
     term.contact_id,
     term.Full_Name__c,
-    High_School_Class,
+    High_School_Class__c,
     Site_Text__c AS site_full,
     term.site_short,
     term.region AS region_full,
     term.region_short,
     AT_Name AS academic_term_name,
-    AT_Id AS academic_term_id,
+    term.AT_Id AS academic_term_id,
     AT_Grade__c,
     student_audit_status__c AS ct_status_at,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    Affiliation_Record_ID__c AS Affiliation_id,
     npe5__Organization__c AS Affiliation_School_id,
     aff.Situational_Fit_Type__c,
-    --aff.Situational_Best_Fit_Context__c,
+    aff.Situational_Best_Fit_Context__c,
     aff.Fit_Type_Current__c,
     aff.Fit_Type__c AS fit_type_affiliation,
     term.Fit_Type__c AS fit_type_affiliation_at,
-    aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation
+    aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation,
+    Affiliation_Record_ID__c AS Affiliation_id_at,
+    aff.id AS id_aff,
 
---Join to align AT data with available college application data
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
-    RIGHT JOIN fit_type_application AS app
-      ON app.contact_id = term.contact_id
-
- --Join with Affiliation object to pull in Fit Type (Start of Affiliation) for older students
-    LEFT JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
+ --Join with Affiliation object
+    FULL JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
         ON term.Affiliation_Record_ID__c = aff.Id
 
     WHERE term.Indicator_Completed_CT_HS_Program__c = TRUE
-        AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
+    AND term.Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
         --High_School_Class IN (2016, 2017, 2018, 2019, 2020) 
         --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
         --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
@@ -105,14 +101,14 @@ SELECT
 
 SELECT
     app.*,
-    matri.*
-        EXCEPT (Full_Name__c,High_School_Class,site_full,site_short,region_full,region_short,Contact_Id)
+    term.*
+        EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id)
 
 FROM fit_type_application AS app
 
 --Join academic term data (matriculation table) to college application data
-LEFT JOIN fit_type_matriculation AS matri
-    ON app.Contact_Id = matri.Contact_Id
+LEFT JOIN fit_type_matriculation AS term
+    ON app.Contact_Id = term.Contact_Id
 --WHERE APP.High_School_Class IN (2016, 2017, 2018, 2019, 2020)   
 
 GROUP BY
@@ -150,10 +146,12 @@ GROUP BY
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    Affiliation_id,
     Affiliation_School_id,
     Situational_Fit_Type__c,
+    Situational_Best_Fit_Context__c,
     Fit_Type_Current__c,
     fit_type_affiliation,
     fit_type_affiliation_at,
-    fit_type_start_of_affiliation
+    fit_type_start_of_affiliation,
+    Affiliation_id_at,
+    id_aff
