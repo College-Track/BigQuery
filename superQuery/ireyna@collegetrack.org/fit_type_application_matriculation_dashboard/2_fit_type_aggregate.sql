@@ -94,7 +94,7 @@ SELECT
 
     WHERE term.Indicator_Completed_CT_HS_Program__c = TRUE
     AND term.Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
-        --High_School_Class IN (2016, 2017, 2018, 2019, 2020) 
+        --High_School_Class__c IN (2016, 2017, 2018, 2019, 2020) 
         --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
         --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
 )
