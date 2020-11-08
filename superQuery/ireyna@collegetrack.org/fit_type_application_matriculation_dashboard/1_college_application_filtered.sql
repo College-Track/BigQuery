@@ -1,11 +1,11 @@
-/*#Join College Application data with contact_at_template to pull in Contact and Academic Term fields
+#Join College Application data with contact_at_template to pull in Contact and Academic Term fields
   CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.filtered_college_application`
 OPTIONS
     (
     description="Filtered College Application table with Contact & Academic Term data"
     )
 AS
-*/
+
   SELECT
     A_T.ACT_English_highest_official__c,
     A_T.ACT_Highest_Composite_Single_Sitting__c,
@@ -186,7 +186,7 @@ AS
     A_T.Graduating_Semester__c,
     A_T.HIGH_SCHOOL_GRADUATING_CLASS__c,
     A_T.HS_Grad_Year__c,
-    CAST(A_T.High_School_Class__c AS FLOAT64) AS High_School_Class,
+    CAST(A_T.High_School_Class__c AS INT64) AS High_School_Class,
     A_T.High_School_Grade__c,
     A_T.High_School_Text__c,
     A_T.Highest_Level_of_Education_Achieved__c,
