@@ -1,3 +1,13 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+--Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
 WITH fit_type_application AS
 (
 SELECT
@@ -99,7 +109,7 @@ FROM fit_type_application AS app
 --Join academic term data (matriculation table) to college application data
 LEFT JOIN fit_type_matriculation AS term
     ON app.Contact_Id = term.Contact_Id
---WHERE APP.High_School_Class IN (2016, 2017, 2018, 2019, 2020)   
+WHERE APP.High_School_Class >= 2016
 
 GROUP BY
     app.contact_id,
