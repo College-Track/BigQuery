@@ -132,7 +132,7 @@ SELECT
     Affiliation_Record_ID__c AS Affiliation_id_at,
     aff.id AS id_aff,
     CASE
-        WHEN Enrollment_Status__c IN ("Full-Time", "Part-Time") THEN "Enrolled"
+        WHEN AT_Enrollment_Status__c IN ("Full-time", "Part-time") THEN "Enrolled"
         ELSE "N/A"
         END AS pipeline_category
 
