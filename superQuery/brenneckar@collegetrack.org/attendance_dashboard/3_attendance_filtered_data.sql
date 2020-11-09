@@ -2,7 +2,7 @@ WITH gather_data AS(
   SELECT
     WSA.Id AS WSA_Id,
     WSA.Workshop_Dosage_Type__c,
-    SPLIT(TRIM(RTRIM(WSA.Workshop_Dosage_Type__c, ";")), ';') AS dosage_combined,
+    SPLIT(RTRIM(WSA.Workshop_Dosage_Type__c, ";"), ';') AS dosage_combined,
     WSA.Attendance_Numerator__c,
     WSA.Attendance_Denominator__c,
     0 AS group_base,
@@ -92,9 +92,10 @@ create_col_number AS (
 
 , final_pull AS (
 SELECT
-  MD.* EXCEPT(dosage_combined),
+  MD.* EXCEPT(dosage_combined, dosage_split),
   GD.Attendance_Numerator__c,
-  GD.Attendance_Denominator__c
+  GD.Attendance_Denominator__c,
+  TRIM(MD.dosage_split) AS dosage_split
 --   GD.* EXCEPT(dosage_combined)
 
 --   MD.dosage_split
