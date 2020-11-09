@@ -18,6 +18,7 @@ SELECT
   Region,
   region_abrev,
   Outcome__c,
+  CoVitality_Scorecard_Color_Most_Recent__c,
   COUNT(Student__c) AS record_count
 FROM
   `data-studio-260217.attendance_dashboard.tmp_filtered_attendance`
@@ -41,5 +42,6 @@ GROUP BY
   Region,
   region_abrev,
   Outcome__c,
-  dosage_split
+  dosage_split,
+  CoVitality_Scorecard_Color_Most_Recent__c
   ORDER BY Workshop_Dosage_Type__c
