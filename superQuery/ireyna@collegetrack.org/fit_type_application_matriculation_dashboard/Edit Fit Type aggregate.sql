@@ -46,6 +46,7 @@ SELECT
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.college_id = accnt.id
     WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+    AND Application_status__c = "Applied"
 
 ),
 
