@@ -2,7 +2,7 @@ WITH gather_data AS(
   SELECT
     WSA.Id AS WSA_Id,
     WSA.Workshop_Dosage_Type__c,
-    SPLIT(RTRIM(WSA.Workshop_Dosage_Type__c, ";"), ';') AS dosage_combined,
+    SPLIT(RTRIM(RTRIM(WSA.Workshop_Dosage_Type__c, ";")," "), ';') AS dosage_combined,
     WSA.Attendance_Numerator__c,
     WSA.Attendance_Denominator__c,
     0 AS group_base,
