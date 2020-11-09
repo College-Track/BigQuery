@@ -100,6 +100,7 @@ SELECT
         ON app.college_id = accnt.id
     WHERE Indicator_Completed_CT_HS_Program__c = TRUE
     AND Application_status__c = "Applied"
+    AND admission_status__c = "Accepted and Enrolled"
     AND High_School_Class >= 2017
 
 ),
@@ -132,7 +133,7 @@ SELECT
     Affiliation_Record_ID__c AS Affiliation_id_at,
     aff.id AS id_aff,
     CASE
-        WHEN AT_Enrollment_Status__c IN ("Full-time", "Part-time") THEN "Matriculated"
+        WHEN Indicator_College_Matriculation__c <> "Did not matriculate" THEN "Matriculated"
         ELSE "N/A"
         END AS pipeline_category
 
