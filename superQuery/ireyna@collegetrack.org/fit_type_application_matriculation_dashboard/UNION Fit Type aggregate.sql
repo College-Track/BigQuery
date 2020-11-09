@@ -134,7 +134,8 @@ SELECT
     aff.id AS id_aff,
     CASE
         WHEN Indicator_College_Matriculation__c <> "Did not matriculate" THEN "Matriculated"
-        ELSE "N/A"
+        WHEN Indicator_College_Matriculation__c = "Did not matriculate" THEN "Did not Matriculate"
+        ELSE "is null"
         END AS pipeline_category
 
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
