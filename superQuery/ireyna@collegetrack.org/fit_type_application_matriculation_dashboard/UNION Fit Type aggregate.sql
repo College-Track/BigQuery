@@ -39,7 +39,16 @@ SELECT
         ELSE "N/A"
         END AS pipeline_category,
     College_Fit_Type_Applied__c,
-    Fit_Type_Enrolled__c
+    Fit_Type_Enrolled__c,
+
+#pull in AT data
+    academic_term_id,
+    academic_term_name,
+    AT_Grade__c,
+    ct_status_at,
+    Indicator_Years_Since_HS_Grad_to_Date__c,
+    School_Name,
+    School_Predominant_Degree_Awarded__c
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -94,7 +103,16 @@ SELECT
         ELSE "N/A"
         END AS pipeline_category,
     College_Fit_Type_Applied__c,
-    Fit_Type_Enrolled__c
+    Fit_Type_Enrolled__c,
+
+#pull in AT data
+    academic_term_id,
+    academic_term_name,
+    AT_Grade__c,
+    ct_status_at,
+    Indicator_Years_Since_HS_Grad_to_Date__c,
+    School_Name,
+    School_Predominant_Degree_Awarded__c
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -159,6 +177,13 @@ SELECT contact_id,
     site_full,
     site_short,
     region_full,
+    academic_term_id,
+    academic_term_name,
+    AT_Grade__c,
+    ct_status_at,
+    Indicator_Years_Since_HS_Grad_to_Date__c,
+    School_Name,
+    School_Predominant_Degree_Awarded__c,
     College_Fit_Type_Applied__c,
     pipeline_category
 FROM fit_type_application
@@ -171,6 +196,13 @@ SELECT contact_id,
     site_full,
     site_short,
     region_full,
+    academic_term_id,
+    academic_term_name,
+    AT_Grade__c,
+    ct_status_at,
+    Indicator_Years_Since_HS_Grad_to_Date__c,
+    School_Name,
+    School_Predominant_Degree_Awarded__c,
     Fit_Type_Enrolled__c,
     pipeline_category
 FROM fit_type_enrolled
@@ -183,6 +215,13 @@ SELECT contact_id,
     site_full,
     site_short,
     region_full,
+    academic_term_id,
+    academic_term_name,
+    AT_Grade__c,
+    ct_status_at,
+    Indicator_Years_Since_HS_Grad_to_Date__c,
+    School_Name,
+    School_Predominant_Degree_Awarded__c,
     fit_type_affiliation,
     pipeline_category
 FROM fit_type_matriculation
