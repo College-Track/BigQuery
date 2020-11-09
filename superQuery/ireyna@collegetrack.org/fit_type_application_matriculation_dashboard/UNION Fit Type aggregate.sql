@@ -132,7 +132,7 @@ SELECT
     Affiliation_Record_ID__c AS Affiliation_id_at,
     aff.id AS id_aff,
     CASE
-        WHEN AT_Enrollment_Status__c IN ("Full-time", "Part-time") THEN "Enrolled"
+        WHEN AT_Enrollment_Status__c IN ("Full-time", "Part-time") THEN "Matriculated"
         ELSE "N/A"
         END AS pipeline_category
 
@@ -154,6 +154,7 @@ SELECT contact_id,
     site_full,
     site_short,
     region_full,
+    College_Fit_Type_Applied__c,
     pipeline_category
 FROM fit_type_application
 
@@ -165,6 +166,7 @@ SELECT contact_id,
     site_full,
     site_short,
     region_full,
+    Fit_Type_Enrolled__c,
     pipeline_category
 FROM fit_type_enrolled
 
@@ -176,5 +178,6 @@ SELECT contact_id,
     site_full,
     site_short,
     region_full,
+    fit_type_affiliation,
     pipeline_category
 FROM fit_type_matriculation
