@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.pipeline_data`
+OPTIONS
+    (
+    description= "This is a UNION ALL table that aggregates Fit Type categories based on its phase within the pipeline (application, enrollment, matriculated). The base of this table is the filtered_college_application and contact_at_template"
+    )
+AS
+
 WITH fit_type_application AS
 (
 SELECT
@@ -184,7 +191,7 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    College_Fit_Type_Applied__c AS Fit_Type,
+    College_Fit_Type_Applied__c AS Fit_Type, #sourced from College Application
     pipeline_category
 FROM fit_type_application
 
@@ -203,7 +210,7 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    Fit_Type_Enrolled__c AS Fit_Type,
+    Fit_Type_Enrolled__c AS Fit_Type, #sourced from College Application
     pipeline_category
 FROM fit_type_enrolled
 
@@ -222,6 +229,6 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    fit_type_affiliation AS Fit_Type,
+    fit_type_affiliation AS Fit_Type, #sourced from Affiliation
     pipeline_category
 FROM fit_type_matriculation
