@@ -47,7 +47,8 @@ WITH gather_data AS(
     CAT.Indicator_Sem_Attendance_Above_80__c,
     CAT.region,
     CAT.region_abrev,
-    CAT.College_Track_Status_Name
+    CAT.College_Track_Status_Name,
+    CAT.CoVitality_Scorecard_Color_Most_Recent__c
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c` AS WSA
     LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` CAT ON WSA.Student__c = CAT.Contact_Id
