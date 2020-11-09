@@ -55,7 +55,8 @@ SELECT
     ct_status_at,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
-    School_Predominant_Degree_Awarded__c
+    School_Predominant_Degree_Awarded__c,
+    Indicator_College_Matriculation__c
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -119,7 +120,8 @@ SELECT
     ct_status_at,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
-    School_Predominant_Degree_Awarded__c
+    School_Predominant_Degree_Awarded__c,
+    Indicator_College_Matriculation__c
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -149,6 +151,7 @@ SELECT
     AT_Grade__c,
     student_audit_status__c AS ct_status_at,
     Indicator_Years_Since_HS_Grad_to_Date__c,
+    Indicator_College_Matriculation__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
     npe5__Organization__c AS Affiliation_School_id,
@@ -191,6 +194,7 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
+    Indicator_College_Matriculation__c,
     College_Fit_Type_Applied__c AS Fit_Type, #sourced from College Application
     pipeline_category
 FROM fit_type_application
@@ -210,6 +214,7 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
+    Indicator_College_Matriculation__c,
     Fit_Type_Enrolled__c AS Fit_Type, #sourced from College Application
     pipeline_category
 FROM fit_type_enrolled
@@ -229,6 +234,7 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
+    Indicator_College_Matriculation__c,
     fit_type_affiliation AS Fit_Type, #sourced from Affiliation
     pipeline_category
 FROM fit_type_matriculation
