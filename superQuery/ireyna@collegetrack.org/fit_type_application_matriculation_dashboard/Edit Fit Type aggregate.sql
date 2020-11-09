@@ -35,9 +35,61 @@ SELECT
     Application_status__c,
     admission_status__c,
      CASE
-        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
+        WHEN Application_status__c = "Applied" THEN "Applied"
         ELSE "N/A"
-        END AS acceptance_group,
+        END AS pipeline_category,
+    College_Fit_Type_Applied__c,
+    Fit_Type_Enrolled__c
+    
+    --Join with Account object to pull in name of School/College
+    FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
+        ON app.college_id = accnt.id
+    WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+    AND Application_status__c = "Applied"
+
+),
+
+fit_type_enrolled AS
+(
+SELECT
+
+#pull in demographics, academics
+    contact_id,
+    Full_Name__c,
+    College_Track_Status_Name,
+    High_School_Class,
+    Site_Text__c AS site_full,
+    site_short,
+    region AS region_full,
+    region_short,
+    GPA_Cumulative__c AS CGPA_11th,
+    CASE
+      WHEN GPA_Cumulative__c < 3 THEN "Below 3.0"
+      WHEN GPA_Cumulative__c < 3.25 THEN "3.0 - 3.24"
+      WHEN GPA_Cumulative__c >= 3.25 THEN "3.25+"
+      ELSE "Missing"
+    END AS CGPA_11th_bucket,
+    Readiness_English_Official__c,
+    Readiness_Math_Official__c,
+    Readiness_Composite_Off__c,
+    Gender__c,
+    Ethnic_background__c,
+    Indicator_Low_Income__c,
+    First_Generation_FY20__c,
+    Indicator_Completed_CT_HS_Program__c,
+    
+#pull in college application data
+    college_app_id,
+    app.college_id,
+    accnt.Name AS account_name,
+    Type_of_School__c,
+    Application_status__c,
+    admission_status__c,
+     CASE
+        WHEN admission_status__c = "Accepted and Enrolled" THEN "Enrolled"
+        ELSE "N/A"
+        END AS pipeline_category,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c
     
@@ -77,6 +129,10 @@ SELECT
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation,
     Affiliation_Record_ID__c AS Affiliation_id_at,
     aff.id AS id_aff,
+    CASE
+        WHEN Enrollment_Status__c IN ("Full-Time", "Part-Time") THEN "Enrolled"
+        ELSE "N/A"
+        END AS pipeline_category
 
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
  --Join with Affiliation object
@@ -90,65 +146,33 @@ SELECT
         --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
 )
 
-SELECT
-    app.*,
-    term.*
-        EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
-    CASE
-      WHEN College_Fit_Type_Applied__c IN ("Best Fit", "Good Fit", "Local Affordable", "Situtational", "None") THEN "Applied"
-      WHEN Fit_Type_Enrolled__c IN ("Best Fit", "Good Fit", "Local Affordable", "Situtational", "None") THEN "Enrolled"
-      WHEN fit_type_affiliation IN ("Best Fit", "Good Fit", "Local Affordable", "Situtational", "None") THEN "Matriculated"
-      ELSE "N/A"
-    END AS pipeline_category,
-
-FROM fit_type_application AS app
-
---Join academic term data (matriculation table) to college application data
-LEFT JOIN fit_type_matriculation AS term
-    ON app.Contact_Id = term.Contact_Id
-WHERE APP.High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) dat
-
-GROUP BY
-    app.contact_id,
+SELECT contact_id,
     Full_Name__c,
-    College_Track_Status_Name,
-    High_School_Class,
+    --High_School_Class,
     site_full,
     site_short,
     region_full,
-    region_short,
-    CGPA_11th,
-    CGPA_11th_bucket,
-    Readiness_English_Official__c,
-    Readiness_Math_Official__c,
-    Readiness_Composite_Off__c,
-    Gender__c,
-    Ethnic_background__c,
-    Indicator_Low_Income__c,
-    First_Generation_FY20__c,
-    Indicator_Completed_CT_HS_Program__c,
-    college_app_id,
-    app.college_id,
-    account_name,
-    Type_of_School__c,
-    Application_status__c,
-    admission_status__c,
-    acceptance_group,
-    College_Fit_Type_Applied__c,
-    Fit_Type_Enrolled__c,
-    academic_term_name,
-    academic_term_id,
-    AT_Grade__c,
-    ct_status_at,
-    Indicator_Years_Since_HS_Grad_to_Date__c,
-    School_Name,
-    School_Predominant_Degree_Awarded__c,
-    Affiliation_School_id,
-    Situational_Fit_Type__c,
-    Situational_Best_Fit_Context__c,
-    Fit_Type_Current__c,
-    fit_type_affiliation,
-    fit_type_affiliation_at,
-    fit_type_start_of_affiliation,
-    Affiliation_id_at,
-    id_aff
+    pipeline_category
+FROM fit_type_application
+
+UNION ALL
+
+SELECT contact_id,
+    Full_Name__c,
+    --High_School_Class,
+    site_full,
+    site_short,
+    region_full,
+    pipeline_category
+FROM fit_type_enrolled
+
+UNION ALL
+
+SELECT contact_id,
+    Full_Name__c,
+    --High_School_Class__c,
+    site_full,
+    site_short,
+    region_full,
+    pipeline_category
+FROM fit_type_matriculation
