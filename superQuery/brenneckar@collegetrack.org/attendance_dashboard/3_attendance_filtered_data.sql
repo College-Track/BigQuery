@@ -50,30 +50,30 @@ WITH gather_data AS(
     CAT.College_Track_Status_Name
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c` AS WSA
-    LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` CAT
-     ON WSA.Student__c = CAT.Contact_Id AND WSA.Academic_Semester__c = CAT.AT_Id
-    
+    LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` CAT ON WSA.Student__c = CAT.Contact_Id
+    AND WSA.Academic_Semester__c = CAT.AT_Id
   WHERE
     Student_Site__c != 'College Track Arlen'
     AND (
       CAT.College_Track_Status_Name = 'Current CT HS Student'
       OR CAT.College_Track_Status_Name = 'Onboarding'
       OR CAT.College_Track_Status_Name = 'Leave of Absence'
-    ) 
+    )
     AND WSA.Date__c >= "2019-08-01"
 ),
 mod_dosage AS (
   SELECT
-    * EXCEPT(Attendance_Numerator__c, Attendance_Denominator__c),
+    *
+  EXCEPT(
+      Attendance_Numerator__c,
+      Attendance_Denominator__c
+    ),
     Attendance_Numerator__c AS mod_numerator,
     Attendance_Denominator__c AS mod_denominator
-    
   FROM
     gather_data
     CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
 ),
-
-
 create_col_number AS (
   SELECT
     *,
@@ -84,27 +84,28 @@ create_col_number AS (
     ) - 1 As group_count,
   from
     mod_dosage
-)
-
--- SELECT COUNT(DISTINCT(WSA_ID))
+) -- SELECT COUNT(DISTINCT(WSA_ID))
 -- FROM gather_data
 -- -- ORDER BY WSA_Id
-
-, final_pull AS (
-SELECT
-  MD.* EXCEPT(dosage_combined, dosage_split),
-  GD.Attendance_Numerator__c,
-  GD.Attendance_Denominator__c,
-  TRIM(MD.dosage_split) AS dosage_split
---   GD.* EXCEPT(dosage_combined)
-
---   MD.dosage_split
-FROM
-  create_col_number MD
-  LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
-  AND MD.group_count = GD.group_base
- ORDER BY GD.WSA_Id
+,
+final_pull AS (
+  SELECT
+    MD.*
+  EXCEPT(dosage_combined),
+    GD.Attendance_Numerator__c,
+    GD.Attendance_Denominator__c,
+    --   GD.* EXCEPT(dosage_combined)
+    --   MD.dosage_split
+  FROM
+    create_col_number MD
+    LEFT JOIN gather_data GD ON GD.WSA_Id = MD.WSA_Id
+    AND MD.group_count = GD.group_base
+  ORDER BY
+    GD.WSA_Id
 )
-
-SELECT *
-FROM final_pull
+SELECT
+  *
+EXCEPT(dosage_split),
+  TRIM(dosage_split) AS dosage_split
+FROM
+  final_pull
