@@ -184,7 +184,7 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    College_Fit_Type_Applied__c,
+    College_Fit_Type_Applied__c AS Fit_Type,
     pipeline_category
 FROM fit_type_application
 
@@ -203,7 +203,7 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    Fit_Type_Enrolled__c,
+    Fit_Type_Enrolled__c AS Fit_Type,
     pipeline_category
 FROM fit_type_enrolled
 
@@ -222,6 +222,6 @@ SELECT contact_id,
     Indicator_Years_Since_HS_Grad_to_Date__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
-    fit_type_affiliation,
+    fit_type_affiliation AS Fit_Type,
     pipeline_category
 FROM fit_type_matriculation
