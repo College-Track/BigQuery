@@ -1,3 +1,3 @@
 SELECT  Readiness_Composite_Off__c ,Readiness_English_Official__c, Readiness_Math_Official__c, act_sat_readiness
 FROM `data-studio-260217.fit_type_pipeline.aggregate_data`
-WHERE act_sat_readiness = "No Score on File"
+WHERE act_sat_readiness = "No Score on File" OR "Not/Near Ready"
