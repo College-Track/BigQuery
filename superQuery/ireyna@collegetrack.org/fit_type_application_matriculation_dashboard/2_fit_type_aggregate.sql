@@ -1,3 +1,13 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+--Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
 WITH fit_type_application AS
 (
 SELECT
@@ -88,7 +98,7 @@ SELECT
     AND term.Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
     AND AT_Enrollment_Status__c IN ("Full-time","Part-time", "Approved Gap Year")
     AND High_School_Class__c IN ("2017", "2018", "2019", "2020") 
-        --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
+        --AND term.RecordTypeId = "01246000000RNnTAAW" #College/University
         --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
 )
 
