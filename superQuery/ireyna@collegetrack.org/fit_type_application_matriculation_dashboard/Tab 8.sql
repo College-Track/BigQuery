@@ -1,3 +1,4 @@
-SELECT count(distinct contact_id) AS id, count(fit_type_affiliation) AS fit_aff, count(Fit_Type_Enrolled__c) AS fit_enrolled, count(College_Fit_Type_Applied__c) AS fit_applied, site_short
+SELECT count(contact_id), CGPA_11th_bucket
 FROM `data-studio-260217.fit_type_pipeline.aggregate_data`
-group by site_short
+where CGPA_11th_bucket = "Below 2.5"
+GROUP BY CGPA_11th_bucket
