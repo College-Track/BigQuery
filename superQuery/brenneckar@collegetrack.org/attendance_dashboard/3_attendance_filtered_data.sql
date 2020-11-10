@@ -110,4 +110,11 @@ EXCEPT(dosage_split),
   TRIM(dosage_split) AS dosage_split
 FROM
   final_pull
-  WHERE Date__c <= CURRENT_DATE()
+WHERE
+  Date__c <= CURRENT_DATE()
+  AND Attendance_Excluded__c = FALSE
+  AND Workshop_Dosage_Type__c IS NOT NULL
+  AND (
+    mod_denominator > 0
+    OR mod_numerator > 0
+  )
