@@ -103,6 +103,7 @@ FROM fit_type_application AS app
 LEFT JOIN fit_type_matriculation AS term
     ON app.Contact_Id = term.Contact_Id
 WHERE APP.High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+AND Application_status__c = "Applied"
 
 GROUP BY
     app.contact_id,
