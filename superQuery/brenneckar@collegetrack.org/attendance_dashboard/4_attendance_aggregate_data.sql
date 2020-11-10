@@ -22,10 +22,8 @@ SELECT
   COUNT(Student__c) AS record_count
 FROM
   `data-studio-260217.attendance_dashboard.tmp_filtered_attendance`
-WHERE
-  Attendance_Excluded__c = FALSE
-  AND Workshop_Dosage_Type__c IS NOT NULL
-  AND (mod_denominator > 0 OR mod_numerator > 0)
+
+
 
 GROUP BY
   Student_Site__c,
