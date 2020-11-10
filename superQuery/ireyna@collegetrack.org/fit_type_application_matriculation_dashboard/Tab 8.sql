@@ -1,5 +1,3 @@
-SELECT DISTINCT count (distinct contact_id), site_short
+SELECT count(fit_type_affiliation), count(Fit_Type_Enrolled__c), count(College_Fit_Type_Applied__c), site_short
 FROM `data-studio-260217.fit_type_pipeline.aggregate_data`
-where AT_Enrollment_Status__c in ("Full-time","Part-time", "Approved Gap Year")
-AND site_short="Oakland"
 group by site_short
