@@ -110,3 +110,4 @@ EXCEPT(dosage_split),
   TRIM(dosage_split) AS dosage_split
 FROM
   final_pull
+  WHERE Date__c <= CURRENT_DATE()
