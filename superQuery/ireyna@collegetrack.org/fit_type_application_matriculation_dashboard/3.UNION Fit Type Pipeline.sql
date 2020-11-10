@@ -67,6 +67,7 @@ SELECT
     AND Application_status__c = "Applied"
     AND High_School_Class >= 2017
     AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
+    AND AT_Enrollment_Status__c IN ("Full-time","Part-time", "Approved Gap Year")
 
 ),
 
@@ -132,6 +133,7 @@ SELECT
     AND admission_status__c = "Accepted and Enrolled"
     AND High_School_Class >= 2017
     AND Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
+    AND AT_Enrollment_Status__c IN ("Full-time","Part-time", "Approved Gap Year")
 
 ),
 
