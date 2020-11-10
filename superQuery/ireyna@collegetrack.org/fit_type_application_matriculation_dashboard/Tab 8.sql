@@ -1,6 +1,7 @@
 SELECT
-    count(distinct School__c)
-
+    
+    School__c,
+    School_Name,
     
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
  --Join with Affiliation object
