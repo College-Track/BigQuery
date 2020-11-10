@@ -1,10 +1,3 @@
-CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.pipeline_data`
-OPTIONS
-    (
-    description= "This is a UNION ALL table that aggregates Fit Type categories based on its phase within the pipeline (application, enrollment, matriculated). The base of this table is the filtered_college_application and contact_at_template"
-    )
-AS
-
 WITH fit_type_application AS
 (
 SELECT
