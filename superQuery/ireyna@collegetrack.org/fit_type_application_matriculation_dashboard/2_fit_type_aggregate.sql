@@ -24,7 +24,7 @@ SELECT
     GPA_Cumulative__c AS CGPA_11th,
     CASE
       WHEN GPA_Cumulative__c <= 2.49 THEN "Below 2.5"
-      WHEN GPA_Cumulative__c < 2.75 - 2 THEN "2.5 - 2.74"
+      WHEN GPA_Cumulative__c < 2.75 THEN "2.5 - 2.74"
       WHEN GPA_Cumulative__c < 3 THEN "2.75 - 2.99"
       WHEN GPA_Cumulative__c < 3.25 THEN "3.0 - 3.24"
       WHEN GPA_Cumulative__c >= 3.25 THEN "3.25+"
