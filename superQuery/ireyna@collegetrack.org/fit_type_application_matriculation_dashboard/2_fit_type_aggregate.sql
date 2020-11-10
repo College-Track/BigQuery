@@ -63,7 +63,7 @@ SELECT
 fit_type_matriculation AS
 (
 SELECT
-      term.contact_id,
+    term.contact_id,
     term.Full_Name__c,
     High_School_Class__c,
     Site_Text__c AS site_full,
@@ -78,6 +78,7 @@ SELECT
     Indicator_College_Matriculation__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
+    AT_Enrollment_Status__c,
     npe5__Organization__c AS Affiliation_School_id,
     aff.Situational_Fit_Type__c,
     aff.Situational_Best_Fit_Context__c,
@@ -86,7 +87,7 @@ SELECT
     term.Fit_Type__c AS fit_type_affiliation_at,
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation,
     Affiliation_Record_ID__c AS Affiliation_id_at,
-    aff.id AS id_aff,
+    aff.id AS id_aff
 
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
  --Join with Affiliation object
@@ -111,7 +112,7 @@ FROM fit_type_application AS app
 --Join academic term data (matriculation table) to college application data
 LEFT JOIN fit_type_matriculation AS term
     ON app.Contact_Id = term.Contact_Id
-WHERE APP.High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) dat
+WHERE APP.High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
 
 GROUP BY
     app.contact_id,
@@ -149,6 +150,7 @@ GROUP BY
     Indicator_College_Matriculation__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
+    AT_Enrollment_Status__c,
     Affiliation_School_id,
     Situational_Fit_Type__c,
     Situational_Best_Fit_Context__c,
