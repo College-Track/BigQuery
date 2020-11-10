@@ -1,37 +1,16 @@
 SELECT
+    
+    School__c,
+    School_Name,
+    
+    FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
+ --Join with Affiliation object
+    FULL JOIN `data-warehouse-289815.salesforce_raw.npe5__Affiliation__c` AS aff
+        ON term.Affiliation_Record_ID__c = aff.Id
 
-#pull in demographics, academics
-    contact_id,
-    Full_Name__c,
-    High_School_Class,
-    site_short,
-    region_short,
-    GPA_Cumulative__c AS CGPA_11th,
-    CASE
-      WHEN GPA_Cumulative__c <= 2.49 THEN "Below 2.5"
-      WHEN GPA_Cumulative__c < 2.75 THEN "2.5 - 2.74"
-      WHEN GPA_Cumulative__c < 3 THEN "2.75 - 2.99"
-      WHEN GPA_Cumulative__c < 3.25 THEN "3.0 - 3.24"
-      WHEN GPA_Cumulative__c >= 3.25 THEN "3.25+"
-      ELSE "Missing"
-    END AS CGPA_11th_bucket,
-    
-#pull in college application data
-    college_app_id,
-    app.college_id,
-    accnt.Name AS account_name,
-    Type_of_School__c,
-    Application_status__c,
-    admission_status__c,
-     CASE
-        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
-        ELSE "N/A"
-        END AS acceptance_group,
-    College_Fit_Type_Applied__c,
-    Fit_Type_Enrolled__c
-    
-    --Join with Account object to pull in name of School/College
-    FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
-    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
-        ON app.college_id = accnt.id
-    WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+    WHERE term.Indicator_Completed_CT_HS_Program__c = TRUE
+    AND term.Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
+    AND AT_Enrollment_Status__c IN ("Full-time","Part-time", "Approved Gap Year")
+    AND High_School_Class__c IN ("2017", "2018", "2019", "2020") 
+        --AND term.RecordTypeId = "01246000000RNnTAAW" #College/University
+        --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
