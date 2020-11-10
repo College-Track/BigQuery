@@ -164,10 +164,9 @@ SELECT
     Affiliation_Record_ID__c AS Affiliation_id_at,
     aff.id AS id_aff,
     CASE
-        WHEN Indicator_College_Matriculation__c <> "Did not matriculate" THEN "Matriculated"
-        WHEN Indicator_College_Matriculation__c = "Did not matriculate" THEN "Did not Matriculate"
-        ELSE "is null"
-        END AS pipeline_category
+        WHEN AT_Enrollment_Status__c IN ("Full-time","Part-time", "Approved Gap Year") THEN "Matriculation"
+        ELSE "N/A"
+        END AS pipeline_category,
 
     FROM `data-warehouse-289815.sfdc_templates.contact_at_template` AS term
  --Join with Affiliation object
@@ -176,7 +175,8 @@ SELECT
 
     WHERE term.Indicator_Completed_CT_HS_Program__c = TRUE
     AND term.Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
-    AND High_School_Class__c IN ("2017","2018","2019","2020")
+    AND AT_Enrollment_Status__c IN ("Full-time","Part-time", "Approved Gap Year")
+    AND High_School_Class__c IN ("2017", "2018", "2019", "2020") 
         --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
         --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
 )
