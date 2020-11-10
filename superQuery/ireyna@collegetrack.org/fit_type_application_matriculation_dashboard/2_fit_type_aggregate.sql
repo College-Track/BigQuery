@@ -37,6 +37,7 @@ SELECT
       WHEN Readiness_Composite_Off__c = "1. Ready" THEN "Composite"
       WHEN Readiness_English_Official__c = "1. Ready" THEN "English"
       WHEN Readiness_Math_Official__c = "1. Ready" THEN "Math"
+      WHEN (Readiness_Math_Official__c = "No Score on File" OR Readiness_English_Official__c = "No Score on File" OR Readiness_Composite_Off__c = "No Score on File") THEN "No Score on File"
       ELSE "Not/Near Ready"
     END AS ACT_SAT_readiness,
     Gender__c,
