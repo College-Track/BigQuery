@@ -59,11 +59,11 @@ SELECT
 
 ),
 
---Table houses Academic Term data to isolate Fall Year 1 (Matriculation). Affiliation join to pull in Fit Type fields
+--Table houses Academic Term data to isolate Fall Year 1 (Matriculation), enrolled in any college (including vocational). Affiliation join to pull in Fit Type fields
 fit_type_matriculation AS
 (
 SELECT
-    term.contact_id,
+      term.contact_id,
     term.Full_Name__c,
     High_School_Class__c,
     Site_Text__c AS site_full,
@@ -75,6 +75,7 @@ SELECT
     AT_Grade__c,
     student_audit_status__c AS ct_status_at,
     Indicator_Years_Since_HS_Grad_to_Date__c,
+    Indicator_College_Matriculation__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
     npe5__Organization__c AS Affiliation_School_id,
@@ -94,7 +95,8 @@ SELECT
 
     WHERE term.Indicator_Completed_CT_HS_Program__c = TRUE
     AND term.Indicator_Years_Since_HS_Grad_to_Date__c IN (.33,.25) #Fall Year 1 term
-        --High_School_Class__c IN (2016, 2017, 2018, 2019, 2020) 
+    AND AT_Enrollment_Status__c IN ("Full-time","Part-time", "Approved Gap Year")
+    AND High_School_Class__c IN ("2017", "2018", "2019", "2020") 
         --AND matri.RecordTypeId = "01246000000RNnTAAW" #College/University
         --AND Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting"
 )
@@ -144,6 +146,7 @@ GROUP BY
     AT_Grade__c,
     ct_status_at,
     Indicator_Years_Since_HS_Grad_to_Date__c,
+    Indicator_College_Matriculation__c,
     School_Name,
     School_Predominant_Degree_Awarded__c,
     Affiliation_School_id,
