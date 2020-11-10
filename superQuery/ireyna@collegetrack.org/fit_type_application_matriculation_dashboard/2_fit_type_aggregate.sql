@@ -33,6 +33,12 @@ SELECT
     Readiness_English_Official__c,
     Readiness_Math_Official__c,
     Readiness_Composite_Off__c,
+    CASE
+      WHEN Readiness_Composite_Off__c = "1. Ready" THEN "Composite"
+      WHEN Readiness_English_Official__c = "1. Ready" THEN "English"
+      WHEN Readiness_Math_Official__c = "1. Ready" THEN "Math"
+      ELSE "Not/Near Ready"
+    END AS ACT_SAT_readiness,
     Gender__c,
     Ethnic_background__c,
     Indicator_Low_Income__c,
@@ -131,6 +137,7 @@ GROUP BY
     Readiness_English_Official__c,
     Readiness_Math_Official__c,
     Readiness_Composite_Off__c,
+    ACT_SAT_readiness,
     Gender__c,
     Ethnic_background__c,
     Indicator_Low_Income__c,
