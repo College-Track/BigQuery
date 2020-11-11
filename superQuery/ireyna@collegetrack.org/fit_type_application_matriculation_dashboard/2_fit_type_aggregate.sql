@@ -1,10 +1,34 @@
-WITH fit_type_application AS
+WITH fit_type_enrolled AS
+(
+SELECT 
+    contact_id,
+    Full_Name__c,
+    
+#college application data
+    app.college_id,
+    accnt.Name AS account_name,
+    admission_status__c,
+     CASE
+        WHEN admission_status__c = "Accepted and Enrolled" THEN "Accepted and Enrolled"
+        ELSE "N/A"
+        END AS accepted_enrolled_school,
+    Fit_Type_Enrolled__c
+    
+    FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
+        ON app.college_id = accnt.id
+    WHERE Indicator_Completed_CT_HS_Program__c = TRUE    
+    AND admission_status__c = "Accepted and Enrolled"
+),
+
+--Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
+fit_type_application AS
 (
 SELECT
 
-#pull in demographics, academics
-    contact_id,
-    Full_Name__c,
+#demographics, academic data
+    app.contact_id,
+    app.Full_Name__c,
     College_Track_Status_Name,
     High_School_Class,
     Site_Text__c AS site_full,
@@ -29,27 +53,33 @@ SELECT
     First_Generation_FY20__c,
     Indicator_Completed_CT_HS_Program__c,
     
-#pull in college application data
+#college application data
     college_app_id,
     app.college_id,
     accnt.Name AS account_name,
     Type_of_School__c,
     Application_status__c,
-    admission_status__c,
+    app.admission_status__c,
+    accepted_enrolled_school,
      CASE
-        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
+        WHEN app.admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
         ELSE "N/A"
         END AS acceptance_group,
     College_Fit_Type_Applied__c,
-    Fit_Type_Enrolled__c
+    app.Fit_Type_Enrolled__c
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.college_id = accnt.id
-    WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+    
+    LEFT JOIN Fit_Type_Enrolled AS enrolled
+        ON enrolled.contact_id = app.contact_id
+        
+    WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
 
 ),
+
 
 --Table houses Academic Term data to isolate Fall Year 1 (Matriculation), enrolled in any college (including vocational). Affiliation join to pull in Fit Type fields
 fit_type_matriculation AS
@@ -132,6 +162,7 @@ GROUP BY
     Type_of_School__c,
     Application_status__c,
     admission_status__c,
+    accepted_enrolled_school,
     acceptance_group,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
