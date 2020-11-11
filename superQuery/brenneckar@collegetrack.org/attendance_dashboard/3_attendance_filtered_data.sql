@@ -7,7 +7,6 @@ WITH gather_data AS(
     WSA.Attendance_Denominator__c,
     0 AS group_base,
     WSA.Class_Session__c,
-    -- W.Class__c,
     WSA.Student__c,
     CAT.Full_Name__c,
     WSA.Date__c,
@@ -44,15 +43,21 @@ WITH gather_data AS(
       ELSE '3.5 or Greater'
     END GPA_Bucket,
     CAT.site_abrev,
+    CAT.site_short,
+    CAT.CT_Coach__c,
+    CAT.Most_Recent_GPA_Cumulative__c,
     CAT.Indicator_Sem_Attendance_Above_80__c,
     CAT.region,
     CAT.region_abrev,
     CAT.College_Track_Status_Name,
-    CAT.CoVitality_Scorecard_Color_Most_Recent__c
+    CAT.CoVitality_Scorecard_Color_Most_Recent__c,
+    WS.Class__c
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c` AS WSA
     LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` CAT ON WSA.Student__c = CAT.Contact_Id
     AND WSA.Academic_Semester__c = CAT.AT_Id
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Class_Session__c` WS ON WS.Id = WSA.Class_Session__c
+    -- LEFT JOIN `data-warehouse-289815.salesforce_raw.Class__c` W ON W.Id = WS.Class__c
   WHERE
     Student_Site__c != 'College Track Arlen'
     AND (
