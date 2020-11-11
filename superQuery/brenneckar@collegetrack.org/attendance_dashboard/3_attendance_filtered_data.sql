@@ -62,7 +62,7 @@ WITH gather_data AS(
       WS.Class__c,
       "/view"
     ) AS workshop_url,
-    WS.Instructor__c,
+    WS.Primary_Staff__c,
     WkShpInstructor__c
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c` AS WSA
