@@ -51,7 +51,19 @@ WITH gather_data AS(
     CAT.region_abrev,
     CAT.College_Track_Status_Name,
     CAT.CoVitality_Scorecard_Color_Most_Recent__c,
-    WS.Class__c
+    WS.Class__c,
+    CONCAT(
+      "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
+      WSA.Student__c,
+      "/view"
+    ) AS contact_url,
+    CONCAT(
+      "https://ctgraduates.lightning.force.com/lightning/r/Class__c/",
+      WS.Class__c,
+      "/view"
+    ) AS workshop_url,
+    WS.Instructor__c,
+    WkShpInstructor__c
   FROM
     `data-warehouse-289815.salesforce_raw.Class_Attendance__c` AS WSA
     LEFT JOIN `data-warehouse-289815.sfdc_templates.contact_at_template` CAT ON WSA.Student__c = CAT.Contact_Id
