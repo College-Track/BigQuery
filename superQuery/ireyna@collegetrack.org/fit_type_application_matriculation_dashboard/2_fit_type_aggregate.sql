@@ -130,7 +130,7 @@ SELECT
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
      CASE 
-        WHEN fit_type_affiliation = "Null" THEN "Did not Enroll"
+        WHEN fit_type_affiliation IS NULL THEN "Did not Enroll"
         ELSE fit_type_affiliation
         END,
 
