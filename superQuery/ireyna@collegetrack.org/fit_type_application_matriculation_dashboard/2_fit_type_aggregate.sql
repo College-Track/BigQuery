@@ -6,13 +6,7 @@ SELECT
     
 #college application data
     app.college_id,
-    accnt.Name AS account_name,
-    admission_status__c,
-     CASE
-        WHEN admission_status__c = "Accepted and Enrolled" THEN "Accepted and Enrolled"
-        ELSE "N/A"
-        END AS accepted_enrolled_school,
-    Fit_Type_Enrolled__c
+    accnt.Name AS school_name_accepted_enrolled,
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -56,15 +50,11 @@ SELECT
 #college application data
     college_app_id,
     app.college_id,
-    accnt.Name AS account_name,
+    accnt.Name AS school_name_app,
     Type_of_School__c,
     Application_status__c,
     app.admission_status__c,
-    accepted_enrolled_school,
-     CASE
-        WHEN app.admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
-        ELSE "N/A"
-        END AS acceptance_group,
+    school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c
     
@@ -158,12 +148,11 @@ GROUP BY
     Indicator_Completed_CT_HS_Program__c,
     college_app_id,
     app.college_id,
-    account_name,
+    school_name_app,
     Type_of_School__c,
     Application_status__c,
     admission_status__c,
-    accepted_enrolled_school,
-    acceptance_group,
+    school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
     academic_term_name,
