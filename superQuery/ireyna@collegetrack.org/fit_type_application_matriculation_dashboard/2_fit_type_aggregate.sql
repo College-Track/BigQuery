@@ -99,7 +99,7 @@ SELECT
     aff.Fit_Type_Current__c,
     aff.Fit_Type__c AS fit_type_affiliation,
     CASE 
-        WHEN term.Fit_Type__c  IS NULL THEN "Did not Enroll"
+        WHEN term.Fit_Type__c  = "Null" THEN "Did not Enroll"
         ELSE term.Fit_Type__c 
     END AS fit_type_affiliation_at,
     --term.Fit_Type__c AS fit_type_affiliation_at,
