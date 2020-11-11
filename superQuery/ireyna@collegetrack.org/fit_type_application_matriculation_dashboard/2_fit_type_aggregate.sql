@@ -129,7 +129,8 @@ SELECT
     app.*,
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
-    IF(Fit_Type__c IS NULL, 'did not enroll',Fit_Type__c) AS fit_type_affiliation  
+        IF(Fit_Type__c IS NULL, 'Did Not Enroll',Fit_Type__c) AS fit_type_affiliation  
+
 FROM fit_type_application AS app
 
 --Join academic term data (matriculation table) to college application data
