@@ -1,3 +1,12 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -93,6 +102,11 @@ SELECT
     School_Name,
     School_Predominant_Degree_Awarded__c,
     AT_Enrollment_Status__c,
+    CASE 
+        WHEN AT_Enrollment_Status__c IN ("Withdrew", "Not Enrolled", "Leave of Absence", "Unknown") THEN "Did Not Enroll"
+        WHEN AT_Enrollment_Status__c IS NULL THEN "Did Not Enroll"
+        ELSE "Enrolled FT/PT/Approved Gap Year"
+        END AS enrollment_bucket_at,
     npe5__Organization__c AS Affiliation_School_id,
     aff.Situational_Fit_Type__c,
     aff.Situational_Best_Fit_Context__c,
@@ -154,10 +168,10 @@ GROUP BY
     Type_of_School__c,
     Application_status__c,
     admission_status__c,
-    school_name_accepted_enrolled,
+    school_name_accepted_enrolled, #for interactive filtering
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
-    fit_type_enrolled_chart,
+    fit_type_enrolled_chart, #for interactive filtering
     academic_term_name,
     academic_term_id,
     AT_Grade__c,
@@ -167,6 +181,7 @@ GROUP BY
     School_Name,
     School_Predominant_Degree_Awarded__c,
     AT_Enrollment_Status__c,
+    enrollment_bucket_at,
     Affiliation_School_id,
     Situational_Fit_Type__c,
     Situational_Best_Fit_Context__c,
