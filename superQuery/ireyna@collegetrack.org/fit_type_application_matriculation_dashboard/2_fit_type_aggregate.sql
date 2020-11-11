@@ -7,6 +7,7 @@ SELECT
 #college application data
     app.college_id,
     accnt.Name AS school_name_accepted_enrolled,
+    Fit_Type_Enrolled__c AS fit_type_enrolled_chart
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -56,7 +57,8 @@ SELECT
     app.admission_status__c,
     school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
-    app.Fit_Type_Enrolled__c
+    app.Fit_Type_Enrolled__c,
+    fit_type_enrolled_chart
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -155,6 +157,7 @@ GROUP BY
     school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
+    fit_type_enrolled_chart,
     academic_term_name,
     academic_term_id,
     AT_Grade__c,
