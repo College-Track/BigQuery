@@ -97,10 +97,7 @@ SELECT
     aff.Situational_Fit_Type__c,
     aff.Situational_Best_Fit_Context__c,
     aff.Fit_Type_Current__c,
-    CASE
-      WHEN aff.Fit_Type__c IS NULL THEN "Did not Enroll"
-      ELSE aff.Fit_Type__c
-    END AS fit_type_affiliation,
+    aff.Fit_Type__c AS fit_type_affiliation,
     term.Fit_Type__c AS fit_type_affiliation_at,
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation,
     Affiliation_Record_ID__c AS Affiliation_id_at,
@@ -175,6 +172,10 @@ GROUP BY
     Situational_Best_Fit_Context__c,
     Fit_Type_Current__c,
     fit_type_affiliation,
+    CASE 
+        WHEN fit_type_affiliation IS NULL THEN "Did not Enroll"
+        ELSE fit_type_affiliation
+        END,
     fit_type_affiliation_at,
     fit_type_start_of_affiliation,
     Affiliation_id_at,
