@@ -127,7 +127,6 @@ SELECT
 
 SELECT
     app.*,
-    count(app.contact_id) AS National,
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
         IF(Fit_Type__c IS NULL, 'Did Not Enroll',Fit_Type__c) AS fit_type_affiliation  
