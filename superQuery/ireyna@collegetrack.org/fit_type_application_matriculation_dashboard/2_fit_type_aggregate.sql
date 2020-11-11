@@ -1,3 +1,12 @@
+
+
+/*CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS*/
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -98,11 +107,7 @@ SELECT
     aff.Situational_Best_Fit_Context__c,
     aff.Fit_Type_Current__c,
     aff.Fit_Type__c AS fit_type_affiliation,
-    CASE 
-        WHEN term.Fit_Type__c  = "Null" THEN "Did not Enroll"
-        ELSE term.Fit_Type__c 
-    END AS fit_type_affiliation_at,
-    --term.Fit_Type__c AS fit_type_affiliation_at,
+    term.Fit_Type__c AS fit_type_affiliation_at,
     aff.Best_Fit_Applied__c AS fit_type_start_of_affiliation,
     Affiliation_Record_ID__c AS Affiliation_id_at,
     aff.id AS id_aff
@@ -123,7 +128,11 @@ SELECT
 SELECT
     app.*,
     term.*
-        EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id)
+        EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
+     CASE 
+        WHEN fit_type_affiliation = "Null" THEN "Did not Enroll"
+        ELSE fit_type_affiliation
+        END,
 
 FROM fit_type_application AS app
 
