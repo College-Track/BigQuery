@@ -21,7 +21,7 @@ SELECT
   CoVitality_Scorecard_Color_Most_Recent__c,
   COUNT(Student__c) AS record_count
 FROM
-  `data-studio-260217.attendance_dashboard.tmp_filtered_attendance`
+  `data-studio-260217.attendance_dashboard.attendance_filtered_data`
 
 
 
