@@ -1,3 +1,12 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -120,7 +129,7 @@ SELECT
     app.*,
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
-    IF(Fit_Type__c IS NULL, 'did not enroll',Fit_Type__c) AS fit_type_affiliation,
+    IF(Fit_Type__c IS NULL, 'Did Not Enroll',Fit_Type__c) AS fit_type_affiliation,
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
       END AS National
