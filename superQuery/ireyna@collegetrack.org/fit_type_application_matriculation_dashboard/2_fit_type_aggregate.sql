@@ -67,6 +67,10 @@ SELECT
     Type_of_School__c,
     Application_status__c,
     app.admission_status__c,
+    CASE
+        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
+        ELSE "N/A"
+        END AS acceptance_group,
     school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
@@ -172,6 +176,7 @@ GROUP BY
     Type_of_School__c,
     Application_status__c,
     admission_status__c,
+    acceptance_group,
     school_name_accepted_enrolled, #for interactive filtering
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
