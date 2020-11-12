@@ -55,6 +55,7 @@ SELECT
     Ethnic_background__c,
     Indicator_Low_Income__c,
     First_Generation_FY20__c,
+    FA_Req_Expected_Financial_Contribution__c,
     Indicator_Completed_CT_HS_Program__c,
     
 #college application data
@@ -159,6 +160,7 @@ GROUP BY
     Ethnic_background__c,
     Indicator_Low_Income__c,
     First_Generation_FY20__c,
+    FA_Req_Expected_Financial_Contribution__c,
     Indicator_Completed_CT_HS_Program__c,
     college_app_id,
     app.college_id,
