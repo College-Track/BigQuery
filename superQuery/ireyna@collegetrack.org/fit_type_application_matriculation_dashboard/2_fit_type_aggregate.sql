@@ -8,12 +8,13 @@ SELECT
     app.college_id,
     accnt.Name,
     Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
-    CASE
+    /*CASE
         WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
-        WHEN Fit_Type_Enrolled__c IS NULL THEN "No enrollment or deferment"
         ELSE accnt.name
-    END AS school_name_accepted_enrolled
-    
+    END AS school_name_accepted_enrolled*/
+    IF(college_id = '0014600000plKMXAA2',"Global Citizen Year",
+        IF(Fit_Type_Enrolled__c IS NULL, "No Enrollment or Deferment",accnt.name))
+        AS school_name_accepted_enrolled
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
