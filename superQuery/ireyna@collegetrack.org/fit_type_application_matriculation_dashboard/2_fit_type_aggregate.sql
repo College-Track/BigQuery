@@ -1,3 +1,13 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -7,13 +17,13 @@ SELECT
 #college application data
     app.college_id,
     accnt.Name AS school_name_accepted_enrolled,
-    Fit_Type_Enrolled__c
+    Fit_Type_Enrolled__c AS fit_type_enrolled_chart
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
-        ON app.college_id = accnt.id
+        ON app.college_id = accnt.Account_ID__c
     WHERE Indicator_Completed_CT_HS_Program__c = TRUE    
-    AND (admission_status__c = "Accepted and Enrolled" OR admission_status__c = "Accepted and Deferred")
+    AND admission_status__c IN ("Accepted and Enrolled", "Accepted and Deferred")
 ),
 
 --Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
@@ -65,6 +75,7 @@ SELECT
     school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
+    fit_type_enrolled_chart
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -138,7 +149,7 @@ SELECT
      IF(School_Name IS NULL, "Not Enrolled",School_Name))
      AS School_Name_AT,
      
-   IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart,
+   --IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart,
    
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
