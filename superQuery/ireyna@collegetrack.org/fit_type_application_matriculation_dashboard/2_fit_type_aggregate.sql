@@ -1,13 +1,3 @@
-
-
-CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
-OPTIONS
-    (
-    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
-    )
-AS
-
-
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -157,9 +147,8 @@ SELECT
      IF(School_Name IS NULL, "Not Enrolled",School_Name))
      AS School_Name_AT,
    
-   /*IF(college_id = '0014600000plKMXAA2',"Global Citizen Year",
-        IF(fit_type_enrolled_chart IS NULL, "No Enrollment or Deferment",app.name))
-        AS school_name_accepted_enrolled,*/
+   IF(fit_type_enrolled_chart IS NULL, "No enrollment or deferment",school_name_accepted_enrolled)
+        AS school_name_accepted_enrolled_2,
         
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
