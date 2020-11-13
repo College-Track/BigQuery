@@ -6,8 +6,13 @@ SELECT
     
 #college application data
     app.college_id,
-    accnt.Name AS school_name_accepted_enrolled,
-    Fit_Type_Enrolled__c AS fit_type_enrolled_chart
+    accnt.Name,
+    Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
+    CASE
+     WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
+     ELSE accnt.name
+    END AS school_name_accepted_enrolled
+    
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -139,7 +144,6 @@ SELECT
    IF(School_Name IS NULL AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "Approved Gap Year",
      IF(School_Name IS NULL, "Not Enrolled",School_Name))
      AS School_Name_AT,
-     
    --IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart,
    
     CASE
