@@ -3,10 +3,14 @@ WITH fit_type_enrolled AS
 SELECT 
     contact_id,
     Full_Name__c,
+    CASE
+        WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
+        ELSE accnt.name
+    END AS school_name_accepted_enrolled,
     
 #college application data
-    app.college_id,
-    accnt.Name AS school_name_accepted_enrolled,
+    college_id,
+    --accnt.Name AS school_name_accepted_enrolled,
     Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
