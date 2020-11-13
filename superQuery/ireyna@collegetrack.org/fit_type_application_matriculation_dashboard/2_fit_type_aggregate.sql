@@ -1,3 +1,13 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -10,7 +20,6 @@ SELECT
     
 #college application data
     college_id,
-    --accnt.Name AS school_name_accepted_enrolled,
     Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
