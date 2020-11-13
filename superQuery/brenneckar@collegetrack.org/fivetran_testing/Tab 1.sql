@@ -1,3 +1,3 @@
-SELECT *
+SELECT global_academic_year_c
 FROM `data-warehouse-289815.salesforce.bank_book_c`
-LIMIT 1000
+WHERE global_academic_year_c != NULL
