@@ -1,3 +1,3 @@
 SELECT *
-FROM `data-warehouse-289815.salesforce.class_attendance_c`
+FROM `data-warehouse-289815.salesforce.class_session_c`
 LIMIT 10
