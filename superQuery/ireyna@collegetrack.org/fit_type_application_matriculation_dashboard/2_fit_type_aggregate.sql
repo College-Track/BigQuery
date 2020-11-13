@@ -1,3 +1,13 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -6,7 +16,7 @@ SELECT
     CASE
         WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
         ELSE accnt.name
-    END AS base_school_name_enrolled,
+    END AS base_school_name_enrolled, #for dupe rows of school student deferred/enrolled in. Pulls in Global Citizen Year instead of NULL. Final transform in final SELECT statement to account for NULLS for students that did not enroll/defer
     
 #college application data
     college_id,
