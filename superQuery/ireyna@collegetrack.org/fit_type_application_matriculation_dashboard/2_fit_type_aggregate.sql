@@ -9,8 +9,8 @@ SELECT
     accnt.Name,
     Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
     CASE
-     WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
-     ELSE accnt.name
+        WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
+        ELSE accnt.name
     END AS school_name_accepted_enrolled
     
     
@@ -60,7 +60,10 @@ SELECT
     college_app_id,
     app.college_id,
     accnt.id AS account_id,
-    accnt.Name AS school_name_app,
+    CASE
+        WHEN app.college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
+        ELSE accnt.name
+    END AS school_name_app,
     Type_of_School__c,
     Application_status__c,
     app.admission_status__c,
