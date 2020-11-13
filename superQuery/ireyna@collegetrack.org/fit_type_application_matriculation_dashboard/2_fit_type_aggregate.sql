@@ -151,7 +151,7 @@ SELECT
    --IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart,
    
    IF(college_id = '0014600000plKMXAA2',"Global Citizen Year",
-        IF(Fit_Type_Enrolled__c IS NULL, "No Enrollment or Deferment",app.name))
+        IF(fit_type_enrolled_chart IS NULL, "No Enrollment or Deferment",app.name))
         AS school_name_accepted_enrolled,
         
     CASE
