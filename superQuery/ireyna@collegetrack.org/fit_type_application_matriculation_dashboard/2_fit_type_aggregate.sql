@@ -7,7 +7,7 @@ SELECT
 #college application data
     app.college_id,
     accnt.Name AS school_name_accepted_enrolled,
-    IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart
+    Fit_Type_Enrolled__c
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -65,7 +65,6 @@ SELECT
     school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
-    fit_type_enrolled_chart
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -134,12 +133,16 @@ SELECT
      IF(Fit_Type__c = "None" AND School_Name IS NULL AND Indicator_College_Matriculation__c <> "Approved Gap Year","Not Enrolled", #to account for erroneous Approved Gap Year entries
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c <> "Predominantly certificate's-degree granting" OR  School_Predominant_Degree_Awarded__c = "Not Classified","Not Enrolled",Fit_Type__c))))))
      AS fit_type_affiliation,
+     
    IF(School_Name IS NULL AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "Approved Gap Year",
      IF(School_Name IS NULL, "Not Enrolled",School_Name))
      AS School_Name_AT,
+     
+   IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart,
+   
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
-      END AS National
+    END AS National
 FROM fit_type_application AS app
 
 --Join academic term data (matriculation table) to college application data
