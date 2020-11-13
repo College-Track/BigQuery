@@ -12,9 +12,7 @@ SELECT
         WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
         ELSE accnt.name
     END AS school_name_accepted_enrolled*/
-    IF(college_id = '0014600000plKMXAA2',"Global Citizen Year",
-        IF(Fit_Type_Enrolled__c IS NULL, "No Enrollment or Deferment",accnt.name))
-        AS school_name_accepted_enrolled
+    
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -62,6 +60,7 @@ SELECT
     college_app_id,
     app.college_id,
     accnt.id AS account_id,
+    accnt.name,
     CASE
         WHEN app.college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
         ELSE accnt.name
@@ -73,7 +72,7 @@ SELECT
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
         ELSE "N/A"
         END AS acceptance_group,
-    school_name_accepted_enrolled,
+    --school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
     fit_type_enrolled_chart
@@ -151,6 +150,10 @@ SELECT
      AS School_Name_AT,
    --IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart,
    
+   IF(college_id = '0014600000plKMXAA2',"Global Citizen Year",
+        IF(Fit_Type_Enrolled__c IS NULL, "No Enrollment or Deferment",app.name))
+        AS school_name_accepted_enrolled,
+        
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
     END AS National
@@ -215,4 +218,5 @@ GROUP BY
     --fit_type_affiliation_at,
     fit_type_start_of_affiliation,
     Affiliation_id_at,
-    id_aff
+    id_aff,
+    name
