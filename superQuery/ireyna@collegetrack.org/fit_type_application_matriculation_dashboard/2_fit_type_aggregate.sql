@@ -10,6 +10,7 @@ SELECT
     Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
     CASE
         WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
+        WHEN Fit_Type_Enrolled__c IS NULL THEN "No enrollment or deferment"
         ELSE accnt.name
     END AS school_name_accepted_enrolled
     
