@@ -7,10 +7,8 @@ SELECT
 #college application data
     app.college_id,
     accnt.Name AS school_name_accepted_enrolled,
-    CASE 
-        WHEN Fit_Type_Enrolled__c IS NULL THEN "No Enrollment or Deferment"
-        ELSE Fit_Type_Enrolled__c
-    END AS fit_type_enrolled_chart
+    IF(Fit_Type_Enrolled__c IS NULL, "Did not enroll or defer",Fit_Type_Enrolled__c) AS fit_type_enrolled_chart
+    
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.college_id = accnt.id
