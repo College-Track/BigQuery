@@ -132,7 +132,7 @@ SELECT
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting","None - 4-yr", 
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly associate's-degree granting","None - 2-yr",
      IF(Fit_Type__c = "None" AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "None",
-     IF(Fit_Type__c = "None" AND Indicator_College_Matriculation__c = "Approved Gap Year" AND School_Name IS NULL,"Not Enrolled",
+     IF(Fit_Type__c = "None" AND School_Name IS NULL AND Indicator_College_Matriculation__c = "Approved Gap Year","Not Enrolled",
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c <> "Predominantly certificate's-degree granting" OR  School_Predominant_Degree_Awarded__c = "Not Classified","Not Enrolled",Fit_Type__c))))))
      AS fit_type_affiliation,
     CASE
