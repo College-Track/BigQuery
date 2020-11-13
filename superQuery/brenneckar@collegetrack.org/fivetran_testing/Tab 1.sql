@@ -1,3 +1,3 @@
 SELECT COUNT(id)
-FROM `data-warehouse-289815.salesforce.contact_pipeline_history_c`
+FROM `data-warehouse-289815.salesforce.account`
 WHERE is_deleted = false
