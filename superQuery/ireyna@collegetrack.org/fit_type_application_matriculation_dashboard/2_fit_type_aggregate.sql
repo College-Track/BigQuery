@@ -1,4 +1,3 @@
-
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -135,6 +134,9 @@ SELECT
      IF(Fit_Type__c = "None" AND School_Name IS NULL AND Indicator_College_Matriculation__c <> "Approved Gap Year","Not Enrolled", #to account for erroneous Approved Gap Year entries
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c <> "Predominantly certificate's-degree granting" OR  School_Predominant_Degree_Awarded__c = "Not Classified","Not Enrolled",Fit_Type__c))))))
      AS fit_type_affiliation,
+   IF(School_Name IS NULL AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "Approved Gap Year",
+     IF(School_Name IS NULL, "Not Enrolled",School_Name))
+     AS School_Name_AT,
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
       END AS National
@@ -186,6 +188,7 @@ GROUP BY
     Indicator_Years_Since_HS_Grad_to_Date__c,
     Indicator_College_Matriculation__c,
     School_Name,
+    School_Name_AT,
     School_Predominant_Degree_Awarded__c,
     AT_Enrollment_Status__c,
     Affiliation_School_id,
