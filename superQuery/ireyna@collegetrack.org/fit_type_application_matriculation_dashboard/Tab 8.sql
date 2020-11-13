@@ -1,5 +1,9 @@
 SElect
-    CASE WHEN fit_type_affiliation IS NULL THEN "did not enroll"
-    ELSE fit_type_affiliation
-    END AS fit_type_affiliation
- FROm `data-studio-260217.fit_type_pipeline.aggregate_data`
+    acct.Name,
+    acct.Account_ID__c,
+    app.College_University_18_Digit_ID__c,
+    app.College_University__c
+ FROm `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
+ full join `data-warehouse-289815.salesforce_raw.Account` AS acct 
+ ON acct.Account_ID__c= app.College_University__c
+ WHERE name = 'Metropolitan State University of Denver'
