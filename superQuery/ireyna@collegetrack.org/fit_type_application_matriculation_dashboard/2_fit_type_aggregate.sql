@@ -6,7 +6,7 @@ SELECT
     CASE
         WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
         ELSE accnt.name
-    END AS school_name_accepted_enrolled,
+    END AS base_school_name_enrolled,
     
 #college application data
     college_id,
@@ -70,7 +70,7 @@ SELECT
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
         ELSE "N/A"
         END AS acceptance_group,
-    school_name_accepted_enrolled,
+    base_school_name_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
     fit_type_enrolled_chart
@@ -132,7 +132,8 @@ SELECT
 )
 
 SELECT
-    app.*,
+    app.*
+        EXCEPT (base_school_name_enrolled),
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
    IF(Fit_Type__c IS NULL, "Not Enrolled",
@@ -147,8 +148,8 @@ SELECT
      IF(School_Name IS NULL, "Not Enrolled",School_Name))
      AS School_Name_AT,
    
-   IF(fit_type_enrolled_chart IS NULL, "No enrollment or deferment",school_name_accepted_enrolled)
-        AS school_name_accepted_enrolled_2,
+   IF(fit_type_enrolled_chart IS NULL, "No enrollment or deferment",base_school_name_enrolled)
+        AS school_name_accepted_enrolled,
         
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
