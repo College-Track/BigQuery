@@ -1,3 +1,13 @@
+
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -11,7 +21,7 @@ SELECT
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
-        ON app.college_id = accnt.Account_ID__c
+        ON app.college_id = accnt.id
     WHERE Indicator_Completed_CT_HS_Program__c = TRUE    
     AND admission_status__c IN ("Accepted and Enrolled", "Accepted and Deferred")
 ),
@@ -54,6 +64,7 @@ SELECT
 #college application data
     college_app_id,
     app.college_id,
+    accnt.id AS account_id,
     accnt.Name AS school_name_app,
     Type_of_School__c,
     Application_status__c,
@@ -176,6 +187,7 @@ GROUP BY
     Indicator_Completed_CT_HS_Program__c,
     college_app_id,
     app.college_id,
+    account_id,
     school_name_app,
     Type_of_School__c,
     Application_status__c,
