@@ -8,13 +8,14 @@ SELECT
     app.college_id,
     accnt.Name,
     Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
-    /*CASE
-        WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
-        ELSE accnt.name
-    END AS school_name_accepted_enrolled*/
-    IF(college_id = '0014600000plKMXAA2',"Global Citizen Year",
-        IF(Fit_Type_Enrolled__c IS NULL, "No Enrollment or Deferment",app.name))
-        AS school_name_accepted_enrolled,
+    CASE 
+        WHEN admission_status__c = "Accepted and Enrolled" THEN "Enrolled or Deferred"
+        WHEN admission_status__c = "Accepted and Deferred" THEN "Enrolled or Deferred"
+        ELSE "Did not enroll or defer"
+    END AS Enrollment_indicator
+    --IF(college_id = '0014600000plKMXAA2',"Global Citizen Year",
+      --  IF(Enrollment_indicator = 'Did not enroll or defer', "No Enrollment or Deferment",accnt.name))
+       -- AS school_name_accepted_enrolled,
     
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -75,7 +76,12 @@ SELECT
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
         ELSE "N/A"
         END AS acceptance_group,
-    school_name_accepted_enrolled,
+    CASE
+        WHEN app.college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
+        WHEN Enrollment_indicator = 'Did not enroll or defer' THEN "No Enrollment or Deferment"
+        ELSE accnt.name
+    END AS school_name_accepted_enrolled,
+   -- school_name_accepted_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
     fit_type_enrolled_chart
