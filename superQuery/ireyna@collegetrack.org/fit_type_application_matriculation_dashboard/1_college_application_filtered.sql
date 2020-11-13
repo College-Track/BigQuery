@@ -390,6 +390,7 @@ AS
     CA.Fit_Type_Enrolled__c,
     --CA.High_School_Class__c,
     CA.Id AS college_app_id,
+    CA.College_University__c,
     CA.Interview_Requirements__c,
     CA.Letter_of_Recommendation_1__c,
     CA.Predominant_Degree_Awarded__c,
