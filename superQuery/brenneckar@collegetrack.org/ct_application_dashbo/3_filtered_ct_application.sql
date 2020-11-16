@@ -7,7 +7,6 @@ WITH gather_data AS (
       "/view"
     ) AS contact_url,
     C.Full_Name__c,
-    C.Current_School__c,
     C.College_Track_Status_Name,
     C.site_short,
     C.Gender__c,
