@@ -1,7 +1,7 @@
 WITH aggregate_data AS (
   SELECT
     site_short,
-    region_short
+    region_short,
     Gender__c,
     First_Generation__c,
     Indicator_Low_Income__c,
