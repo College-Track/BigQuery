@@ -6,6 +6,7 @@ WITH ValidStudentContact AS (
   EXCEPT(
       Id,
       Description
+      
     ),
     RT.Name AS Contact_Record_Type_Name,
     A_Site.Name AS site,
@@ -70,6 +71,7 @@ WITH ValidStudentContact AS (
       RT.Name = 'Student: High School'
       OR RT.Name = 'Student: Post-Secondary'
       OR RT.Name = 'Student: Alumni'
+      OR RT.Name = 'Student: Applicant'
     )
 )
 SELECT
