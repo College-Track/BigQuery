@@ -55,9 +55,10 @@ SELECT
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.college_id = accnt.id
     
-   
-        
+
     WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
+    AND High_School_Class IN (2017,2018,2019,2020) #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+AND Application_status__c = "Applied"
 
 )
 
@@ -68,6 +69,3 @@ SELECT
 SELECT
     count(college_app_id)
     from fit_type_application
-    
-    WHERE High_School_Class IN (2017,2018,2019,2020) #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
-AND Application_status__c = "Applied"
