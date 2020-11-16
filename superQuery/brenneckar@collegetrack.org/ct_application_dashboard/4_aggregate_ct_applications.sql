@@ -5,17 +5,20 @@ WITH aggregate_data AS (
     First_Generation__c,
     Indicator_Low_Income__c,
     College_Track_Status_Name,
+    Contact_Record_Type_Name,
     COUNT(Contact_Id) AS student_count,
     MAX(College_Track_FY_HS_Planned_Enrollment__c) AS budget_target,
     MAX(College_Track_High_School_Capacity__c) AS capacity_target
   FROM
     `data-studio-260217.ct_application.ct_application_filtered_data`
+WHERE (Contact_Record_Type_Name = 'Student: High School') OR (CreatedDate >= "2020-01-05")
   GROUP BY
     site_short,
     Gender__c,
     First_Generation__c,
     Indicator_Low_Income__c,
-    College_Track_Status_Name
+    College_Track_Status_Name,
+    Contact_Record_Type_Name
 )
 
 SELECT
