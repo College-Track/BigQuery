@@ -1,5 +1,5 @@
 CREATE
-OR REPLACE TABLE `data-studio-260217.ct_application.ct_application_filtered_data`(
+OR REPLACE TABLE `data-studio-260217.ct_application.ct_application_filtered_data` AS(
   WITH gather_data AS (
     SELECT
       Contact_Id,
