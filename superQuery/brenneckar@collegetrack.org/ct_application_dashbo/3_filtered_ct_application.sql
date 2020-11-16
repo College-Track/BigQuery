@@ -1,26 +1,28 @@
 WITH gather_data AS (
   SELECT
-    Contact_Id,
+    C.Contact_Id,
     CONCAT(
       "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
-      Contact_Id,
+      C.Contact_Id,
       "/view"
     ) AS contact_url,
-    Full_Name__c,
-    Current_School__c,
-    College_Track_Status_Name,
-    site_short,
-    Gender__c,
-    Indicator_First_Generation__c,
-    Indicator_Low_Income__c,
-    Contact_Record_Type_Name,
-    HIGH_SCHOOL_GRADUATING_CLASS__c,
+    C.Full_Name__c,
+    C.Current_School__c,
+    C.College_Track_Status_Name,
+    C.site_short,
+    C.Gender__c,
+    C.Indicator_First_Generation__c,
+    C.Indicator_Low_Income__c,
+    C.Contact_Record_Type_Name,
+    C.HIGH_SCHOOL_GRADUATING_CLASS__c,
     A.College_Track_FY_HS_Planned_Enrollment__c,
     A.College_Track_High_School_Capacity__c,
-    C.Last_College_Track_Application__c
+    CTA.CreatedDate
+    
   FROM
     `data-warehouse-289815.sfdc_templates.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A ON A.Id = SITE__c
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.College_Track_Application__c` CTA ON CTA.Id = C.Last_College_Track_Application__c
   WHERE
     College_Track_Status_Name IN (
       'Application in progress',
