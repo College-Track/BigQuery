@@ -33,7 +33,7 @@ GROUP BY site_short
 
 
 SELECT
-  *,
+  applicant_count_data.*,
   CASE
     WHEN College_Track_Status_Name = "Application in progress" THEN 1
     WHEN College_Track_Status_Name = "Application submitted" THEN 2
