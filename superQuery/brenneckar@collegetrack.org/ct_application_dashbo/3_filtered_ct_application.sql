@@ -3,7 +3,13 @@ OR REPLACE TABLE `data-studio-260217.ct_application.ct_application_filtered_data
   WITH gather_data AS (
     SELECT
       Contact_Id,
+   CONCAT(
+      "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
+      Contact_Id,
+      "/view"
+    ) AS contact_url,
       Full_Name__c,
+      High_School__c,
       College_Track_Status_Name,
       site_short,
       Gender__c,
