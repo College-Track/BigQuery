@@ -19,9 +19,9 @@ OR REPLACE TABLE `data-studio-260217.ct_application.ct_application_filtered_data
       HIGH_SCHOOL_GRADUATING_CLASS__c,
       A.College_Track_FY_HS_Planned_Enrollment__c,
       A.College_Track_High_School_Capacity__c,
-      Last_College_Track_Application__c
+      C.Last_College_Track_Application__c
     FROM
-      `data-warehouse-289815.sfdc_templates.contact_template`
+      `data-warehouse-289815.sfdc_templates.contact_template` C
       LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A ON A.Id = SITE__c
     WHERE
       College_Track_Status_Name IN (
