@@ -1,2 +1,2 @@
-SELECT  count(*)*2 as approx_num_api_requests 
+SELECT  *
 FROM `data-warehouse-289815.salesforce.fivetran_audit`
