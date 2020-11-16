@@ -11,7 +11,7 @@ WITH gather_data AS (
     C.College_Track_Status_Name,
     C.site_short,
     C.Gender__c,
-    C.First_Generation_FY20__c AS First_Generation__c
+    C.First_Generation_FY20__c AS First_Generation__c,
     C.Indicator_Low_Income__c,
     C.Contact_Record_Type_Name,
     C.HIGH_SCHOOL_GRADUATING_CLASS__c,
