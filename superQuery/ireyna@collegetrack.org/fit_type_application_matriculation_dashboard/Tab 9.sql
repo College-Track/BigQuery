@@ -69,5 +69,5 @@ SELECT
     count(college_app_id)
     from fit_type_application
     
-    WHERE High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+    WHERE High_School_Class IN (2017,2018,2019,2020) #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
 AND Application_status__c = "Applied"
