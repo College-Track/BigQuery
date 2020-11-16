@@ -35,7 +35,6 @@ WITH gather_data AS (
       'Current CT HS Student',
       'Leave of Absence'
     )
-    AND CTA.CreatedDate >= "2020-01-15"
 )
 SELECT
   *
