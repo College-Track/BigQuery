@@ -10,7 +10,8 @@ WITH aggregate_data AS (
     HIGH_SCHOOL_GRADUATING_CLASS__c,
     COUNT(Contact_Id) AS student_count,
     MAX(College_Track_FY_HS_Planned_Enrollment__c) AS budget_target,
-    MAX(College_Track_High_School_Capacity__c) AS capacity_target
+    MAX(College_Track_High_School_Capacity__c) AS capacity_target,
+    SUM(applicant_count)
   FROM
     `data-studio-260217.ct_application.ct_application_filtered_data`
 WHERE (Contact_Record_Type_Name = 'Student: High School') OR (CreatedDate >= "2020-01-05")
