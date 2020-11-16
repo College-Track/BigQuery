@@ -18,13 +18,23 @@ OR REPLACE TABLE `data-studio-260217.ct_application.ct_application_filtered_data
       Contact_Record_Type_Name,
       HIGH_SCHOOL_GRADUATING_CLASS__c,
       A.College_Track_FY_HS_Planned_Enrollment__c,
-      A.College_Track_High_School_Capacity__c
+      A.College_Track_High_School_Capacity__c,
+      Last_College_Track_Application__c
     FROM
       `data-warehouse-289815.sfdc_templates.contact_template`
       LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A ON A.Id = SITE__c
     WHERE
-      Contact_Record_Type_Name NOT IN ('Student: Post-Secondary', 'Student: Alumni')
-      AND College_Track_Status_Name != "Did Not Finish CT HS Program"
+      College_Track_Status_Name IN (
+        'Application in progress',
+        'Application submitted',
+        'Interview Scheduled',
+        'Interview Complete',
+        'Admitted',
+        'Wait-listed',
+        'Onboarding',
+        'Current CT HS Student',
+        'Leave of Absence'
+      )
   )
   SELECT
     *
