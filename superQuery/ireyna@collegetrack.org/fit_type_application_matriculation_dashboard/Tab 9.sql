@@ -66,7 +66,7 @@ SELECT
 
 
 SELECT
-    count(Contact_Id)
+    count(college_app_id)
     from fit_type_application
     
     WHERE High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
