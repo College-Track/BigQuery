@@ -6,6 +6,7 @@ WITH aggregate_data AS (
     Indicator_Low_Income__c,
     College_Track_Status_Name,
     Contact_Record_Type_Name,
+    Ethnic_background__c,
     HIGH_SCHOOL_GRADUATING_CLASS__c,
     COUNT(Contact_Id) AS student_count,
     MAX(College_Track_FY_HS_Planned_Enrollment__c) AS budget_target,
@@ -20,7 +21,8 @@ WHERE (Contact_Record_Type_Name = 'Student: High School') OR (CreatedDate >= "20
     Indicator_Low_Income__c,
     College_Track_Status_Name,
     Contact_Record_Type_Name,
-    HIGH_SCHOOL_GRADUATING_CLASS__c
+    HIGH_SCHOOL_GRADUATING_CLASS__c,
+    Ethnic_background__c
 )
 
 SELECT
