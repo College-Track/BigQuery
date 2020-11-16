@@ -19,7 +19,6 @@ WITH gather_data AS (
     A.College_Track_High_School_Capacity__c,
     CTA.CreatedDate,
     C.Ethnic_background__c
-    
   FROM
     `data-warehouse-289815.sfdc_templates.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A ON A.Id = SITE__c
@@ -38,6 +37,16 @@ WITH gather_data AS (
     )
 )
 SELECT
-  *
+  *,
+  CASE
+    WHEN College_Track_Status_Name = "Application in progress" THEN 1
+    WHEN College_Track_Status_Name = "Application submitted" THEN 2
+    WHEN College_Track_Status_Name = "Interview Scheduled" THEN 3
+    WHEN College_Track_Status_Name = "Interview Complete" THEN 4
+    WHEN College_Track_Status_Name = "Admitted" THEN 5
+    WHEN College_Track_Status_Name = "Wait-listed" THEN 6
+    WHEN College_Track_Status_Name = "Onboarding" THEN 7
+    ELSE 8
+  END AS sort_ct_status
 FROM
   gather_data
