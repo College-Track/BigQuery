@@ -9,6 +9,7 @@ WITH gather_data AS (
     C.Full_Name__c,
     C.College_Track_Status_Name,
     C.site_short,
+    C.region_short,
     C.Gender__c,
     C.First_Generation_FY20__c AS First_Generation__c,
     C.Indicator_Low_Income__c,
