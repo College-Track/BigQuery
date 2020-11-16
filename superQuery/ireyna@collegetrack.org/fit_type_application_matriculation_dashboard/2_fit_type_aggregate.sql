@@ -1,4 +1,3 @@
-AS
 WITH fit_type_enrolled AS
 (
 SELECT 
