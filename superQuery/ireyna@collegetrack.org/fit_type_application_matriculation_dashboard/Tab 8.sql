@@ -17,7 +17,8 @@ SELECT
 #college application data
     college_id,
     IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_enrolled,
-    Fit_Type_Enrolled__c AS fit_type_enrolled
+    Fit_Type_Enrolled__c AS fit_type_enrolled,
+    Type_of_School__c as school_type_enrolled,
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -67,6 +68,7 @@ SELECT
     accnt.id AS account_id,
     IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_app,
     school_name_enrolled,
+    school_type_enrolled,
     Type_of_School__c,
     Application_status__c,
     app.admission_status__c,
@@ -136,7 +138,7 @@ SELECT
 
 SELECT
     app.*
-        EXCEPT (school_name_enrolled),
+        EXCEPT (school_name_enrolled, school_type_enrolled),
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
         
@@ -151,8 +153,8 @@ SELECT
    
    #to categorize fit type "none". Account for students without admission status indicating enrollment. "None" = tech/trade school, GCY, or erroneous school selection (e.g. graduate school)
    IF(school_name_enrolled IS NULL, "No enrollment or deferment", # sub NULL for 'No enrollment or deferment'. No school to list means no admission status of enrollment
-   IF(fit_type_enrolled = "None" AND Type_of_School__c = "4 Year","None - 4-yr", 
-   IF(fit_type_enrolled = "None" AND Type_of_School__c = "2 Year","None - 2-yr",
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "4 Year","None - 4-yr", 
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 Year","None - 2-yr",
    fit_type_enrolled))) AS fit_type_enrolled_chart,
    
    #to account for students without any college app records with admission status indicating enrollment. No school to list
