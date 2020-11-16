@@ -18,12 +18,14 @@ WITH gather_data AS (
     A.College_Track_High_School_Capacity__c,
     CTA.CreatedDate,
     C.Ethnic_background__c,
-    CTA.Middle_School__c,
-    CTA.Current_School__c
+    A_MS.Name AS middle_school,
+    A_HS.Name AS high_school
   FROM
     `data-warehouse-289815.sfdc_templates.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A ON A.Id = SITE__c
     LEFT JOIN `data-warehouse-289815.salesforce_raw.College_Track_Application__c` CTA ON CTA.Id = C.Last_College_Track_Application__c
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_HS ON A_HS.Id = CTA.Current_School__c
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_MS ON A_MS.Id = CTA.Middle_School__c
   WHERE
     College_Track_Status_Name IN (
       'Application in progress',
