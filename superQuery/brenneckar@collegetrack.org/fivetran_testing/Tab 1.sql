@@ -1,3 +1,2 @@
-SELECT COUNT(id)
-FROM `data-warehouse-289815.salesforce.account`
-WHERE is_deleted = false
+SELECT done::date, count(*)*2 as approx_num_api_requests 
+FROM salesforce._fivetran_query group by done::date
