@@ -142,12 +142,12 @@ SELECT
         
    #fit type "none" categories (2-yr 4-yr)     
    IF(Fit_Type__c IS NULL, "Not Enrolled", #to account for NULL Fall year 1
+     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting","None - 4-yr", 
+     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly associate's-degree granting","None - 2-yr",
      IF(Fit_Type__c = "None" AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "None",
      IF(Fit_Type__c = "None" AND School_Name IS NULL AND Indicator_College_Matriculation__c <> "Approved Gap Year","Not Enrolled", #to account for erroneous Approved Gap Year entries
      IF(School_Name <> "Global Citizen Year" AND Indicator_College_Matriculation__c <> "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "Not Enrolled", #to account for erroneous Approved Gap Year entries
-     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c <> "Predominantly certificate's-degree granting" OR  School_Predominant_Degree_Awarded__c = "Not Classified","Not Enrolled",
-     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting","None - 4-yr", 
-     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly associate's-degree granting","None - 2-yr",Fit_Type__c)))))))
+     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c <> "Predominantly certificate's-degree granting" OR  School_Predominant_Degree_Awarded__c = "Not Classified","Not Enrolled",Fit_Type__c)))))))
      AS fit_type_affiliation,
    
    #to categorize fit type "none". Account for students without admission status indicating enrollment. "None" = tech/trade school, GCY, or erroneous school selection (e.g. graduate school)
