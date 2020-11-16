@@ -17,7 +17,8 @@ WITH gather_data AS (
     C.HIGH_SCHOOL_GRADUATING_CLASS__c,
     A.College_Track_FY_HS_Planned_Enrollment__c,
     A.College_Track_High_School_Capacity__c,
-    CTA.CreatedDate
+    CTA.CreatedDate,
+    C.Ethnic_background__c
     
   FROM
     `data-warehouse-289815.sfdc_templates.contact_template` C
