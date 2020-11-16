@@ -14,7 +14,7 @@ WITH aggregate_data AS (
 
   FROM
     `data-studio-260217.ct_application.ct_application_filtered_data`
-WHERE (Contact_Record_Type_Name = 'Student: High School') OR (CreatedDate >= "2020-01-05")
+WHERE (Contact_Record_Type_Name = 'Student: High School') OR (CreatedDate >= "2020-01-15")
   GROUP BY
     site_short,
     Gender__c,
