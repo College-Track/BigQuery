@@ -18,7 +18,9 @@ WITH gather_data AS (
     A.College_Track_FY_HS_Planned_Enrollment__c,
     A.College_Track_High_School_Capacity__c,
     CTA.CreatedDate,
-    C.Ethnic_background__c
+    C.Ethnic_background__c,
+    CTA.Middle_School__c,
+    CTA.Current_School__c
   FROM
     `data-warehouse-289815.sfdc_templates.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A ON A.Id = SITE__c
