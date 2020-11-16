@@ -20,5 +20,3 @@ SELECT
   *
 FROM
   gather_data
-LIMIT
-  1000
