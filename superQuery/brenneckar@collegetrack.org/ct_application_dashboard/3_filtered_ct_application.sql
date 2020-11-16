@@ -52,7 +52,6 @@ SELECT
     ELSE 8
   END AS sort_ct_status,
   CASE WHEN Contact_Record_Type_Name = "Student: Applicant" THEN 1
-  WHEN College_Track_Status_Name = "Onboarding" THEN 1
   ELSE 0
   END AS applicant_count
 FROM
