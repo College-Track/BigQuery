@@ -1,3 +1,11 @@
+#14,000 records in SFDC vs. 14,085 in superQuery. 8 students have 2 college app records with acceptance & enrollment
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -63,8 +71,14 @@ SELECT
     Application_status__c,
     app.admission_status__c,
     CASE
-        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
-        ELSE "N/A"
+        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
+        WHEN admission_status__c = "Denied" THEN "Denied"
+        WHEN admission_status__c = "Coniditional" THEN "Conditional"
+        WHEN admission_status__c = "Undecided" THEN "Undecided"
+        WHEN admission_status__c = "Withdrew Application" THEN "Withdrew Application"
+        WHEN admission_status__c = "Wait-listed" THEN "Waitlisted"
+        WHEN admission_status__c IS NULL THEN "No data"
+        ELSE "No data"
         END AS acceptance_group,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
