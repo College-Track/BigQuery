@@ -1,16 +1,22 @@
+#14,075 records in SFDC vs. 14,085 in superQuery. 8 students have 2 college app records with acceptance & enrollment
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
 WITH fit_type_enrolled AS
 (
 SELECT 
     contact_id,
     Full_Name__c,
-    CASE
-        WHEN college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
-        ELSE accnt.name
-    END AS base_school_name_enrolled, #for dupe rows of school student deferred/enrolled in. Pulls in Global Citizen Year instead of NULL. Final transform in final SELECT statement to account for NULLS for students that did not enroll/defer
     
 #college application data
     college_id,
-    Fit_Type_Enrolled__c AS fit_type_enrolled_chart,
+    IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_enrolled,
+    Fit_Type_Enrolled__c AS fit_type_enrolled,
+    Type_of_School__c as school_type_enrolled,
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -58,11 +64,9 @@ SELECT
     college_app_id,
     app.college_id,
     accnt.id AS account_id,
-    accnt.name,
-    CASE
-        WHEN app.college_id = '0014600000plKMXAA2' THEN "Global Citizen Year"
-        ELSE accnt.name
-    END AS school_name_app,
+    IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_app,
+    school_name_enrolled,
+    school_type_enrolled,
     Type_of_School__c,
     Application_status__c,
     app.admission_status__c,
@@ -70,10 +74,9 @@ SELECT
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Acceptance"
         ELSE "N/A"
         END AS acceptance_group,
-    base_school_name_enrolled,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
-    fit_type_enrolled_chart
+    fit_type_enrolled
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -133,27 +136,37 @@ SELECT
 
 SELECT
     app.*
-        EXCEPT (base_school_name_enrolled),
+        EXCEPT (school_name_enrolled, school_type_enrolled),
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
-   IF(Fit_Type__c IS NULL, "Not Enrolled",
+        
+   #fit type "none" categories (2-yr 4-yr)     
+   IF(Fit_Type__c IS NULL, "Not Enrolled", #to account for NULL Fall year 1
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting","None - 4-yr", 
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly associate's-degree granting","None - 2-yr",
      IF(Fit_Type__c = "None" AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "None",
      IF(Fit_Type__c = "None" AND School_Name IS NULL AND Indicator_College_Matriculation__c <> "Approved Gap Year","Not Enrolled", #to account for erroneous Approved Gap Year entries
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c <> "Predominantly certificate's-degree granting" OR  School_Predominant_Degree_Awarded__c = "Not Classified","Not Enrolled",Fit_Type__c))))))
      AS fit_type_affiliation,
-     
-   IF(School_Name IS NULL AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "Approved Gap Year",
+   
+   #to categorize fit type "none". Account for students without admission status indicating enrollment. "None" = tech/trade school, GCY, or erroneous school selection (e.g. graduate school)
+   IF(school_name_enrolled IS NULL, "No enrollment or deferment", # sub NULL for 'No enrollment or deferment'. No school to list means no admission status of enrollment
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "4 Year","None - 4-yr", 
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 Year","None - 2-yr",
+   fit_type_enrolled))) AS fit_type_enrolled_chart,
+   
+   #to account for students without any college app records with admission status indicating enrollment. No school to list
+    IF(fit_type_enrolled IS NULL, "No enrollment or deferment",school_name_enrolled) as school_name_accepted_enrolled,
+   
+   #If School_Name_AT is blank, then no Fall AT, and Not Enrolled (unless Global Citizen Year)
+   IF(School_Name IS NULL AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "Global Citizen Year",
      IF(School_Name IS NULL, "Not Enrolled",School_Name))
      AS School_Name_AT,
    
-   IF(fit_type_enrolled_chart IS NULL, "No enrollment or deferment",base_school_name_enrolled)
-        AS school_name_accepted_enrolled,
-        
     CASE
       WHEN app.site_short IS NOT NULL THEN "National"
     END AS National
+    
 FROM fit_type_application AS app
 
 --Join academic term data (matriculation table) to college application data
@@ -192,7 +205,7 @@ GROUP BY
     Application_status__c,
     admission_status__c,
     acceptance_group,
-    school_name_accepted_enrolled, #for interactive filtering
+    --school_name_accepted_enrolled, #for interactive filtering
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
     fit_type_enrolled_chart, #for interactive filtering
@@ -216,4 +229,5 @@ GROUP BY
     fit_type_start_of_affiliation,
     Affiliation_id_at,
     id_aff,
-    name
+    school_name_accepted_enrolled,
+    fit_type_enrolled
