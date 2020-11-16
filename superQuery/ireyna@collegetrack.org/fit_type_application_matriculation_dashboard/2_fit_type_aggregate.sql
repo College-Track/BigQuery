@@ -142,8 +142,8 @@ SELECT
         
    #fit type "none" categories (2-yr 4-yr)     
    IF(Fit_Type__c IS NULL, "Not Enrolled", #to account for NULL Fall year 1
-     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting","None - 4-yr", 
-     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly associate's-degree granting","None - 2-yr",
+     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting" AND AT_Enrollment_Status__c <> "Approved Gap Year","None - 4-yr", 
+     IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly associate's-degree granting" AND AT_Enrollment_Status__c <> "Approved Gap Year","None - 2-yr",
      IF(Fit_Type__c = "None" AND Indicator_College_Matriculation__c = "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "None",
      IF(Fit_Type__c = "None" AND School_Name IS NULL AND Indicator_College_Matriculation__c <> "Approved Gap Year","Not Enrolled", #to account for erroneous Approved Gap Year entries
      IF(School_Name <> "Global Citizen Year" AND Indicator_College_Matriculation__c <> "Approved Gap Year" AND AT_Enrollment_Status__c = "Approved Gap Year", "Not Enrolled", #to account for erroneous Approved Gap Year entries
