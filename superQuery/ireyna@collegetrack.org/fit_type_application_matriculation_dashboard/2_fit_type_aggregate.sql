@@ -1,3 +1,11 @@
+#14,000 records in SFDC vs. 14,085 in superQuery. 8 students have 2 college app records with acceptance & enrollment
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -145,7 +153,8 @@ SELECT
    IF(school_name_enrolled IS NULL, "No enrollment or deferment", # sub NULL for 'No enrollment or deferment'. No school to list means no admission status of enrollment
    IF(fit_type_enrolled = "None" AND school_type_enrolled = "4 Year","None - 4-yr", 
    IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 Year","None - 2-yr",
-   fit_type_enrolled))) AS fit_type_enrolled_chart,
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 year","None - 2-yr",
+   fit_type_enrolled)))) AS fit_type_enrolled_chart,
    
    #to account for students without any college app records with admission status indicating enrollment. No school to list
     IF(fit_type_enrolled IS NULL, "No enrollment or deferment",school_name_enrolled) as school_name_accepted_enrolled,
