@@ -57,7 +57,7 @@ SELECT
     
 
     WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
-    AND HIGH_SCHOOL_GRADUATING_CLASS__c IN ("2017","2018","2019","2020") #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+    AND HIGH_SCHOOL_GRADUATING_CLASS__c IN ("2017") #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
 AND Application_status__c = "Applied"
 
 )
