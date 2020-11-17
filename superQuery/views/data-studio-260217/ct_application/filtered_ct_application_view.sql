@@ -1,5 +1,5 @@
 SELECT
-  *
+  Master.*
 FROM
   `data-studio-260217.ct_application.ct_application_filtered_data` AS Master
 RIGHT JOIN (
