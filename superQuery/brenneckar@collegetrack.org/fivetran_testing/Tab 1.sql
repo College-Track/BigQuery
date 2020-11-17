@@ -1,3 +1,3 @@
-SELECT Attendance_Numerator_c
+SELECT Attendance_Numerator_c, COUNT(Id)
 FROM `data-warehouse-289815.salesforce.class_attendance_c`
-LIMIT 1000
+GROUP BY attendance_numerator_c
