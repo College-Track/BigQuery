@@ -1,3 +1,3 @@
-SELECT grade_c, COUNT(Id)
+SELECT record_type_id, grade_c, COUNT(Id)
 FROM `data-warehouse-289815.salesforce.contact`
-GROUP BY grade_c
+GROUP BY record_type_id, grade_c
