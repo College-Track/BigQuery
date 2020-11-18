@@ -109,7 +109,6 @@ WITH ValidStudentContact AS (
     C_AT.Major_Other_c AS Current_Major_specific_c,
     C_AT.Major_c AS Current_Major_c,
     C_AT.CT_Coach_c AS Current_HS_CT_Coach_c,
-    C_AT.start_date_c AS start_date_c,
     -- Previous AT
     Prev_AT.gpa_semester_c AS Prev_AT_Term_GPA,
     -- Previous Previous AT
@@ -200,7 +199,7 @@ SELECT
   Contact_Id,
   grade_c,
   most_recent_gpa_semester_c,
-  EXTRACT(MONTH FROM start_date_c)
+  most_recent_gpa_cumulative_c
 FROM
   ValidStudentContact
 WHERE
