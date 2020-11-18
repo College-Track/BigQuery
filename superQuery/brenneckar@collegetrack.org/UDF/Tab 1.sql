@@ -196,7 +196,7 @@ WITH ValidStudentContact AS (
     )
 )
 SELECT
-  Contact_Id, most_recent_gpa_semester_c
+  Contact_Id, grade_c, most_recent_gpa_semester_c
 FROM
   ValidStudentContact
 WHERE
