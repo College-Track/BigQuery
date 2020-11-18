@@ -42,19 +42,15 @@ WITH Clean_AT AS(
     AY.Start_Date_c as AY_Start_Date,
     AY.End_Date_c as AY_End_Date
   FROM
-   `data-warehouse-289815.salesforce.academic_semester_c` A 
+    `data-warehouse-289815.salesforce.academic_semester_c` A
     LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT ON A.record_type_id = RT.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce.account` A_School ON A.School_c = A_School.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` GAS ON A.Global_Academic_Semester_c = GAS.Id
-    LEFT JOIN `data-warehouse-289815.salesforce.academic_year_c`  AY ON A.Academic_Year_c = AY.Id
+    LEFT JOIN `data-warehouse-289815.salesforce.academic_year_c` AY ON A.Academic_Year_c = AY.Id
 )
 SELECT
-  C.Contact_Id,
-  Clean_AT.student_c,
-  Clean_AT.AT_Grade_c
---   C.*,
---   Clean_AT.*
+  C.*,
+  Clean_AT.*
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template` C
   LEFT JOIN Clean_AT ON C.Contact_Id = Clean_AT.student_c
-  ORDER BY Contact_ID
