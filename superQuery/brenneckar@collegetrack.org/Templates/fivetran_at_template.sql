@@ -57,3 +57,4 @@ SELECT
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template` C
   LEFT JOIN Clean_AT ON C.Contact_Id = Clean_AT.student_c
+  ORDER BY Contact_ID
