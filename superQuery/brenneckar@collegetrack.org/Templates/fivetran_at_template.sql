@@ -49,6 +49,11 @@ WITH Clean_AT AS(
     LEFT JOIN `data-warehouse-289815.salesforce.academic_year_c`  AY ON A.Academic_Year_c = AY.Id
 )
 SELECT
-  *
+  C.Contact_Id,
+  Clean_AT.student_c
+  Clean_AT.AT_Grade_c
+--   C.*,
+--   Clean_AT.*
 FROM
-  Clean_AT
+  `data-warehouse-289815.salesforce_clean.contact_template` C
+  LEFT JOIN Clean_AT ON C.Contact_Id = Clean_AT.student_c
