@@ -1,0 +1,1 @@
+SELECT MONTH("2020-01-20") as test
