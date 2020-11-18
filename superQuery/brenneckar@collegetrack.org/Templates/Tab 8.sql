@@ -39,6 +39,7 @@ WITH workshop_template AS (
     C.status_c AS class_status,
     C.sessions_c,
     C.enrolled_students_c,
+    C.workshop_display_name_c
   FROM
     `data-warehouse-289815.salesforce.class_attendance_c` CA
     LEFT JOIN `data-warehouse-289815.salesforce.class_session_c` CS ON CA.Class_Session_c = CS.Id
