@@ -39,7 +39,6 @@ WITH workshop_template AS (
     C.status_c AS class_status,
     C.sessions_c,
     C.enrolled_students_c,
-    GAT.name AS GAT_Name
   FROM
     `data-warehouse-289815.salesforce.class_attendance_c` CA
     LEFT JOIN `data-warehouse-289815.salesforce.class_session_c` CS ON CA.Class_Session_c = CS.Id
@@ -49,9 +48,6 @@ WITH workshop_template AS (
     GAT.start_date_c >= "2018-09-01"
 )
 SELECT
-  GAT_Name,
-  Count(Class_Attendance_Id)
+  *
 FROM
   workshop_template
-GROUP BY
-  GAT_Name
