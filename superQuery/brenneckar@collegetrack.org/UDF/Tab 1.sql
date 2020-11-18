@@ -20,18 +20,18 @@ WITH ValidStudentContact AS (
       Current_HS_CT_Coach_c,
       -- Current_CC_Advisor2_c,
       Current_Major_c,
-    --   Current_Major_other_c,
+      current_major_specific_c,
       Current_Minor_c,
       age_c,
       current_second_major_c,
       -- Indicator_High_Risk_for_Dismissal__c - this field should probably be recreated, but I'm holding off for now.
       Current_School_c,
       Current_School_Type_c,
-    --   Community_Service_On_Track_c,
+      --   Community_Service_On_Track_c,
       most_recent_gpa_semester_c,
       -- Fields to remove because not needed
       _fivetran_synced,
-    --   CoVitality_Indicator_c,
+      co_vitality_indicator_c,
       active_board_membership_c,
       admin_temp_1_c,
       Description,
@@ -70,10 +70,10 @@ WITH ValidStudentContact AS (
       attended_workshops_11_th_grade_c,
       attended_workshops_12_th_grade_c,
       attended_workshops_9_th_grade_c,
-    --   Annual_Attendance_Rate_10th_Grade_c,
-    --   Annual_Attendance_Rate_11th_Grade_c,
-    --   Annual_Attendance_Rate_12th_Grade_c,
-    --   Annual_Attendance_Rate_9th_Grade_c,
+      --   Annual_Attendance_Rate_10th_Grade_c,
+      --   Annual_Attendance_Rate_11th_Grade_c,
+      --   Annual_Attendance_Rate_12th_Grade_c,
+      --   Annual_Attendance_Rate_9th_Grade_c,
       Attendance_Rate_Annual_c,
       Attendance_Rate_Current_AS_c,
       Attendance_Rate_Current_AS_no_make_up_c,
@@ -83,15 +83,14 @@ WITH ValidStudentContact AS (
       Attendance_category_previous_semester_c,
       Dosage_Rec_CC_c,
       Dosage_Rec_Math_c,
-    --   Dosage_Rec_Overall_c,
+      --   Dosage_Rec_Overall_c,
       Dosage_Rec_SL_c,
       Dosage_Rec_Test_Prep_c,
       Dosage_Rec_Tutoring_c,
       Indicator_Meets_Attendance_Goal_c,
-    --   Meets_Dosage_Recommendation_c,
+      --   Meets_Dosage_Recommendation_c,
       Program_Rec_NSO_c,
       Program_Rec_Summer_Writing_c
-     
     ),
     -- Fields from other objects
     -- Record Type
@@ -118,6 +117,18 @@ WITH ValidStudentContact AS (
     STATUS.Status AS College_Track_Status_Name,
     -- Rebuilding fields that need to be recreated
     `data-warehouse-289815.UDF.calc_age`(CURRENT_DATE(), birthdate) As age_c,
+    CASE
+      WHEN years_since_hs_grad_c = 0
+      AND C_AT.Term_c = "Fall" THEN NULL
+      WHEN years_since_hs_grad_c = 0
+      AND EXTRACT(
+        MONTH
+        FROM
+          C_AT.start_date_c
+      ) = 1 THEN NULL
+      WHEN Prev_AT.gpa_semester_c IS NULL THEN Prev_Prev_AT.gpa_semester_c
+      ELSE Prev_AT.gpa_semester_c
+    END AS most_recent_gpa_semester_c,
     CASE
       WHEN A_Region.Name LIKE '%Northern California%' THEN 'Northern California'
       WHEN A_Region.Name LIKE '%Colorado%' THEN 'Colorado'
@@ -165,7 +176,7 @@ WITH ValidStudentContact AS (
       ELSE A_Site.Name
     END AS site_short,
   FROM
-    `data-warehouse-289815.salesforce.contact` C 
+    `data-warehouse-289815.salesforce.contact` C
     LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT ON C.record_type_id = RT.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce.account` A_Site ON C.site_c = A_Site.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce.account` A_region ON C.Region_c = A_region.Id
@@ -185,7 +196,8 @@ WITH ValidStudentContact AS (
     )
 )
 SELECT
-  co_vitality_indicator_c
+  Contact_Id, most_recent_gpa_semester_c
 FROM
   ValidStudentContact
-  WHERE college_track_status_c = '11A'
+WHERE
+  college_track_status_c = '11A'
