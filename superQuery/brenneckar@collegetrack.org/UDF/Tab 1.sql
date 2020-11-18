@@ -185,7 +185,7 @@ WITH ValidStudentContact AS (
     )
 )
 SELECT
-  *
+  current_cc_advisor_2_c, current_cc_advisor_c
 FROM
   ValidStudentContact
-  WHERE college_track_status_c = '11A'
+  WHERE college_track_status_c = '15A'
