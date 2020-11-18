@@ -188,3 +188,4 @@ SELECT
   *
 FROM
   ValidStudentContact
+  WHERE college_track_status_c = '11A'
