@@ -1,0 +1,1 @@
+SELECT `data-warehouse-289815.UDF.calc_age`(CURRENT_DATE(),"1993-05-18") as Age
