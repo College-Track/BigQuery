@@ -50,7 +50,7 @@ WITH Clean_AT AS(
 )
 SELECT
   C.Contact_Id,
-  Clean_AT.student_c
+  Clean_AT.student_c,
   Clean_AT.AT_Grade_c
 --   C.*,
 --   Clean_AT.*
