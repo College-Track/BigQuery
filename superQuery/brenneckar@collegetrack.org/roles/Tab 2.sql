@@ -269,11 +269,14 @@ WITH ValidStudentContact AS (
 )
 SELECT
   *,
+  co_vitality_scorecard_color_most_recent_c, sort_covitality,
   -- Creating New Fields that rely on the fields created in ValidStudentContact
   CONCAT(
     "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
     Contact_Id,
     "/view"
   ) AS contact_url,
+  
 FROM
   ValidStudentContact
+  WHERE co_vitality_scorecard_color_most_recent_c IS NOT NULL
