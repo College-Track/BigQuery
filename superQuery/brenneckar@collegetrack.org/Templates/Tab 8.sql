@@ -39,7 +39,11 @@ WITH workshop_template AS (
     C.status_c AS class_status,
     C.sessions_c,
     C.enrolled_students_c,
-    C.workshop_display_name_c
+    C.workshop_display_name_c,
+    C.schedule_block_c,
+    C.recurrance_c,
+    C.first_session_date_c,
+    C.last_session_date_c
   FROM
     `data-warehouse-289815.salesforce.class_attendance_c` CA
     LEFT JOIN `data-warehouse-289815.salesforce.class_session_c` CS ON CA.Class_Session_c = CS.Id
@@ -47,6 +51,7 @@ WITH workshop_template AS (
     LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` GAT ON C.global_academic_semester_c = GAT.Id
   WHERE
     GAT.start_date_c >= "2018-09-01"
+    AND (CA.is_deleted = false OR CS.is_deleted = false OR C.is_deleted = false)
 )
 SELECT
   *
