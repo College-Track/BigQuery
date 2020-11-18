@@ -268,7 +268,7 @@ WITH ValidStudentContact AS (
     )
 )
 SELECT
-  *,
+--   *,
   co_vitality_scorecard_color_most_recent_c, sort_covitality,
   -- Creating New Fields that rely on the fields created in ValidStudentContact
   CONCAT(
