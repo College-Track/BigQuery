@@ -203,4 +203,4 @@ SELECT
 FROM
   ValidStudentContact
 WHERE
-  college_track_status_c = '11A'
+  college_track_status_c = '15A' AND grade_c = 'Year 1'
