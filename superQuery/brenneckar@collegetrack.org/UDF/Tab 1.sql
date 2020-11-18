@@ -1,1 +1,3 @@
-SELECT `data-warehouse-289815.UDF.calc_age`(CURRENT_DATE(),"2003-05-18") as Age
+SELECT birthdate
+FROM `data-warehouse-289815.salesforce.contact`
+LIMIT 10
