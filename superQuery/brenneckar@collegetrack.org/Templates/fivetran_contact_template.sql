@@ -165,7 +165,7 @@ WITH ValidStudentContact AS (
       WHEN Most_Recent_GPA_Cumulative_c < 3.25 THEN "3.0 - 3.24"
       WHEN Most_Recent_GPA_Cumulative_c >= 3.25 THEN "3.25 +"
       ELSE "No Data"
-    END AS most_recent_gpa_cum_bucket,
+    END AS Most_Recent_GPA_Cumulative_bucket,
     CASE
       WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN " 4-Year"
       WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly associate's-degree granting" THEN " 2-Year"
