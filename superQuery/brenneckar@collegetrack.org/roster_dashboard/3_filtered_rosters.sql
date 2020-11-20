@@ -26,36 +26,10 @@ WITH gather_data AS (
     Gender_c,
     site_short,
     Years_Since_HS_Grad_c,
-    CASE
-      WHEN Attendance_Rate_Current_AS_c <= 65 THEN "65% and Below"
-      WHEN Attendance_Rate_Current_AS_c < 80 THEN "65% - 79%"
-      WHEN Attendance_Rate_Current_AS_c < 90 THEN "80% - 89%"
-      WHEN Attendance_Rate_Current_AS_c >= 90 THEN "90% +"
-      ELSE "No Data"
-    END AS attendance_bucket,
-    CASE
-      WHEN Most_Recent_GPA_Cumulative_c <= 2.5 THEN "Below 2.5"
-      WHEN Most_Recent_GPA_Cumulative_c < 2.75 THEN "2.5 - 2.74"
-      WHEN Most_Recent_GPA_Cumulative_c < 3.0 THEN "2.75 - 2.99"
-      WHEN Most_Recent_GPA_Cumulative_c < 3.25 THEN "3.0 - 3.24"
-      WHEN Most_Recent_GPA_Cumulative_c >= 3.25 THEN "3.25+"
-      ELSE "No Data"
-    END AS most_recent_gpa_bucket,
-    CASE
-      WHEN Attendance_Rate_Current_AS_c <= 65 THEN 1
-      WHEN Attendance_Rate_Current_AS_c < 80 THEN 2
-      WHEN Attendance_Rate_Current_AS_c < 90 THEN 3
-      WHEN Attendance_Rate_Current_AS_c >= 90 THEN 4
-      ELSE 0
-    END AS sort_attendance_bucket,
-    CASE
-      WHEN Most_Recent_GPA_Cumulative_c <= 2.5 THEN 1
-      WHEN Most_Recent_GPA_Cumulative_c < 2.75 THEN 2
-      WHEN Most_Recent_GPA_Cumulative_c < 3.0 THEN 3
-      WHEN Most_Recent_GPA_Cumulative_c < 3.25 THEN 4
-      WHEN Most_Recent_GPA_Cumulative_c >= 3.25 THEN 5
-      ELSE 0
-    END AS sort_most_recent_gpa_bucket,
+    attendance_bucket_current_at,
+    sort_most_recent_gpa_bucket,
+    sort_attendance_bucket,
+
     CASE
       WHEN ABS(Years_Since_HS_Grad_c) = 4 THEN 0 + (Year_Fraction_Since_HS_Grad_c / .33)
       WHEN ABS(Years_Since_HS_Grad_c) = 3 THEN 3 + (Year_Fraction_Since_HS_Grad_c / .33)
