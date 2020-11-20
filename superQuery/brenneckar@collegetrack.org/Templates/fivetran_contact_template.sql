@@ -265,11 +265,11 @@ WITH ValidStudentContact AS (
     LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT ON C.record_type_id = RT.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce.account` A_Site ON C.site_c = A_Site.Id -- Left join from Contact on to Account for Site
     LEFT JOIN `data-warehouse-289815.salesforce.account` A_region ON C.Region_c = A_region.Id
-    LEFT JOIN `data-warehouse-289815.salesforce.account` A_school ON C.Current_school_c = A_school.Id
     LEFT JOIN `data-warehouse-289815.roles.ct_status` STATUS ON STATUS.api_name = C.College_Track_Status_c
     LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` C_AT ON C_AT.id = C.current_academic_semester_c
     LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_AT ON Prev_AT.id = C_AT.Previous_Academic_Semester_c
     LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_AT ON Prev_Prev_AT.id = Prev_AT.Previous_Academic_Semester_c
+    LEFT JOIN `data-warehouse-289815.salesforce.account` A_school ON C_AT.School_c = A_school.Id
   WHERE
     -- Filter out test records from the Contact object
     (C.SITE_c != '0011M00002GdtrEQAR') -- Filter out non-active student records from the Contact object
