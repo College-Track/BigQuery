@@ -14,7 +14,7 @@ WITH gather_data AS (
     Current_CC_Advisor_c,
     Grade_c,
     Attendance_Rate_Current_AS_c / 100 as attendance_rate,
-    co_vitality_scorecard_color_most_recent_c,
+    
     Indicator_Low_Income_c,
     Summer_Experiences_Previous_Summer_c,
     college_applications_all_fit_types_c,
