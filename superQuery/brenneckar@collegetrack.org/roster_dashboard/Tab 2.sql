@@ -1,5 +1,4 @@
-SELECT current_school_c,   COUNT(*)
-FROM `data-warehouse-289815.salesforce.contact`
+SELECT Current_school_name, COUNT(*)
+FROM `data-warehouse-289815.salesforce_clean.contact_template`
 LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = Current_school_c
-WHERE college_track_status_c = '15A'
-GROUP BY Current_school_c
+GROUP BY Current_school_name
