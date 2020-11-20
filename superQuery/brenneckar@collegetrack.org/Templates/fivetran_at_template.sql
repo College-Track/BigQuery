@@ -50,7 +50,7 @@ WITH Clean_AT AS(
 )
 SELECT
   C.*,
-  Clean_AT.*
+     Clean_AT.*
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template` C
   LEFT JOIN Clean_AT ON C.Contact_Id = Clean_AT.student_c
