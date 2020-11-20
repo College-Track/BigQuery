@@ -1,5 +1,6 @@
 WITH gather_data AS (
   SELECT
+    -- Select fields from templates
     Contact_Id,
     SITE_c,
     contact_url,
@@ -14,8 +15,7 @@ WITH gather_data AS (
     Current_CC_Advisor_c,
     Grade_c,
     Attendance_Rate_Current_AS_c / 100 as attendance_rate,
-    co_vitality_scorecard_color_most_recent_c
-    Indicator_Low_Income_c,
+    co_vitality_scorecard_color_most_recent_c Indicator_Low_Income_c,
     Summer_Experiences_Previous_Summer_c,
     college_applications_all_fit_types_c,
     region_short,
@@ -26,18 +26,25 @@ WITH gather_data AS (
     Gender_c,
     site_short,
     Years_Since_HS_Grad_c,
+    co_vitality_scorecard_color_most_recent_c,
+    Most_Recent_GPA_Cumulative_c,
     attendance_bucket_current_at,
+    Community_Service_Hours_c,
+    Enrollment_Status_c,
+    Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
+    School_Name,
+    
+    -- Sorting fields
     sort_most_recent_gpa_bucket,
     sort_attendance_bucket,
-
-    CASE
-      WHEN ABS(Years_Since_HS_Grad_c) = 4 THEN 0 + (Year_Fraction_Since_HS_Grad_c / .33)
-      WHEN ABS(Years_Since_HS_Grad_c) = 3 THEN 3 + (Year_Fraction_Since_HS_Grad_c / .33)
-      WHEN ABS(Years_Since_HS_Grad_c) = 2 THEN 6 + (Year_Fraction_Since_HS_Grad_c / .33)
-      WHEN ABS(Years_Since_HS_Grad_c) = 1 THEN 9 + (Year_Fraction_Since_HS_Grad_c/ .33)
-    END AS term_number,
     sort_covitality,
-    Community_Service_Hours_c,
+    -- Create new fields
+    CASE
+      WHEN ABS(Years_Since_HS_Grad_c) = 4 THEN 0 + (Year_Fraction_Since_HS_Grad_c /.33)
+      WHEN ABS(Years_Since_HS_Grad_c) = 3 THEN 3 + (Year_Fraction_Since_HS_Grad_c /.33)
+      WHEN ABS(Years_Since_HS_Grad_c) = 2 THEN 6 + (Year_Fraction_Since_HS_Grad_c /.33)
+      WHEN ABS(Years_Since_HS_Grad_c) = 1 THEN 9 + (Year_Fraction_Since_HS_Grad_c /.33)
+    END AS term_number,
     CASE
       WHEN (
         Advising_Rubric_Academic_Readiness_c = "Red"
@@ -59,9 +66,6 @@ WITH gather_data AS (
       ) THEN "Green"
       ELSE "No Data"
     END AS Overall_Rubric_Color,
-    Enrollment_Status_c,
-    Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
-    School_Name,
     CASE
       WHEN Credit_Accumulation_Pace_c IS NULL THEN "No Data"
       ELSE Credit_Accumulation_Pace_c
