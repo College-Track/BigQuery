@@ -11,7 +11,6 @@ WITH gather_data AS (
     Full_Name_c,
     Contact_Record_Type_Name,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
-    Most_Recent_GPA_Cumulative_c,
     Current_CC_Advisor_c,
     Grade_c,
     Attendance_Rate_Current_AS_c / 100 as attendance_rate,
