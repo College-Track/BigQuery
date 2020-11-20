@@ -32,6 +32,7 @@ WITH gather_data AS (
     Enrollment_Status_c,
     Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
     School_Name,
+    most_recent_gpa_cum_bucket,
     
     -- Sorting fields
     sort_most_recent_gpa_bucket,
