@@ -18,6 +18,7 @@ WITH ValidStudentContact AS (
       -- Fields to remove because need to be recreated
       Id,
       Current_HS_CT_Coach_c,
+      current_enrollment_status_c,
       -- Current_CC_Advisor2_c,
       Current_Major_c,
       current_major_specific_c,
@@ -157,6 +158,10 @@ WITH ValidStudentContact AS (
       WHEN Prev_AT.gpa_semester_c IS NULL THEN Prev_Prev_AT.gpa_semester_c
       ELSE Prev_AT.gpa_semester_c
     END AS most_recent_gpa_semester_c,
+    
+    C_AT.enrollment_status_c AS current_enrollment_status_c,
+    
+    
     -- Creating New Fields
       CASE
       WHEN Most_Recent_GPA_Cumulative_c <= 2.5 THEN "Below 2.5"
