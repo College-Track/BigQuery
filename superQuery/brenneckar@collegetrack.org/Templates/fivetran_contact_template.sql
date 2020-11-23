@@ -172,9 +172,9 @@ WITH ValidStudentContact AS (
       ELSE "No Data"
     END AS Most_Recent_GPA_Cumulative_bucket,
     CASE
-      WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN " 4-Year"
-      WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly associate's-degree granting" THEN " 2-Year"
-      WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly certificate-degree granting" THEN " Less Than 2-Year"
+      WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN "4-Year"
+      WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly associate's-degree granting" THEN "2-Year"
+      WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly certificate-degree granting" THEN "Less Than 2-Year"
       ELSE "Unknown"
     END AS school_type,
     CASE
@@ -281,13 +281,15 @@ WITH ValidStudentContact AS (
     )
 )
 SELECT
-  *,
-  -- Creating New Fields that rely on the fields created in ValidStudentContact
-  CONCAT(
-    "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
-    Contact_Id,
-    "/view"
-  ) AS contact_url,
+    Current_School_c,school_type,Current_school_name, COUNT(*)
+--   *,
+--   -- Creating New Fields that rely on the fields created in ValidStudentContact
+--   CONCAT(
+--     "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
+--     Contact_Id,
+--     "/view"
+--   ) AS contact_url,
   
 FROM
   ValidStudentContact
+  GROUP BY Current_School_c,school_type,Current_school_name
