@@ -49,6 +49,7 @@ SELECT
     Ethnic_background__c,
     Indicator_Low_Income__c,
     First_Generation_FY20__c,
+    FA_Req_Expected_Financial_Contribution__c,
     CASE
       WHEN FA_Req_Expected_Financial_Contribution__c = 0 THEN "0 (Full Pell)"
       WHEN FA_Req_Expected_Financial_Contribution__c >0 AND FA_Req_Expected_Financial_Contribution__c <=5711  THEN "1 - 5711 (Partial Pell)"
@@ -201,6 +202,7 @@ GROUP BY
     Ethnic_background__c,
     Indicator_Low_Income__c,
     First_Generation_FY20__c,
+    FA_Req_Expected_Financial_Contribution__c,
     EFC_bucket,
     Indicator_Completed_CT_HS_Program__c,
     college_app_id,
