@@ -1,5 +1,5 @@
 SELECT
-  site_short AS 'Site Long',
+  site_short,
   Workshop_Display_Name_c,
   SUM(Attendance_Numerator_c) AS Attendance_Numerator,
   SUM(Attendance_Denominator_c) AS Attendance_Denominator,
