@@ -9,6 +9,7 @@ WITH contact_at AS (
     Full_Name_c,
     GAS_Name,
     school_type,
+    Current_school_name,
     CASE
       WHEN Credits_Accumulated_Most_Recent_c IS NULL THEN "Frosh"
       WHEN Credits_Accumulated_Most_Recent_c < 25 THEN "Frosh"
