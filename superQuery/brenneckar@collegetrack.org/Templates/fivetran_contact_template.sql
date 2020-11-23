@@ -281,15 +281,13 @@ WITH ValidStudentContact AS (
     )
 )
 SELECT
-    Current_School_c,school_type,Current_school_name, COUNT(*)
---   *,
---   -- Creating New Fields that rely on the fields created in ValidStudentContact
---   CONCAT(
---     "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
---     Contact_Id,
---     "/view"
---   ) AS contact_url,
+  *,
+  -- Creating New Fields that rely on the fields created in ValidStudentContact
+  CONCAT(
+    "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
+    Contact_Id,
+    "/view"
+  ) AS contact_url,
   
 FROM
   ValidStudentContact
-  GROUP BY Current_School_c,school_type,Current_school_name
