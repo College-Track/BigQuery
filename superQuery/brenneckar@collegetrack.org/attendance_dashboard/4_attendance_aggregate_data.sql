@@ -1,4 +1,5 @@
 SELECT
+  site_short,
   Workshop_Display_Name_c,
   SUM(Attendance_Numerator_c) AS Attendance_Numerator,
   SUM(Attendance_Denominator_c) AS Attendance_Denominator,
@@ -32,7 +33,7 @@ GROUP BY
   GPA_Bucket,
   Indicator_Student_on_Intervention_c,
   site_abrev,
-  site_short,
+
   Workshop_Global_Academic_Semester_c,
 --   Class_c,
   Composite_Readiness_Most_Recent_c,
