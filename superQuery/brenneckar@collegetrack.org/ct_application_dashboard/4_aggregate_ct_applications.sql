@@ -2,35 +2,35 @@ WITH aggregate_data AS (
   SELECT
     site_short,
     region_short,
-    Gender__c,
-    First_Generation__c,
-    Indicator_Low_Income__c,
+    Gender_c,
+    First_Generation_c,
+    Indicator_Low_Income_c,
     College_Track_Status_Name,
     Contact_Record_Type_Name,
-    Ethnic_background__c,
-    HIGH_SCHOOL_GRADUATING_CLASS__c,
+    Ethnic_background_c,
+    HIGH_SCHOOL_GRADUATING_CLASS_c,
     COUNT(Contact_Id) AS student_count,
-    MAX(College_Track_FY_HS_Planned_Enrollment__c) AS budget_target,
-    MAX(College_Track_High_School_Capacity__c) AS capacity_target,
+    MAX(College_Track_FY_HS_Planned_Enrollment_c) AS budget_target,
+    MAX(College_Track_High_School_Capacity_c) AS capacity_target,
 
   FROM
     `data-studio-260217.ct_application.ct_application_filtered_data`
-WHERE (Contact_Record_Type_Name = 'Student: High School') OR (CreatedDate >= "2020-01-15")
+WHERE (Contact_Record_Type_Name = 'Student: High School') OR (Created_Date >= "2020-01-15")
   GROUP BY
     site_short,
     region_short,
-    Gender__c,
-    First_Generation__c,
-    Indicator_Low_Income__c,
+    Gender_c,
+    First_Generation_c,
+    Indicator_Low_Income_c,
     College_Track_Status_Name,
     Contact_Record_Type_Name,
-    HIGH_SCHOOL_GRADUATING_CLASS__c,
-    Ethnic_background__c
+    HIGH_SCHOOL_GRADUATING_CLASS_c,
+    Ethnic_background_c
 ),
 applicant_count_data AS (
 SELECT site_short, SUM(applicant_count) AS applicant_count
 FROM `data-studio-260217.ct_application.ct_application_filtered_data`
-WHERE CreatedDate >= "2020-01-15"
+WHERE Created_Date >= "2020-01-15"
 GROUP BY site_short
 )
 
