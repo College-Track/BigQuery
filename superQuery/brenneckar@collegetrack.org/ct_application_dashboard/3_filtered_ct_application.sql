@@ -1,34 +1,30 @@
 WITH gather_data AS (
   SELECT
     C.Contact_Id,
-    CONCAT(
-      "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
-      C.Contact_Id,
-      "/view"
-    ) AS contact_url,
-    C.Full_Name__c,
+    C.contact_url,
+    C.Full_Name_c,
     C.College_Track_Status_Name,
     C.site_short,
     C.region_short,
-    C.Gender__c,
-    C.First_Generation_FY20__c AS First_Generation__c,
-    C.Indicator_Low_Income__c,
+    C.Gender_c,
+    C.First_Generation_FY_20_c AS First_Generation_c,
+    C.Indicator_Low_Income_c,
     C.Contact_Record_Type_Name,
-    CASE WHEN C.HIGH_SCHOOL_GRADUATING_CLASS__c IS NULL THEN "No Data"
-    ELSE C.HIGH_SCHOOL_GRADUATING_CLASS__c
-    END AS HIGH_SCHOOL_GRADUATING_CLASS__c,
-    A.College_Track_FY_HS_Planned_Enrollment__c,
-    A.College_Track_High_School_Capacity__c,
-    CTA.CreatedDate,
-    C.Ethnic_background__c,
+    CASE WHEN C.HIGH_SCHOOL_GRADUATING_CLASS_c IS NULL THEN "No Data"
+    ELSE C.HIGH_SCHOOL_GRADUATING_CLASS_c
+    END AS HIGH_SCHOOL_GRADUATING_CLASS_c,
+    A.College_Track_FY_HS_Planned_Enrollment_c,
+    A.College_Track_High_School_Capacity_c,
+    CTA.created_date,
+    C.Ethnic_background_c,
     A_MS.Name AS middle_school,
     A_HS.Name AS high_school,
   FROM
-    `data-warehouse-289815.sfdc_templates.contact_template` C
-    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A ON A.Id = SITE__c
-    LEFT JOIN `data-warehouse-289815.salesforce_raw.College_Track_Application__c` CTA ON CTA.Id = C.Last_College_Track_Application__c
-    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_HS ON A_HS.Id = CTA.Current_School__c
-    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` A_MS ON A_MS.Id = CTA.Middle_School__c
+    `data-warehouse-289815.salesforce_clean.contact_template` C
+    LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = SITE_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.college_track_application_clean` CTA ON CTA.Id = C.Last_College_Track_Application_c
+    LEFT JOIN `data-warehouse-289815.salesforce.account` A_HS ON A_HS.Id = CTA.Current_School_c
+    LEFT JOIN `data-warehouse-289815.salesforce.account` A_MS ON A_MS.Id = CTA.Middle_School_c
   WHERE
     College_Track_Status_Name IN (
       'Application in progress',
