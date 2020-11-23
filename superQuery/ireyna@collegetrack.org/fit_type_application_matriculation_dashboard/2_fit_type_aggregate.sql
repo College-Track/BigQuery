@@ -1,11 +1,3 @@
-#14,000 records in SFDC vs. 14,085 in superQuery. 8 students have 2 college app records with acceptance & enrollment
-
-CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
-OPTIONS
-    (
-    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
-    )
-AS
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -57,7 +49,12 @@ SELECT
     Ethnic_background__c,
     Indicator_Low_Income__c,
     First_Generation_FY20__c,
-    FA_Req_Expected_Financial_Contribution__c,
+    CASE
+      WHEN FA_Req_Expected_Financial_Contribution__c = 0 THEN "0 (Full Pell)"
+      WHEN FA_Req_Expected_Financial_Contribution__c >0 AND FA_Req_Expected_Financial_Contribution__c <=5711  THEN "1 - 5711 (Partial Pell)"
+      WHEN FA_Req_Expected_Financial_Contribution__c > 5711 THEN ">5711 (Pell Ineligible)"
+      ELSE "Missing"
+    END AS EFC_bucket,
     Indicator_Completed_CT_HS_Program__c,
     
 #college application data
@@ -204,7 +201,7 @@ GROUP BY
     Ethnic_background__c,
     Indicator_Low_Income__c,
     First_Generation_FY20__c,
-    FA_Req_Expected_Financial_Contribution__c,
+    EFC_bucket,
     Indicator_Completed_CT_HS_Program__c,
     college_app_id,
     app.college_id,
