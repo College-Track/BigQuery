@@ -7,6 +7,7 @@ WITH gather_data AS (
     C.site_short,
     C.region_short,
     C.Gender_c,
+    C.site_sort,
     C.First_Generation_FY_20_c AS First_Generation_c,
     C.Indicator_Low_Income_c,
     C.Contact_Record_Type_Name,
