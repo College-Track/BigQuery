@@ -1,6 +1,7 @@
 WITH aggregate_data AS (
   SELECT
     site_short,
+    site_sort,
     region_short,
     Gender_c,
     First_Generation_c,
@@ -18,6 +19,7 @@ WITH aggregate_data AS (
 WHERE (Contact_Record_Type_Name = 'Student: High School') OR (Created_Date >= "2020-01-15")
   GROUP BY
     site_short,
+    site_sort,
     region_short,
     Gender_c,
     First_Generation_c,
