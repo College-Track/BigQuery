@@ -11,8 +11,9 @@ WITH gather_data AS (
     C.First_Generation_FY_20_c AS First_Generation_c,
     C.Indicator_Low_Income_c,
     C.Contact_Record_Type_Name,
-    CASE WHEN C.HIGH_SCHOOL_GRADUATING_CLASS_c IS NULL THEN "No Data"
-    ELSE C.HIGH_SCHOOL_GRADUATING_CLASS_c
+    CASE
+      WHEN C.HIGH_SCHOOL_GRADUATING_CLASS_c IS NULL THEN "No Data"
+      ELSE C.HIGH_SCHOOL_GRADUATING_CLASS_c
     END AS HIGH_SCHOOL_GRADUATING_CLASS_c,
     A.College_Track_FY_HS_Planned_Enrollment_c,
     A.College_Track_High_School_Capacity_c,
@@ -51,12 +52,14 @@ SELECT
     WHEN College_Track_Status_Name = "Onboarding" THEN 7
     ELSE 8
   END AS sort_ct_status,
-  CASE WHEN Contact_Record_Type_Name = "Student: Applicant" THEN 1
-  ELSE 0
+  CASE
+    WHEN Contact_Record_Type_Name = "Student: Applicant" THEN 1
+    WHEN College_Track_Status_Name = "Onboarding" THEN 1
+    ELSE 0
   END AS applicant_count,
-    CASE WHEN College_Track_Status_Name = "Current CT HS Student" THEN 1
-  ELSE 0
+  CASE
+    WHEN College_Track_Status_Name = "Current CT HS Student" THEN 1
+    ELSE 0
   END AS current_student_count
-  
 FROM
   gather_data
