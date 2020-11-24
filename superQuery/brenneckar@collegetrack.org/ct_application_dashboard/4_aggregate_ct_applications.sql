@@ -11,7 +11,6 @@ WITH aggregate_data AS (
     Ethnic_background_c,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
     COUNT(Contact_Id) AS student_count,
-    SUM(current_student_count) AS current_student_count,
     MAX(College_Track_FY_HS_Planned_Enrollment_c) AS budget_target,
     MAX(College_Track_High_School_Capacity_c) AS capacity_target,
 
@@ -35,7 +34,16 @@ SELECT site_short, SUM(applicant_count) AS applicant_count
 FROM `data-studio-260217.ct_application.ct_application_filtered_data`
 WHERE Created_Date >= "2020-01-15"
 GROUP BY site_short
+),
+
+student_count_data AS (
+SELECT site_short, SUM(current_student_count) AS current_student_count
+FROM `data-studio-260217.ct_application.ct_application_filtered_data`
+GROUP BY site_short
 )
+
+
+    
 
 
 SELECT
@@ -50,7 +58,9 @@ SELECT
     WHEN College_Track_Status_Name = "Onboarding" THEN 7
     ELSE 8
   END AS sort_ct_status,
-  applicant_count_data.applicant_count
+  applicant_count_data.applicant_count,
+  student_count_data.current_student_count
 FROM
   aggregate_data
   LEFT JOIN applicant_count_data ON aggregate_data.site_short = applicant_count_data.site_short
+  LEFT JOIN student_count_data ON aggregate_data.site_short = student_count_data.site_short
