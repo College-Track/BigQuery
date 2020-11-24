@@ -53,6 +53,10 @@ SELECT
   END AS sort_ct_status,
   CASE WHEN Contact_Record_Type_Name = "Student: Applicant" THEN 1
   ELSE 0
-  END AS applicant_count
+  END AS applicant_count,
+    CASE WHEN College_Track_Status_Name = "Current CT HS Student" THEN 1
+  ELSE 0
+  END AS current_student_count
+  
 FROM
   gather_data
