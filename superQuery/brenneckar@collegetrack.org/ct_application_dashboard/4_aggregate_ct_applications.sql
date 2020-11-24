@@ -11,6 +11,7 @@ WITH aggregate_data AS (
     Ethnic_background_c,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
     COUNT(Contact_Id) AS student_count,
+    SUM(current_student_count) AS current_student_count,
     MAX(College_Track_FY_HS_Planned_Enrollment_c) AS budget_target,
     MAX(College_Track_High_School_Capacity_c) AS capacity_target,
 
