@@ -1,6 +1,13 @@
-#record count = 7870 in superquery vs. record count in SFDC = 7837. 33 dupe records
+#the fit_type_pipeline_agg table will show a record count = 7870 in superquery vs. record count in SFDC = 7837. 33 dupe records due to the 8 students with multiple entries of accepted & enrolled
 
-WITH fit_type_acceptances AS #record count = 7870 
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.fit_type_accepted`
+OPTIONS
+    (
+    description= "This table aggregates students that were accepted to a college from college applications. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
+WITH fit_type_acceptances AS #record count = 7837 (matches SFDC)
 
 (
 SELECT
