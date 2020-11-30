@@ -101,8 +101,7 @@ SELECT
     Application_status__c,
     app.admission_status__c,
     College_Fit_Type_Applied__c,
-    app.Fit_Type_Enrolled__c,
-    fit_type_enrolled
+    app.Fit_Type_Enrolled__c
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -123,13 +122,17 @@ SELECT
     
  #to categorize fit type "none". Account for students without admission status indicating enrollment. "None" = tech/trade school, GCY, or erroneous school selection (e.g. graduate school)
    IF(school_name_enrolled IS NULL, "No enrollment or deferment", # sub NULL for 'No enrollment or deferment'. No school to list means no admission status of enrollment
-   IF(fit_type_enrolled = "None" AND school_type_enrolled = "4 Year","None - 4-yr", 
-   IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 Year","None - 2-yr",
-   IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 year","None - 2-yr", #case sensitive - lower-case "y" in "year"
-   fit_type_enrolled)))) AS fit_type_enrolled_chart,
+   IF(Fit_Type_Enrolled__c = "None" AND school_type_enrolled = "4 Year","None - 4-yr", 
+   IF(Fit_Type_Enrolled__c = "None" AND school_type_enrolled = "2 Year","None - 2-yr",
+   IF(Fit_Type_Enrolled__c = "None" AND school_type_enrolled = "2 year","None - 2-yr", #case sensitive - lower-case "y" in "year"
+   Fit_Type_Enrolled__c)))) AS fit_type_enrolled_chart,
    
    #to account for students without any college app records with admission status indicating enrollment. No school to list
-    IF(fit_type_enrolled IS NULL, "No enrollment or deferment",school_name_enrolled) as school_name_accepted_enrolled
+    IF(Fit_Type_Enrolled__c IS NULL, "No enrollment or deferment",school_name_enrolled) as school_name_accepted_enrolled,
+    
+    CASE
+      WHEN app.site_short IS NOT NULL THEN "National"
+    END AS National
     
  FROM fit_type_applied AS app
  LEFT JOIN fit_type_acceptances AS acc
@@ -174,6 +177,6 @@ GROUP BY
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
     fit_type_enrolled_chart,
-    acc.school_name_accepted,
-    acc.fit_type_applied_accepted,
-    acc.acceptance_group_accepted
+    school_name_accepted,
+    fit_type_applied_accepted,
+    acceptance_group_accepted
