@@ -137,6 +137,10 @@ SELECT
  LEFT JOIN fit_type_acceptances AS acc
       ON acc.contact_id = app.contact_id 
 
+WHERE High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+AND Application_status__c = "Applied"
+AND Indicator_Completed_CT_HS_Program__c = TRUE
+
 GROUP BY
     contact_id,
     Full_Name__c,
