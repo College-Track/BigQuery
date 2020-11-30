@@ -9,18 +9,24 @@ WITH gather_data AS (
     mailing_postal_code,
     mailing_state,
     mailing_street,
-    primary_contact_language_c,
-    first_generation_fy_20_c,
+    CASE
+      WHEN primary_contact_language_c LIKE '%English%' THEN true
+      ELSE false
+    END AS english_primary_language,
+    CASE
+      WHEN first_generation_fy_20_c = 'Yes' THEN true
+      ELSE false
+    END AS first_gen,
     CASE
       WHEN citizen_c_c = 'US Citizen' THEN true
-      ELSE false 
-      END AS is_a_us_citizen
-      FROM
-        `data-warehouse-289815.salesforce_clean.contact_template`
-      WHERE
-        college_track_status_c IN ('11A')
-    )
-  SELECT
-    *
+      ELSE false
+    END AS is_a_us_citizen
   FROM
-    gather_data
+    `data-warehouse-289815.salesforce_clean.contact_template`
+  WHERE
+    college_track_status_c IN ('11A')
+)
+SELECT
+  *
+FROM
+  gather_data
