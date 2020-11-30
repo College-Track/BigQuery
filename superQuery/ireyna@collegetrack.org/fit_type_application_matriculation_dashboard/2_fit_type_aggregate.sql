@@ -42,7 +42,7 @@ SELECT
     accnt.id AS account_id,
     IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_app,
     school_name_enrolled,
-    school_type_enrolled,
+   -- school_type_enrolled,
     Type_of_School__c,
     Application_status__c,
     app.admission_status__c,
@@ -64,3 +64,6 @@ SELECT
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.college_id = accnt.id
+    
+    LEFT JOIN Fit_Type_Enrolled AS enrolled
+        ON enrolled.contact_id = app.contact_id
