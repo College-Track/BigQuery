@@ -1,25 +1,3 @@
-WITH fit_type_enrolled AS
-(
-SELECT 
-    contact_id,
-    Full_Name__c,
-    
-#college application data
-    college_id,
-    IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_enrolled,
-    Fit_Type_Enrolled__c AS fit_type_enrolled,
-    Type_of_School__c as school_type_enrolled,
-    
-    FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
-    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
-        ON app.college_id = accnt.id
-    WHERE Indicator_Completed_CT_HS_Program__c = TRUE    
-    AND admission_status__c IN ("Accepted and Enrolled", "Accepted and Deferred")
-),
-
---Table houses fields on college applications (Fit Type, Application/Admission Status), contact demographics & academics
-fit_type_application AS
-(
 SELECT
 
 #demographics, academic data
@@ -86,10 +64,3 @@ SELECT
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.college_id = accnt.id
-    
-    LEFT JOIN Fit_Type_Enrolled AS enrolled
-        ON enrolled.contact_id = app.contact_id
-        
-    WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
-
-)
