@@ -1,3 +1,14 @@
+#14,000 records in SFDC vs. 14,085 in superQuery. 8 students have 2 college app records with acceptance & enrollment
+#testing fit_type_pipeline_agg with acceptance pipeline added
+#stores fit type applied, fit type accepted, fit type enrolled CTE tables
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.fit_type_applications`
+OPTIONS
+    (
+    description= "This table stores fit type applied, fit type accepted, fit type enrolled CTE tables"
+    )
+AS
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -89,21 +100,9 @@ SELECT
     Type_of_School__c,
     Application_status__c,
     app.admission_status__c,
-    CASE
-        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
-        WHEN admission_status__c = "Denied" THEN "Denied"
-        WHEN admission_status__c = "Coniditional" THEN "Conditional"
-        WHEN admission_status__c = "Undecided" THEN "Undecided"
-        WHEN admission_status__c = "Withdrew Application" THEN "Withdrew Application"
-        WHEN admission_status__c = "Wait-listed" THEN "Waitlisted"
-        WHEN admission_status__c IS NULL THEN "No data"
-        ELSE "No data"
-        END AS acceptance_group,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
     fit_type_enrolled
-    
-    
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -114,7 +113,6 @@ SELECT
         ON enrolled.contact_id = app.contact_id
     
     WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
-
 )
 
 SELECT 
@@ -173,7 +171,6 @@ GROUP BY
     Type_of_School__c,
     Application_status__c,
     admission_status__c,
-    acceptance_group,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
     fit_type_enrolled,
