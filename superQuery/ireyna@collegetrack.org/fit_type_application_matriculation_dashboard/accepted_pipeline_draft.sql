@@ -15,7 +15,7 @@ SELECT
     Full_Name__c,
     college_app_id,
     IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_accepted,
-    College_Fit_Type_Applied__c,
+    College_Fit_Type_Applied__c as fit_type_applied_accepted,
     admission_status__c,
     CASE
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
@@ -74,13 +74,17 @@ SELECT
     app.college_id,
     IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_app,
     Type_of_School__c,
+    Application_status__c,
+    app.College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
+    
 
 #college acceptances data
     acc.college_app_id,
     school_name_accepted,
     acceptance_group_accepted,
-    app.admission_status__c
+    app.admission_status__c,
+    fit_type_applied_accepted
     
     --Join with Account object to pull in name of School/College
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -101,12 +105,10 @@ SELECT
     END AS National
     
 FROM fit_type_application AS app
-INNER JOIN `data-studio-260217.fit_type_pipeline.filtered_college_application` AS filtered
-    ON filtered.Contact_Id = app.Contact_Id
 
 WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
 AND acceptance_group_accepted = "Accepted"
-AND filtered.High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+AND High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
 AND Application_status__c = "Applied"
 
 GROUP BY
@@ -118,11 +120,13 @@ GROUP BY
     app.region_short,
     app.college_app_id,
     college_id,
+    Application_status__c,
     school_name_app,
     school_name_accepted,
     app.admission_status__c,
     acceptance_group_accepted,
     College_Fit_Type_Applied__c,
+    fit_type_applied_accepted,
     CGPA_11th,
     CGPA_11th_bucket,
     Readiness_English_Official__c,
