@@ -174,6 +174,7 @@ GROUP BY
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
     fit_type_enrolled,
+    fit_type_enrolled_chart,
     acc.school_name_accepted,
     acc.fit_type_applied_accepted,
     acc.acceptance_group_accepted
