@@ -18,7 +18,7 @@ SELECT
 #college application data
     college_id,
     IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_enrolled,
-    Fit_Type_Enrolled__c AS fit_type_enrolled,
+    Fit_Type_Enrolled__c,
     Type_of_School__c as school_type_enrolled,
     
     FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
@@ -173,7 +173,6 @@ GROUP BY
     admission_status__c,
     College_Fit_Type_Applied__c,
     Fit_Type_Enrolled__c,
-    fit_type_enrolled,
     fit_type_enrolled_chart,
     acc.school_name_accepted,
     acc.fit_type_applied_accepted,
