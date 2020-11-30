@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.pipeline_data`
+OPTIONS
+    (
+    description= "This table joins the fit type applications table with fit type matriculation table (application, acceptances, enrollment, matriculated)."
+    )
+AS
+
 SELECT 
 app.*, 
 term.*
