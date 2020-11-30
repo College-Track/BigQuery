@@ -6,8 +6,7 @@ OPTIONS
 AS
 
 SELECT 
-app.*
-    EXCEPT (fit_type_enrolled),
+app.*,
 term.*
     EXCEPT (Full_Name__c,site_full,site_short,region_full,region_short,contact_id),
     
@@ -72,4 +71,5 @@ GROUP BY
     fit_type_start_of_affiliation,
     Affiliation_id_at,
     id_aff,
-    fit_type_affiliation
+    fit_type_affiliation,
+    NATIONAL
