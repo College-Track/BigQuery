@@ -91,3 +91,5 @@ SELECT
         ON enrolled.contact_id = app.contact_id
         
     WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
+
+)
