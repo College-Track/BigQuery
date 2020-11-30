@@ -93,6 +93,8 @@ SELECT
         ON enrolled.contact_id = app.contact_id
         
     WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
+    AND app.High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+    AND Application_status__c = "Applied"
 )
 
 SELECT *
