@@ -2,40 +2,47 @@ WITH fit_type_acceptances AS #record count = 7870
 (
 SELECT
     contact_id AS contact_id_accepted,
-    acceptance_group,
-    contact_id,
     Full_Name__c,
     College_Track_Status_Name,
     High_School_Class,
-    site_full,
     site_short,
-    region_full,
     region_short,
     college_app_id,
-    school_name_app,
+    IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_app,
     admission_status__c,
-    acceptance_group AS acceptance_group_accepted
-FROM `data-studio-260217.fit_type_pipeline.aggregate_data`
-WHERE acceptance_group = "Accepted"
-
+    CASE
+        WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
+        WHEN admission_status__c = "Denied" THEN "Denied"
+        WHEN admission_status__c = "Coniditional" THEN "Conditional"
+        WHEN admission_status__c = "Undecided" THEN "Undecided"
+        WHEN admission_status__c = "Withdrew Application" THEN "Withdrew Application"
+        WHEN admission_status__c = "Wait-listed" THEN "Waitlisted"
+        ELSE "No data"
+    END AS acceptance_group_accepted
+    
+FROM `data-studio-260217.fit_type_pipeline.filtered_college_application` AS app
+LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
+        ON app.college_id = accnt.id
 )
 
 SELECT
     accept.*
-
+    
 FROM fit_type_acceptances AS accept
-INNER JOIN `data-studio-260217.fit_type_pipeline.aggregate_data` AS agg
-    ON agg.Contact_Id = Contact_Id_accepted
+INNER JOIN `data-studio-260217.fit_type_pipeline.filtered_college_application` AS filtered
+    ON filtered.Contact_Id = Contact_Id_accepted
 
+WHERE Indicator_Completed_CT_HS_Program__c = TRUE
+AND acceptance_group_accepted = "Accepted"
+AND filtered.High_School_Class >= 2017 #c/o 2017 and above have most completed Fit Type (applied) and Fit Type (enrolled) 
+AND Application_status__c = "Applied"
 
 GROUP BY
     contact_id_accepted,
     accept.Full_Name__c,
     accept.College_Track_Status_Name,
     accept.High_School_Class,
-    accept.site_full,
     accept.site_short,
-    accept.region_full,
     accept.region_short,
     accept.college_app_id,
     accept.school_name_app,
