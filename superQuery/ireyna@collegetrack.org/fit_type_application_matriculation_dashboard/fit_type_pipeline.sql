@@ -6,7 +6,8 @@ OPTIONS
 AS
 
 SELECT 
-app.*, 
+app.*
+    EXCEPT (fit_type_enrolled),
 term.*
     EXCEPT (Full_Name__c,site_full,site_short,region_full,region_short,contact_id)
 
@@ -50,6 +51,7 @@ GROUP BY
     Fit_Type_Enrolled__c,
     fit_type_enrolled_chart,
     school_name_accepted,
+    school_name_accepted_enrolled,
     fit_type_applied_accepted,
     acceptance_group_accepted,
     High_School_Class__c,
