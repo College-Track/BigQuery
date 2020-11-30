@@ -11,7 +11,8 @@ WITH gather_data AS (
     mailing_street,
     primary_contact_language_c,
     first_generation_fy_20_c,
-    citizen_c_c
+    CASE WHEN citizen_c_c = 'US Citizen' THEN true
+    ELSE false AS is_a_us_citizen
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
