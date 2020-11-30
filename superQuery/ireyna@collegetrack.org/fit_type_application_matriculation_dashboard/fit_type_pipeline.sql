@@ -9,8 +9,11 @@ SELECT
 app.*
     EXCEPT (fit_type_enrolled),
 term.*
-    EXCEPT (Full_Name__c,site_full,site_short,region_full,region_short,contact_id)
-
+    EXCEPT (Full_Name__c,site_full,site_short,region_full,region_short,contact_id),
+CASE
+      WHEN app.site_short IS NOT NULL THEN "National"
+    END AS National
+    
 FROM `data-studio-260217.fit_type_pipeline.fit_type_applications` AS app    
 LEFT JOIN `data-studio-260217.fit_type_pipeline.fit_type_matriculation` AS term
     ON app.contact_id = term.contact_id
