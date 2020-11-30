@@ -1,4 +1,7 @@
-WITH fit_type_acceptances AS #record count = 7870
+#record count = 7870 in superquery vs. record count in SFDC = 7837. 33 dupe records
+
+WITH fit_type_acceptances AS #record count = 7870 
+
 (
 SELECT
     contact_id AS contact_id_accepted,
@@ -8,7 +11,7 @@ SELECT
     site_short,
     region_short,
     college_app_id,
-    IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_app,
+    IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_accepted,
     admission_status__c,
     CASE
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
@@ -45,6 +48,6 @@ GROUP BY
     accept.site_short,
     accept.region_short,
     accept.college_app_id,
-    accept.school_name_app,
+    accept.school_name_accepted,
     accept.admission_status__c,
     acceptance_group_accepted
