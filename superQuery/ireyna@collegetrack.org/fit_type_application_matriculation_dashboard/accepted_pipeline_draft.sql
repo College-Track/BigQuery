@@ -19,6 +19,7 @@ SELECT
     region_short,
     college_app_id,
     IF(app.college_id = '0014600000plKMXAA2',"Global Citizen Year",accnt.name) AS school_name_accepted,
+    College_Fit_Type_Applied__c,
     admission_status__c,
     CASE
         WHEN admission_status__c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred") THEN "Accepted"
@@ -57,4 +58,5 @@ GROUP BY
     accept.college_app_id,
     accept.school_name_accepted,
     accept.admission_status__c,
-    acceptance_group_accepted
+    acceptance_group_accepted,
+    College_Fit_Type_Applied__c
