@@ -101,10 +101,8 @@ SELECT
         END AS acceptance_group,
     College_Fit_Type_Applied__c,
     app.Fit_Type_Enrolled__c,
-    fit_type_enrolled,
-    school_name_accepted,
-    fit_type_applied_accepted,
-    acceptance_group_accepted
+    fit_type_enrolled
+    
     
     
     --Join with Account object to pull in name of School/College
@@ -114,14 +112,67 @@ SELECT
     
     LEFT JOIN Fit_Type_Enrolled AS enrolled
         ON enrolled.contact_id = app.contact_id
-        
-    LEFT JOIN fit_type_acceptances AS acc
-      ON acc.contact_id = app.contact_id 
     
     WHERE app.Indicator_Completed_CT_HS_Program__c = TRUE
 
 )
 
 SELECT 
-    *
-FROM fit_type_applied
+    app.*, 
+    acc.school_name_accepted,
+    acc.fit_type_applied_accepted,
+    acc.acceptance_group_accepted,
+    
+ #to categorize fit type "none". Account for students without admission status indicating enrollment. "None" = tech/trade school, GCY, or erroneous school selection (e.g. graduate school)
+   IF(school_name_enrolled IS NULL, "No enrollment or deferment", # sub NULL for 'No enrollment or deferment'. No school to list means no admission status of enrollment
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "4 Year","None - 4-yr", 
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 Year","None - 2-yr",
+   IF(fit_type_enrolled = "None" AND school_type_enrolled = "2 year","None - 2-yr", #case sensitive - lower-case "y" in "year"
+   fit_type_enrolled)))) AS fit_type_enrolled_chart,
+   
+   #to account for students without any college app records with admission status indicating enrollment. No school to list
+    IF(fit_type_enrolled IS NULL, "No enrollment or deferment",school_name_enrolled) as school_name_accepted_enrolled
+    
+ FROM fit_type_applied AS app
+ LEFT JOIN fit_type_acceptances AS acc
+      ON acc.contact_id = app.contact_id 
+
+GROUP BY
+    contact_id,
+    Full_Name__c,
+    College_Track_Status_Name,
+    High_School_Class,
+    site_full,
+    site_short,
+    region_full,
+    region_short,
+    CGPA_11th,
+    CGPA_11th_bucket,
+    Readiness_English_Official__c,
+    Readiness_Math_Official__c,
+    Readiness_Composite_Off__c,
+    Indicator_Persisted_into_2nd_Year_CT__c,
+    Indicator_Persisted_into_Year_2_Wide__c,
+    Gender__c,
+    Ethnic_background__c,
+    Indicator_Low_Income__c,
+    First_Generation_FY20__c,
+    FA_Req_Expected_Financial_Contribution__c,
+    EFC_bucket,
+    Indicator_Completed_CT_HS_Program__c,
+    college_app_id,
+    college_id,
+    account_id,
+    school_name_app,
+    school_name_enrolled,
+    school_type_enrolled,
+    Type_of_School__c,
+    Application_status__c,
+    admission_status__c,
+    acceptance_group,
+    College_Fit_Type_Applied__c,
+    Fit_Type_Enrolled__c,
+    fit_type_enrolled,
+    acc.school_name_accepted,
+    acc.fit_type_applied_accepted,
+    acc.acceptance_group_accepted
