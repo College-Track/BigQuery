@@ -37,7 +37,10 @@ LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
 )
 
 SELECT
-    accept.*
+    accept.*,
+     CASE
+      WHEN accept.site_short IS NOT NULL THEN "National"
+    END AS National
     
 FROM fit_type_acceptances AS accept
 INNER JOIN `data-studio-260217.fit_type_pipeline.filtered_college_application` AS filtered
