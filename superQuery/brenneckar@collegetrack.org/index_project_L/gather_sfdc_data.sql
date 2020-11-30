@@ -6,7 +6,6 @@ WITH gather_data AS (
     annual_household_income_c,
     mailing_city,
     mailing_postal_code,
-    mailing_postal_code,
     mailing_state,
     mailing_street,
     CASE
