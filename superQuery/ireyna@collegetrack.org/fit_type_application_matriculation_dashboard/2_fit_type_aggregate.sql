@@ -158,6 +158,8 @@ SELECT
         EXCEPT (school_name_enrolled, school_type_enrolled),
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
+    pell.*
+        EXCEPT (High_School_Class),
         
    #matriculation fit type "none" categories (2-yr 4-yr)     
    IF(Fit_Type__c IS NULL, "Not Enrolled", #to account for non-enrolled/NULL Fall year 1
@@ -230,7 +232,6 @@ GROUP BY
     First_Generation_FY20__c,
     FA_Req_Expected_Financial_Contribution__c,
     EFC_bucket,
-    Max_EFC, #pell table
     Indicator_Completed_CT_HS_Program__c,
     college_app_id,
     app.college_id,
@@ -266,4 +267,6 @@ GROUP BY
     fit_type_enrolled,
     school_name_accepted,
     fit_type_applied_accepted,
-    acceptance_group_accepted
+    acceptance_group_accepted,
+    Max_EFC, #pell table
+    academic_year
