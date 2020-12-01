@@ -4,5 +4,5 @@ LEFT JOIN  `bigquery-public-data.census_bureau_acs.censustract_2018_5yr` ACS on 
 )
 
 SELECT *
-FROM merged_data
+FROM merge_data
 WHERE total_pop IS NULL
