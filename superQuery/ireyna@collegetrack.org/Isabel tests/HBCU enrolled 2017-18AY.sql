@@ -18,7 +18,7 @@ School_Academic_Calendar__c,
 School_Predominant_Degree_Awarded__c,
 Historically_Black_College_Univ_HBCU__c,
 CASE
-    WHEN High_School_Class__c = '2020' THEN "remove from data" #to remove any summer terms where student may be erroneously entered as FT/PT. Will be captured in following AY if true
+    WHEN High_School_Class__c = '2018' THEN "remove from data" #to remove any summer terms where student may be erroneously entered as FT/PT. Will be captured in following AY if true
 END AS rising_freshman
 
 FROM `data-warehouse-289815.sfdc_templates.contact_at_template` as term
@@ -34,4 +34,4 @@ AT_Record_Type_Name = "College/University Semester"
 AND Enrolled_in_any_college__c = TRUE
 AND Historically_Black_College_Univ_HBCU__c = TRUE
 AND student_audit_status__c = "Active: Post-Secondary"
-AND gay.name = "AY 2019-20"
+AND gay.name = "AY 2017-18"
