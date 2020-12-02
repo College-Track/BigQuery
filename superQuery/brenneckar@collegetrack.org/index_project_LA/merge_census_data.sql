@@ -48,73 +48,45 @@ calc_census_metrics AS (
   FROM
     `learning-agendas.index_project.student_with_census` C
     LEFT JOIN gather_census_data CENSUS ON C.census_track_id = CENSUS.geo_id
-),
-calc_averages AS (
-  SELECT
-    site_short,
-    AVG(CAST(is_a_us_citizen AS INT64)) AS avg_us_citizen,
-    AVG(CAST(english_primary_language AS INT64)) AS avg_english_primary_language,
-    AVG(CAST(first_gen AS INT64)) AS avg_first_gen,
-    AVG(annual_household_income_c) AS avg_househld_income_site,
-    AVG(percent_bachelors_degree) AS avg_percent_bachelors_degree,
-    AVG(percent_high_school_diploma) AS avg_percent_high_school_diploma,
-    AVG(percent_households_public_asst_or_food_stamps) AS avg_percent_households_public_asst_or_food_stamps,
-    AVG(percent_housing_units_renter_occupied) AS avg_percent_housing_units_renter_occupied,
-    AVG(income_per_capita) AS avg_income_per_capita,
-    AVG(median_income) AS avg_median_income,
-    --   AVG(percent_not_in_labor_force) AS avg_percent_not_in_labor_force,
-    AVG(percent_not_us_citizen_pop) AS avg_percent_not_us_citizen_pop,
-    AVG(percent_income_spent_on_rent) AS avg_percent_income_spent_on_rent,
-    AVG(percent_unemployed_pop) AS avg_percent_unemployed_pop,
-    AVG(percent_vacant_housing_units) AS avg_percent_vacant_housing_units
-  FROM
-    calc_census_metrics
-  GROUP BY
-    site_short
-)
+), calc_averages AS (
 SELECT
   site_short,
-  (avg_us_citizen - avg(avg_us_citizen) over()) / stddev(avg_us_citizen) over() as z_score_us_citizen,
-  (
-    avg_english_primary_language - avg(avg_english_primary_language) over()
-  ) / stddev(avg_english_primary_language) over() as z_score_english_primary_language,
-  (avg_first_gen - avg(avg_first_gen) over()) / stddev(avg_first_gen) over() as z_score_first_gen,
-  (
-    avg_househld_income_site - avg(avg_househld_income_site) over()
-  ) / stddev(avg_househld_income_site) over() as z_score_househld_income_site,
-  (
-    avg_percent_bachelors_degree - avg(avg_percent_bachelors_degree) over()
-  ) / stddev(avg_percent_bachelors_degree) over() as z_score_bachelors_degree,
-  (
-    avg_percent_high_school_diploma - avg(avg_percent_high_school_diploma) over()
-  ) / stddev(avg_percent_high_school_diploma) over() as z_score_high_school_diploma,
-  (
-    avg_percent_households_public_asst_or_food_stamps - avg(
-      avg_percent_households_public_asst_or_food_stamps
-    ) over()
-  ) / stddev(
-    avg_percent_households_public_asst_or_food_stamps
-  ) over() as z_score_households_public_asst_or_food_stamps,
-  (
-    avg_percent_housing_units_renter_occupied - avg(avg_percent_housing_units_renter_occupied) over()
-  ) / stddev(avg_percent_housing_units_renter_occupied) over() as z_score_housing_units_renter_occupied,
-  (
-    avg_income_per_capita - avg(avg_income_per_capita) over()
-  ) / stddev(avg_income_per_capita) over() as z_score_income_per_capita,
-  (
-    avg_median_income - avg(avg_median_income) over()
-  ) / stddev(avg_median_income) over() as z_score_median_income,
-  (
-    avg_percent_not_us_citizen_pop - avg(avg_percent_not_us_citizen_pop) over()
-  ) / stddev(avg_percent_not_us_citizen_pop) over() as z_score_percent_not_us_citizen_pop,
-  (
-    avg_percent_income_spent_on_rent - avg(avg_percent_income_spent_on_rent) over()
-  ) / stddev(avg_percent_income_spent_on_rent) over() as z_score_percent_income_spent_on_rent,
-  (
-    avg_percent_unemployed_pop - avg(avg_percent_unemployed_pop) over()
-  ) / stddev(avg_percent_unemployed_pop) over() as z_score_percent_unemployed_pop,
-  (
-    avg_percent_vacant_housing_units - avg(avg_percent_vacant_housing_units) over()
-  ) / stddev(avg_percent_vacant_housing_units) over() as z_score_percent_vacant_housing_units,
+  AVG(CAST(is_a_us_citizen AS INT64)) AS avg_us_citizen,
+  AVG(CAST(english_primary_language AS INT64)) AS avg_english_primary_language,
+  AVG(CAST(first_gen AS INT64)) AS avg_first_gen,
+  AVG(annual_household_income_c) AS avg_househld_income_site,
+  AVG(percent_bachelors_degree) AS avg_percent_bachelors_degree,
+  AVG(percent_high_school_diploma) AS avg_percent_high_school_diploma,
+  AVG(percent_households_public_asst_or_food_stamps) AS avg_percent_households_public_asst_or_food_stamps,
+  AVG(percent_housing_units_renter_occupied) AS avg_percent_housing_units_renter_occupied,
+  AVG(income_per_capita) AS avg_income_per_capita,
+  AVG(median_income) AS avg_median_income,
+  --   AVG(percent_not_in_labor_force) AS avg_percent_not_in_labor_force,
+  AVG(percent_not_us_citizen_pop) AS avg_percent_not_us_citizen_pop,
+  AVG(percent_income_spent_on_rent) AS avg_percent_income_spent_on_rent,
+  AVG(percent_unemployed_pop) AS avg_percent_unemployed_pop,
+  AVG(percent_vacant_housing_units) AS avg_percent_vacant_housing_units
 FROM
-  calc_averages
+  calc_census_metrics
+GROUP BY
+  site_short
+  )
+  
+SELECT 
+site_short, 
+(avg_us_citizen - avg(avg_us_citizen) over()) / stddev(avg_us_citizen) over() AS us_citizen,
+(avg_english_primary_language - avg(avg_english_primary_language) over()) / stddev(avg_english_primary_language) over() AS english_primary_language,
+(avg_first_gen - avg(avg_first_gen) over()) / stddev(avg_first_gen) over() AS first_gen,
+(avg_househld_income_site - avg(avg_househld_income_site) over()) / stddev(avg_househld_income_site) over() AS househld_income_site,
+(avg_percent_bachelors_degree - avg(avg_percent_bachelors_degree) over()) / stddev(avg_percent_bachelors_degree) over() AS bachelors_degree,
+(avg_percent_high_school_diploma - avg(avg_percent_high_school_diploma) over()) / stddev(avg_percent_high_school_diploma) over() AS high_school_diploma,
+(avg_percent_households_public_asst_or_food_stamps - avg(avg_percent_households_public_asst_or_food_stamps) over()) / stddev(avg_percent_households_public_asst_or_food_stamps) over() AS households_public_asst_or_food_stamps,
+(avg_percent_housing_units_renter_occupied - avg(avg_percent_housing_units_renter_occupied) over()) / stddev(avg_percent_housing_units_renter_occupied) over() AS housing_units_renter_occupied,
+(avg_income_per_capita - avg(avg_income_per_capita) over()) / stddev(avg_income_per_capita) over() AS income_per_capita,
+(avg_median_income - avg(avg_median_income) over()) / stddev(avg_median_income) over() AS median_income,
+(avg_percent_not_us_citizen_pop - avg(avg_percent_not_us_citizen_pop) over()) / stddev(avg_percent_not_us_citizen_pop) over() AS percent_not_us_citizen_pop,
+(avg_percent_income_spent_on_rent - avg(avg_percent_income_spent_on_rent) over()) / stddev(avg_percent_income_spent_on_rent) over() AS percent_income_spent_on_rent,
+(avg_percent_unemployed_pop - avg(avg_percent_unemployed_pop) over()) / stddev(avg_percent_unemployed_pop) over() AS percent_unemployed_pop,
+(avg_percent_vacant_housing_units - avg(avg_percent_vacant_housing_units) over()) / stddev(avg_percent_vacant_housing_units) over() AS percent_vacant_housing_units,
+
+FROM calc_averages
