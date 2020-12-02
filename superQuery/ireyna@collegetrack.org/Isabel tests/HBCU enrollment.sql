@@ -1,9 +1,9 @@
 SELECT 
 gay.name, #global academic year
+Academic_Year__c,
 Contact_Id,
 Full_Name__c,
 High_School_Class__c,
-Academic_Year__c,
 AT_Name, #academic term name
 Indicator_Years_Since_HS_Grad_to_Date__c,
 AT_Grade__c,
