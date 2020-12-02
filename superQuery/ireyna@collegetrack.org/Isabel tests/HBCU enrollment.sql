@@ -23,4 +23,4 @@ WHERE
 AT_Record_Type_Name = "College/University Semester"
 AND Enrolled_in_any_college__c = TRUE
 AND Historically_Black_College_Univ_HBCU__c = TRUE
-AND Academic_Year__c = 'a1b46000000dRR7'
+--AND Academic_Year__c = 'a1b46000000dRR7'
