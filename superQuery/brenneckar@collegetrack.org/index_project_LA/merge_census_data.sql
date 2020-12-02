@@ -74,7 +74,7 @@ GROUP BY
   
 SELECT 
 site_short, 
-(avg_us_citizen - avg(avg_us_citizen) over()) / stddev(avg_us_citizen) over() AS us_citizen, -- positive
+-(avg_us_citizen - avg(avg_us_citizen) over()) / stddev(avg_us_citizen) over() AS us_citizen, -- positive
 -- (avg_english_primary_language - avg(avg_english_primary_language) over()) / stddev(avg_english_primary_language) over() AS english_primary_language, -- positive
 -- -(avg_first_gen - avg(avg_first_gen) over()) / stddev(avg_first_gen) over() AS first_gen, --negative
 -- (avg_househld_income_site - avg(avg_househld_income_site) over()) / stddev(avg_househld_income_site) over() AS househld_income_site,--positive
