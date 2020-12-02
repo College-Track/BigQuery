@@ -41,7 +41,7 @@ SELECT
 --   occupied_housing_units / households AS percent_occupied_housing_units,
   percent_income_spent_on_rent / 100 AS percent_income_spent_on_rent,
   pop_in_labor_force / pop_25_years_over AS percent_pop_in_labor_force,
---   speak_only_english_at_home / pop_25_years_over AS percent_speak_only_english_at_home,
+  speak_only_english_at_home / pop_25_years_over AS percent_speak_only_english_at_home,
   unemployed_pop / pop_25_years_over AS percent_unemployed_pop,
   vacant_housing_units / households AS percent_vacant_housing_units
 FROM
