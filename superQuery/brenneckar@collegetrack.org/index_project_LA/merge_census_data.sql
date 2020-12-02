@@ -24,7 +24,7 @@ WITH gather_census_data AS (
     ACS.vacant_housing_units
   FROM
     `bigquery-public-data.census_bureau_acs.censustract_2018_5yr` ACS
-)
+), calc_census_metrics AS (
 SELECT
   C.*,
   bachelors_degree / pop_25_years_over AS percent_bachelors_degree,
@@ -47,3 +47,10 @@ SELECT
 FROM
   `learning-agendas.index_project.student_with_census` C
   LEFT JOIN gather_census_data CENSUS ON C.census_track_id = CENSUS.geo_id
+
+ )
+ 
+ SELECT 
+ site_short, AVG(annual_household_income_c)
+ FROM calc_census_metrics
+ GROUP BY site_short
