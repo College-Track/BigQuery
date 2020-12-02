@@ -36,3 +36,4 @@ C.*, CENSUS.*
 FROM
 `learning-agendas.index_project.student_with_census` C
 LEFT JOIN calc_census_metrics CENSUS ON C.census_track_id = CENSUS.geo_id
+WHERE pop_25_years_over <= 0
