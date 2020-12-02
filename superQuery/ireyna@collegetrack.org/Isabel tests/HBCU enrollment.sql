@@ -19,4 +19,4 @@ ON term.School__c = accnt.Account_ID__c
 WHERE 
 AT_Record_Type_Name = "College/University Semester"
 AND Enrolled_in_any_college__c = TRUE
-AND Historically_Black_College_Univ_HBCU__c = TRUE
+--AND Historically_Black_College_Univ_HBCU__c = TRUE
