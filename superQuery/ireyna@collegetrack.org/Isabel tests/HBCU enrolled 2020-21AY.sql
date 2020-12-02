@@ -30,5 +30,5 @@ WHERE
 AT_Record_Type_Name = "College/University Semester"
 AND Enrolled_in_any_college__c = TRUE
 AND Historically_Black_College_Univ_HBCU__c = TRUE
-AND College_Track_Status__c = "Active: Post-Secondary"
+AND College_Track_Status_Name = "Active: Post-Secondary"
 AND gay.name = "AY 2020-21"
