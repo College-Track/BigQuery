@@ -47,3 +47,4 @@ SELECT
 FROM
   `learning-agendas.index_project.student_with_census` C
   LEFT JOIN gather_census_data CENSUS ON C.census_track_id = CENSUS.geo_id
+  WHERE speak_only_english_at_home IS NOT NULL
