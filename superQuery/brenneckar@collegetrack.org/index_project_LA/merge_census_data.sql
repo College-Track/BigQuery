@@ -52,8 +52,9 @@ calc_census_metrics AS (
 SELECT
   site_short,
   AVG(annual_household_income_c) AS avg_househld_income_site,
-  AVG(percent_bachelors_degree) AS avg_percent_bachelors_degree
-  
+  AVG(percent_bachelors_degree) AS avg_percent_bachelors_degree,
+  AVG(CAST(is_a_us_citizen AS INT)) AS avg_us_citizen
+ 
 FROM
   calc_census_metrics
 GROUP BY
