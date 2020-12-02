@@ -48,13 +48,12 @@ calc_census_metrics AS (
   FROM
     `learning-agendas.index_project.student_with_census` C
     LEFT JOIN gather_census_data CENSUS ON C.census_track_id = CENSUS.geo_id
-)
+), calc_averages AS (
 SELECT
   site_short,
   AVG(CAST(is_a_us_citizen AS INT64)) AS avg_us_citizen,
   AVG(CAST(english_primary_language AS INT64)) AS avg_english_primary_language,
   AVG(CAST(first_gen AS INT64)) AS avg_first_gen,
-  
   AVG(annual_household_income_c) AS avg_househld_income_site,
   AVG(percent_bachelors_degree) AS avg_percent_bachelors_degree,
   AVG(percent_high_school_diploma) AS avg_percent_high_school_diploma,
@@ -62,12 +61,18 @@ SELECT
   AVG(percent_housing_units_renter_occupied) AS avg_percent_housing_units_renter_occupied,
   AVG(income_per_capita) AS avg_income_per_capita,
   AVG(median_income) AS avg_median_income,
---   AVG(percent_not_in_labor_force) AS avg_percent_not_in_labor_force,
+  --   AVG(percent_not_in_labor_force) AS avg_percent_not_in_labor_force,
   AVG(percent_not_us_citizen_pop) AS avg_percent_not_us_citizen_pop,
   AVG(percent_income_spent_on_rent) AS avg_percent_income_spent_on_rent,
   AVG(percent_unemployed_pop) AS avg_percent_unemployed_pop,
   AVG(percent_vacant_housing_units) AS avg_percent_vacant_housing_units
-  FROM
+FROM
   calc_census_metrics
 GROUP BY
   site_short
+  )
+  
+SELECT 
+site_short, 
+(avg_us_citizen - avg(avg_us_citizen) over()) / stddev(avg_us_citizen) over() as z_score_avg_us_citizen,
+FROM calc_averages
