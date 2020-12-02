@@ -30,7 +30,7 @@ calc_census_metrics AS (
     C.*,
     bachelors_degree / pop_25_years_over AS percent_bachelors_degree,
     different_house_year_ago_different_city / pop_25_years_over AS percent_different_house_year_ago_different_city,
-    different_house_year_ago_same_city / pop_25_years_over AS percent_,
+    different_house_year_ago_same_city / pop_25_years_over AS percent_different_house_year_ago_same_city,
     high_school_diploma / pop_25_years_over AS percent_high_school_diploma,
     high_school_including_ged / pop_25_years_over AS percent_high_school_including_ged,
     households_public_asst_or_food_stamps / households AS percent_households_public_asst_or_food_stamps,
@@ -41,7 +41,7 @@ calc_census_metrics AS (
     not_us_citizen_pop / pop_25_years_over AS percent_not_us_citizen_pop,
     --   occupied_housing_units / households AS percent_occupied_housing_units,
     percent_income_spent_on_rent / 100 AS percent_income_spent_on_rent,
-    pop_in_labor_force / pop_25_years_over AS percent_pop_in_labor_force,
+    -- pop_in_labor_force / pop_25_years_over AS percent_pop_in_labor_force,
     --   speak_only_english_at_home / pop_25_years_over AS percent_speak_only_english_at_home,
     unemployed_pop / pop_25_years_over AS percent_unemployed_pop,
     vacant_housing_units / households AS percent_vacant_housing_units
@@ -51,11 +51,23 @@ calc_census_metrics AS (
 )
 SELECT
   site_short,
+  AVG(CAST(is_a_us_citizen AS INT64)) AS avg_us_citizen,
+  AVG(CAST(english_primary_language AS INT64)) AS avg_english_primary_language,
+  AVG(CAST(first_gen AS INT64)) AS avg_first_gen,
+  
   AVG(annual_household_income_c) AS avg_househld_income_site,
   AVG(percent_bachelors_degree) AS avg_percent_bachelors_degree,
-  AVG(CAST(is_a_us_citizen AS INT64)) AS avg_us_citizen
- 
-FROM
+  AVG(percent_high_school_diploma) AS avg_percent_high_school_diploma,
+  AVG(percent_households_public_asst_or_food_stamps) AS avg_percent_households_public_asst_or_food_stamps,
+  AVG(percent_housing_units_renter_occupied) AS avg_percent_housing_units_renter_occupied,
+  AVG(income_per_capita) AS avg_income_per_capita,
+  AVG(median_income) AS avg_median_income,
+--   AVG(percent_not_in_labor_force) AS avg_percent_not_in_labor_force,
+  AVG(percent_not_us_citizen_pop) AS avg_percent_not_us_citizen_pop,
+  AVG(percent_income_spent_on_rent) AS avg_percent_income_spent_on_rent,
+  AVG(percent_unemployed_pop) AS avg_percent_unemployed_pop,
+  AVG(percent_vacant_housing_units) AS avg_percent_vacant_housing_units
+  FROM
   calc_census_metrics
 GROUP BY
   site_short
