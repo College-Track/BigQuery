@@ -28,6 +28,6 @@ WHERE
 AT_Record_Type_Name = "College/University Semester"
 AND Enrolled_in_any_college__c = TRUE
 AND Historically_Black_College_Univ_HBCU__c = TRUE
---AND Academic_Year__c = 'a1b46000000dRR7AAM'
+--AND Academic_Year__c = 'a1b46000000dRR6AAM'
 AND student_audit_status__c = "Active: Post-Secondary"
-AND gay.name = "AY 2018-19"
+AND gay.name = "AY 2019-20"
