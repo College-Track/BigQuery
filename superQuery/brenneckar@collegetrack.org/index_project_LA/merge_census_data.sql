@@ -25,7 +25,7 @@ WITH gather_census_data AS (
   FROM `bigquery-public-data.census_bureau_acs.censustract_2018_5yr` ACS 
 ), calc_census_metrics AS (
 SELECT
-  geo_id, bachelors_degree / pop_25_years_over AS percent_bachelors_degree
+  geo_id, bachelors_degree / 10 AS percent_bachelors_degree
   
 FROM
   gather_census_data
