@@ -74,5 +74,6 @@ GROUP BY
   
 SELECT 
 site_short, 
+avg_us_citizen,
 (avg_us_citizen - avg(avg_us_citizen) over()) / stddev(avg_us_citizen) over() as z_score_avg_us_citizen,
 FROM calc_averages
