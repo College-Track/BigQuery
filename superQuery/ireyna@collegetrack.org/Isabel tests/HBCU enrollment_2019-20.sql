@@ -1,3 +1,4 @@
+#2019-20AY
 SELECT 
 gay.name, #global academic year
 Academic_Year__c,
@@ -34,3 +35,4 @@ AND Enrolled_in_any_college__c = TRUE
 AND Historically_Black_College_Univ_HBCU__c = TRUE
 AND student_audit_status__c = "Active: Post-Secondary"
 AND gay.name = "AY 2019-20"
+AND High_School_Class__c > '2020' #to remove summer terms where rising freshman erroneously entered as FT/PT. Will be captured in following AY if true
