@@ -26,7 +26,7 @@ WITH gather_census_data AS (
 )
   
 SELECT
-C.*, bachelors_degree / 10 AS percent_bachelors_degree
+C.*, bachelors_degree / pop_25_years_over AS percent_bachelors_degree
 FROM
 `learning-agendas.index_project.student_with_census` C
 LEFT JOIN gather_census_data CENSUS ON C.census_track_id = CENSUS.geo_id
