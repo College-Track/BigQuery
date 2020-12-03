@@ -1,3 +1,3 @@
-SELECT *,
-(us_citizen * @citizen_mod + english_primary_language + first_gen + househld_income_site) / 4 AS student_self_index
-FROM `learning-agendas.index_project.site_z_scores`
+SELECT Contact_Id, AT_Grade_c, gpa_cumulative_c, gpa_semester_cumulative_c
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+LIMIT 100
