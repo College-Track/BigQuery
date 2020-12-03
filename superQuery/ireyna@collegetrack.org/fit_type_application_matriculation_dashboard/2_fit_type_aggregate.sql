@@ -1,4 +1,4 @@
-ITH fit_type_enrolled AS
+WITH fit_type_enrolled AS
 (
 SELECT 
     contact_id,
