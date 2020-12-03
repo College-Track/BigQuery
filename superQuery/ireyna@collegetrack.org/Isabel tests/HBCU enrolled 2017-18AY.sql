@@ -5,7 +5,8 @@ Academic_Year__c,
 Contact_Id,
 Full_Name__c,
 High_School_Class__c,
-AT_Name, #academic term name
+AT_Name, #academic term name,
+Global_Academic_Semester__c ,
 AT_Id,
 Indicator_Years_Since_HS_Grad_to_Date__c,
 AT_Grade__c,
@@ -32,4 +33,4 @@ AND Enrolled_in_any_college__c = TRUE
 AND Historically_Black_College_Univ_HBCU__c = TRUE
 AND student_audit_status__c = "Active: Post-Secondary"
 AND gay.name = "AY 2017-18"
---AND High_School_Class__c <> '2018' #to remove summer terms where rising freshman erroneously entered as FT/PT. Will be captured in following AY 
+AND High_School_Class__c <> '2018' #to remove summer terms where rising freshman erroneously entered as FT/PT. Will be captured in following AY 
