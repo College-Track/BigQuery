@@ -1,3 +1,12 @@
+#14,000 records in SFDC vs. 14,085 in superQuery. 8 students have 2 college app records with acceptance & enrollment
+
+CREATE OR REPLACE TABLE `data-studio-260217.fit_type_pipeline.aggregate_data`
+OPTIONS
+    (
+    description= "This table aggregates data across college applications, and academic terms. Incorporates key data on conntact (academics, demographics)"
+    )
+AS
+
 WITH fit_type_enrolled AS
 (
 SELECT 
@@ -149,7 +158,7 @@ SELECT
 
 SELECT
     app.*
-        EXCEPT (school_name_enrolled, school_type_enrolled),
+        EXCEPT (school_name_enrolled, school_type_enrolled,fit_type_applied_accepted),
     term.*
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
     pell.*
@@ -190,7 +199,9 @@ SELECT
         WHEN FA_Req_Expected_Financial_Contribution__c >= 1 AND FA_Req_Expected_Financial_Contribution__c < Max_EFC THEN "Partial Pell"
         WHEN FA_Req_Expected_Financial_Contribution__c > Max_EFC THEN "Pell Ineligible"
     ELSE "No data"
-    END AS pell_efc_bucket
+    END AS pell_efc_bucket,
+    
+    IF(fit_type_applied_accepted IS NULL, "No acceptance",fit_type_applied_accepted) AS fit_type_accepted
     
 FROM fit_type_application AS app
 
@@ -259,7 +270,7 @@ GROUP BY
     school_name_accepted_enrolled,
     fit_type_enrolled,
     school_name_accepted,
-    fit_type_applied_accepted,
+    fit_type_accepted,
     acceptance_group_accepted,
     Max_EFC, #pell table
     academic_year
