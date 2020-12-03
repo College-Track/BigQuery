@@ -41,7 +41,7 @@ AND High_School_Class__c <> '2020' #to remove summer terms where rising freshman
 */
 
 --Get unique count
-SELECT COUNT([DISTINCT Contact_Id)
+SELECT COUNT(DISTINCT Contact_Id)
 FROM `data-warehouse-289815.sfdc_templates.contact_at_template` as term
 
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` as accnt
