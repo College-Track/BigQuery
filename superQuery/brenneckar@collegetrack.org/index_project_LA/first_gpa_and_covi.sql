@@ -17,16 +17,19 @@ WITH valid_gpa_terms AS (
     Contact_Id,
     AT_Grade_c,
     term_c
-)
-, first_gpa_value AS (
-SELECT Contact_Id, 
-  FIRST_VALUE(gpa_semester_cumulative_c)
-    OVER (PARTITION BY Contact_Id ORDER BY AT_Grade_c,
-    term_c
-    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS first_gpa
-FROM valid_gpa_terms
-), 
-
+),
+first_gpa_value AS (
+  SELECT
+    Contact_Id,
+    FIRST_VALUE(gpa_semester_cumulative_c) OVER (
+      PARTITION BY Contact_Id
+      ORDER BY
+        AT_Grade_c,
+        term_c 
+    ) AS first_gpa
+  FROM
+    valid_gpa_terms
+),
 valid_covi_terms AS (
   SELECT
     Contact_Id,
@@ -45,17 +48,23 @@ valid_covi_terms AS (
     Contact_Id,
     AT_Grade_c,
     term_c
-), 
-
+),
 first_covi_value AS (
-SELECT Contact_Id, 
-  FIRST_VALUE(co_vitality_scorecard_color_c)
-    OVER (PARTITION BY Contact_Id ORDER BY AT_Grade_c,
-    term_c
-    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS first_covi
-FROM valid_covi_terms
+  SELECT
+    Contact_Id,
+    FIRST_VALUE(co_vitality_scorecard_color_c) OVER (
+      PARTITION BY Contact_Id
+      ORDER BY
+        AT_Grade_c,
+        term_c 
+    ) AS first_covi
+  FROM
+    valid_covi_terms
 )
-
-SELECT GPA.Contact_Id, GPA.first_gpa, CoVi.first_covi
-FROM first_gpa_value GPA
-LEFT JOIN first_covi_value CoVi ON GPA.Contact_Id = CoVi.Contact_Id
+SELECT
+  GPA.Contact_Id,
+  GPA.first_gpa,
+  CoVi.first_covi
+FROM
+  first_gpa_value GPA
+  LEFT JOIN first_covi_value CoVi ON GPA.Contact_Id = CoVi.Contact_Id
