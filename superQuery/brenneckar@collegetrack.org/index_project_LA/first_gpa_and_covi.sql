@@ -19,7 +19,7 @@ WITH valid_gpa_terms AS (
     term_c
 ),
 first_gpa_value AS (
-  SELECT
+  SELECT DISTINCT  
     Contact_Id,
     FIRST_VALUE(gpa_semester_cumulative_c) OVER (
       PARTITION BY Contact_Id
@@ -50,7 +50,7 @@ valid_covi_terms AS (
     term_c
 ),
 first_covi_value AS (
-  SELECT
+  SELECT DISTINCT
     Contact_Id,
     FIRST_VALUE(co_vitality_scorecard_color_c) OVER (
       PARTITION BY Contact_Id
