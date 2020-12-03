@@ -12,6 +12,7 @@ WITH valid_gpa_terms AS (
     AND gpa_semester_cumulative_c IS NOT NULL
     AND AT_Grade_c IN ('9th Grade', '10th Grade')
     AND term_c != 'Summer'
+    AND gpa_semester_cumulative_c > 0
   ORDER BY
     Contact_Id,
     AT_Grade_c,
