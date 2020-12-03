@@ -1,4 +1,5 @@
 #2020-21AY
+/*
 SELECT 
 gay.name, #global academic year
 Academic_Year__c,
@@ -33,8 +34,8 @@ AND Enrolled_in_any_college__c = TRUE
 AND Historically_Black_College_Univ_HBCU__c = TRUE
 AND College_Track_Status_Name = "Active: Post-Secondary"
 AND gay.name = "AY 2020-21"
+*/
 
-/*
 --Get unique count
 SELECT COUNT(distinct Contact_Id)
 FROM `data-warehouse-289815.sfdc_templates.contact_at_template` as term
@@ -52,4 +53,3 @@ AND Historically_Black_College_Univ_HBCU__c = TRUE
 AND College_Track_Status_Name = "Active: Post-Secondary"
 AND gay.name = "AY 2020-21"
 
-*/
