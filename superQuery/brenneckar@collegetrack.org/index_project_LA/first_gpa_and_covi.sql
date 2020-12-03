@@ -68,3 +68,4 @@ SELECT
 FROM
   first_gpa_value GPA
 --   LEFT JOIN first_covi_value CoVi ON GPA.Contact_Id = CoVi.Contact_Id
+ORDER BY GPA.Contact_Id
