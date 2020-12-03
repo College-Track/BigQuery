@@ -64,7 +64,7 @@ first_covi_value AS (
 SELECT
   GPA.Contact_Id,
   GPA.first_gpa,
-  CoVi.first_covi
+--   CoVi.first_covi
 FROM
   first_gpa_value GPA
-  LEFT JOIN first_covi_value CoVi ON GPA.Contact_Id = CoVi.Contact_Id
+--   LEFT JOIN first_covi_value CoVi ON GPA.Contact_Id = CoVi.Contact_Id
