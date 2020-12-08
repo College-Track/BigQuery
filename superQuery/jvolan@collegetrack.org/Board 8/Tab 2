@@ -1,7 +1,7 @@
   SELECT
     -- Select fields from templates
     id AS bb_app_id,
-    contact_casesafe_id_c AS student_id,
+    contact_casesafe_id_c,
     finance_bb_balance_total_c,
     
     FROM
