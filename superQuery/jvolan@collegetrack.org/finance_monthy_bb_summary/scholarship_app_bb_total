@@ -2,7 +2,7 @@
     -- Select fields from templates
     id AS bb_app_id,
     record_type_id,
-    contact_casesafe_id_c as student_id,
+    student_c as student_id,
     finance_bb_balance_total_c
     
     FROM
@@ -13,4 +13,4 @@
     
     --Qs for BR/IR
     --1 am i'm trying to pull in the right id for student here? does every template have a contact_casesafe id?
-    --2 what is going on with the finance_bb_balance_total field? I believe it's one we created in bigquery (as it's a roll-up in sfdf), but it doesn't look right
+    --2 what is going on with the finance_bb_balance_total field? I believe it's one we created in bigquery (as it's a roll-up in sfdf),
