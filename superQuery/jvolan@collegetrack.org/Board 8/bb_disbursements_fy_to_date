@@ -1,0 +1,37 @@
+/*SELECT
+    -- Select fields from templates
+    student_c AS student_id,
+    id AS bb_disburse_id,
+    scholarship_application_c AS bb_app_id,
+    disbursement_approval_date_c AS finance_reporting_date,
+    amount_c,
+    created_date, 
+    transaction_status_c,
+    
+    FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
+    WHERE
+    record_type_id = "01246000000ZNhsAAG"
+    AND finance_reporting_date_c >= '2020-07-01'
+    AND transaction_status_c = "Approved"*/
+    
+
+    
+--Qs for BR/IR
+-- Do I need to group these within this query or will doing a join onto my student contact list via student Id do that for me?
+-- what would you use to reformat date of created date field, or moved around finance reporting date field (if needed)?
+-- If we have time, can you walk me through how/what syntax you'd use to take my 3 sub components and put them all together.
+
+SELECT
+    -- Select fields from templates
+    student_c AS student_id,
+    SUM (amount_c),
+    
+    FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
+    WHERE
+    record_type_id = "01246000000ZNhsAAG"
+    AND finance_reporting_date_c >= '2020-07-01'
+    AND transaction_status_c = "Approved"
+    
+    GROUP BY student_c
