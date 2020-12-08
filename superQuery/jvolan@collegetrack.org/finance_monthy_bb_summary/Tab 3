@@ -1,19 +1,22 @@
-  --Qs for BR/IR
-    --Can someone speak to the WITH ... AS intro / syntax vs. starting with SELECT or doing SELECT and using AS after the SELECT?
-    
+ WITH student_list AS
+(
     SELECT
     -- Select fields from templates
-    x_18_digit_id_c,
+    Contact_Id,
     Full_Name_c,
     site_text_c,
     current_cc_advisor_2_c,
     high_school_graduating_class_c
     
     FROM
-    `data-warehouse-289815.salesforce_clean.contact_template` AS student_list
-    WHERE College_Track_Status_c IN ('11A', '12A','15A', '16A');
+    `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE College_Track_Status_c IN ('11A', '12A','15A', '16A')
+    ),
     
+bb_balance AS
+(
     SELECT
+    
     -- Select fields from templates
     id AS bb_app_id,
     student_c AS student_id,
@@ -21,7 +24,43 @@
     
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
-    LEFT JOIN "student_list"  ON student_id = x_18_digit_id_c
-    WHERE
-    record_type_id = "01246000000ZNi1AAG"
+    WHERE record_type_id = "01246000000ZNi1AAG"
     AND finance_bb_balance_total_c > 0
+    ),
+
+bb_disbursements_fy AS
+(
+    SELECT
+    -- Select fields from templates
+    student_c AS student_id,
+    SUM (amount_c) as bb_disbursement_total,
+    
+    FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
+    WHERE
+    record_type_id = "01246000000ZNhsAAG"
+    AND finance_reporting_date_c >= '2020-07-01'
+    AND transaction_status_c = "Approved"
+    GROUP BY student_c
+    ),
+    
+bb_earnings_fy AS
+(
+SELECT
+    -- Select fields from templates
+    student_c AS student_id,
+    SUM (amount_c) as bb_earnings_total,
+    
+    FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
+    WHERE
+    record_type_id = "01246000000ZNhtAAG"
+    AND created_date >= '2020-07-01'
+    AND amount_c > 0
+    GROUP BY student_c
+    )
+    
+SELECT
+    * 
+    FROM student_list
+    LEFT JOIN bb_balance ON Contact_Id = student_id
