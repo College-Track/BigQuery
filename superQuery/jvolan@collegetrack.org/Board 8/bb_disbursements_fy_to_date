@@ -25,7 +25,7 @@
 SELECT
     -- Select fields from templates
     student_c AS student_id,
-    SUM (amount_c),
+    SUM (amount_c) as bb_disbursement_total,
     
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
