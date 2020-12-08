@@ -7,4 +7,4 @@
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE
-    record_type_id = "Bank_Book"
+    record_type_id = "Bank Book"
