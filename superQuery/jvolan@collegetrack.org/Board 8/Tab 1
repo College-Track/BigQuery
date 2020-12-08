@@ -1,0 +1,14 @@
+    SELECT (
+    -- Select fields from templates
+    x_18_digit_id_c,
+    Full_Name_c,
+    SITE_c,
+    current_cc_advisor_2_c,
+    HIGH_SCHOOL_GRADUATING_CLASS_c,
+    Grade_c) 
+    AS student_contact_list
+
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_template`
+  WHERE
+    College_Track_Status_c IN ('11A', '12A','15A', '16A')
