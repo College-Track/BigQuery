@@ -1,11 +1,16 @@
-  SELECT
+SELECT
     -- Select fields from templates
-    id AS bb_app_id,
-    contact_casesafe_id_c,
-    finance_bb_balance_total_c,
+    student_c AS student_id,
+    id AS bb_disburse_id,
+    scholarship_application_c AS bb_app_id,
+    disbursement_approval_date_c AS finance_reporting_date,
+    amount_c,
+    created_date, 
+    transaction_status_c
     
     FROM
-    `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+    `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
     WHERE
-    record_type_id = "01246000000ZNi1AAG"
-    AND finance_bb_balance_total_c > 0
+    record_type_id = "01246000000ZNhsAAG"
+    AND finance_reporting_date_c >= '2020-07-01'
+    AND transaction_status_c = "Approved"
