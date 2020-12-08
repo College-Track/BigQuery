@@ -1,29 +1,29 @@
   --Qs for BR/IR
     --Can someone speak to the WITH ... AS intro / syntax vs. starting with SELECT or doing SELECT and using AS after the SELECT?
     
-    SELECT 
+    SELECT
     -- Select fields from templates
     x_18_digit_id_c,
     Full_Name_c,
     site_text_c,
     current_cc_advisor_2_c,
     high_school_graduating_class_c
-    AS student_list
     
-  FROM
-    `data-warehouse-289815.salesforce_clean.contact_template`
-  WHERE
-    College_Track_Status_c IN ('11A', '12A','15A', '16A');
+    FROM
+    `data-warehouse-289815.salesforce_clean.contact_template` AS student_list
+    WHERE
+    College_Track_Status_c IN ('11A', '12A','15A', '16A')
+    AS student_list;
     
     SELECT
     -- Select fields from templates
     id AS bb_app_id,
-    contact_casesafe_id_c,
+    student_c AS student_id,
     finance_bb_balance_total_c,
     
-FROM
+    FROM
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template`  ON contact_casesafe_id_c = x_18_digit_id_c
+    LEFT JOIN student_list  ON student_id = x_18_digit_id_c
     WHERE
-    record_type_id IN "01246000000ZNi1AAG"
+    record_type_id = "01246000000ZNi1AAG"
     AND finance_bb_balance_total_c > 0
