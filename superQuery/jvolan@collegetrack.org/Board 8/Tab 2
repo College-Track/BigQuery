@@ -1,0 +1,11 @@
+  SELECT
+    -- Select fields from templates
+    id AS bb_app_id,
+    contact_casesafe_id_c AS student_id,
+    finance_bb_balance_total_c,
+    
+    FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+    WHERE
+    record_type_id = "Bank Book"
+    AND finance_bb_balance_total_c > 0
