@@ -2,10 +2,9 @@
     -- Select fields from templates
     x_18_digit_id_c,
     Full_Name_c,
-    SITE_c,
+    site_text_c,
     current_cc_advisor_2_c,
-    HIGH_SCHOOL_GRADUATING_CLASS_c,
-    Grade_c) 
+    high_school_graduating_class_c)
     AS student_contact_list
 
   FROM
