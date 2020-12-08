@@ -7,5 +7,5 @@
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE
+    finance_bb_balance_total_c > 0 AND
     record_type_id = "Bank Book"
-    AND finance_bb_balance_total_c > 0
