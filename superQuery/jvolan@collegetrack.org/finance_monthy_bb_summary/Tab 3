@@ -49,6 +49,7 @@ bb_d_e_fy AS
     SELECT 
     bb_earnings_fy.student_c, 
     bb_earnings_total,
+    bb_disbursement_total,
     FROM
     bb_earnings_fy
     LEFT JOIN bb_disbursements_fy ON bb_earnings_fy.student_c = bb_disbursements_fy.student_c
