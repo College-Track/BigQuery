@@ -1,8 +1,7 @@
-WITH bb_disbursement_fy AS
-(
+
     SELECT
     -- Select fields from templates
-    student_c as bb_disburse_id,
+    student_c,
     SUM (amount_c) as bb_disbursement_total,
     
     FROM
@@ -12,18 +11,3 @@ WITH bb_disbursement_fy AS
     AND finance_reporting_date_c >= '2020-07-01'
     AND transaction_status_c = "Approved"
     GROUP BY student_c
-    )
- 
-SELECT
-    -- Select fields from templates
-    student_c,
-    SUM (amount_c) as bb_earnings_total,
-    
-    FROM
-    `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` AS st
-    LEFT JOIN bb_disbursement_fy ON student_c = bb_disbursement_fy.bb_disburse_id
-    WHERE
-    record_type_id = "01246000000ZNhtAAG"
-    AND created_date >= '2020-07-01'
-    AND amount_c > 0
-    GROUP BY student_c,amount_c
