@@ -10,7 +10,7 @@ WITH student_bb_balance AS
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE record_type_id = "01246000000ZNi1AAG"
     AND finance_bb_balance_total_c > 0
-    GROUP BY student_c
+    GROUP BY student_c, finance_bb_balance_total_c
 )
 
 --approved bb disbursement fy to date
