@@ -1,6 +1,6 @@
 #college applications for current academic year, graduating HS class
 
-WITH filtered_college_applications AS #compile college application, contact data
+WITH filtered_college_applications AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
 
@@ -51,7 +51,9 @@ SELECT
  #Academic Term data 
     A_T.gpa_semester_cumulative_c AS CGPA_11th,
     A_T.AT_Record_Type_Name,
-    A_T.Name #academic term name
+    A_T.Name, #academic term name
+    A_T.grade_c,
+    A_T.AT_Grade_c
     
 FROM `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C
@@ -62,11 +64,12 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
         ON CA.Student__c = A_T. Contact_Id 
         
 
-WHERE C.grade_c = "12th Grade"
+WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
-    AND AT_Grade_c = '11th Grade'
-    AND AT_Record_Type_Name  = 'High School Semester'
-    AND A_T.indicator_years_since_hs_graduation_c  = -0.34
+    --AND A_T.Grade_c = '11th Grade'
+    --AND AT_Record_Type_Name = 'High School Semester'
+    --AND A_T.indicator_years_since_hs_graduation_c  = -1.34
+    AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34
 )
 
 SELECT *
