@@ -1,6 +1,6 @@
 #college applications for current academic year, graduating HS class
 
-WITH filtered_college_applications AS #compile college application, contact data
+WITH filtered_college_applications AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
 
@@ -33,8 +33,10 @@ SELECT
     CA.Strategic_Type__c AS match_type, #match type
     CA.Verification_Status__c,
 
-#data from Contact - demo, academic dara   
+#Contact, demo, academic data   
     C.full_name_c,
+    C.College_Track_Status_Name,
+    C.grade_c, 
     C.Gender_c ,
     C.Ethnic_background_c ,
     C.indicator_low_income_c,
@@ -43,14 +45,28 @@ SELECT
     C.region_short,
     C.readiness_english_official_c,
     C.readiness_composite_off_c,
-    C.readiness_math_official_c 
-    
+    C.readiness_math_official_c,
+    C.fa_req_expected_financial_contribution_c, 
+
+ #Academic Term data 
+    A_T.gpa_semester_cumulative_c AS CGPA_11th,
+    A_T.AT_Record_Type_Name,
+    A_T.Name #academic term name
     
 FROM `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C
         ON CA.Student__c = C.Contact_Id
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt #to pull in college name
         ON CA.College_University__c = accnt.id
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
+        ON CA.Student__c = A_T. Contact_Id 
+        
+
+WHERE C.grade_c = '12th Grade'
+    AND C.College_Track_Status_Name = 'Current CT HS Student'
+    AND AT_Grade_c = '11th Grade'
+    --AND AT_Record_Type_Name = 'High School Semester'
+    AND A_T.indicator_years_since_hs_graduation_c  = -1.34
 )
 
 SELECT *
