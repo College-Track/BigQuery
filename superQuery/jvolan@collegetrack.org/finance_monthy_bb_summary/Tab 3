@@ -1,5 +1,4 @@
-WITH student_list AS
-(
+
     SELECT
     -- Select fields from templates
     Contact_Id,
@@ -11,8 +10,9 @@ WITH student_list AS
     FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE College_Track_Status_c IN ('11A', '12A','15A', '16A')
-    ),
-    
+
+
+/*
 student_list_bb_balance AS
 (
     SELECT
@@ -78,3 +78,4 @@ SELECT *
 
 SELECT *
 FROM clean_student_list_bb_summary
+*/
