@@ -66,9 +66,7 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
 
 WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
-    --AND A_T.Grade_c = '11th Grade'
-    --AND AT_Record_Type_Name = 'High School Semester'
-    --AND A_T.indicator_years_since_hs_graduation_c  = -1.34
+    AND AT_Record_Type_Name = 'High School Semester'
     AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34
 )
 
