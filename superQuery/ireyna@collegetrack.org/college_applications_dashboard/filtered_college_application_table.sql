@@ -90,4 +90,3 @@ WHERE C.grade_c = '12th Grade'
 
 SELECT *
 FROM filtered_data
-LIMIT 50
