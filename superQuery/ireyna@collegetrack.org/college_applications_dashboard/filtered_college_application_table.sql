@@ -1,11 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
-    )
-AS
 
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
