@@ -35,7 +35,8 @@ WITH aggregate_data AS (
 applicant_count_data AS (
   SELECT
     site_short,
-    SUM(applicant_count) AS applicant_count
+    SUM(applicant_count) AS applicant_count,
+    SUM(onboarding_count) AS onboarding_count
   FROM
     `data-studio-260217.ct_application.ct_application_filtered_data`
   WHERE
@@ -47,7 +48,7 @@ student_count_data AS (
   SELECT
     site_short,
     SUM(current_student_count) AS current_student_count,
-    SUM(onboarding_count) AS onboarding_count
+    
   FROM
     `data-studio-260217.ct_application.ct_application_filtered_data`
   GROUP BY
@@ -67,7 +68,7 @@ SELECT
   END AS sort_ct_status,
   applicant_count_data.applicant_count,
   student_count_data.current_student_count,
-    student_count_data.onboarding_count
+    applicant_count_data.onboarding_count
 FROM
   aggregate_data
   LEFT JOIN applicant_count_data ON aggregate_data.site_short = applicant_count_data.site_short
