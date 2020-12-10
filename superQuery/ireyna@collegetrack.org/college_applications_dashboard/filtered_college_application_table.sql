@@ -1,12 +1,19 @@
 #college applications for current academic year, graduating HS class
 
-WITH filtered_college_applications AS #compile college application, contact data, academic term data for GPA
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
+WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
     
 #college application data    
     CA.Student__c AS contact_id,
-    CA.College_University__c AS college_id,
+    CA.College_University__c AS app_college_id,
     CA.College_Track_Site__c,
     CA.admission_status__c,
     CA.Application_status__c,
@@ -15,7 +22,6 @@ SELECT
     CA.Award_Letter__c,
     CA.CSS_Profile_Required__c,
     CA.CSS_Profile__c AS CSS_profile_status,
-    CA.School_Financial_Aid_Form_Status__c,
     CA.College_Fit_Type_Applied__c,
     CA.College_University_Academic_Calendar__c,
     CA.Control_of_Institution__c, #private or public school,
@@ -49,8 +55,9 @@ SELECT
     C.fa_req_expected_financial_contribution_c, 
     
 #College Aspiration data,
+    CAP.Id AS aspiration_id,
     CAP.Aspiration_Category__c,
-    CAP. College_University__c,
+    CAP. College_University__c AS aspiration_college_id,
     
 #Academic Term data 
     A_T.gpa_semester_cumulative_c AS CGPA_11th,
@@ -59,18 +66,18 @@ SELECT
     A_T.AT_Record_Type_Name,
     
 #Account object mapping
-    ACCNT_APP.Name AS app_college_name, #college_name
+    ACCNT_APP.Name AS app_college_name, 
     ACCNT_ASP.Name AS aspiration_college_name
     
     
 FROM `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C
         ON CA.Student__c = C.Contact_Id
-LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_app #to pull in college application name
+LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_app #pull in college name in application 
         ON CA.College_University__c = accnt_app.id
 LEFT JOIN `data-warehouse-289815.salesforce_raw.College_Aspiration__c` AS CAP
         ON CA.Student__c = CAP.Student__c
-LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_asp #to pull in college in aspiration
+LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_asp #pull in college name in aspiration
         ON CAP.College_University__c = accnt_asp.id        
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
         ON CA.Student__c = A_T. Contact_Id 
@@ -82,5 +89,5 @@ WHERE C.grade_c = '12th Grade'
 )
 
 SELECT *
-FROM filtered_college_applications
+FROM filtered_data
 LIMIT 50
