@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
-    )
-AS
-
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -76,7 +67,7 @@ LEFT JOIN `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_app #pull in college name in application 
         ON CA.College_University__c = accnt_app.id
 LEFT JOIN `data-warehouse-289815.salesforce_raw.College_Aspiration__c` AS CAP
-        ON C.Student__c = CAP.Student__c
+        ON C.Contact_Id = CAP.Student__c
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_asp #pull in college name in aspiration
         ON CAP.College_University__c = accnt_asp.id        
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
