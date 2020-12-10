@@ -3,9 +3,6 @@
 WITH filtered_college_applications AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
-
-#Account object mapping
-    ACCNT.Name, #college_name
     
 #college application data    
     CA.Student__c AS contact_id,
@@ -54,19 +51,27 @@ SELECT
 #College Aspiration data,
     CAP.Aspiration_Category__c,
     CAP. College_University__c,
+    
 #Academic Term data 
     A_T.gpa_semester_cumulative_c AS CGPA_11th,
     A_T.Name AS Name_AT, #academic term name
     A_T.AT_Grade_c, #grade on AT
-    A_T.AT_Record_Type_Name
+    A_T.AT_Record_Type_Name,
+    
+#Account object mapping
+    ACCNT_APP.Name AS app_college_name, #college_name
+    ACCNT_ASP.Name AS aspiration_college_name
+    
     
 FROM `data-warehouse-289815.salesforce_raw.College_Application__c` AS CA 
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C
         ON CA.Student__c = C.Contact_Id
-LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt #to pull in college name
-        ON CA.College_University__c = accnt.id
+LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_app #to pull in college application name
+        ON CA.College_University__c = accnt_app.id
 LEFT JOIN `data-warehouse-289815.salesforce_raw.College_Aspiration__c` AS CAP
         ON CA.Student__c = CAP.Student__c
+LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt_asp #to pull in college in aspiration
+        ON CAP.College_University__c = accnt_asp.id        
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
         ON CA.Student__c = A_T. Contact_Id 
         
