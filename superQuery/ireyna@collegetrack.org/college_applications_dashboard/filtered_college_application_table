@@ -1,9 +1,17 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
     
 #college application data    
-    CA.student_c AS contact_id,
     CA.College_University_c AS app_college_id,
     CA.admission_status_c,
     CA.application_status_c,
@@ -30,6 +38,7 @@ SELECT
 
 #Contact 
     C.full_name_c,
+    C.contact_id,
     C.high_school_graduating_class_c,
     C.College_Track_Status_Name,
     C.grade_c, 
