@@ -60,7 +60,7 @@ SELECT
     CASE
     WHEN College_Track_Status_Name = "Onboarding" THEN 1
     ELSE 0
-  END AS onboarding_count,
+  END AS onbaording_count,
   CASE
     WHEN College_Track_Status_Name = "Current CT HS Student" THEN 1
     WHEN College_Track_Status_Name = "Leave of Absence" THEN 1
