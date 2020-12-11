@@ -1,8 +1,8 @@
 SELECT 
---high_school_graduating_class_c  , 
---student_c , 
---college_track_status_c ,
-count(id)
+high_school_graduating_class_c  , 
+student_c , 
+college_track_status_c ,
+id
 
   
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
