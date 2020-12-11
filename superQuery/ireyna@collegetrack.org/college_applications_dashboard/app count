@@ -1,8 +1,8 @@
 SELECT 
-high_school_graduating_class_c  , 
-student_c , 
-college_track_status_c ,
-id
+--high_school_graduating_class_c  , 
+--student_c , 
+--college_track_status_c ,
+count(id), college_track_status_c, College_Track_Status_Name
 
   
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
@@ -10,5 +10,7 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C
         ON C.contact_id = CA.student_c
  
 WHERE
-high_school_graduating_class_c= '2021'
-AND college_track_status_c  ='11A'
+high_school_graduating_class_c IN('2021', '2020' ) 
+
+group by 
+college_track_status_c, College_Track_Status_Name
