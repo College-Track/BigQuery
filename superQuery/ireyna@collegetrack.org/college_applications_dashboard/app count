@@ -7,5 +7,3 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C
  
 WHERE
 high_school_graduating_class_c= '2021'
-AND college_track_status_c  ='11A'
-AND site_short <> '0011M00002GdtrEQAR'
