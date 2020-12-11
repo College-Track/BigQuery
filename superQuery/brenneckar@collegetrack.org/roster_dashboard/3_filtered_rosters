@@ -14,7 +14,6 @@ WITH gather_data AS (
     Current_CC_Advisor_c,
     Grade_c,
     Attendance_Rate_Current_AS_c / 100 as attendance_rate,
-    
     Indicator_Low_Income_c,
     Summer_Experiences_Previous_Summer_c,
     college_applications_all_fit_types_c,
@@ -34,7 +33,6 @@ WITH gather_data AS (
     Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
     School_Name,
     Most_Recent_GPA_Cumulative_bucket,
-    
     -- Sorting fields
     sort_most_recent_gpa_bucket,
     sort_attendance_bucket,
@@ -94,6 +92,7 @@ WITH gather_data AS (
   WHERE
     Current_AS_c = True
     AND College_Track_Status_c IN ('11A', '18a', '12A', '15A')
+    AND grade_c != '8th Grade'
 ),
 current_as AS (
   SELECT
