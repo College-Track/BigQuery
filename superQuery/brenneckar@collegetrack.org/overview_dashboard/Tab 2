@@ -1,4 +1,5 @@
 SELECT site_text_c, Count(Id)
-FROM `data-warehouse-289815.salesforce.contact`
+FROM `data-warehouse-289815.salesforce_clean.contact_template`
 WHERE college_track_status_c IN ('18a', '11A', '12A')
 GROUP BY site_text_c
+ORDER BY site_text_c
