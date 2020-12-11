@@ -26,7 +26,7 @@ WITH calculate_metrics AS(
       ELSE 0
     END AS met_college_app_goal
   FROM
-    `data-studio-260217.rosters.filtered_roster_test`
+    `data-studio-260217.rosters.filtered_roster`
   WHERE
     Contact_Record_Type_Name = "Student: High School"
 ),
@@ -36,7 +36,7 @@ senior_count AS (
     site_short,
     COUNT(Contact_Id) AS senior_count
   FROM
-    `data-studio-260217.rosters.filtered_roster_test`
+    `data-studio-260217.rosters.filtered_roster`
   WHERE
     Grade_c = "12th Grade"
   GROUP BY
