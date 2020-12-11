@@ -1,4 +1,11 @@
-SELECT high_school_class_c 
-FROM `data-warehouse-289815.salesforce.college_application_c` 
+SELECT high_school_graduating_class_c  , student_c , college_track_status_c 
+
+  
+FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C  
+        ON C.contact_id = CA.student_c
+ 
 WHERE
-high_school_class_c = '2021'
+high_school_graduating_class_c= '2021'
+AND college_track_status_c  ='11A'
+AND site_short <> 'Arlen'
