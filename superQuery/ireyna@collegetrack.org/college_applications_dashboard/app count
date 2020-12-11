@@ -1,4 +1,4 @@
 SELECT high_school_class_c 
 FROM `data-warehouse-289815.salesforce.college_application_c` 
 WHERE
-high_school_class_c = 2021
+high_school_class_c = '2021'
