@@ -29,7 +29,7 @@ SELECT
     CA.Fit_Type_Current_c,
     CA.Fit_Type_Enrolled_c,
     CA.Housing_Application_c,
-    CA.Id AS college_app_id,
+    CA.id AS college_app_id,
     CA.Predominant_Degree_Awarded_c,
     CA.Type_of_School_c,
     CA.Situational_Fit_Type_c,
@@ -79,7 +79,7 @@ LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` AS CAP
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_asp #pull in college name in aspiration
         ON CAP.college_university_c = accnt_asp.id        
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
-        ON C.contact_Id = A_T. contact_Id 
+        ON C.contact_Id = A_T.contact_Id 
         
 WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
