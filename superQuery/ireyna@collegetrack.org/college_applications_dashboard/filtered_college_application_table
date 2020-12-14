@@ -34,7 +34,7 @@ SELECT
     CA.Fit_Type_Current_c,
     CA.Fit_Type_Enrolled_c,
     CA.Housing_Application_c,
-    CA.id,
+    CA.id as college_app_id,
     CA.Predominant_Degree_Awarded_c,
     CA.Type_of_School_c,
     CA.Situational_Fit_Type_c,
