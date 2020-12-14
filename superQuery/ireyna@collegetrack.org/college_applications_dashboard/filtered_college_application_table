@@ -19,7 +19,7 @@ SELECT
     CASE WHEN 
         CA.application_status_c IS NULL THEN "No College Applcation"
         ELSE CA.application_status_c
-    END AS appication_status,
+    END AS application_status,
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
     CA.Award_Letter_c,
