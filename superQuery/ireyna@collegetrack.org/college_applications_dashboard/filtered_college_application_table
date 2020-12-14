@@ -16,6 +16,10 @@ SELECT
     CA.College_University_c AS app_college_id,
     CA.admission_status_c,
     CA.application_status_c,
+    CASE WHEN 
+        CA.application_status_c IS NULL THEN "No College Applcation"
+        ELSE CA.application_status_c
+    END AS appication_status,
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
     CA.Award_Letter_c,
@@ -30,7 +34,7 @@ SELECT
     CA.Fit_Type_Current_c,
     CA.Fit_Type_Enrolled_c,
     CA.Housing_Application_c,
-    CA.id AS college_app_id,
+    CA.id,
     CA.Predominant_Degree_Awarded_c,
     CA.Type_of_School_c,
     CA.Situational_Fit_Type_c,
@@ -57,6 +61,10 @@ SELECT
 #College Aspiration data,
     CAP.Id AS aspiration_id,
     CAP.Aspiration_Category_c,
+    CASE WHEN 
+        CAP.Aspiration_Category_c IS NULL THEN "No College Aspiration"
+        ELSE CAP.Aspiration_Category_c
+    END AS asiration_category,
     CAP. College_University_c AS aspiration_college_id,
     
 #Academic Term data 
@@ -71,7 +79,7 @@ SELECT
     
 
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
-LEFT JOIN `data-warehouse-289815.salesforce.college_application_c` AS CA 
+LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
         ON C.contact_id = CA.student_c
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_app #pull in college name in application 
         ON CA.college_university_c = accnt_app.id
@@ -89,4 +97,6 @@ WHERE C.grade_c = '12th Grade'
 )
 
 SELECT *
+    EXCEPT (application_status_c, Aspiration_Category_c)
+    
 FROM filtered_data
