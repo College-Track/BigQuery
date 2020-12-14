@@ -94,9 +94,25 @@ WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
     AND AT_Record_Type_Name = 'High School Semester'
     AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34 #11th Grade Spring Term
+),
+
+aggregate_data AS
+(
+SELECT
+    full_name_c AS aggregate_full_name,
+    contact_id AS aggregate_contact_id,
+    COUNT(aspiration_id) AS aspirations_count,
+    COUNT(college_app_id) AS college_app_count
+
+FROM filtered_data
+GROUP BY
+    full_name_c,
+    contact_id
 )
 
 SELECT *
     EXCEPT (application_status_c, Aspiration_Category_c)
     
-FROM filtered_data
+FROM filtered_data AS fil
+LEFT JOIN aggregate_data as agg
+    ON fil.contact_id = agg.aggregate_contact_id
