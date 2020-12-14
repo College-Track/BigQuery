@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
-    )
-AS
-
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -61,9 +52,8 @@ SELECT
 #College Aspiration data,
     CAP.Id AS aspiration_id,
     CAP.Aspiration_Category_c,
-    CASE 
-        WHEN CAP.Id IS NULL THEN "No College Aspiration"
-        WHEN CAP.Aspiration_Category_c IS NULL THEN "Category Not Selected"
+    CASE WHEN 
+        CAP.Aspiration_Category_c IS NULL THEN "No College Aspiration"
         ELSE CAP.Aspiration_Category_c
     END AS aspiration_category,
     CAP. College_University_c AS aspiration_college_id,
