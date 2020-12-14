@@ -64,7 +64,7 @@ SELECT
     CASE WHEN 
         CAP.Aspiration_Category_c IS NULL THEN "No College Aspiration"
         ELSE CAP.Aspiration_Category_c
-    END AS asiration_category,
+    END AS aspiration_category,
     CAP. College_University_c AS aspiration_college_id,
     
 #Academic Term data 
