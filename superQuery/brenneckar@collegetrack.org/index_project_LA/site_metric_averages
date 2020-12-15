@@ -1,0 +1,96 @@
+WITH gather_census_data AS (
+  SELECT
+    ACS.geo_id,
+    ACS.total_pop,
+    ACS.total_pop - ACS.children AS total_adults,
+    ACS.pop_25_years_over,
+    ACS.bachelors_degree,
+    ACS.different_house_year_ago_different_city,
+    ACS.different_house_year_ago_same_city,
+    ACS.high_school_diploma,
+    ACS.high_school_including_ged,
+    ACS.households,
+    ACS.households_public_asst_or_food_stamps,
+    ACS.housing_units_renter_occupied,
+    ACS.income_per_capita,
+    ACS.median_income,
+    ACS.not_in_labor_force,
+    ACS.not_us_citizen_pop,
+    ACS.occupied_housing_units,
+    ACS.percent_income_spent_on_rent,
+    ACS.pop_in_labor_force,
+    ACS.speak_only_english_at_home,
+    ACS.unemployed_pop,
+    ACS.vacant_housing_units,
+    ACS.less_than_high_school_graduate
+  FROM
+    `bigquery-public-data.census_bureau_acs.censustract_2018_5yr` ACS
+),
+
+gather_school_data AS (
+SELECT SWC.Contact_Id, HS.rating_clean
+FROM `learning-agendas.index_project.student_with_census` SWC
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` Contact ON Contact.Contact_Id = SWC.Contact_Id
+LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = Contact.npsp_primary_affiliation_c
+LEFT JOIN `learning-agendas.index_project.high_school_with_ratings` HS ON HS.Universal_ID_c = Account.universal_id_c
+),
+calc_census_metrics AS (
+  SELECT
+    C.*,
+    bachelors_degree / pop_25_years_over AS percent_bachelors_degree,
+    different_house_year_ago_different_city / pop_25_years_over AS percent_different_house_year_ago_different_city,
+    different_house_year_ago_same_city / pop_25_years_over AS percent_different_house_year_ago_same_city,
+    high_school_diploma / pop_25_years_over AS percent_high_school_diploma,
+    high_school_including_ged / pop_25_years_over AS percent_high_school_including_ged,
+    households_public_asst_or_food_stamps / households AS percent_households_public_asst_or_food_stamps,
+    housing_units_renter_occupied / households AS percent_housing_units_renter_occupied,
+    income_per_capita,
+    median_income,
+    not_in_labor_force / pop_25_years_over AS percent_not_in_labor_force,
+    not_us_citizen_pop / pop_25_years_over AS percent_not_us_citizen_pop,
+    --   occupied_housing_units / households AS percent_occupied_housing_units,
+    percent_income_spent_on_rent / 100 AS percent_income_spent_on_rent,
+    -- pop_in_labor_force / pop_25_years_over AS percent_pop_in_labor_force,
+    --   speak_only_english_at_home / pop_25_years_over AS percent_speak_only_english_at_home,
+    unemployed_pop / pop_25_years_over AS percent_unemployed_pop,
+    vacant_housing_units / households AS percent_vacant_housing_units,
+    SITE_DATA.first_gpa,
+    CASE WHEN SITE_DATA.first_covi = 'Green' THEN true
+    ELSE false END AS first_covi_green,
+    HS_DATA.rating_clean
+  FROM
+    `learning-agendas.index_project.student_with_census` C
+    LEFT JOIN gather_census_data CENSUS ON C.census_track_id = CENSUS.geo_id
+    LEFT JOIN `learning-agendas.index_project.first_gpa_and_covi` SITE_DATA ON SITE_DATA.Contact_Id = C.Contact_Id
+    LEFT JOIN gather_school_data HS_DATA ON HS_DATA.Contact_Id = C.Contact_Id
+),
+calc_averages AS (
+  SELECT
+    site_short,
+    AVG(rating_clean) AS avg_school_rating,
+    AVG(annual_household_income_c) / AVG(median_income) AS contextual_income,
+    AVG(first_gpa) AS avg_first_gpa,
+    AVG(CAST(first_covi_green AS INT64)) AS avg_first_covi_green,
+    AVG(CAST(is_a_us_citizen AS INT64)) AS avg_us_citizen,
+    AVG(CAST(english_primary_language AS INT64)) AS avg_english_primary_language,
+    AVG(CAST(first_gen AS INT64)) AS avg_first_gen,
+    AVG(annual_household_income_c) AS avg_househld_income_site,
+    AVG(percent_bachelors_degree) AS avg_percent_bachelors_degree,
+    AVG(percent_high_school_diploma) AS avg_percent_high_school_diploma,
+    AVG(percent_households_public_asst_or_food_stamps) AS avg_percent_households_public_asst_or_food_stamps,
+    AVG(percent_housing_units_renter_occupied) AS avg_percent_housing_units_renter_occupied,
+    AVG(income_per_capita) AS avg_income_per_capita,
+    AVG(median_income) AS avg_median_income,
+    --   AVG(percent_not_in_labor_force) AS avg_percent_not_in_labor_force,
+    AVG(percent_not_us_citizen_pop) AS avg_percent_not_us_citizen_pop,
+    AVG(percent_income_spent_on_rent) AS avg_percent_income_spent_on_rent,
+    AVG(percent_unemployed_pop) AS avg_percent_unemployed_pop,
+    AVG(percent_vacant_housing_units) AS avg_percent_vacant_housing_units
+  FROM
+    calc_census_metrics
+  GROUP BY
+    site_short
+)
+
+SELECT *
+FROM calc_averages
