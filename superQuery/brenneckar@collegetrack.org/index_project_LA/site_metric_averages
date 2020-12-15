@@ -96,13 +96,13 @@ calc_averages AS (
     site_short
 )
 SELECT
-  site_short, avg_school_rating,
+  * EXCEPT(avg_school_rating),
   CASE
     WHEN avg_school_rating IS NULL THEN coalesce (
       avg_school_rating,
       avg(avg_school_rating) over ()
     )
     ELSE avg_school_rating
-  END AS test
+  END AS avg_school_rating
 FROM
   calc_averages
