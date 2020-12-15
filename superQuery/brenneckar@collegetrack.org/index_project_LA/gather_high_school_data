@@ -1,5 +1,5 @@
 SELECT C.Contact_Id, CAT.npsp_primary_affiliation_c, A.Universal_ID_c, A.name
 FROM `learning-agendas.index_project.student_with_census` C
-LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON c.Contact_Id = CAT.Contact_Id
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CAT ON c.Contact_Id = CAT.Contact_Id
 LEFT JOIN `data-warehouse-289815.salesforce.account` A ON CAT.npsp_primary_affiliation_c = A.id
 LIMIT 100
