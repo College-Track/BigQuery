@@ -28,5 +28,3 @@ SELECT
   ) AS url
 FROM
   gather_data
-WHERE
-  name LIKE '%Oakland%'
