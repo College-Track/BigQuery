@@ -96,7 +96,7 @@ SELECT
     A_T.Name AS Name_AT, #academic term name
     A_T.AT_Grade_c, #grade on AT
     A_T.AT_Record_Type_Name,
-    A_T.cc_advisor_c,
+    A_T.ct_coach_c,
     
 #Account object mapping
     ACCNT_APP.Name AS app_college_name, 
