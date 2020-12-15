@@ -28,3 +28,4 @@ SELECT DISTINCT
   ) AS url
 FROM
   gather_data
+  WHERE universal_id_c IS NOT NULL
