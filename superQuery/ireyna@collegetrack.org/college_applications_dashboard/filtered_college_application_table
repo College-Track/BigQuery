@@ -31,6 +31,10 @@ SELECT
     CA.Enrollment_Deposit_c,
     CA.School_s_Financial_Aid_Form_Required_c, #yes/no
     CA.School_Financial_Aid_Form_Status_c,
+    CASE 
+        WHEN CA.School_Financial_Aid_Form_Status_c IS NULL THEN 'Missing Status'
+        ELSE CA.School_Financial_Aid_Form_Status_c
+    END AS School_Financial_Aid_Form_Status,
     CA.Fit_Type_Current_c,
     CA.Fit_Type_Enrolled_c,
     CA.Housing_Application_c,
