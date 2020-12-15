@@ -67,6 +67,7 @@ SELECT
         WHEN C.fa_req_expected_financial_contribution_c >= 5711 THEN 'Pell Ineligible'
         WHEN C.fa_req_expected_financial_contribution_c IS NULL THEN 'Missing EFC'
     END AS Pell_indicator,
+    C.fa_req_fafsa_c,
     
 #College Aspiration data,
     CAP.Id AS aspiration_id,
