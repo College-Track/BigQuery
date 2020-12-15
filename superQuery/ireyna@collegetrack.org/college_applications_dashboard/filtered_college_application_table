@@ -24,7 +24,11 @@ SELECT
     CA.Avg_Debt_of_Graduates_c,
     CA.Award_Letter_c,
     CA.CSS_Profile_Required_c,
-    CA.CSS_Profile_c AS CSS_profile_status,
+    CA.CSS_Profile_c,
+    CASE
+        WHEN CA.CSS_Profile_c IS NULL THEN 'Missing Status'
+        ELSE CA.CSS_Profile_c
+    END AS CSS_profile_status,
     CA.College_Fit_Type_Applied_c,
     CA.College_University_Academic_Calendar_c,
     CA.Control_of_Institution_c, #private or public school,
@@ -73,11 +77,11 @@ SELECT
     END AS Pell_indicator,
     C.fa_req_fafsa_c,
     CASE 
-        WHEN C.fa_req_fafsa_c IS NULL 'No Status'
-        ELSE C.fa_req_fafsa_c
+        WHEN C.fa_req_fafsa_c IS NULL THEN 'Missing Status' 
+        ELSE C.fa_req_fafsa_c 
     END AS FAFSA_status,
     
-#College Aspiration data,
+#College Aspiration data
     CAP.Id AS aspiration_id,
     CAP.Aspiration_Category_c,
     CASE 
