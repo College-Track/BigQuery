@@ -3,7 +3,7 @@ WITH gather_data AS (
     C.Contact_Id,
     CAT.npsp_primary_affiliation_c,
     A.Universal_ID_c,
-    RIGHT(A.Universal_ID_c, 5) AS mod_universal_id,
+    CAST(RIGHT(A.Universal_ID_c, 5) AS INT64) AS mod_universal_id,
     A.name,
     A.billing_city,
     A.billing_state,
@@ -15,9 +15,13 @@ WITH gather_data AS (
 )
 SELECT
   *,
-  CAST(mod_universal_id AS INT64) AS final_universal_id,
-  
-  CONCAT('https://www.greatschools.org/', billing_state, '/',CAST(mod_universal_id AS INT64)) AS url
+  CONCAT(
+    'https://www.greatschools.org/',
+    billing_state,
+    '/',
+    mod_universal_id
+  ) AS url
 FROM
   gather_data
-  WHERE name LIKE '%Oakland%'
+WHERE
+  name LIKE '%Oakland%'
