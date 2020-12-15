@@ -20,6 +20,8 @@ SELECT
     'https://www.greatschools.org/',
     billing_state,
     '/',
+    billing_city,
+    '/',
     mod_universal_id,
     '-',
     school_name_mod
