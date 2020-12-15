@@ -15,5 +15,5 @@ FROM
  )
  
  SELECT *, 
- CAST(mod_universal_id AS INTEGER) AS final_universal_id
+ CAST(mod_universal_id AS INT64) AS final_universal_id
   FROM gather_data
