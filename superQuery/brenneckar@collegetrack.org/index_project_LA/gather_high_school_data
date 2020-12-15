@@ -15,7 +15,9 @@ WITH gather_data AS (
 )
 SELECT
   *,
-  CAST(mod_universal_id AS INT64) AS final_universal_id
+  CAST(mod_universal_id AS INT64) AS final_universal_id,
+  
+  CONCAT('https://www.greatschools.org/', billing_state, '/',CAST(mod_universal_id AS INT64)) AS url
 FROM
   gather_data
   WHERE name LIKE '%Oakland%'
