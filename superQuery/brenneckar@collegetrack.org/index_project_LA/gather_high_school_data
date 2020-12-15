@@ -8,7 +8,8 @@ WITH gather_data AS (
     REPLACE(REPLACE(A.name, ' ', '-'), '.', '') AS school_name_mod, 
     A.billing_city,
     A.billing_state,
-    A.billing_street
+    A.billing_street,
+    A.school_type_c
   FROM
     `learning-agendas.index_project.student_with_census` C
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CAT ON c.Contact_Id = CAT.Contact_Id
@@ -28,4 +29,4 @@ SELECT DISTINCT
   ) AS url
 FROM
   gather_data
-  WHERE universal_id_c IS NOT NULL
+  WHERE universal_id_c IS NOT NULL AND school_type_c != 'Private'
