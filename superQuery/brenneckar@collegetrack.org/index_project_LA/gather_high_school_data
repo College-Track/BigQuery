@@ -5,6 +5,7 @@ WITH gather_data AS (
     A.Universal_ID_c,
     CAST(RIGHT(A.Universal_ID_c, 5) AS INT64) AS mod_universal_id,
     A.name,
+    REPLACE(REPLACE(A.name, ' ', '-'), '.', '') AS school_name_mod, 
     A.billing_city,
     A.billing_state,
     A.billing_street
@@ -19,7 +20,9 @@ SELECT
     'https://www.greatschools.org/',
     billing_state,
     '/',
-    mod_universal_id
+    mod_universal_id,
+    '-',
+    school_name_mod
   ) AS url
 FROM
   gather_data
