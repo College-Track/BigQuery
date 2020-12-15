@@ -15,7 +15,7 @@ WITH gather_data AS (
     LEFT JOIN `data-warehouse-289815.salesforce.account` A ON CAT.npsp_primary_affiliation_c = A.id
 )
 SELECT
-  *,
+  * EXCEPT(Contact_Id, npsp_primary_affiliation_c),
   CONCAT(
     'https://www.greatschools.org/',
     billing_state,
