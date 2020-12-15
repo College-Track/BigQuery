@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -48,12 +57,23 @@ SELECT
     C.readiness_composite_off_c,
     C.readiness_math_official_c,
     C.fa_req_expected_financial_contribution_c, 
+    CASE 
+        WHEN C.fa_req_expected_financial_contribution_c IS NULL THEN 'Missing EFC'
+        ELSE 'Reported EFC' 
+    END AS EFC_indicator,
+    CASE 
+        WHEN C.fa_req_expected_financial_contribution_c = 0 THEN 'Full Pell'
+        WHEN C.fa_req_expected_financial_contribution_c >= 1 AND C.fa_req_expected_financial_contribution_c < 5711 THEN 'Partial Pell'
+        WHEN C.fa_req_expected_financial_contribution_c >= 5711 THEN 'Pell Ineligible'
+        WHEN C.fa_req_expected_financial_contribution_c IS NULL THEN 'Missing EFC'
+    END AS Pell_indicator,
     
 #College Aspiration data,
     CAP.Id AS aspiration_id,
     CAP.Aspiration_Category_c,
-    CASE WHEN 
-        CAP.Aspiration_Category_c IS NULL THEN "No College Aspiration"
+    CASE 
+        WHEN CAP.Id IS NULL THEN "No College Aspiration"
+        WHEN CAP.Aspiration_Category_c IS NULL THEN "Category Not Selected"
         ELSE CAP.Aspiration_Category_c
     END AS aspiration_category,
     CAP. College_University_c AS aspiration_college_id,
