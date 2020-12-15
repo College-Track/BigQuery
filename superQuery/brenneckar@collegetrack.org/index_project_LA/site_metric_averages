@@ -26,13 +26,15 @@ WITH gather_census_data AS (
   FROM
     `bigquery-public-data.census_bureau_acs.censustract_2018_5yr` ACS
 ),
-
 gather_school_data AS (
-SELECT SWC.Contact_Id, HS.rating_clean
-FROM `learning-agendas.index_project.student_with_census` SWC
-LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` Contact ON Contact.Contact_Id = SWC.Contact_Id
-LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = Contact.npsp_primary_affiliation_c
-LEFT JOIN `learning-agendas.index_project.high_school_with_ratings` HS ON HS.Universal_ID_c = Account.universal_id_c
+  SELECT
+    SWC.Contact_Id,
+    HS.rating_clean
+  FROM
+    `learning-agendas.index_project.student_with_census` SWC
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` Contact ON Contact.Contact_Id = SWC.Contact_Id
+    LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = Contact.npsp_primary_affiliation_c
+    LEFT JOIN `learning-agendas.index_project.high_school_with_ratings` HS ON HS.Universal_ID_c = Account.universal_id_c
 ),
 calc_census_metrics AS (
   SELECT
@@ -55,8 +57,10 @@ calc_census_metrics AS (
     unemployed_pop / pop_25_years_over AS percent_unemployed_pop,
     vacant_housing_units / households AS percent_vacant_housing_units,
     SITE_DATA.first_gpa,
-    CASE WHEN SITE_DATA.first_covi = 'Green' THEN true
-    ELSE false END AS first_covi_green,
+    CASE
+      WHEN SITE_DATA.first_covi = 'Green' THEN true
+      ELSE false
+    END AS first_covi_green,
     HS_DATA.rating_clean
   FROM
     `learning-agendas.index_project.student_with_census` C
@@ -67,7 +71,7 @@ calc_census_metrics AS (
 calc_averages AS (
   SELECT
     site_short,
-    AVG(rating_clean) AS avg_school_rating,
+    AVG(rating_clean) as avg_school_rating,
     AVG(annual_household_income_c) / AVG(median_income) AS contextual_income,
     AVG(first_gpa) AS avg_first_gpa,
     AVG(CAST(first_covi_green AS INT64)) AS avg_first_covi_green,
@@ -91,6 +95,14 @@ calc_averages AS (
   GROUP BY
     site_short
 )
-
-SELECT *
-FROM calc_averages
+SELECT
+  site_short, avg_school_rating,
+  CASE
+    WHEN avg_school_rating IS NULL THEN coalesce (
+      avg_school_rating,
+      avg(avg_school_rating) over ()
+    )
+    ELSE avg_school_rating
+  END AS test
+FROM
+  calc_averages
