@@ -1,0 +1,13 @@
+SELECT
+    site_short,
+    SUM(accepted) AS sum,
+    COUNT(DISTINCT college_app_id) AS college_app_count,
+    (SELECT college_app_id FROM `data-studio-260217.college_applications.college_application_filtered_table` WHERE accepted = 1) 
+    AS sub_college_app_id
+
+FROM `data-studio-260217.college_applications.college_application_filtered_table` 
+
+GROUP BY
+    site_short
+
+#get acceptance indicators across distinct college app Id. then sum by site
