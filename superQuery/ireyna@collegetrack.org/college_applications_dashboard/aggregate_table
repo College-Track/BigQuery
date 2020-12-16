@@ -1,8 +1,10 @@
 SELECT 
-    college_app_id,accepted
+    college_app_id,
+    accepted AS accepted_count,
+    site_short
     FROM `data-studio-260217.college_applications.college_application_filtered_table`
     
     WHERE application_status = "Applied"
     AND accepted = 1
     
-    GROUP BY college_app_id, accepted
+    GROUP BY site_short,college_app_id, accepted_count
