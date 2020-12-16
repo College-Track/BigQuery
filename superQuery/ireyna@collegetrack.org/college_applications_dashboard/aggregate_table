@@ -56,7 +56,7 @@ GROUP BY
 aggregate_app_accepted AS
 (
 SELECT 
-    SUM(acceptance.accepted) AS accepted_sum,
+    acceptance.accepted,
     application.site_short,
     college_app_count
     
@@ -66,7 +66,8 @@ LEFT JOIN acceptance_counts AS acceptance
     
 GROUP BY 
     application.site_short,
-    college_app_count
+    college_app_count,
+    acceptance.accepted
 ),
 
 college_aspiration_counts AS 
@@ -83,7 +84,7 @@ SELECT
     A.*,
     college_app_count,
     college_aspiration_count,
-   SUM(accepted_sum) 
+   SUM(accepted) AS accepted_SUM
     
 
 FROM aggregate_data AS A
