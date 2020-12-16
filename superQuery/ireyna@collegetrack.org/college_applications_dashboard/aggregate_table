@@ -1,7 +1,7 @@
 SELECT
     site_short,
     accepted,
-    COUNT(college_app_id) AS college_app_count,
+    COUNT(DISTINCT college_app_id) AS college_app_count,
 
 FROM `data-studio-260217.college_applications.college_application_filtered_table` 
 
