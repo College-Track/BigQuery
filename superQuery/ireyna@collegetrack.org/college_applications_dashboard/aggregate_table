@@ -1,5 +1,4 @@
-SELECT 
-    college_app_id,
+ college_app_id,
     accepted AS accepted_count,
     site_short
     FROM `data-studio-260217.college_applications.college_application_filtered_table`
@@ -8,3 +7,4 @@ SELECT
     AND accepted = 1
     
     GROUP BY site_short,college_app_id, accepted_count
+),
