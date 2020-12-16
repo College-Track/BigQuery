@@ -10,4 +10,3 @@ GROUP BY
     site_short,
     accepted,
     college_app_id
-),
