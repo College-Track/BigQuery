@@ -6,7 +6,12 @@ SELECT
     CA.Student_c AS contact_id,
     CA.College_University_c AS app_college_id,
     CA.College_Track_Site_c,
-    CA.admission_status_c,
+    CA.admission_status_c, 
+    CASE 
+        WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
+        THEN 1
+        ELSE 0
+    END AS acceptance,
     CA.Application_status_c,
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
@@ -82,8 +87,10 @@ Aggregate_data AS
 (
 SELECT 
 college_app_id,
-SUM(CASE WHEN  admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred"  THEN 1 ELSE 0 END) / COUNT(college_app_id) AS acceptance_rate
+SUM(CASE WHEN acceptance =1 THEN 1 ELSE 0 END) / COUNT(college_app_id) AS acceptance_rate
 FROM filtered_college_app_data
+
+WHERE Application_status_c = "Applied"
 GROUP BY college_app_id
 )
 
@@ -93,3 +100,5 @@ SELECT acceptance_rate
 FROM filtered_college_app_data AS CA
 LEFT JOIN Aggregate_data AS agg
 ON CA.college_app_id = agg.college_app_id
+
+group by acceptance_rate
