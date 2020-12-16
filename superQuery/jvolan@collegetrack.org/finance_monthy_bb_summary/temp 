@@ -1,6 +1,6 @@
 
 /*WITH bb_balance AS
-(*/
+(
     SELECT
     student_c,
     max(finance_bb_balance_total_c) as Finance_BB_Balance
@@ -10,13 +10,11 @@
     WHERE record_type_id = "01246000000ZNi1AAG"
     AND finance_bb_balance_total_c > 0
     GROUP BY student_c
-    ORDER BY Finance_BB_Balance Desc
-
-/* ),
+ ),
 
 --approved bb disbursement fy to date
 bb_d_fy AS    
-(
+(*/
     SELECT
     student_c,
     SUM (amount_c) as bb_disbursement_total,
@@ -28,7 +26,7 @@ bb_d_fy AS
     AND finance_reporting_date_c >= '2020-07-01'
     AND transaction_status_c = "Approved"
     GROUP BY student_c
-),
+/*),
 --bb earnings fy to date  
 bb_e_fy AS
 (
