@@ -12,13 +12,13 @@ SELECT
     COUNT(DISTINCT contact_id) AS student_count,
     COUNT(DISTINCT CAP.id) AS college_aspiration_count
     
-FROM
-    (SELECT site_short, region_short,contact_id, Gender_c, first_generation_fy_20_c, indicator_low_income_c, Ethnic_background_c,
-    COUNT(DISTINCT contact_id)
-    FROM `data-studio-260217.college_applications.college_application_filtered_table` 
-    GROUP BY site_short,region_short, contact_id, Gender_c, first_generation_fy_20_c, indicator_low_income_c,
-    Ethnic_background_c)
-AS student_count
+--FROM
+    --(SELECT site_short, region_short,contact_id, Gender_c, first_generation_fy_20_c, indicator_low_income_c, Ethnic_background_c,
+   -- COUNT(DISTINCT contact_id)
+    FROM `data-studio-260217.college_applications.college_application_filtered_table` AS student_count
+   -- GROUP BY site_short,region_short, contact_id, Gender_c, first_generation_fy_20_c, indicator_low_income_c,
+   -- Ethnic_background_c)
+--AS student_count
 
 LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` AS CAP
         ON student_count.contact_id = CAP.student_c
