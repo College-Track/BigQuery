@@ -16,4 +16,4 @@ GROUP BY
     site_short,
     region_short,
     Gender_c,
-    first_generation_fy_20_
+    first_generation_fy_20_c
