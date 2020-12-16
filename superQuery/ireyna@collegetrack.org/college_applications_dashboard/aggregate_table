@@ -50,7 +50,7 @@ SELECT
 acceptance_application_agg AS
 (
 SELECT 
-    SUM(accepted_count) AS accepted_sum,
+    accepted_count,
     app_c.site_short,
     college_app_count
     
@@ -60,7 +60,8 @@ LEFT JOIN acceptance_counts acc_c
     
 GROUP BY 
     app_c.site_short,
-    college_app_count
+    college_app_count,
+    accepted_count
 
 ),
 
@@ -78,7 +79,8 @@ SELECT
     A.*,
     college_app_count,
     college_aspiration_count,
-   SUM(accepted_sum) 
+    accepted_count,
+   SUM(accepted_count) 
     
 
 FROM aggregate_data AS A
@@ -96,4 +98,5 @@ GROUP BY
     Gender_c,
     first_generation_fy_20_c,
     indicator_low_income_c,
-    Ethnic_background_c
+    Ethnic_background_c,
+    accepted_count
