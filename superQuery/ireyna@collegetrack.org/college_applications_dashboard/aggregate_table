@@ -40,9 +40,9 @@ SELECT
     college_app_id,
     (select SUM(accepted)
     FROM `data-studio-260217.college_applications.college_application_filtered_table` AS t2
-    WHERE t1.college_app_id = t2.college_app_id
-    AND application_status = "Applied"
-    AND accepted = 1 GROUP BY t1.college_app_id,T2.college_app_id) AS accepted_sum_subquery
+    WHERE application_status = "Applied"
+    AND accepted = 1 
+    GROUP BY t1.college_app_id,T2.college_app_id) AS accepted_sum_subquery
     
     from `data-studio-260217.college_applications.college_application_filtered_table` AS t1
     group by 
