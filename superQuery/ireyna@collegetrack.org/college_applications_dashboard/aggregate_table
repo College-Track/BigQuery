@@ -1,10 +1,8 @@
-SELECT
-    site_short,
-    accepted,
+ site_short,
+    SUM(accepted),
     COUNT(DISTINCT college_app_id) AS college_app_count,
 
 FROM `data-studio-260217.college_applications.college_application_filtered_table` 
 
 GROUP BY
-    site_short,
-    accepted
+    site_short
