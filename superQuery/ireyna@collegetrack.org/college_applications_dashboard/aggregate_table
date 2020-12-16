@@ -7,7 +7,7 @@ SELECT
     first_generation_fy_20_c,
     indicator_low_income_c,
     Ethnic_background_c,
-    COUNT(DISTINCT contact_id) AS student_count,
+    COUNT(contact_id) AS student_count,
     
 FROM `data-studio-260217.college_applications.college_application_filtered_table`
 GROUP BY
@@ -19,7 +19,7 @@ GROUP BY
     Ethnic_background_c
 ),
 
-college_application_counts AS #count distinct college application ids
+college_application_counts AS
 (
 SELECT
     site_short,
@@ -35,7 +35,7 @@ GROUP BY
     college_app_id
 ),
 
-acceptance_counts AS #sum of acceptances across distinct college app ids 
+acceptance_counts AS
 (
 SELECT
     site_short,
