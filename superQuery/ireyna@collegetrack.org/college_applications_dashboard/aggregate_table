@@ -7,7 +7,7 @@ SELECT
     first_generation_fy_20_c,
     indicator_low_income_c,
     Ethnic_background_c,
-    COUNT(contact_id) AS student_count,
+    COUNT(DISTINCT contact_id) AS student_count,
     
 FROM `data-studio-260217.college_applications.college_application_filtered_table`
 GROUP BY
@@ -19,7 +19,7 @@ GROUP BY
     Ethnic_background_c
 ),
 
-college_application_counts AS
+college_application_counts AS #count distinct college application ids
 (
 SELECT
     site_short,
@@ -35,48 +35,27 @@ GROUP BY
     college_app_id
 ),
 
-acceptance_counts AS
+acceptance_counts AS #sum of acceptances across distinct college app ids 
 (
-SELECT 
-    college_app_id,
-    accepted,
-    site_short
-    
-FROM `data-studio-260217.college_applications.college_application_filtered_table` 
-WHERE 
-    application_status = "Applied"
-    AND accepted = 1
-    
-GROUP BY 
+SELECT
     site_short,
-    college_app_id, 
-    accepted
-
-
-),
-
-aggregate_app_accepted AS
-(
-SELECT 
-    SUM(acceptance.accepted) AS accepted_sum,
-    application.site_short,
-    college_app_count
+    COUNT(DISTINCT college_app_id) AS accepted_sum
     
-FROM college_application_counts AS application
-LEFT JOIN acceptance_counts AS acceptance
-    ON application.college_app_id = acceptance.college_app_id
-    
-GROUP BY 
-    application.site_short,
-    college_app_count,
-    acceptance.accepted
+FROM
+    (SELECT *
+    FROM `data-studio-260217.college_applications.college_application_filtered_table` 
+    WHERE accepted =1)
+AS accepted_group
+
+GROUP BY
+    site_short
 ),
 
 college_aspiration_counts AS 
 (
 SELECT
     site_short,
-    COUNT(aspiration_id) AS college_aspiration_count
+    COUNT(DISTINCT aspiration_id) AS college_aspiration_count
 FROM `data-studio-260217.college_applications.college_application_filtered_table`
 
 GROUP BY site_short
@@ -86,12 +65,14 @@ SELECT
     A.*,
     college_app_count,
     college_aspiration_count,
-   SUM(accepted_sum) AS accepted_agg
+    accepted_sum
     
 
 FROM aggregate_data AS A
-LEFT JOIN aggregate_app_accepted AS agg    
-    ON A.site_short = agg.site_short
+LEFT JOIN college_application_counts AS CA   
+    ON A.site_short = CA.site_short
+LEFT JOIN acceptance_counts AS ACCPT
+    ON A.site_short = ACCPT.site_short
 LEFT JOIN college_aspiration_counts AS CAP
     ON A.site_short = CAP.site_short
 
@@ -100,6 +81,7 @@ GROUP BY
     region_short,
     student_count,
     college_app_count,
+    accepted_sum,
     college_aspiration_count,
     Gender_c,
     first_generation_fy_20_c,
