@@ -18,6 +18,7 @@ SELECT
     contact_id,
     COUNT(DISTINCT contact_id) AS student_count,
     COUNT(DISTINCT college_app_id) AS app_count,
+    SUM(CASE WHEN application_status = 'Applied' THEN 1 ELSE 0 END) AS applied_sum, 
     COUNT(DISTINCT CAP.id) AS college_aspiration_count
     
 FROM `data-studio-260217.college_applications.college_application_filtered_table` AS student_count
@@ -29,27 +30,6 @@ GROUP BY
     contact_id
   
 ),
-
-applied_counts AS #sum of status of "applied" across distinct college app ids 
-(
-SELECT
-    site_short,
-    region_short,
-    contact_id,
-    COUNT(DISTINCT college_app_id) AS applied_sum, 
-    
-FROM
-    (SELECT *
-    FROM `data-studio-260217.college_applications.college_application_filtered_table` 
-    WHERE application_status = 'Applied')
-AS applied_group
-
-GROUP BY
-    site_short,
-    region_short,
-    contact_id
-),
-
 acceptance_counts AS #sum of acceptances across distinct college app ids 
 (
 SELECT
@@ -88,8 +68,6 @@ SELECT
 FROM agg_table AS A
 LEFT JOIN acceptance_counts AS AC
     ON A.contact_id = AC.contact_id
-LEFT JOIN applied_counts AS APC
-    ON A.contact_id = APC.contact_id
 LEFT JOIN app_aspiration_count AS AAC
     ON A.contact_id = AAC.contact_id
 
