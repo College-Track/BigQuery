@@ -1,3 +1,40 @@
+WITH aggregate_data AS
+(
+SELECT
+    site_short,
+    region_short,
+    Gender_c,
+    first_generation_fy_20_c,
+    indicator_low_income_c,
+    Ethnic_background_c,
+    COUNT(contact_id) AS student_count,
+    
+FROM `data-studio-260217.college_applications.college_application_filtered_table`
+GROUP BY
+    site_short,
+    region_short,
+    Gender_c,
+    first_generation_fy_20_c,
+    indicator_low_income_c,
+    Ethnic_background_c
+),
+
+college_application_counts AS
+(
+SELECT
+    site_short,
+    SUM(accepted),
+    COUNT(DISTINCT college_app_id) AS college_app_count
+
+FROM `data-studio-260217.college_applications.college_application_filtered_table` 
+
+GROUP BY
+    site_short
+
+),
+
+acceptance_counts AS
+(
 SELECT 
     college_app_id,
     accepted AS accepted_count,
@@ -8,3 +45,40 @@ SELECT
     AND accepted = 1
     
     GROUP BY site_short,college_app_id, accepted_count
+),
+
+college_aspiration_counts AS 
+(
+SELECT
+    site_short,
+    COUNT(aspiration_id) AS college_aspiration_count
+FROM `data-studio-260217.college_applications.college_application_filtered_table`
+
+GROUP BY site_short
+)
+
+SELECT 
+    A.*,
+    college_app_count,
+    college_aspiration_count,
+    SUM(accepted_count)
+    
+
+FROM aggregate_data AS A
+LEFT JOIN college_application_counts AS CA
+    ON A.site_short = CA.site_short
+LEFT JOIN acceptance_counts as accept     
+    ON A.site_short = accept.site_short
+LEFT JOIN college_aspiration_counts AS CAP
+    ON A.site_short = CAP.site_short
+
+GROUP BY
+    site_short,
+    region_short,
+    student_count,
+    college_app_count,
+    college_aspiration_count,
+    Gender_c,
+    first_generation_fy_20_c,
+    indicator_low_income_c,
+    Ethnic_background_c
