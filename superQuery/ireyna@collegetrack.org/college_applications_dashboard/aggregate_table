@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.aggregate_college_applications`
+OPTIONS
+    (
+    description= "Aggregate College Application, College Aspiration data, and Contact demo data"
+    )
+AS
+
 WITH aggregate_data AS #contact demo data
 (
 SELECT
@@ -29,33 +36,18 @@ college_application_counts AS #count distinct college application ids
 (
 SELECT
     site_short,
-    region_short,
-    Gender_c,
-    first_generation_fy_20_c,
-    indicator_low_income_c,
-    Ethnic_background_c,
     COUNT(DISTINCT college_app_id) AS college_app_count
 
 FROM `data-studio-260217.college_applications.college_application_filtered_table` 
 
 GROUP BY
-    site_short,
-    region_short,
-    Gender_c,
-    first_generation_fy_20_c,
-    indicator_low_income_c,
-    Ethnic_background_c
+    site_short
 ),
 
 acceptance_counts AS #sum of acceptances across distinct college app ids 
 (
 SELECT
     site_short,
-    region_short,
-    Gender_c,
-    first_generation_fy_20_c,
-    indicator_low_income_c,
-    Ethnic_background_c,
     COUNT(DISTINCT college_app_id) AS accepted_sum
     
 FROM
@@ -65,33 +57,17 @@ FROM
 AS accepted_group
 
 GROUP BY
-    site_short,
-    region_short,
-    Gender_c,
-    first_generation_fy_20_c,
-    indicator_low_income_c,
-    Ethnic_background_c
+    site_short
 ),
 
 college_aspiration_counts AS 
 (
 SELECT
-    COUNT(DISTINCT aspiration_id) AS college_aspiration_count,
     site_short,
-    region_short,
-    Gender_c,
-    first_generation_fy_20_c,
-    indicator_low_income_c,
-    Ethnic_background_c
+    COUNT(DISTINCT aspiration_id) AS college_aspiration_count
 FROM `data-studio-260217.college_applications.college_application_filtered_table`
 
-GROUP BY 
-    site_short,
-    region_short,
-    Gender_c,
-    first_generation_fy_20_c,
-    indicator_low_income_c,
-    Ethnic_background_c
+GROUP BY site_short
 )
 
 SELECT 
@@ -100,6 +76,8 @@ SELECT
     college_aspiration_count,
     accepted_sum,
     
+    
+
 FROM aggregate_data AS A
 LEFT JOIN college_application_counts AS CA   
     ON A.site_short = CA.site_short
@@ -107,15 +85,3 @@ LEFT JOIN acceptance_counts AS ACCPT
     ON A.site_short = ACCPT.site_short
 LEFT JOIN college_aspiration_counts AS CAP
     ON A.site_short = CAP.site_short
-    
-GROUP BY
-    site_short,
-    region_short,
-    Gender_c,
-    first_generation_fy_20_c,
-    indicator_low_income_c,
-    Ethnic_background_c,
-    student_count,
-    college_app_count,
-    college_aspiration_count,
-    accepted_sum
