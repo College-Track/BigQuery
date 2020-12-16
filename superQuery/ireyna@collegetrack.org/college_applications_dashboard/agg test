@@ -62,9 +62,24 @@ GROUP BY
 )
 
 SELECT 
-    A.*,
-    accepted_sum
+    A.site_short,
+    A.region_short,
+    A.Gender_c,
+    A.first_generation_fy_20_c,
+    A.indicator_low_income_c,
+    A.Ethnic_background_c,
+    SUM(student_count) AS student_count,
+    SUM(college_aspiration_count) AS aspiration_count,
+    SUM(accepted_sum) AS acceptance_sum
     
 FROM agg_table AS A
 LEFT JOIN acceptance_counts AS AC
     ON A.contact_id = AC.contact_id
+
+GROUP BY
+    site_short,
+    region_short,
+    Gender_c,
+    first_generation_fy_20_c,
+    indicator_low_income_c,
+    Ethnic_background_c
