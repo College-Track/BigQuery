@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -6,7 +15,11 @@ SELECT
     CA.name,
     CA.College_University_c AS app_college_id,
     CA.admission_status_c,
-     CASE 
+    CASE
+        WHEN admission_status_c IS NULL THEN "Admission Status Not Updated"
+        ELSE admission_status_c
+    END AS admission_status,
+    CASE 
         WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
         THEN 1
         ELSE 0
@@ -118,7 +131,7 @@ WHERE C.grade_c = '12th Grade'
 )
 
 SELECT *
-    EXCEPT (application_status_c, Aspiration_Category_c)
+    EXCEPT (application_status_c, Aspiration_Category_c, admission_status_c)
     
 FROM filtered_data
 
