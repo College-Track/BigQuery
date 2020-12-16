@@ -1,4 +1,4 @@
-WITH aggregate_data AS
+WITH aggregate_data AS #contact demo data
 (
 SELECT
     site_short,
@@ -50,7 +50,7 @@ SELECT
 acceptance_application_agg AS
 (
 SELECT 
-    accepted_count,
+    SUM(accepted_count) AS accepted_sum,
     app_c.site_short,
     college_app_count
     
@@ -60,8 +60,7 @@ LEFT JOIN acceptance_counts acc_c
     
 GROUP BY 
     app_c.site_short,
-    college_app_count,
-    accepted_count
+    college_app_count
 
 ),
 
@@ -79,8 +78,7 @@ SELECT
     A.*,
     college_app_count,
     college_aspiration_count,
-    accepted_count,
-   SUM(accepted_count) 
+   SUM(accepted_sum) 
     
 
 FROM aggregate_data AS A
@@ -98,5 +96,4 @@ GROUP BY
     Gender_c,
     first_generation_fy_20_c,
     indicator_low_income_c,
-    Ethnic_background_c,
-    accepted_count
+    Ethnic_background_c
