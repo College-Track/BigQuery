@@ -1,32 +1,77 @@
+WITH 
+agg_table AS
+(
 SELECT
-    #site_short,
-    #region_short,
-    #Gender_c,
-    #first_generation_fy_20_c,
-    #indicator_low_income_c,
-    #Ethnic_background_c,
+    site_short,
+    region_short,
+    Gender_c,
+    first_generation_fy_20_c,
+    indicator_low_income_c,
+    Ethnic_background_c,
+    contact_id
+    
+FROM `data-studio-260217.college_applications.college_application_filtered_table`    
+),
+
+app_aspiration_count AS
+(
+SELECT
     contact_id,
-    #CAP.id AS aspiration_id,
     COUNT(DISTINCT contact_id) AS student_count,
     COUNT(DISTINCT college_app_id) AS app_count,
     COUNT(DISTINCT CAP.id) AS college_aspiration_count
     
---FROM
-    --(SELECT site_short, region_short,contact_id, Gender_c, first_generation_fy_20_c, indicator_low_income_c, Ethnic_background_c,
-   -- COUNT(DISTINCT contact_id)
-    FROM `data-studio-260217.college_applications.college_application_filtered_table` AS student_count
-   -- GROUP BY site_short,region_short, contact_id, Gender_c, first_generation_fy_20_c, indicator_low_income_c,
-   -- Ethnic_background_c)
---AS student_count
+FROM `data-studio-260217.college_applications.college_application_filtered_table` AS student_count
 
 LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` AS CAP
         ON student_count.contact_id = CAP.student_c
         
 GROUP BY
-    #site_short,
-    #region_short,
-    #Gender_c,
-    #first_generation_fy_20_c,
-    #indicator_low_income_c,
-    #Ethnic_background_c,
     contact_id
+  
+),
+acceptance_counts AS #sum of acceptances across distinct college app ids 
+(
+SELECT
+    site_short,
+    region_short,
+    contact_id,
+    COUNT(DISTINCT college_app_id) AS accepted_sum
+    
+FROM
+    (SELECT *
+    FROM `data-studio-260217.college_applications.college_application_filtered_table` 
+    WHERE accepted =1)
+AS accepted_group
+
+GROUP BY
+    site_short,
+    region_short,
+    contact_id
+)
+
+SELECT 
+    A.site_short,
+    A.region_short,
+    A.Gender_c,
+    A.first_generation_fy_20_c,
+    A.indicator_low_income_c,
+    A.Ethnic_background_c,
+    SUM(student_count) AS student_count,
+    SUM(college_aspiration_count) AS aspiration_count,
+    SUM(app_count) AS app_count,
+    SUM(accepted_sum) AS acceptance_sum
+    
+FROM agg_table AS A
+LEFT JOIN acceptance_counts AS AC
+    ON A.contact_id = AC.contact_id
+LEFT JOIN app_aspiration_count AS AAC
+    ON A.contact_id = AAC.contact_id
+
+GROUP BY
+    site_short,
+    region_short,
+    Gender_c,
+    first_generation_fy_20_c,
+    indicator_low_income_c,
+    Ethnic_background_c
