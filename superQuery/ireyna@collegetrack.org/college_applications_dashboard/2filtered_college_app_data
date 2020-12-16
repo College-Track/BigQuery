@@ -100,3 +100,5 @@ SELECT acceptance_rate
 FROM filtered_college_app_data AS CA
 LEFT JOIN Aggregate_data AS agg
 ON CA.college_app_id = agg.college_app_id
+
+group by acceptance_rate
