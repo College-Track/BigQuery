@@ -29,4 +29,4 @@ GROUP BY
     #first_generation_fy_20_c,
     #indicator_low_income_c,
     #Ethnic_background_c,
-    contact_id,
+    contact_id
