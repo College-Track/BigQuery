@@ -33,6 +33,7 @@ WITH gather_data AS (
     Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
     School_Name,
     Most_Recent_GPA_Cumulative_bucket,
+    A_S.Name AS anticipated_date_of_graduation_4_year, 
     -- Sorting fields
     sort_most_recent_gpa_bucket,
     sort_attendance_bucket,
@@ -88,11 +89,12 @@ WITH gather_data AS (
       ) > 60 THEN "60+ Days"
     END AS last_contact_range,
   FROM
-    `data-warehouse-289815.salesforce_clean.contact_at_template`
+    `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+    LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` A_S ON A_S.Id = CAT.anticipated_date_of_graduation_4_year_c
   WHERE
-    Current_AS_c = True
+    CAT.Current_AS_c = True
     AND College_Track_Status_c IN ('11A', '18a', '12A', '15A')
-    AND grade_c != '8th Grade'
+    AND CAT.grade_c != '8th Grade'
 ),
 current_as AS (
   SELECT
