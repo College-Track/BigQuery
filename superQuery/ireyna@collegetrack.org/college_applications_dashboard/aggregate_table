@@ -1,4 +1,5 @@
-accepted_sub.site_short, accepted_sum
+SELECT 
+    accepted_sub.site_short, accepted_sub.accepted_sum
     FROM
     (select site_short,college_app_id,SUM(accepted) AS accepted_sum
     FROM `data-studio-260217.college_applications.college_application_filtered_table` 
