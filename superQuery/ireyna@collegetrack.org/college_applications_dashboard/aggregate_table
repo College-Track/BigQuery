@@ -23,13 +23,14 @@ college_application_counts AS
 (
 SELECT
     site_short,
+    college_app_id,
     SUM(accepted),
     COUNT(DISTINCT college_app_id) AS college_app_count
 
 FROM `data-studio-260217.college_applications.college_application_filtered_table` 
 
 GROUP BY
-    site_short
+    site_short,college_app_id
 
 ),
 
@@ -39,12 +40,28 @@ SELECT
     college_app_id,
     accepted AS accepted_count,
     site_short
-    FROM `data-studio-260217.college_applications.college_application_filtered_table`
-    
+    FROM `data-studio-260217.college_applications.college_application_filtered_table` 
     WHERE application_status = "Applied"
     AND accepted = 1
     
     GROUP BY site_short,college_app_id, accepted_count
+),
+
+acceptance_application_agg AS
+(
+SELECT 
+    SUM(accepted_count) AS accepted_sum,
+    app_c.site_short,
+    college_app_count
+    
+FROM college_application_counts AS app_c
+LEFT JOIN acceptance_counts acc_c
+    ON app_c.college_app_id = acc_c.college_app_id
+    
+GROUP BY 
+    app_c.site_short,
+    college_app_count
+
 ),
 
 college_aspiration_counts AS 
@@ -61,14 +78,12 @@ SELECT
     A.*,
     college_app_count,
     college_aspiration_count,
-    SUM(accepted_count)
+   SUM(accepted_sum) 
     
 
 FROM aggregate_data AS A
-LEFT JOIN college_application_counts AS CA
-    ON A.site_short = CA.site_short
-LEFT JOIN acceptance_counts as accept     
-    ON A.site_short = accept.site_short
+LEFT JOIN acceptance_application_agg AS agg    
+    ON A.site_short = agg.site_short
 LEFT JOIN college_aspiration_counts AS CAP
     ON A.site_short = CAP.site_short
 
