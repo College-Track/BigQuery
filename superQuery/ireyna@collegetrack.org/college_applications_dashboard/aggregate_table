@@ -1,9 +1,8 @@
-SELECT
-    site_short,
-    SUM(CASE WHEN accepted=1 THEN 1 ELSE 0 END),
-    COUNT(DISTINCT college_app_id) AS college_app_count
-
-FROM `data-studio-260217.college_applications.college_application_filtered_table` 
-
-GROUP BY
-    site_short
+SELECT 
+    accepted_sub.college_app_id,accepted_sub.accepted_sum
+    FROM
+    (select college_app_id,SUM(accepted) AS accepted_sum
+    FROM `data-studio-260217.college_applications.college_application_filtered_table` 
+    WHERE application_status = "Applied"
+    GROUP BY college_app_id) AS accepted_sub
+  group by accepted_sub.college_app_id,accepted_sub.accepted_sum
