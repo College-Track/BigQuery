@@ -69,6 +69,7 @@ LEFT JOIN app_aspiration_count AS AAC
     ON A.contact_id = AAC.contact_id
 
 GROUP BY
+    A.contact_id,
     site_short,
     region_short,
     Gender_c,
