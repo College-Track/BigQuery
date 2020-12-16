@@ -1,7 +1,8 @@
 SELECT
     site_short,
     COUNT(DISTINCT college_app_id) AS college_app_count,
-    (SELECT sum(accepted) FROM `data-studio-260217.college_applications.college_application_filtered_table` AS t1 WHERE t1.college_app_id = t2.college_app_id)
+    (SELECT COUNT(accepted) FROM `data-studio-260217.college_applications.college_application_filtered_table` AS t1 
+    WHERE t1.college_app_id = t2.college_app_id)
     AS sum
 
 FROM `data-studio-260217.college_applications.college_application_filtered_table` AS t2
