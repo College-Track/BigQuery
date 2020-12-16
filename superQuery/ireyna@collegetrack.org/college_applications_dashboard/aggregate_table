@@ -1,9 +1,9 @@
 SELECT 
-    accepted_sub.college_app_id,accepted_sub.accepted_sum
+    accepted_sub.college_app_id,accepted_sub.accepted
     FROM
-    (select college_app_id,SUM(accepted) AS accepted_sum
+    (select college_app_id,accepted
     FROM `data-studio-260217.college_applications.college_application_filtered_table` 
     WHERE application_status = "Applied"
     AND accepted = 1
-    GROUP BY college_app_id) AS accepted_sub
-  group by accepted_sub.college_app_id,accepted_sub.accepted_sum
+    GROUP BY college_app_id, accepted) AS accepted_sub
+  group by accepted_sub.college_app_id,accepted_sub.accepted
