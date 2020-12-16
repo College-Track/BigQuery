@@ -1,12 +1,12 @@
 SELECT
-    site_short,
-    region_short,
+    #site_short,
+    #region_short,
     #Gender_c,
     #first_generation_fy_20_c,
     #indicator_low_income_c,
     #Ethnic_background_c,
     contact_id,
-    CAP.id AS aspiration_id,
+    #CAP.id AS aspiration_id,
     COUNT(DISTINCT contact_id) AS student_count,
     COUNT(DISTINCT college_app_id) AS app_count,
     COUNT(DISTINCT CAP.id) AS college_aspiration_count
@@ -23,11 +23,10 @@ LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` AS CAP
         ON student_count.contact_id = CAP.student_c
         
 GROUP BY
-    site_short,
-    region_short,
+    #site_short,
+    #region_short,
     #Gender_c,
     #first_generation_fy_20_c,
     #indicator_low_income_c,
     #Ethnic_background_c,
     contact_id,
-    CAP.id
