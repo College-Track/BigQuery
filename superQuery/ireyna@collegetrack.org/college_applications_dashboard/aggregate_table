@@ -24,7 +24,7 @@ college_application_counts AS
 SELECT
     site_short,
     COUNT(college_app_id) AS college_app_count,
-    accepted
+    sum(accepted) as accepted_sum
 
 FROM `data-studio-260217.college_applications.college_application_filtered_table` AS t1
 
@@ -34,7 +34,7 @@ WHERE
     FROM `data-studio-260217.college_applications.college_application_filtered_table` AS t2
     WHERE t1.college_app_id = t2.college_app_id
     AND application_status = "Applied"
-    AND accepted = 1)
+    AND accepted = 1) 
     
 GROUP BY
     site_short,
@@ -54,7 +54,7 @@ GROUP BY site_short
 SELECT 
     A.*,
     college_app_count,
-    accepted
+    
 
 FROM aggregate_data AS A
 LEFT JOIN college_application_counts AS CA
