@@ -6,7 +6,12 @@ SELECT
     CA.Student_c AS contact_id,
     CA.College_University_c AS app_college_id,
     CA.College_Track_Site_c,
-    CA.admission_status_c,
+    CA.admission_status_c, 
+    CASE 
+        WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
+        THEN 1
+        ELSE 0
+    END AS acceptance,
     CA.Application_status_c,
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
@@ -78,35 +83,20 @@ WHERE C.grade_c = '12th Grade'
     AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34 #11th Grade Spring Term
 ),
 
-college_aspirations AS 
+Aggregate_data AS
 (
 SELECT 
+college_app_id,
+SUM(acceptance) / COUNT(college_app_id) AS acceptance_rate
+FROM filtered_college_app_data
 
-#College Aspiration data,
-    CAP.Student_c,
-    CAP.Id AS aspiration_id,
-    CAP.Aspiration_Category_c,
-    CAP. College_University_c AS aspiration_college_id,
-    
-#Account object mapping
-    ACCNT_ASP.Name AS aspiration_college_name
-
-FROM `data-warehouse-289815.salesforce.college_aspiration_c` AS CAP
-RIGHT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C 
-        ON C.Contact_Id = CAP.Student_c
-LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_asp #pull in college name in aspiration
-        ON CAP.College_University_c = accnt_asp.id            
-),
-
-final_join AS
-(
-SELECT 
-app.*,
-asp.*
-
-FROM filtered_college_app_data AS app
-LEFT JOIN college_aspirations AS asp
-    ON app.contact_id = asp.Student_c
+WHERE Application_status_c = "Applied"
+GROUP BY college_app_id
 )
-SELECT *
-FROM final_join
+
+
+SELECT acceptance_rate
+    
+FROM filtered_college_app_data AS CA
+LEFT JOIN Aggregate_data AS agg
+ON CA.college_app_id = agg.college_app_id
