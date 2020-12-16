@@ -24,7 +24,7 @@ college_application_counts AS
 SELECT
     site_short,
     COUNT(college_app_id) AS college_app_count,
-    SAFE_CAST('accepted' AS INT64) AS accepted
+    accepted
 
 FROM `data-studio-260217.college_applications.college_application_filtered_table` AS t1
 
