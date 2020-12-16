@@ -15,4 +15,3 @@ GROUP BY
     site_short,
     region_short,
     contact_id
-)
