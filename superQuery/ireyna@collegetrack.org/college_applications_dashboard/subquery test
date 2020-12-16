@@ -1,6 +1,7 @@
 SELECT
     site_short,
     COUNT(DISTINCT college_app_id) AS college_app_count,
+    SUM(accepted)
     
 FROM
     (SELECT *
