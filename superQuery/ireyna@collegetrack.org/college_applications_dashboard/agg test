@@ -31,4 +31,3 @@ GROUP BY
     #Ethnic_background_c,
     contact_id,
     CAP.id
-),
