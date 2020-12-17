@@ -52,7 +52,6 @@ bb_raw AS
 (
     SELECT
     student_bb_balance_list.*,
-    bb_d_e_fy.student_c,
     bb_d_e_fy.amount_c,
     bb_d_e_fy.transaction_status_c, 
     bb_d_e_fy.finance_reporting_date, 
