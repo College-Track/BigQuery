@@ -1,9 +1,12 @@
+--
+
 WITH bb_d_e_fy AS
 (
     SELECT
     student_c, 
     amount_c, 
-    transaction_status_c, 
+    transaction_status_c,
+    id AS bb_id,
     FORMAT_DATE("%x", finance_reporting_date_c)AS finance_reporting_date, 
     CASE
         WHEN record_type_id = "01246000000ZNhsAAG"then "BB Disbursement"
