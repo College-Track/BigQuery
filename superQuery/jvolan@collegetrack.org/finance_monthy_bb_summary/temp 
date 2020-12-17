@@ -76,7 +76,7 @@ LEFT JOIN bb_e_fy ON bb_e_fy.student_c = student_list_bb_balance.Contact_Id
 
 SELECT
 *,
-FORMAT_DATE("%b", CURRENT_DATE()) AS report_month,
+FORMAT_DATE("%c", CURRENT_DATE()) AS report_month,
 FORMAT_DATE("%x", CURRENT_DATE()) AS report_date,
 FROM
 clean_student_bb_summary
