@@ -1,0 +1,10 @@
+
+    SELECT
+    student_c, 
+    record_type_id, 
+    amount_c, 
+    transaction_status_c, 
+    created_date,
+    finance_reporting_date_c, 
+    FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
