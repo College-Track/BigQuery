@@ -12,6 +12,12 @@ WITH bb_d_e_fy AS
         WHEN record_type_id = "01246000000ZNhsAAG"then "BB Disbursement"
         WHEN record_type_id = "01246000000ZNhtAAG"then "BB Earnings"
         END AS BB_Record_Type,
+    CASE
+        WHEN record_type_id = "01246000000ZNhsAAG"then amount_c
+        END AS BB_Disbursement_Amount,
+    CASE
+        WHEN record_type_id = "01246000000ZNhtAAG"then amount_c
+        END AS BB_Earnings_Amount,
     FORMAT_DATE("%m", CURRENT_DATE()) AS report_month,
     FORMAT_DATE("%x", CURRENT_DATE()) AS report_date,    
     
@@ -56,11 +62,15 @@ bb_raw AS
 (
     SELECT
     student_bb_balance_list.*,
-    bb_d_e_fy.amount_c,
-    bb_d_e_fy.transaction_status_c, 
-    bb_d_e_fy.finance_reporting_date,
     bb_d_e_fy.bb_id,
     bb_d_e_fy.BB_Record_Type,
+    bb_d_e_fy.amount_c,
+    bb_d_e_fy.BB_Disbursement_Amount,
+    bb_d_e_fy.BB_Earnings_Amount,
+    bb_d_e_fy.finance_reporting_date,
+    bb_d_e_fy.transaction_status_c, 
+    bb_d_e_fy.BB_Disbursement_Amount,
+    bb_d_e_fy.BB_Earnings_Amount,
     bb_d_e_fy.report_month, 
     bb_d_e_fy.report_date, 
     FROM
@@ -73,7 +83,8 @@ bb_raw AS
     FROM
     bb_raw
     
-     
+--can i try adding two more columns. BB Earnings Amount & BB Disbursement Amount
+-- should make doing summary tab in DS easier
      
      
      
