@@ -1,14 +1,16 @@
 
     SELECT
     student_c, 
-    record_type_id, 
     amount_c, 
     transaction_status_c, 
-    finance_reporting_date_c, 
+    FORMAT_DATE("%x", finance_reporting_date_c)AS finance_reporting_date, 
     CASE
         WHEN record_type_id = "01246000000ZNhsAAG"then "BB Disbursement"
         WHEN record_type_id = "01246000000ZNhtAAG"then "BB Earnings"
-        END AS BB_Record_Type
+        END AS BB_Record_Type,
+    FORMAT_DATE("%m", CURRENT_DATE()) AS report_month,
+    FORMAT_DATE("%x", CURRENT_DATE()) AS report_date,    
+    
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
     WHERE
