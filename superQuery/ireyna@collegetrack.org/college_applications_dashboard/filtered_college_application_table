@@ -19,6 +19,16 @@ SELECT
         WHEN admission_status_c IS NULL THEN "Admission Status Not Updated"
         ELSE admission_status_c
     END AS admission_status,
+    
+    CASE
+        WHEN CA.fit_type_enrolled_c = "Best Fit" THEN 1
+        WHEN CA.fit_type_enrolled_c = "Situational" THEN 2
+        WHEN CA.fit_type_enrolled_c = "Good Fit" THEN 3
+        WHEN CA.fit_type_enrolled_c = "Local Affordable" THEN 4
+        WHEN CA.fit_type_enrolled_c = "None" THEN 5
+        ELSE 0
+    END AS sort_helper_enroll_by_fit_type,
+    
     CASE 
         WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
         THEN 1
@@ -29,6 +39,15 @@ SELECT
         WHEN CA.application_status_c IS NULL THEN "No College Application"
         ELSE CA.application_status_c
     END AS application_status,
+    
+    CASE
+        WHEN CA.College_Fit_Type_Applied_c = "Best Fit" THEN 1
+        WHEN CA.College_Fit_Type_Applied_c = "Good Fit" THEN 2
+        WHEN CA.College_Fit_Type_Applied_c = "Local Affordable" THEN 3
+        WHEN CA.College_Fit_Type_Applied_c = "None" THEN 4
+        ELSE 0
+    END AS sort_helper_app_by_fit_type,
+    
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
     CA.Award_Letter_c,
