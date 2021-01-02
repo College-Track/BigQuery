@@ -29,6 +29,12 @@ SELECT
         WHEN CA.application_status_c IS NULL THEN "No College Application"
         ELSE CA.application_status_c
     END AS application_status,
+    
+    CASE
+        WHEN CA.id IS NOT NULL THEN "College App Submitted"
+        WHEN CA.application_status_c = "Applied" THEN "Applied"
+    END AS Application_Fit_Type_Table,
+    
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
     CA.Award_Letter_c,
