@@ -29,13 +29,6 @@ SELECT
         WHEN CA.application_status_c IS NULL THEN "No College Application"
         ELSE CA.application_status_c
     END AS application_status,
-    
-    CASE
-        WHEN CA.id IS NOT NULL THEN "College App Submitted"
-        WHEN CA.application_status_c = "Applied"  THEN "Applied"
-        WHEN college_fit_type_applied_c IS NOT NULL THEN "Fit Type Applied not null"
-    END AS Application_Fit_Type_Table,
-    
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
     CA.Award_Letter_c,
@@ -118,7 +111,7 @@ SELECT
     ACCNT_APP.Name AS app_college_name, 
     ACCNT_ASP.Name AS aspiration_college_name
     
-
+        
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
         ON C.contact_id = CA.student_c
@@ -135,6 +128,7 @@ WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
     AND AT_Record_Type_Name = 'High School Semester'
     AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34 #11th Grade Spring Term
+    
 )
 
 SELECT *
