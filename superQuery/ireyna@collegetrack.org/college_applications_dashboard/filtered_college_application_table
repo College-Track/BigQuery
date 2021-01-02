@@ -19,16 +19,6 @@ SELECT
         WHEN admission_status_c IS NULL THEN "Admission Status Not Updated"
         ELSE admission_status_c
     END AS admission_status,
-    
-    CASE
-        WHEN CA.fit_type_enrolled_c = "Best Fit" THEN 1
-        WHEN CA.fit_type_enrolled_c = "Situational" THEN 2
-        WHEN CA.fit_type_enrolled_c = "Good Fit" THEN 3
-        WHEN CA.fit_type_enrolled_c = "Local Affordable" THEN 4
-        WHEN CA.fit_type_enrolled_c = "None" THEN 5
-        ELSE 0
-    END AS sort_helper_enroll_by_fit_type,
-    
     CASE 
         WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
         THEN 1
