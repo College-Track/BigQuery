@@ -19,6 +19,19 @@ SELECT
         WHEN admission_status_c IS NULL THEN "Admission Status Not Updated"
         ELSE admission_status_c
     END AS admission_status,
+    
+    CASE
+        WHEN CA.admission_status = "Accepted" THEN 1
+        WHEN CA.admission_status = "Accepted and Enrolled" THEN 2
+        WHEN CA.admission_status = "Accepted and Deferred" THEN 3
+        WHEN CA.admission_status = "Wait-listed" THEN 4
+        WHEN CA.admission_status = "Conditional" THEN 5
+        WHEN CA.admission_status = "Withdrew Application" THEN 6
+        WHEN CA.admission_status = "Undecided" THEN 7
+        WHEN CA.admission_status = "Denied" THEN 8
+        ELSE 0
+    END AS sort_helper_admission_status,
+    
     CASE 
         WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
         THEN 1
@@ -59,6 +72,14 @@ SELECT
     END AS School_Financial_Aid_Form_Status,
     CA.Fit_Type_Current_c,
     CA.Fit_Type_Enrolled_c,
+    CASE
+        WHEN CA.fit_type_enrolled_c = "Best Fit" THEN 1
+        WHEN CA.fit_type_enrolled_c = "Situational" THEN 2
+        WHEN CA.fit_type_enrolled_c = "Good Fit" THEN 3
+        WHEN CA.fit_type_enrolled_c = "Local Affordable" THEN 4
+        WHEN CA.fit_type_enrolled_c = "None" THEN 5
+        ELSE 0
+    END AS sort_helper_enroll_by_fit_type,
     CA.Housing_Application_c,
     CA.id as college_app_id,
     CA.Predominant_Degree_Awarded_c,
@@ -108,6 +129,15 @@ SELECT
         ELSE CAP.Aspiration_Category_c
     END AS aspiration_category,
     CAP. College_University_c AS aspiration_college_id,
+    CASE
+        WHEN CAP.Aspiration_Category_c = "Guaranteed" THEN 1
+        WHEN CAP.Aspiration_Category_c = "Match" THEN 2
+        WHEN CAP.Aspiration_Category_c = "Likely" THEN 3
+        WHEN CAP.Aspiration_Category_c = "Reach" THEN 4
+        WHEN CAP.Aspiration_Category_c = "Category Not Selected" THEN 5
+        WHEN CAP.Aspiration_Category_c = "No College Aspiration" THEN 6
+        ELSE 0
+    END AS sort_helper_aspiration_category,
     
 #Academic Term data 
     A_T.gpa_semester_cumulative_c AS CGPA_11th,
