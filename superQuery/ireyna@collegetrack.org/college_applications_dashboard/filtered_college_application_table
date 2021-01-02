@@ -19,19 +19,6 @@ SELECT
         WHEN admission_status_c IS NULL THEN "Admission Status Not Updated"
         ELSE admission_status_c
     END AS admission_status,
-    
-    CASE
-        WHEN CA.admission_status_c = "Accepted" THEN 1
-        WHEN CA.admission_status_c = "Accepted and Enrolled" THEN 2
-        WHEN CA.admission_status_c = "Accepted and Deferred" THEN 3
-        WHEN CA.admission_status_c = "Wait-listed" THEN 4
-        WHEN CA.admission_status_c = "Conditional" THEN 5
-        WHEN CA.admission_status_c = "Withdrew Application" THEN 6
-        WHEN CA.admission_status_c = "Undecided" THEN 7
-        WHEN CA.admission_status_c = "Denied" THEN 8
-        ELSE 0
-    END AS sort_helper_admission_status,
-    
     CASE 
         WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
         THEN 1
@@ -42,13 +29,6 @@ SELECT
         WHEN CA.application_status_c IS NULL THEN "No College Application"
         ELSE CA.application_status_c
     END AS application_status,
-    CASE
-        WHEN CA.application_status_c = "Prospect" THEN 1
-        WHEN CA.application_status_c = "In Progress" THEN 2
-        WHEN CA.application_status_c = "Accepted" THEN 3
-        WHEN CA.application_status_c = "No College Application" THEN 4
-        ELSE 0
-    END AS sort_helper_app_status,    
     CASE
         WHEN CA.College_Fit_Type_Applied_c = "Best Fit" THEN 1
         WHEN CA.College_Fit_Type_Applied_c = "Good Fit" THEN 2
@@ -135,15 +115,6 @@ SELECT
         ELSE CAP.Aspiration_Category_c
     END AS aspiration_category,
     CAP. College_University_c AS aspiration_college_id,
-    CASE
-        WHEN CAP.Aspiration_Category_c = "Guaranteed" THEN 1
-        WHEN CAP.Aspiration_Category_c = "Match" THEN 2
-        WHEN CAP.Aspiration_Category_c = "Likely" THEN 3
-        WHEN CAP.Aspiration_Category_c = "Reach" THEN 4
-        WHEN CAP.Aspiration_Category_c = "Category Not Selected" THEN 5
-        WHEN CAP.Aspiration_Category_c = "No College Aspiration" THEN 6
-        ELSE 0
-    END AS sort_helper_aspiration_category,
     
 #Academic Term data 
     A_T.gpa_semester_cumulative_c AS CGPA_11th,
@@ -177,7 +148,37 @@ WHERE C.grade_c = '12th Grade'
 )
 
 SELECT *
-    EXCEPT (application_status_c, Aspiration_Category_c, admission_status_c)
+    EXCEPT (application_status_c, Aspiration_Category_c, admission_status_c),
+    
+    CASE
+        WHEN Aspiration_Category = "Guaranteed" THEN 1
+        WHEN Aspiration_Category = "Match" THEN 2
+        WHEN Aspiration_Category = "Likely" THEN 3
+        WHEN Aspiration_Category = "Reach" THEN 4
+        WHEN Aspiration_Category = "Category Not Selected" THEN 5
+        WHEN Aspiration_Category = "No College Aspiration" THEN 6
+        ELSE 0
+    END AS sort_helper_aspiration_category,
+    
+    CASE
+        WHEN application_status = "Prospect" THEN 1
+        WHEN application_status = "In Progress" THEN 2
+        WHEN application_status = "Accepted" THEN 3
+        WHEN application_status = "No College Application" THEN 4
+        ELSE 0
+    END AS sort_helper_app_status,    
+    
+    CASE
+        WHEN admission_status = "Accepted" THEN 1
+        WHEN admission_status = "Accepted and Enrolled" THEN 2
+        WHEN admission_status = "Accepted and Deferred" THEN 3
+        WHEN admission_status = "Wait-listed" THEN 4
+        WHEN admission_status = "Conditional" THEN 5
+        WHEN admission_status = "Withdrew Application" THEN 6
+        WHEN admission_status = "Undecided" THEN 7
+        WHEN admission_status = "Denied" THEN 8
+        ELSE 0
+    END AS sort_helper_admission_status
     
 FROM filtered_data
 
