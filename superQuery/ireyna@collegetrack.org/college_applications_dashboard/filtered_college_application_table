@@ -177,6 +177,7 @@ SELECT *
         WHEN admission_status = "Withdrew Application" THEN 6
         WHEN admission_status = "Undecided" THEN 7
         WHEN admission_status = "Denied" THEN 8
+        WHEN admission_status = "Admission Status Not Updated" THEN 9
         ELSE 0
     END AS sort_helper_admission_status
     
