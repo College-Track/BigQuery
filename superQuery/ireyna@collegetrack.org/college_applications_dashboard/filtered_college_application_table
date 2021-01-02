@@ -42,13 +42,7 @@ SELECT
         WHEN CA.application_status_c IS NULL THEN "No College Application"
         ELSE CA.application_status_c
     END AS application_status,
-    CASE
-        WHEN CA.application_status_c = "Prospect" THEN 1
-        WHEN CA.application_status_c = "In Progress" THEN 2
-        WHEN CA.application_status_c = "Accepted" THEN 3
-        WHEN CA.application_status_c = "No College Application" THEN 4
-        ELSE 0
-    END AS sort_helper_app_status,    
+    
     CASE
         WHEN CA.College_Fit_Type_Applied_c = "Best Fit" THEN 1
         WHEN CA.College_Fit_Type_Applied_c = "Good Fit" THEN 2
@@ -177,6 +171,7 @@ WHERE C.grade_c = '12th Grade'
 )
 
 SELECT *
+    EXCEPT (application_status_c, Aspiration_Category_c, admission_status_c)
     
 FROM filtered_data
 
