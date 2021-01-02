@@ -32,7 +32,8 @@ SELECT
     
     CASE
         WHEN CA.id IS NOT NULL THEN "College App Submitted"
-        WHEN CA.application_status_c = "Applied" THEN "Applied"
+        WHEN CA.application_status_c = "Applied"  THEN "Applied"
+        WHEN college_fit_type_applied_c IS NOT NULL THEN "Fit Type Applied not null"
     END AS Application_Fit_Type_Table,
     
     CA.Average_Financial_Aid_Package_c,
