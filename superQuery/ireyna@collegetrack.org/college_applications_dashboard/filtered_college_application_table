@@ -85,6 +85,18 @@ SELECT
     C.indicator_low_income_c,
     C.first_generation_fy_20_c, 
     C.site_short,
+    CASE
+        WHEN C.site_short = "East Palo Alto" THEN 1
+        WHEN C.site_short = "Oakland" THEN 2
+        WHEN C.site_short = "San Francisco" THEN 3
+        WHEN C.site_short = "Sacramento" THEN 4
+        WHEN C.site_short = "New Orleans" THEN 5
+        WHEN C.site_short = "Aurora" THEN 6
+        WHEN C.site_short = "Denver" THEN 7
+        WHEN C.site_short = "Boyle Heights" THEN 8
+        WHEN C.site_short = "Watts" THEN 9
+        ELSE 0
+    END AS sort_helper_site,    
     C.region_short,
     C.readiness_english_official_c,
     C.readiness_composite_off_c,
@@ -163,6 +175,7 @@ SELECT *
     CASE
         WHEN application_status = "Prospect" THEN 1
         WHEN application_status = "In Progress" THEN 2
+        WHEN application_status = "Applied" THEN 2
         WHEN application_status = "Accepted" THEN 3
         WHEN application_status = "No College Application" THEN 4
         ELSE 0
