@@ -1,5 +1,3 @@
-SELECT site_text_c, Count(Contact_Id)
-FROM `data-warehouse-289815.salesforce_clean.contact_template`
-WHERE college_track_status_c IN ('18a', '11A', '12A') AND site_text_c IN ('College Track Watts') AND is_deleted = false AND grade_c != '8th Grade'
-GROUP BY site_text_c
-ORDER BY site_text_c
+SELECT COUNT(student_c)
+FROM `data-warehouse-289815.salesforce.contact`
+WHERE college_track_status_c IN ('18a', '11A', '12A') AND grade_c != '8th Grade'
