@@ -142,8 +142,8 @@ most_recent_on_track AS (
     Contact_Id,
     CASE
       WHEN current_as_on_track IS NOT NULL THEN current_as_on_track
-      WHEN previous_as_on_track IS NOT NULL THEN previous_as_on_track
-      WHEN prev_prev_as_on_track IS NOT NULL THEN prev_prev_as_on_track
+    --   WHEN previous_as_on_track IS NOT NULL THEN previous_as_on_track
+    --   WHEN prev_prev_as_on_track IS NOT NULL THEN prev_prev_as_on_track
       ELSE NULL
     END AS most_recent_on_track
   FROM
