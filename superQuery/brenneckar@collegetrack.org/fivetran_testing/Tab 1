@@ -1,4 +1,7 @@
-SELECT Contact_id, AT_id
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE college_track_status_c IN ('18a', '11A', '12A') AND grade_c != '8th Grade' AND current_as_c = false
-LIMIT 10
+SELECT
+  COUNT(Contact_Id),
+FROM
+  `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE
+  Current_AS_c = True
+  AND College_Track_Status_c IN ('15A')
