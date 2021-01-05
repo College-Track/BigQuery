@@ -135,7 +135,7 @@ joined_on_track AS (
   FROM
     current_as CS
     LEFT JOIN previous_as PS ON PS.Contact_Id = CS.Contact_ID
-    LEFT JOIN prev_prev_as PPS ON PPS.Contact_Id = CS.Contact_ID
+    -- LEFT JOIN prev_prev_as PPS ON PPS.Contact_Id = CS.Contact_ID
 ),
 most_recent_on_track AS (
   SELECT
@@ -205,4 +205,4 @@ final_prep AS (
 SELECT
   *
 FROM
-  current_as
+  joined_on_track
