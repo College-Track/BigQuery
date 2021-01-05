@@ -131,7 +131,7 @@ joined_on_track AS (
     CS.Contact_Id,
     CS.On_Track_c AS current_as_on_track,
     PS.On_Track_c AS previous_as_on_track,
-    PPS.On_Track_c AS prev_prev_as_on_track
+    -- PPS.On_Track_c AS prev_prev_as_on_track
   FROM
     current_as CS
     LEFT JOIN previous_as PS ON PS.Contact_Id = CS.Contact_ID
