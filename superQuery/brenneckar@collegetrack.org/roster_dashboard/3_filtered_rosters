@@ -205,4 +205,4 @@ final_prep AS (
 SELECT
   *
 FROM
-  previous_as
+  joined_on_track
