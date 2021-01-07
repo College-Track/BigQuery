@@ -69,8 +69,6 @@ bb_raw AS
     bb_d_e_fy.BB_Earnings_Amount,
     bb_d_e_fy.finance_reporting_date,
     bb_d_e_fy.transaction_status_c, 
-    bb_d_e_fy.BB_Disbursement_Amount,
-    bb_d_e_fy.BB_Earnings_Amount,
     bb_d_e_fy.report_month, 
     bb_d_e_fy.report_date, 
     FROM
