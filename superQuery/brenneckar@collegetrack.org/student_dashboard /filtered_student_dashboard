@@ -30,7 +30,7 @@ gather_enrollment_data AS (
     Status_c,
     Academic_Semester_c,
     SUM(Attendance_Numerator_c) AS attended_sessions,
-    SUM(Attendance_Denominator_c) AS enrolled_sessions
+    SUM(Attendance_Denominator_c) AS enrolled_sessions,
     SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c) AS attendance_rate
   FROM
     `data-warehouse-289815.salesforce_clean.class_template`
