@@ -27,7 +27,7 @@ gather_enrollment_data AS (
     workshop_display_name_c,
     start_time_c,
     recurring_days_c,
-    Status_c,
+    class_status,
     Academic_Semester_c,
     SUM(Attendance_Numerator_c) AS attended_sessions,
     SUM(Attendance_Denominator_c) AS enrolled_sessions,
@@ -40,7 +40,7 @@ gather_enrollment_data AS (
     workshop_display_name_c,
     start_time_c,
     recurring_days_c,
-    Status_c,
+    class_status,
     Academic_Semester_c
 )
 SELECT
