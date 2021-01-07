@@ -15,11 +15,14 @@ WITH gather_student_data AS (
     Current_HS_CT_Coach_c,
     community_service_form_link_c,
     summer_experience_form_link_c,
-    current_academic_semester_c
+    current_academic_semester_c,
+    previous_academic_semester_c
   FROM
-    `data-warehouse-289815.salesforce_clean.contact_template`
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+
   WHERE
     college_track_status_c IN ('11A', '18a', '12A')
+    AND current_as_c = true
 ),
 gather_workshop_data AS (
   SELECT
@@ -34,7 +37,6 @@ gather_workshop_data AS (
     -- SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c) AS attendance_rate
   FROM
     `data-warehouse-289815.salesforce_clean.class_template`
-
   GROUP BY
     student_c,
     workshop_display_name_c,
@@ -45,7 +47,7 @@ gather_workshop_data AS (
 )
 SELECT
   GSD.*,
-  
 FROM
   gather_student_data GSD
-  LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c AND GSD.current_academic_semester_c = GWD.Academic_Semester_c
+  LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
+  AND GSD.previous_academic_semester_c = GWD.Academic_Semester_c
