@@ -47,6 +47,7 @@ gather_workshop_data AS (
 )
 SELECT
   GSD.*,
+  GWD.* EXCEPT (student_c, academic_semester_c)
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
