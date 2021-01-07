@@ -6,6 +6,7 @@ WITH gather_data AS (
     high_school_graduating_class_c,
     grade_c,
     full_name_c,
+    email,
     Most_Recent_GPA_Cumulative_c,
     most_recent_gpa_semester_c,
     total_bank_book_balance_contact_c,
