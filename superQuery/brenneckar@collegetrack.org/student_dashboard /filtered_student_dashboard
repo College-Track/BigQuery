@@ -21,7 +21,7 @@ WITH gather_student_data AS (
   WHERE
     college_track_status_c IN ('11A', '18a', '12A')
 ),
-gather_enrollment_data AS (
+gather_workshop_data AS (
   SELECT
     student_c,
     workshop_display_name_c,
@@ -44,7 +44,8 @@ gather_enrollment_data AS (
     Academic_Semester_c
 )
 SELECT
-  *
+  GSD.*,
+  
 FROM
-  gather_enrollment_data
-  LIMIT 1000
+  gather_student_data GSD
+  LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c AND GSD.current_academic_semester_c = GWD.Academic_Semester_c
