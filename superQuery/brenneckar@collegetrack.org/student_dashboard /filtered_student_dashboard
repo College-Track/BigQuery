@@ -1,4 +1,4 @@
-WITH gather_data AS (
+WITH gather_student_data AS (
   SELECT
     Contact_Id,
     site_short,
@@ -14,13 +14,36 @@ WITH gather_data AS (
     Attendance_Rate_Current_AS_c,
     Current_HS_CT_Coach_c,
     community_service_form_link_c,
-    summer_experience_form_link_c
+    summer_experience_form_link_c,
+    current_academic_semester_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
     college_track_status_c IN ('11A', '18a', '12A')
+),
+gather_enrollment_data AS (
+  SELECT
+    student_c,
+    workshop_display_name_c,
+    start_time_c,
+    recurring_days_c,
+    Status_c,
+    Academic_Semester_c,
+    SUM(Attendance_Numerator_c),
+    SUM(Attendance_Denominator_c)
+  FROM
+    `data-warehouse-289815.salesforce_clean.class_template`
+
+  GROUP BY
+    student_c,
+    workshop_display_name_c,
+    start_time_c,
+    recurring_days_c,
+    Status_c,
+    Academic_Semester_c
 )
 SELECT
   *
 FROM
-  gather_data
+  gather_enrollment_data
+  LIMIT 1000
