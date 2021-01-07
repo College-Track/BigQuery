@@ -16,7 +16,8 @@ WITH gather_student_data AS (
     community_service_form_link_c,
     summer_experience_form_link_c,
     current_academic_semester_c,
-    previous_academic_semester_c
+    previous_academic_semester_c,
+    attendance_rate_previous_term_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
 
