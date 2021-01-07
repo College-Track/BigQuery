@@ -1,6 +1,10 @@
 WITH gather_data AS (
   SELECT
     Contact_Id,
+    site_short,
+    College_Track_Status_Name,
+    high_school_graduating_class_c,
+    grade_c,
     full_name_c,
     Most_Recent_GPA_Cumulative_c,
     most_recent_gpa_semester_c,
