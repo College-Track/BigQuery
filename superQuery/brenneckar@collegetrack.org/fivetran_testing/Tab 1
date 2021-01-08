@@ -1,8 +1,9 @@
 
   SELECT
-    previous_as_c, AT_Id
+    previous_as_c, COUNT(Contact_Id)
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
-  WHERE
-    previous_as_c = True
-    AND College_Track_Status_c IN ('15A')
+    GROUP BY previous_as_c
+--   WHERE
+    -- previous_as_c = True
+    -- AND College_Track_Status_c IN ('15A')
