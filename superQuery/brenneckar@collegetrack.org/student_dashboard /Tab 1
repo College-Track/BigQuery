@@ -5,7 +5,11 @@ WITH gather_dream_schools AS (
     school_act_composite_average_c,
     school_sat_combined_average_c,
     college_university_c,
-    A.Name AS school
+    A.Name AS school,
+    A.SAT_c,
+    A.GPA_Average_c,
+    A.ACT_Composite_Average_c
+
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` CA ON CA.student_c = Contact_Id
