@@ -13,5 +13,5 @@ WHERE current_as_c = true
 SELECT 
 determine_prev_at.*,
 -- determine_prev_at.previous_academic_semester_c
-FROM gather_data
-LEFT JOIN  determine_prev_at ON determine_prev_at.Contact_Id = gather_data.Contact_Id
+FROM determine_prev_at
+-- LEFT JOIN  determine_prev_at ON determine_prev_at.Contact_Id = gather_data.Contact_Id
