@@ -12,7 +12,7 @@ WHERE current_as_c = true AND Contact_Id = '0031M00002y0qmtQAA'
 SELECT 
 gather_data.*,
 determine_prev_at.previous_academic_semester_c,
-CASE WHEN determine_prev_at.previous_academic_semester_c = AT_Id THEN true
+CASE WHEN determine_prev_at.previous_academic_semester_c = gather_data.AT_Id THEN true
 ELSE false
 END AS prev_as_c
 FROM gather_data
