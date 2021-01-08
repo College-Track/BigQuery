@@ -59,5 +59,8 @@ SELECT
   *
 FROM
   gather_data
-ORDER BY
-  start_date_c
+
+  
+  
+  
+  
