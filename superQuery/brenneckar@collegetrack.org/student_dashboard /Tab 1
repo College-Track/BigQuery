@@ -4,10 +4,12 @@ WITH gather_dream_schools AS (
     full_name_c,
     school_act_composite_average_c,
     school_sat_combined_average_c,
-    college_university_c
+    college_university_c,
+    A.Name AS school
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` CA ON CA.student_c = Contact_Id
+    LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = college_university_c
   WHERE
     college_track_status_c IN ('11A', '18a', '12A')
 )
