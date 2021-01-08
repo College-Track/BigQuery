@@ -1,17 +1,17 @@
-WITH gather_data AS (SELECT Contact_Id, AT_Id, current_as_c, previous_academic_semester_c, start_date_c
+WITH gather_data AS (SELECT Contact_Id, AT_Id, current_as_c, start_date_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE college_track_status_c = '15A' AND Contact_Id = '0031M00002y0qmtQAA'
 ORDER BY start_date_c 
 ),
 
 determine_prev_at AS (
-SELECT Contact_Id, AT_Id, previous_academic_semester_c
+SELECT Contact_Id, AT_Id, previous_academic_semester_c 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE current_as_c = true AND Contact_Id = '0031M00002y0qmtQAA'
 )
 
 SELECT 
-determine_prev_at.*,
--- determine_prev_at.previous_academic_semester_c
-FROM determine_prev_at
--- LEFT JOIN  determine_prev_at ON determine_prev_at.Contact_Id = gather_data.Contact_Id
+gather_data.*,
+determine_prev_at.previous_academic_semester_c
+FROM gather_data
+LEFT JOIN  determine_prev_at ON determine_prev_at.Contact_Id = gather_data.Contact_Id
