@@ -240,7 +240,7 @@ WITH contact_at AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     (
-      Current_AS_c = TRUE OR GAS_Name L TRUE
+      Current_AS_c = TRUE OR previous_as_c = TRUE
     )
     AND AT_Record_Type_Name = "College/University Semester"
     AND Current_CT_Status_c = "Active: Post-Secondary"
