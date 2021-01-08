@@ -1,8 +1,3 @@
-SELECT 
-count(id)
-FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
-LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C  
-        ON C.contact_id = CA.student_c
-WHERE high_school_graduating_class_c = '2021'
-AND College_Track_Status_Name  ='Current CT HS Student'
--- AND CA.is_deleted = false
+SELECT Contact_Id, AT_Id, current_as_c, previous_academic_semester_c
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE college_track_status_c = '15A' AND Contact_Id = '0031M00002y0qmtQAA'
