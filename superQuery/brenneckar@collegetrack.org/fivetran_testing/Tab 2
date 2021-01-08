@@ -3,7 +3,7 @@ WITH gather_data AS (
     Contact_Id,
     AT_Id,
     current_as_c,
-    start_date_c
+    start_date_c,
     previous_academic_semester_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
@@ -59,7 +59,8 @@ SELECT
   *
 FROM
   gather_data
-
+ORDER BY
+  start_date_c
   
   
   
