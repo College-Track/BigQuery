@@ -17,3 +17,4 @@ SELECT
   *
 FROM
   gather_dream_schools
+  WHERE school IS NOT NULL
