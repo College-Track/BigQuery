@@ -2,9 +2,6 @@ WITH gather_dream_schools AS (
   SELECT
     Contact_Id,
     full_name_c,
-    school_act_composite_average_c,
-    school_sat_combined_average_c,
-    college_university_c,
     A.Name AS school,
     A.SAT_c,
     A.GPA_Average_c,
