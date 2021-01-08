@@ -10,55 +10,55 @@ WITH gather_data AS (
   WHERE
     college_track_status_c = '15A'
     AND Contact_Id = '0031M00002y0qmtQAA'
+),
+gather_prev_at AS (
+  SELECT
+    Contact_Id,
+    previous_academic_semester_c
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    current_as_c = true
+    AND Contact_Id = '0031M00002y0qmtQAA'
+),
+determine_prev_at AS (
+  SELECT
+    gather_data.*,
+    -- gather_prev_at.previous_academic_semester_c,
+    CASE
+      WHEN gather_prev_at.previous_academic_semester_c = AT_Id THEN true
+      ELSE false
+    END AS previous_as_c
+  FROM
+    gather_data
+    LEFT JOIN gather_prev_at ON gather_prev_at.Contact_Id = gather_data.Contact_Id
+),
+gather_prev_prev_at AS (
+  SELECT
+    Contact_Id,
+    previous_academic_semester_c
+  FROM
+    determine_prev_at
+  WHERE
+    previous_as_c = true
+    AND Contact_Id = '0031M00002y0qmtQAA'
+),
+determine_prev_prev_at AS (
+  SELECT
+    determine_prev_at.*,
+    -- gather_prev_prev_at.previous_academic_semester_c,
+    CASE
+      WHEN gather_prev_prev_at.previous_academic_semester_c = AT_Id THEN true
+      ELSE false
+    END AS prev_prev_as_c
+  FROM
+    determine_prev_at
+    LEFT JOIN gather_prev_prev_at ON gather_prev_prev_at.Contact_Id = determine_prev_at.Contact_Id
 )
--- gather_prev_at AS (
---   SELECT
---     Contact_Id,
---     previous_academic_semester_c
---   FROM
---     `data-warehouse-289815.salesforce_clean.contact_at_template`
---   WHERE
---     current_as_c = true
---     AND Contact_Id = '0031M00002y0qmtQAA'
--- ),
--- determine_prev_at AS (
---   SELECT
---     gather_data.*,
---     -- gather_prev_at.previous_academic_semester_c,
---     CASE
---       WHEN gather_prev_at.previous_academic_semester_c = AT_Id THEN true
---       ELSE false
---     END AS previous_as_c
---   FROM
---     gather_data
---     LEFT JOIN gather_prev_at ON gather_prev_at.Contact_Id = gather_data.Contact_Id
--- ),
--- gather_prev_prev_at AS (
---   SELECT
---     Contact_Id,
---     previous_academic_semester_c
---   FROM
---     determine_prev_at
---   WHERE
---     previous_as_c = true
---     AND Contact_Id = '0031M00002y0qmtQAA'
--- ),
--- determine_prev_prev_at AS (
---   SELECT
---     determine_prev_at.*,
---     -- gather_prev_prev_at.previous_academic_semester_c,
---     CASE
---       WHEN gather_prev_prev_at.previous_academic_semester_c = AT_Id THEN true
---       ELSE false
---     END AS prev_prev_as_c
---   FROM
---     determine_prev_at
---     LEFT JOIN gather_prev_prev_at ON gather_prev_prev_at.Contact_Id = determine_prev_at.Contact_Id
--- )
 SELECT
   *
 FROM
-  gather_data
+  determine_prev_prev_at
 ORDER BY
   start_date_c
   
