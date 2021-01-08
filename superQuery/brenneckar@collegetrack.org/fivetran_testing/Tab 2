@@ -1,3 +1,3 @@
 SELECT Contact_Id, AT_Id, current_as_c, previous_academic_semester_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE college_track_status_c = '15A' AND Contact_Id = '0031M00002y0qmtQAA'
+WHERE college_track_status_c = '15A'
