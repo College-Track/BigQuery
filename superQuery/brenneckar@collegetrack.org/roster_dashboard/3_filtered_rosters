@@ -4,7 +4,8 @@ WITH gather_data AS (
     Contact_Id,
     SITE_c,
     contact_url,
-    College_Track_Status_c,
+        College_Track_Status_c,
+
     Current_Enrollment_Status_c,
     school_type,
     PS_Internships_c,
@@ -207,3 +208,4 @@ SELECT
   *
 FROM
   final_prep
+  
