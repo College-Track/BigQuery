@@ -29,6 +29,7 @@ WITH calculate_metrics AS(
     `data-studio-260217.rosters.filtered_roster`
   WHERE
     Contact_Record_Type_Name = "Student: High School"
+
 ),
 senior_count AS (
   SELECT
