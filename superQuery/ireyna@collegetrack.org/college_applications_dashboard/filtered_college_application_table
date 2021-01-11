@@ -98,7 +98,10 @@ SELECT
         WHEN C.site_short = "Boyle Heights" THEN 8
         WHEN C.site_short = "Watts" THEN 9
         ELSE 0
-    END AS sort_helper_site,    
+    END AS sort_helper_site,
+    CASE
+      WHEN C.site_short IS NOT NULL THEN "National"
+    END AS National,
     C.region_short,
     C.readiness_english_official_c,
     C.readiness_composite_off_c,
@@ -212,6 +215,7 @@ GROUP BY
     Pell_indicator,
     C.fa_req_fafsa_c,
     FAFSA_status,
+    National,
     
 #College Aspiration data
     aspiration_id,
