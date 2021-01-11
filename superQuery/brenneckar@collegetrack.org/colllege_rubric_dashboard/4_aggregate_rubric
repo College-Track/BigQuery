@@ -7,4 +7,4 @@ SELECT
   school_type,
 FROM
   `data-studio-260217.college_rubric.filtered_college_rubric`
-  LIMIT 10
+  LIMIT 100
