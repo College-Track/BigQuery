@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
-    )
-AS
-
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -78,6 +69,7 @@ SELECT
 #Contact 
     C.full_name_c,
     C.contact_id,
+    ((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
     C.high_school_graduating_class_c,
     C.College_Track_Status_Name,
     C.grade_c, 
@@ -157,7 +149,77 @@ WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
     AND AT_Record_Type_Name = 'High School Semester'
     AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34 #11th Grade Spring Term
+
+GROUP BY 
+    CA.name,
+    app_college_id,
+    CA.admission_status_c,
+    admission_status,
+    accepted,
+    CA.application_status_c,
+    application_status,
+    sort_helper_app_by_fit_type,
+    CA.Average_Financial_Aid_Package_c,
+    CA.Avg_Debt_of_Graduates_c,
+    CA.Award_Letter_c,
+    CA.CSS_Profile_Required_c,
+    CA.CSS_Profile_c,
+    CSS_profile_status,
+    CA.College_Fit_Type_Applied_c,
+    CA.College_University_Academic_Calendar_c,
+    CA.Control_of_Institution_c, #private or public school,
+    CA.Enrollment_Deposit_c,
+    CA.School_s_Financial_Aid_Form_Required_c, #yes/no
+    CA.School_Financial_Aid_Form_Status_c,
+    School_Financial_Aid_Form_Status,
+    CA.Fit_Type_Current_c,
+    CA.Fit_Type_Enrolled_c,
+    sort_helper_enroll_by_fit_type,
+    CA.Housing_Application_c,
+    college_app_id,
+    CA.Predominant_Degree_Awarded_c,
+    CA.Type_of_School_c,
+    CA.Situational_Fit_Type_c,
+    match_type, #match type
+    CA.Verification_Status_c,
+    CA.Student_c,
+    C.full_name_c,
+    C.contact_id,
+    C.high_school_graduating_class_c,
+    C.College_Track_Status_Name,
+    C.grade_c, 
+    C.Gender_c ,
+    C.Ethnic_background_c ,
+    C.indicator_low_income_c,
+    C.first_generation_fy_20_c, 
+    C.site_short,
+    sort_helper_site,    
+    C.region_short,
+    C.readiness_english_official_c,
+    C.readiness_composite_off_c,
+    C.readiness_math_official_c,
+    C.fa_req_expected_financial_contribution_c, 
+    EFC_indicator,
+    Pell_indicator,
+    C.fa_req_fafsa_c,
+    FAFSA_status,
     
+#College Aspiration data
+    aspiration_id,
+    CAP.Aspiration_Category_c,
+    aspiration_category,
+    aspiration_college_id,
+    
+#Academic Term data 
+    CGPA_11th,
+    Name_AT, #academic term name
+    A_T.AT_Grade_c, #grade on AT
+    A_T.AT_Record_Type_Name,
+    A_T.ct_coach_c,
+    
+#Account object mapping
+    app_college_name, 
+    aspiration_college_name
 )
 
 SELECT *
@@ -196,4 +258,3 @@ SELECT *
     END AS sort_helper_admission_status
     
 FROM filtered_data
-
