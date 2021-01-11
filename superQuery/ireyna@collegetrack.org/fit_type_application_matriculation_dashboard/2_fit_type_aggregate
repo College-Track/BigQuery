@@ -64,12 +64,7 @@ SELECT
     Readiness_English_Official__c,
     Readiness_Math_Official__c,
     Readiness_Composite_Off__c,
-    Indicator_Persisted_into_2nd_Year_CT__c,
-    CASE
-      WHEN cast(Indicator_Persisted_into_2nd_Year_CT__c as STRING) = "TRUE" THEN "Persisted"
-      WHEN cast(Indicator_Persisted_into_2nd_Year_CT__c as STRING) = "FALSE" THEN "Did Not Persist"
-      ELSE "Missing"
-    END AS Indicator_Persisted_into_2nd_Year_CT,
+    cast(Indicator_Persisted_into_2nd_Year_CT__c as STRING) AS Indicator_Persisted_into_2nd_Year_CT__c,
     Indicator_Persisted_into_Year_2_Wide__c,
     Gender__c,
     Ethnic_background__c,
@@ -159,7 +154,13 @@ SELECT
         EXCEPT (Full_Name__c,High_School_Class__c,site_full,site_short,region_full,region_short,Contact_Id),
     pell.*
         EXCEPT (High_School_Class),
-        
+    
+    CASE
+      WHEN Indicator_Persisted_into_2nd_Year_CT__c = '1' THEN "Persisted"
+      WHEN Indicator_Persisted_into_2nd_Year_CT__c = '0' THEN "Did Not Persist"
+      ELSE "Missing"
+    END AS Indicator_Persisted_into_2nd_Year_CT,
+    
    #matriculation fit type "none" categories (2-yr 4-yr)     
    IF(Fit_Type__c IS NULL, "Not Enrolled", #to account for non-enrolled/NULL Fall year 1
      IF(Fit_Type__c = "None" AND School_Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting" AND AT_Enrollment_Status__c <> "Approved Gap Year","None - 4-yr", 
@@ -225,8 +226,8 @@ GROUP BY
     Readiness_English_Official__c,
     Readiness_Math_Official__c,
     Readiness_Composite_Off__c,
-    Indicator_Persisted_into_2nd_Year_CT__c,
     Indicator_Persisted_into_Year_2_Wide__c,
+    Indicator_Persisted_into_2nd_Year_CT__c,
     Gender__c,
     Ethnic_background__c,
     Indicator_Low_Income__c,
