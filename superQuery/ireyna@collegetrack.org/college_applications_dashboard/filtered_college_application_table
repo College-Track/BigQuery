@@ -251,9 +251,9 @@ SELECT *
     CASE
         WHEN application_status = "Prospect" THEN 1
         WHEN application_status = "In Progress" THEN 2
-        WHEN application_status = "Applied" THEN 2
-        WHEN application_status = "Accepted" THEN 3
-        WHEN application_status = "No College Application" THEN 4
+        WHEN application_status = "Applied" THEN 3
+        WHEN application_status = "Accepted" THEN 4
+        WHEN application_status = "No College Application" THEN 5
         ELSE 0
     END AS sort_helper_app_status,    
     
