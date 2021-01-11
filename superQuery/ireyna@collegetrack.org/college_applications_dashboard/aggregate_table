@@ -4,6 +4,7 @@ SELECT
     --contact_id,
     COUNT(DISTINCT college_app_id) AS applied_sum, 
     COUNT(DISTINCT student_c) AS student_sum,
+    COUNT(DISTINCT contact_id) AS total_count_seniors,
     ((COUNT(DISTINCT student_c))/(COUNT(DISTINCT contact_id))) AS percent_of_students,
     
 FROM `data-studio-260217.college_applications.college_application_filtered_table` 
