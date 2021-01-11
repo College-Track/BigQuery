@@ -73,6 +73,7 @@ SELECT
     CA.Situational_Fit_Type_c,
     CA.Strategic_Type_c AS match_type, #match type
     CA.Verification_Status_c,
+    CA.Student_c,
 
 #Contact 
     C.full_name_c,
