@@ -1,0 +1,10 @@
+SELECT
+  site_short,
+  college_class,
+  overall_score,
+  overall_score_color,
+  region_short,
+  school_type,
+FROM
+  `data-studio-260217.college_rubric.filtered_college_rubric`
+  LIMIT 10
