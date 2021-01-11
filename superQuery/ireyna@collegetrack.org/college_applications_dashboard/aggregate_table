@@ -1,4 +1,5 @@
-site_short,
+SELECT
+    site_short,
     region_short,
     --contact_id,
     COUNT(DISTINCT college_app_id) AS applied_sum, 
