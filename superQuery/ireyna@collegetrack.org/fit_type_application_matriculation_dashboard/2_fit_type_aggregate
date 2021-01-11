@@ -66,8 +66,8 @@ SELECT
     Readiness_Composite_Off__c,
     Indicator_Persisted_into_2nd_Year_CT__c,
     CASE
-      WHEN cast(Indicator_Persisted_into_2nd_Year_CT__c as STRING) = "True" THEN "Persisted"
-      WHEN cast(Indicator_Persisted_into_2nd_Year_CT__c as STRING) = "False" THEN "Did Not Persist"
+      WHEN cast(Indicator_Persisted_into_2nd_Year_CT__c as STRING) = "TRUE" THEN "Persisted"
+      WHEN cast(Indicator_Persisted_into_2nd_Year_CT__c as STRING) = "FALSE" THEN "Did Not Persist"
       ELSE "Missing"
     END AS Indicator_Persisted_into_2nd_Year_CT,
     Indicator_Persisted_into_Year_2_Wide__c,
