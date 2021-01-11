@@ -7,6 +7,7 @@ WITH contact_at AS (
       "/view"
     ) AS at_url,
     Full_Name_c,
+    site_abrev,
     GAS_Name,
     school_type,
     Current_school_name,
