@@ -1,10 +1,9 @@
-SELECT
-    site_short,
+site_short,
     region_short,
     --contact_id,
     COUNT(DISTINCT college_app_id) AS applied_sum, 
     COUNT(DISTINCT student_c) AS student_sum,
-    applied_sum/student_sum AS percent_of_students,
+    (COUNT(DISTINCT college_app_id))/(COUNT(DISTINCT student_c))) AS percent_of_students,
     
 FROM `data-studio-260217.college_applications.college_application_filtered_table` 
 --WHERE application_status = 'Applied'
