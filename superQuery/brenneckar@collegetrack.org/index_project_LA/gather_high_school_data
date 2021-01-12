@@ -8,14 +8,15 @@ WITH gather_data AS (
     REPLACE(REPLACE(A.name, ' ', '-'), '.', '') AS school_name_mod, 
     A.billing_city,
     A.billing_state,
-    A.billing_street
+    A.billing_street,
+    A.school_type_c
   FROM
     `learning-agendas.index_project.student_with_census` C
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CAT ON c.Contact_Id = CAT.Contact_Id
     LEFT JOIN `data-warehouse-289815.salesforce.account` A ON CAT.npsp_primary_affiliation_c = A.id
 )
-SELECT
-  *,
+SELECT DISTINCT
+  * EXCEPT(Contact_Id, npsp_primary_affiliation_c),
   CONCAT(
     'https://www.greatschools.org/',
     billing_state,
@@ -28,4 +29,5 @@ SELECT
   ) AS url
 FROM
   gather_data
-  WHERE url IS NOT NULL
+  WHERE school_type_c != 'Private'
+--   AND universal_id_c IS NOT NULL
