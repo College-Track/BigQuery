@@ -16,8 +16,8 @@ WITH gahter_student_data AS (
 gather_first_gpa AS (
 SELECT Contact_Id, gpa_cumulative_c, start_date_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-SORT BY start_date_c
-
+ORDER BY start_date_c
+LIMIT 10
 )
 
 SELECT *
