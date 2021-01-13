@@ -22,6 +22,7 @@ SELECT Contact_Id, grade_c, start_date_c, AT_Id, GAS_Start_Date
 --   FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY start_date_c ASC ) AS grade
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE AT_Id IS NOT NULL
 ORDER BY GAS_Start_Date
 )
 
