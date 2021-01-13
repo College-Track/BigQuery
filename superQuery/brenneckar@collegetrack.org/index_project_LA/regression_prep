@@ -21,7 +21,7 @@ SELECT Contact_Id,
         OVER (PARTITION BY Contact_Id ORDER BY start_date_c ) AS first_gpa
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 ORDER BY start_date_c
-LIMIT 10
+LIMIT 1000
 )
 
 SELECT *
