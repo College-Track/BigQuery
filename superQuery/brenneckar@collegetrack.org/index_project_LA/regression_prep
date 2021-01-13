@@ -1,4 +1,4 @@
-WITH gahter_student_data AS (
+WITH gather_student_data AS (
   SELECT
     Contact_Id,
     indicator_completed_ct_hs_program_c,
