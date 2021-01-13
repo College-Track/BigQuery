@@ -17,7 +17,7 @@ gather_first_gpa AS (
 
 
 SELECT Contact_Id,
-gpa_cumulative_c,
+gpa_cumulative_c AS first_gpa,
 AT_Grade_c,
 ROW_NUMBER() OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC) as rank
 
@@ -30,6 +30,11 @@ WHERE AT_Id IS NOT NULL AND gpa_cumulative_c > 0 AND AT_Grade_c IN ('9th Grade',
 -- ORDER BY Contact_Id, GAS_Start_Date ASC
 )
 
-SELECT *
-FROM gather_first_gpa
-WHERE rank = 1
+SELECT 
+GSD.*,
+GFD.first_gpa
+
+
+FROM gather_student_data GSD
+LEFT JOIN gather_first_gpa GFG ON GFG.Contact_Id = GSD.Contact_Id
+WHERE GDF.rank = 1
