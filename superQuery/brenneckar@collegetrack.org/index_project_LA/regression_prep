@@ -17,19 +17,16 @@ gather_first_gpa AS (
 
 
 SELECT Contact_Id,
-gpa_cumulative_c,
-AT_Grade_c,
-ROW_NUMBER() OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date DESC) as rank
-
---  FIRST_VALUE(gpa_cumulative_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS first_gpa,
---   FIRST_VALUE(AT_Id) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS term_id,
---   FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS grade
+ FIRST_VALUE(gpa_cumulative_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS first_gpa,
+  FIRST_VALUE(AT_Id) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS term_id,
+  FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS grade
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE AT_Id IS NOT NULL AND gpa_cumulative_c > 0
+-- WHERE AT_Id IS NOT NULL
 -- ORDER BY Contact_Id, GAS_Start_Date ASC
 )
 
 SELECT *
 FROM gather_first_gpa
-WHERE rank = 1
+LIMIT 1000
+-- WHERE first_gpa > 0
