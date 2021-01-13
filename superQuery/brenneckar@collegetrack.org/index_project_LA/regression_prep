@@ -1,0 +1,3 @@
+SELECT Contact_Id, 
+FROM `data-warehouse-289815.salesforce_clean.contact_template`
+WHERE years_since_hs_grad_c >= 0
