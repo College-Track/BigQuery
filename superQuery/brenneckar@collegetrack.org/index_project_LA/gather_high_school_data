@@ -30,4 +30,4 @@ SELECT DISTINCT
 FROM
   gather_data
   WHERE school_type_c != 'Private'
---   AND universal_id_c IS NOT NULL
+  AND universal_id_c IS NOT NULL
