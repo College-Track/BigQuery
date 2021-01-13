@@ -17,7 +17,7 @@ gather_first_gpa AS (
 
 
 SELECT Contact_Id,
-GPA_semester_cumulative__c AS first_gpa,
+GPA_semester_cumulative_c AS first_gpa,
 AT_Grade_c first_gpa_grade,
 ROW_NUMBER() OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC) as rank
 
