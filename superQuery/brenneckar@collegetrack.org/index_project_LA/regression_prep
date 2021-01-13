@@ -26,7 +26,7 @@ ROW_NUMBER() OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC) as rank
 --   FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS grade
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE AT_Id IS NOT NULL AND gpa_cumulative_c > 0
+WHERE AT_Id IS NOT NULL AND gpa_cumulative_c > 0 AND AT_Grade_c IN ('8th Grade', '9th Grade', '10th Grade')
 -- ORDER BY Contact_Id, GAS_Start_Date ASC
 )
 
