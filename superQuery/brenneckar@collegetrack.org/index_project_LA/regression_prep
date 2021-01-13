@@ -16,14 +16,19 @@ WITH gahter_student_data AS (
 gather_first_gpa AS (
 
 
-SELECT Contact_Id, 
- FIRST_VALUE(gpa_cumulative_c)
-        OVER (PARTITION BY Contact_Id ORDER BY start_date_c ) AS first_gpa
+SELECT Contact_Id,
+gpa_cumulative_c,
+grade_c
+
+--  FIRST_VALUE(gpa_cumulative_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS first_gpa,
+--   FIRST_VALUE(AT_Id) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS term_id,
+--   FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS grade
+
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-ORDER BY start_date_c
-LIMIT 1000
+WHERE AT_Id IS NOT NULL AND gpa_cumulative_c > 0
+ORDER BY Contact_Id, GAS_Start_Date ASC
 )
 
 SELECT *
 FROM gather_first_gpa
-WHERE first_gpa > 0
+-- WHERE first_gpa > 0 AND GRADE
