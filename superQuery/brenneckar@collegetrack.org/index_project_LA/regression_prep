@@ -27,7 +27,7 @@ ROW_NUMBER() OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC) as rank
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE AT_Id IS NOT NULL AND gpa_cumulative_c > 0
-ORDER BY Contact_Id, GAS_Start_Date ASC
+-- ORDER BY Contact_Id, GAS_Start_Date ASC
 )
 
 SELECT *
