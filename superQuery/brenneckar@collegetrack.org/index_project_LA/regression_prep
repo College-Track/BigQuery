@@ -17,9 +17,9 @@ gather_first_gpa AS (
 
 
 SELECT Contact_Id, 
- FIRST_VALUE(gpa_cumulative_c) OVER (PARTITION BY Contact_Id ORDER BY start_date_c DESC ) AS first_gpa,
-  FIRST_VALUE(AT_Id) OVER (PARTITION BY Contact_Id ORDER BY start_date_c DESC ) AS term_id,
-  FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY start_date_c DESC ) AS grade
+ FIRST_VALUE(gpa_cumulative_c) OVER (PARTITION BY Contact_Id ORDER BY start_date_c ASC ) AS first_gpa,
+  FIRST_VALUE(AT_Id) OVER (PARTITION BY Contact_Id ORDER BY start_date_c ASC ) AS term_id,
+  FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY start_date_c ASC ) AS grade
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 ORDER BY start_date_c
