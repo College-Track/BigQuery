@@ -32,9 +32,9 @@ WHERE AT_Id IS NOT NULL AND gpa_cumulative_c > 0 AND AT_Grade_c IN ('9th Grade',
 
 SELECT 
 GSD.*,
-GFD.first_gpa
+GFG.first_gpa
 
 
 FROM gather_student_data GSD
 LEFT JOIN gather_first_gpa GFG ON GFG.Contact_Id = GSD.Contact_Id
-WHERE GDF.rank = 1
+WHERE GFG.rank = 1
