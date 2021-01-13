@@ -1,0 +1,3 @@
+SELECT *
+FROM `learning-agendas.index_project.high_school_with_ratings`
+WHERE name = 'Suitland High School'
