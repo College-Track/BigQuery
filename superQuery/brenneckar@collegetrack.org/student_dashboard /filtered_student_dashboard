@@ -27,25 +27,28 @@ WITH gather_student_data AS (
 ),
 gather_workshop_data AS (
   SELECT
-    student_c,
-    workshop_display_name_c,
-    FORMAT_TIME('%l:%M',PARSE_TIME('%X.000Z', start_time_c)) AS start_time_c,
-    recurring_days_c,
-    class_status,
-    Academic_Semester_c,
-    SUM(Attendance_Numerator_c) AS attended_sessions,
-    SUM(Attendance_Denominator_c) AS enrolled_sessions,
-    CASE WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL 
-    ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c) END AS attendance_rate
+    C.student_c,
+    C.workshop_display_name_c,
+    FORMAT_TIME('%l:%M',PARSE_TIME('%X.000Z', C.start_time_c)) AS start_time_c,
+    C.recurring_days_c,
+    C.class_status,
+    C.Academic_Semester_c,
+    SUM(C.Attendance_Numerator_c) AS attended_sessions,
+    SUM(C.Attendance_Denominator_c) AS enrolled_sessions,
+    CASE WHEN SUM(C.Attendance_Denominator_c) = 0 THEN NULL 
+    ELSE SUM(C.Attendance_Numerator_c) / SUM(C.Attendance_Denominator_c) END AS attendance_rate,
+    CR.status_c
   FROM
-    `data-warehouse-289815.salesforce_clean.class_template`
+    `data-warehouse-289815.salesforce_clean.class_template` C
+    LEFT JOIN `data-warehouse-289815.salesforce.class_registration_c` CR ON CR.class_c = C.class_c AND CR.student_c = C.student_c
   GROUP BY
     student_c,
     workshop_display_name_c,
     start_time_c,
     recurring_days_c,
     class_status,
-    Academic_Semester_c
+    Academic_Semester_c,
+    status_c
 )
 SELECT
   GSD.*,
