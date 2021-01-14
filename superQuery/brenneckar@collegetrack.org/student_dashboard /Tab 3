@@ -12,6 +12,8 @@ WITH gather_test_data AS (
   WHERE
     status_c = 'Completed'
     AND is_deleted = false
+    AND RT.Name IN ('SAT', 'ACT')
+
    
 )
 SELECT
