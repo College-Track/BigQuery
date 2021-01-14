@@ -1,11 +1,9 @@
 WITH gather_test_data AS (
   SELECT
-    T.id,
     T.contact_name_c,
-    T.act_composite_score_c,
-    T.sat_total_score_c,
-    T.record_type_id,
-    RT.Name
+    RT.Name,
+    MAX(T.act_composite_score_c) as max_act,
+    MAX(T.sat_total_score_c) AS max_sat,
   FROM
     `data-warehouse-289815.salesforce.test_c` T
     LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT on RT.id = T.record_type_id
@@ -14,12 +12,15 @@ WITH gather_test_data AS (
     AND is_deleted = false
     AND RT.Name IN ('SAT', 'ACT')
     AND version_c = 'Official'
-
-   
+    AND (
+      act_composite_score_c IS NOT NULL
+      OR sat_total_score_c IS NOT NULL
+    )
+  GROUP BY
+    T.contact_name_c,
+    RT.Name
 )
 SELECT
   *
 FROM
   gather_test_data
-LIMIT
-  100
