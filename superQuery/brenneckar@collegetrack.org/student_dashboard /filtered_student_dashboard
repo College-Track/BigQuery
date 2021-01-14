@@ -29,7 +29,7 @@ gather_workshop_data AS (
   SELECT
     student_c,
     workshop_display_name_c,
-    start_time_c,
+    FORMAT_TIME('%l:%M',PARSE_TIME('%X.000Z', start_time_c)) AS start_time_c,
     recurring_days_c,
     class_status,
     Academic_Semester_c,
