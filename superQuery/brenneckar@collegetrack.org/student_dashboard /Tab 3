@@ -1,15 +1,18 @@
 WITH gather_test_data AS (
   SELECT
-    id,
-    contact_name_c,
-    act_composite_score_c,
-    sat_total_score_c,
-    record_type_id
+    T.id,
+    T.contact_name_c,
+    T.act_composite_score_c,
+    T.sat_total_score_c,
+    T.record_type_id,
+    RT.Name
   FROM
-    `data-warehouse-289815.salesforce.test_c`
+    `data-warehouse-289815.salesforce.test_c` T
+    LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT on RT.id = T.record_type_id
   WHERE
     status_c = 'Completed'
     AND is_deleted = false
+   
 )
 SELECT
   *
