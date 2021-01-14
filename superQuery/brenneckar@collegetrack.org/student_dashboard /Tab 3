@@ -13,6 +13,7 @@ WITH gather_test_data AS (
     status_c = 'Completed'
     AND is_deleted = false
     AND RT.Name IN ('SAT', 'ACT')
+    AND version_c = 'Official'
 
    
 )
