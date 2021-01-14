@@ -2,8 +2,8 @@ WITH gather_test_data AS (
   SELECT
     T.id,
     T.contact_name_c,
-    MAX(T.act_composite_score_c) as max_act,
-    MAX(T.sat_total_score_c) AS max_sat,
+    T.act_composite_score_c,
+    T.sat_total_score_c,
     T.record_type_id,
     RT.Name
   FROM
@@ -15,7 +15,7 @@ WITH gather_test_data AS (
     AND RT.Name IN ('SAT', 'ACT')
     AND version_c = 'Official'
     AND (act_composite_score_c IS NOT NULL OR sat_total_score_c IS NOT NULL)
-GROUP BY T.contact_name_c, RT.Name
+
    
 )
 SELECT
