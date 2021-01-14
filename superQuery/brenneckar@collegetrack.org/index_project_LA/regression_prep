@@ -12,30 +12,33 @@ WITH gather_student_data AS (
     AND college_track_status_c IN ('13A', '15A', '16A', '17A')
     AND CAST(high_school_graduating_class_c AS INT64) >= 2014
 ),
-
 gather_first_gpa AS (
-
-
-SELECT Contact_Id,
-GPA_semester_cumulative_c AS first_gpa,
-AT_Grade_c first_gpa_grade,
-ROW_NUMBER() OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC) as rank
-
---  FIRST_VALUE(gpa_cumulative_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS first_gpa,
---   FIRST_VALUE(AT_Id) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS term_id,
---   FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS grade
-
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE AT_Id IS NOT NULL AND GPA_semester_cumulative_c > 0 AND AT_Grade_c IN ('9th Grade', '10th Grade')
--- ORDER BY Contact_Id, GAS_Start_Date ASC
+  SELECT
+    Contact_Id,
+    GPA_semester_cumulative_c AS first_gpa,
+    AT_Grade_c first_gpa_grade,
+    ROW_NUMBER() OVER (
+      PARTITION BY Contact_Id
+      ORDER BY
+        GAS_Start_Date ASC
+    ) as rank --  FIRST_VALUE(gpa_cumulative_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS first_gpa,
+    --   FIRST_VALUE(AT_Id) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS term_id,
+    --   FIRST_VALUE(grade_c) OVER (PARTITION BY Contact_Id ORDER BY GAS_Start_Date ASC ) AS grade
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    AT_Id IS NOT NULL
+    AND GPA_semester_cumulative_c > 0
+    AND AT_Grade_c IN ('9th Grade', '10th Grade') -- ORDER BY Contact_Id, GAS_Start_Date ASC
 )
-
-SELECT 
-GSD.*,
-GFG.first_gpa,
-first_gpa_grade
-
-
-FROM gather_student_data GSD
-LEFT JOIN gather_first_gpa GFG ON GFG.Contact_Id = GSD.Contact_Id
-WHERE GFG.rank = 1
+SELECT
+  GSD.*,
+  GFG.first_gpa,
+  GFG.first_gpa_grade,
+  Z_Scores.*
+FROM
+  gather_student_data GSD
+  LEFT JOIN gather_first_gpa GFG ON GFG.Contact_Id = GSD.Contact_Id
+  LEFT JOIN `learning-agendas.index_project.site_z_scores` Z_Scores ON Z_Scores.site_short = GSD.site_short
+WHERE
+  GFG.rank = 1
