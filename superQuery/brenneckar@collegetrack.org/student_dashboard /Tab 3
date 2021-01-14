@@ -21,6 +21,9 @@ WITH gather_test_data AS (
     RT.Name
 )
 SELECT
-  *
+  contact_name_c,
+  MAX(max_act) as max_act,
+  MAX(max_sat) as max_sat
 FROM
   gather_test_data
+  GROUP BY contact_name_c
