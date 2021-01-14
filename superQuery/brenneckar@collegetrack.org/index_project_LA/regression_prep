@@ -30,32 +30,32 @@ gather_first_gpa AS (
     AT_Id IS NOT NULL
     AND GPA_semester_cumulative_c > 0
     AND AT_Grade_c IN ('9th Grade', '10th Grade') -- ORDER BY Contact_Id, GAS_Start_Date ASC
-), combine_data AS (
-
+),
+combine_data AS (
+  SELECT
+    GSD.*,
+    GFG.first_gpa,
+    GFG.first_gpa_grade,
+    Z_Scores.*
+  EXCEPT
+    (site_short),
+    (
+      (us_citizen) + (english_primary_language) + (first_gen) + (househld_income_site) + (Z_Scores.first_gpa) + (first_covi_green) + (contextual_income) + (school_rating)
+    ) / 8 AS student_self_index,
+    (
+      (bachelors_degree) + (percent_not_us_citizen_pop) + (
+        households_public_asst_or_food_stamps
+      ) + (median_income) + (percent_income_spent_on_rent) + (percent_unemployed_pop) + (percent_vacant_housing_units)
+    ) / 7 AS student_residential_index
+  FROM
+    gather_student_data GSD
+    LEFT JOIN gather_first_gpa GFG ON GFG.Contact_Id = GSD.Contact_Id
+    LEFT JOIN `learning-agendas.index_project.site_z_scores` Z_Scores ON Z_Scores.site_short = GSD.site_short
+  WHERE
+    GFG.rank = 1
+)
 SELECT
-  GSD.*,
-  GFG.first_gpa,
-  GFG.first_gpa_grade,
-  Z_Scores.*
-EXCEPT
-  (site_short),
-  (
-    (us_citizen) + (english_primary_language) + (first_gen) + (househld_income_site) + (Z_Scores.first_gpa) + (first_covi_green) + (contextual_income) + (school_rating)
-  ) / 8 AS student_self_index,
-  (
-    (bachelors_degree) + (percent_not_us_citizen_pop) + (
-      households_public_asst_or_food_stamps
-    ) + (median_income) + (percent_income_spent_on_rent) + (percent_unemployed_pop) + (percent_vacant_housing_units)
-  ) / 7 AS student_residential_index
+  *,
+  (student_self_index + student_residential_index) / 2 AS site_index
 FROM
-  gather_student_data GSD
-  LEFT JOIN gather_first_gpa GFG ON GFG.Contact_Id = GSD.Contact_Id
-  LEFT JOIN `learning-agendas.index_project.site_z_scores` Z_Scores ON Z_Scores.site_short = GSD.site_short
-WHERE
-  GFG.rank = 1
-  
-  )
-  
-  SELECT *,
-  (student_self_index + student_residential_index) /2 AS site_index
-  FROM combine_data
+  combine_data
