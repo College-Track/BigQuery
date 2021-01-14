@@ -1,10 +1,19 @@
 WITH gather_test_data AS (
-SELECT contact_name_c, act_composite_score_c, sat_total_score_c, record_type_id
-FROM `data-warehouse-289815.salesforce.test_c`
-WHERE status_c = 'Completed'
-AND is_deleted = false
+  SELECT
+    id,
+    contact_name_c,
+    act_composite_score_c,
+    sat_total_score_c,
+    record_type_id
+  FROM
+    `data-warehouse-289815.salesforce.test_c`
+  WHERE
+    status_c = 'Completed'
+    AND is_deleted = false
 )
-
-SELECT *
-FROM gather_test_data
-LIMIT 100
+SELECT
+  *
+FROM
+  gather_test_data
+LIMIT
+  100
