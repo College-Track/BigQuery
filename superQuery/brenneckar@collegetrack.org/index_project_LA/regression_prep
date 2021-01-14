@@ -34,7 +34,7 @@ gather_first_gpa AS (
 
 SELECT
   GSD.*,
-  GFG.first_gpa as student_first_gpa,
+  GFG.first_gpa,
   GFG.first_gpa_grade,
   Z_Scores.*
 EXCEPT
