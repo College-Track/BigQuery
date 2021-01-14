@@ -43,7 +43,7 @@ gather_workshop_data AS (
     LEFT JOIN `data-warehouse-289815.salesforce.class_registration_c` CR ON CR.class_c = C.class_c
     AND CR.student_c = C.student_c
   WHERE
-    CR.status_c = 'Enrolled'    
+    CR.status_c = 'Enrolled'
   GROUP BY
     student_c,
     workshop_display_name_c,
@@ -51,14 +51,49 @@ gather_workshop_data AS (
     recurring_days_c,
     class_status,
     Academic_Semester_c
-
+),
+gather_test_data AS (
+  SELECT
+    T.contact_name_c,
+    RT.Name,
+    MAX(T.act_composite_score_c) as max_act,
+    MAX(T.sat_total_score_c) AS max_sat,
+  FROM
+    `data-warehouse-289815.salesforce.test_c` T
+    LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT on RT.id = T.record_type_id
+  WHERE
+    status_c = 'Completed'
+    AND is_deleted = false
+    AND RT.Name IN ('SAT', 'ACT')
+    AND version_c = 'Official'
+    AND (
+      act_composite_score_c IS NOT NULL
+      OR sat_total_score_c IS NOT NULL
+    )
+  GROUP BY
+    T.contact_name_c,
+    RT.Name
+),
+format_test_data AS (
+  SELECT
+    contact_name_c,
+    MAX(max_act) as max_act,
+    MAX(max_sat) as max_sat
+  FROM
+    gather_test_data
+  GROUP BY
+    contact_name_c
 )
+
 SELECT
   GSD.*,
   GWD.*
 EXCEPT
-  (student_c, academic_semester_c)
+  (student_c, academic_semester_c),
+  FTD.max_act,
+  FTD.max_sat
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
   AND GSD.previous_academic_semester_c = GWD.Academic_Semester_c
+  LEFT JOIN format_test_data FTD ON FTD.contact_name_c = GSD.Contact_Id
