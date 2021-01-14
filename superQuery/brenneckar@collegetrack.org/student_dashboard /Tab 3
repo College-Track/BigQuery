@@ -1,3 +1,9 @@
-SELECT  FORMAT_TIME('%T',PARSE_TIME('%X.000Z', start_time_c))
-FROM `data-studio-260217.student_dashboard.student_dashboard`
-LIMIT 10
+gather_test_data AS (
+SELECT student_c, act_composite_score_c, sat_total_score_c, record_type_id
+FROM `data-warehouse-289815.salesforce_clean.test_clean`
+WHERE status_c = 'Completed'
+)
+
+SELECT *
+FROM gather_test_data
+LIMIT 100
