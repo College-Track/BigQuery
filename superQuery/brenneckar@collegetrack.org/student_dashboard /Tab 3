@@ -1,4 +1,4 @@
-gather_test_data AS (
+WITH gather_test_data AS (
 SELECT student_c, act_composite_score_c, sat_total_score_c, record_type_id
 FROM `data-warehouse-289815.salesforce_clean.test_clean`
 WHERE status_c = 'Completed'
