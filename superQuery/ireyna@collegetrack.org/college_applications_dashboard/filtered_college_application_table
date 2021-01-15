@@ -173,16 +173,23 @@ SELECT
         ELSE 0
     END AS accepted,
     
-    CASE 
-        WHEN admission_status_c = "Accepted" THEN College_Fit_Type_Applied_c
-        WHEN (admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) THEN fit_type_enrolled_c
-    END AS fit_type_accepted,
+    CASE
+        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
+        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        ELSE fit_type_enrolled_c
+    END AS fit_type_enrolled_c_acceptance_data,
     
     CASE
         WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
         WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         ELSE College_Fit_Type_Applied_c
     END AS College_Fit_Type_Applied_acceptance_data,
+    
+     CASE 
+        WHEN admission_status_c = "Accepted" THEN College_Fit_Type_Applied_acceptance_data
+        WHEN (admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) THEN fit_type_enrolled_c_acceptance_data
+    END AS fit_type_accepted
+    
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -237,11 +244,11 @@ SELECT
     END AS sort_helper_app_status, 
     
     CASE
-        WHEN College_Fit_Type_Applied_c = "Best Fit" THEN 1
-        WHEN College_Fit_Type_Applied_c  = "Good Fit" THEN 2
-        WHEN College_Fit_Type_Applied_c  = "Local Affordable" THEN 3
-        WHEN College_Fit_Type_Applied_c  = "None - 4-year" THEN 4
-        WHEN College_Fit_Type_Applied_c  = "None - 2-year or technical" THEN 5
+        WHEN College_Fit_Type_Applied = "Best Fit" THEN 1
+        WHEN College_Fit_Type_Applied  = "Good Fit" THEN 2
+        WHEN College_Fit_Type_Applied  = "Local Affordable" THEN 3
+        WHEN College_Fit_Type_Applied  = "None - 4-year" THEN 4
+        WHEN College_Fit_Type_Applied  = "None - 2-year or technical" THEN 5
         ELSE 6
     END AS sort_helper_app_by_fit_type,
     
