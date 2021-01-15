@@ -28,11 +28,6 @@ SELECT
         ELSE CA.application_status_c
     END AS application_status,
     
-     CASE 
-        WHEN admission_status_c = "Accepted" THEN College_Fit_Type_Applied_c
-        WHEN (admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) THEN fit_type_enrolled_c
-    END AS fit_type_accepted,
-    
     CASE
         WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
         WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
@@ -190,6 +185,11 @@ SELECT
         ELSE College_Fit_Type_Applied_c
     END AS College_Fit_Type_Applied_c,
     
+    CASE 
+        WHEN admission_status_c = "Accepted" THEN College_Fit_Type_Applied_c
+        WHEN (admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) THEN fit_type_enrolled_c
+    END AS fit_type_accepted
+    
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.College_University_c = accnt.id
@@ -269,3 +269,4 @@ LEFT JOIN acceptance_data AS accepted
   
 LEFT JOIN admission_data AS admission 
     ON filtered_data.contact_id = admission.contact_id_admissions
+  
