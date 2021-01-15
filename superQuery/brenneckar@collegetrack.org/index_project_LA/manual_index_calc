@@ -1,0 +1,18 @@
+WITH gahter_data AS (
+  SELECT
+    Z_Scores.*, (
+      (us_citizen) + (english_primary_language) + (first_gen) + (househld_income_site) + (Z_Scores.first_gpa) + (first_covi_green) + (contextual_income) + (school_rating)
+    ) / 8 AS student_self_index,
+    (
+      (bachelors_degree) + (percent_not_us_citizen_pop) + (
+        households_public_asst_or_food_stamps
+      ) + (median_income) + (percent_income_spent_on_rent) + (percent_unemployed_pop) + (percent_vacant_housing_units)
+    ) / 7 AS student_residential_index
+  FROM
+    `learning-agendas.index_project.site_z_scores` Z_Scores 
+)
+SELECT
+  *,
+  (student_self_index + student_residential_index) / 2 AS site_index
+FROM
+  gahter_data
