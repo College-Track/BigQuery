@@ -165,8 +165,6 @@ admission_data AS
 (
 SELECT 
     student_c AS contact_id_admissions,
-    
-#college application data
     accnt.name AS school_name_enrolled,
     Fit_Type_Enrolled_c AS fit_type_enrolled,
     Type_of_School_c as school_type_enrolled,
@@ -194,8 +192,9 @@ SELECT
 
 SELECT 
     filtered_data.*
-        EXCEPT (admission_status_c),
-    acc.*,
+        EXCEPT (admission_status_c,sort_helper_enroll_by_fit_type),
+    accepted.*,
+    admission.*,
     
     CASE
         WHEN application_status = "Prospect" THEN 1
@@ -220,6 +219,11 @@ SELECT
     END AS sort_helper_admission_status
     
 FROM filtered_data AS filtered_data
-LEFT JOIN acceptance_data AS acc
-  ON filtered_data.contact_id = acc.contact_id_accepted
+
+LEFT JOIN acceptance_data AS accepted
+  ON filtered_data.contact_id = accepted.contact_id_accepted
+  
+LEFT JOIN admission_data AS admission 
+    ON filtered_data.contact_id = admission.contact_id_admissions
+  
 
