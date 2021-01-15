@@ -67,7 +67,6 @@ SELECT
     CA.Situational_Fit_Type_c,
     CA.Strategic_Type_c AS match_type, #match type
     CA.Verification_Status_c,
-    CA.Student_c,
 
 #Contact 
     C.full_name_c,
@@ -162,11 +161,8 @@ WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted 
 
 )
 
-SELECT 
-    filtered_data.*
-        EXCEPT (admission_status_c),
-    acc.*
-        EXCEPT (student_c),
+SELECT *
+    EXCEPT (admission_status_c),
     
     CASE
         WHEN application_status = "Prospect" THEN 1
