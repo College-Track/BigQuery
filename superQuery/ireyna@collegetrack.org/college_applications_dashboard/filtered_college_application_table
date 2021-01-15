@@ -145,7 +145,7 @@ WHERE C.grade_c = '12th Grade'
 fit_type_acceptances AS 
 (
 SELECT
-    student_c AS contact_id_accepted, #contact id
+    student_c, #contact id
     accnt.name AS school_name_accepted,
     College_Fit_Type_Applied_c AS fit_type_accepted,
     CASE 
@@ -165,7 +165,8 @@ WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted 
 SELECT 
     filtered_data.*
         EXCEPT (admission_status_c),
-    acc.*,
+    acc.*
+        EXCEPT (student_c),
     
     CASE
         WHEN application_status = "Prospect" THEN 1
@@ -191,5 +192,5 @@ SELECT
     
 FROM filtered_data AS filtered_data
 LEFT JOIN fit_type_acceptances AS acc
-  ON filtered_data.contact_id = acc.contact_id_accepted
+  ON filtered_data.contact_id = acc.student_c
 
