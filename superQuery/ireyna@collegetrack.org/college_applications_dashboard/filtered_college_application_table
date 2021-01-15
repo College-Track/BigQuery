@@ -28,6 +28,11 @@ SELECT
         ELSE CA.application_status_c
     END AS application_status,
     
+     CASE 
+        WHEN admission_status_c = "Accepted" THEN College_Fit_Type_Applied_c
+        WHEN (admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) THEN fit_type_enrolled_c
+    END AS fit_type_accepted,
+    
     CASE
         WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
         WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
@@ -177,19 +182,13 @@ SELECT
         WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
         WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         ELSE fit_type_enrolled_c
-    END AS fit_type_enrolled_c_acceptance_data,
+    END AS fit_type_enrolled_c,
     
     CASE
         WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
         WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         ELSE College_Fit_Type_Applied_c
-    END AS College_Fit_Type_Applied_acceptance_data,
-    
-     CASE 
-        WHEN admission_status_c = "Accepted" THEN College_Fit_Type_Applied_acceptance_data
-        WHEN (admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) THEN fit_type_enrolled_c_acceptance_data
-    END AS fit_type_accepted
-    
+    END AS College_Fit_Type_Applied_c,
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -231,7 +230,8 @@ SELECT
 
 SELECT 
     filtered_data.*,
-    accepted.*,
+    accepted.*
+        EXCEPT (fit_type_enrolled_c,College_Fit_Type_Applied_c),
     admission.*,
     
     CASE
@@ -260,6 +260,7 @@ SELECT
         WHEN fit_type_accepted = "None - 2-year or technical" THEN 5
         ELSE 6
     END AS sort_helper_acceptance_by_fit_type
+    
 
 FROM filtered_data AS filtered_data
 
