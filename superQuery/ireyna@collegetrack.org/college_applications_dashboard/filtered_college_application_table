@@ -67,6 +67,7 @@ SELECT
     CA.Situational_Fit_Type_c,
     CA.Strategic_Type_c AS match_type, #match type
     CA.Verification_Status_c,
+    CA.Student_c,
 
 #Contact 
     C.full_name_c,
@@ -141,10 +142,10 @@ WHERE C.grade_c = '12th Grade'
     AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34 #11th Grade Spring Term
 ),
 
-fit_type_acceptances AS 
+acceptance_data AS 
 (
 SELECT
-    student_c, #contact id
+    student_c AS contact_id_accepted, #contact id
     accnt.name AS school_name_accepted,
     College_Fit_Type_Applied_c AS fit_type_accepted,
     CASE 
@@ -158,11 +159,43 @@ LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.College_University_c = accnt.id
         
 WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+),
 
+admission_data AS
+(
+SELECT 
+    student_c AS contact_id_admissions,
+    
+#college application data
+    accnt.name AS school_name_enrolled,
+    Fit_Type_Enrolled_c AS fit_type_enrolled,
+    Type_of_School_c as school_type_enrolled,
+    CASE
+        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded__c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
+        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        ELSE fit_type_enrolled_c
+    END AS sort_helper_enroll_by_fit_type,
+    CASE
+        WHEN fit_type_enrolled_c = "Best Fit" THEN 1
+        WHEN fit_type_enrolled_c = "Situational" THEN 2
+        WHEN fit_type_enrolled_c = "Good Fit" THEN 3
+        WHEN fit_type_enrolled_c = "Local Affordable" THEN 4
+        WHEN fit_type_enrolled_c = "None - 4-year" THEN 5
+        WHEN fit_type_enrolled_c = "None - 2-year or technical" THEN 6
+        ELSE 0
+    END AS sort_helper_enroll_by_fit_type_2
+    
+    FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
+    LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
+        ON app.College_University_c = accnt.id
+     
+    WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
 )
 
-SELECT *
-    EXCEPT (admission_status_c),
+SELECT 
+    filtered_data.*
+        EXCEPT (admission_status_c),
+    acc.*,
     
     CASE
         WHEN application_status = "Prospect" THEN 1
@@ -187,6 +220,6 @@ SELECT *
     END AS sort_helper_admission_status
     
 FROM filtered_data AS filtered_data
-LEFT JOIN fit_type_acceptances AS acc
-  ON filtered_data.contact_id = acc.student_c
+LEFT JOIN acceptance_data AS acc
+  ON filtered_data.contact_id = acc.contact_id_accepted
 
