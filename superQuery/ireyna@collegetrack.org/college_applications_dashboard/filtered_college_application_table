@@ -14,7 +14,6 @@ SELECT
 #college application data    
     CA.name,
     CA.College_University_c AS app_college_id,
-    CA.admission_status_c,
     CASE
         WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         ELSE admission_status_c
@@ -196,8 +195,8 @@ SELECT
 )
 
 SELECT 
-    filtered_data.*
-        EXCEPT (admission_status_c),
+    filtered_data.*,
+        #EXCEPT (admission_status_c),
     accepted.*,
     admission.*,
     
