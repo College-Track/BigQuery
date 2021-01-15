@@ -88,7 +88,15 @@ SELECT
     --((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
     C.high_school_graduating_class_c,
     C.College_Track_Status_Name,
-    C.gpa_cumulative_c AS cgpa_11th_grade,
+    C.gpa_cumulative_c,
+    CASE
+        WHEN C.gpa_cumulative_c < 2.5 THEN '2.49 or below'
+        WHEN (C.gpa_cumulative_c >=2.5 AND C.gpa_cumulative_c < 3) THEN '2.5 - 2.99'
+        WHEN (C.gpa_cumulative_c >=3 AND C.gpa_cumulative_c < 3.5) THEN '3 - 3.49'
+        WHEN (C.gpa_cumulative_c >=3.5 AND C.gpa_cumulative_c < 4) THEN '3.5 - 3.99'
+        WHEN (C.gpa_cumulative_c >=4 AND C.gpa_cumulative_c < 4.5) THEN '4 - 4.49'
+        ELSE '4.5+ or above'
+    END cgpa_11th_grade_bucket,
     C.grade_c, 
     C.Gender_c ,
     C.Ethnic_background_c ,
