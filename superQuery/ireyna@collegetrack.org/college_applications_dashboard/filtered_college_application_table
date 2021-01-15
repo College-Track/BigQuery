@@ -36,13 +36,12 @@ SELECT
         WHEN CA.application_status_c IS NULL THEN "No College Application"
         ELSE CA.application_status_c
     END AS application_status,
+    
     CASE
-        WHEN CA.College_Fit_Type_Applied_c = "Best Fit" THEN 1
-        WHEN CA.College_Fit_Type_Applied_c = "Good Fit" THEN 2
-        WHEN CA.College_Fit_Type_Applied_c = "Local Affordable" THEN 3
-        WHEN CA.College_Fit_Type_Applied_c = "None" THEN 4
-        ELSE 0
-    END AS sort_helper_app_by_fit_type,
+        WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
+        WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        ELSE CA.College_Fit_Type_Applied_c
+    END AS College_Fit_Type_Applied,
     
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
@@ -192,8 +191,8 @@ SELECT
     app.id AS college_enrolled_app_id,
     Type_of_School_c as school_type_enrolled,
     CASE
-        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded__c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
-        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
+        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         ELSE fit_type_enrolled_c
     END AS fit_type_enrolled_c,
     
@@ -225,8 +224,17 @@ SELECT
         WHEN application_status = "Applied" THEN 3
         WHEN application_status = "Accepted" THEN 4
         WHEN application_status = "No College Application" THEN 5
-        ELSE 0
-    END AS sort_helper_app_status 
+        ELSE 6
+    END AS sort_helper_app_status, 
+    
+    CASE
+        WHEN College_Fit_Type_Applied = "Best Fit" THEN 1
+        WHEN College_Fit_Type_Applied = "Good Fit" THEN 2
+        WHEN College_Fit_Type_Applied = "Local Affordable" THEN 3
+        WHEN College_Fit_Type_Applied = "None - 4-year" THEN 4
+        WHEN College_Fit_Type_Applied = "None - 2-year or technical" THEN 5
+        ELSE 6
+    END AS sort_helper_app_by_fit_type,
     
 
 FROM filtered_data AS filtered_data
