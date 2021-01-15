@@ -10,12 +10,6 @@ SELECT
         WHEN admission_status_c IS NULL THEN "Admission Status Not Updated"
         ELSE admission_status_c
     END AS admission_status,
-    CASE 
-        WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
-        THEN 1
-        ELSE 0
-    END AS accepted,
-    CA.application_status_c,
     CASE  
         WHEN CA.application_status_c IS NULL THEN "No College Application"
         ELSE CA.application_status_c
@@ -64,7 +58,6 @@ SELECT
     CA.Situational_Fit_Type_c,
     CA.Strategic_Type_c AS match_type, #match type
     CA.Verification_Status_c,
-    CA.Student_c,
 
 #Contact 
     C.full_name_c,
@@ -137,10 +130,30 @@ WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
     AND AT_Record_Type_Name = 'High School Semester'
     AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34 #11th Grade Spring Term
+),
+
+fit_type_acceptances AS 
+(
+SELECT
+    student_c, #contact id
+    accnt.name AS school_name_accepted,
+    College_Fit_Type_Applied_c AS fit_type_applied_accepted,
+    CASE 
+        WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
+        THEN 1
+        ELSE 0
+    END AS accepted
+    
+FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
+LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
+        ON app.College_University_c = accnt.id
+        
+WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+
 )
 
 SELECT *
-    EXCEPT (application_status_c, admission_status_c),
+    EXCEPT (admission_status_c),
     
     CASE
         WHEN application_status = "Prospect" THEN 1
@@ -164,4 +177,6 @@ SELECT *
         ELSE 0
     END AS sort_helper_admission_status
     
-FROM filtered_data
+FROM filtered_data AS filtered_data
+LEFT JOIN fit_type_acceptances AS acc
+  ON filtered_data.contact_id = acc.student_c
