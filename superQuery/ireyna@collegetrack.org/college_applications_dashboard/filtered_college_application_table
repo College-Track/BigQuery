@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -186,9 +195,15 @@ SELECT
     END AS College_Fit_Type_Applied_c,
     
     CASE 
-        WHEN admission_status_c = "Accepted" THEN College_Fit_Type_Applied_c
-        WHEN (admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) THEN fit_type_enrolled_c
-    END AS fit_type_accepted
+        WHEN ((admission_status_c = "Accepted") AND (College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
+        WHEN ((admission_status_c = "Accepted") AND (College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        WHEN admission_status_c = "Accepted" THEN  College_Fit_Type_Applied_c
+          
+        WHEN ((admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) AND (fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
+        WHEN ((admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) AND (fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        ELSE fit_type_enrolled_c
+    END AS fit_type_accepted,
+    
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -229,7 +244,8 @@ SELECT
 )
 
 SELECT 
-    filtered_data.*,
+    filtered_data.*
+        EXCEPT (College_Fit_Type_Applied_c),
     accepted.*
         EXCEPT (fit_type_enrolled_c,College_Fit_Type_Applied_c),
     admission.*,
@@ -270,3 +286,4 @@ LEFT JOIN acceptance_data AS accepted
 LEFT JOIN admission_data AS admission 
     ON filtered_data.contact_id = admission.contact_id_admissions
   
+
