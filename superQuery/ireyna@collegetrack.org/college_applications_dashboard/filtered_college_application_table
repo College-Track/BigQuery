@@ -179,13 +179,22 @@ admission_data AS
 SELECT 
     student_c AS contact_id_admissions,
     accnt.name AS school_name_enrolled,
-    Fit_Type_Enrolled_c,
     Type_of_School_c as school_type_enrolled,
     CASE
         WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded__c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
         WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded__c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         ELSE fit_type_enrolled_c
-    END AS fit_type_enrolled_category,
+    END AS fit_type_enrolled_c,
+    
+    CASE
+        WHEN fit_type_enrolled_c = "Best Fit" THEN 1
+        WHEN fit_type_enrolled_c = "Situational" THEN 2
+        WHEN fit_type_enrolled_c = "Good Fit" THEN 3
+        WHEN fit_type_enrolled_c = "Local Affordable" THEN 4
+        WHEN fit_type_enrolled_c = "None - 4-year" THEN 5
+        WHEN fit_type_enrolled_c = "None - 2-year or technical" THEN 6
+        ELSE 0
+    END AS sort_helper_enroll_by_fit_type
     
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -196,7 +205,6 @@ SELECT
 
 SELECT 
     filtered_data.*,
-        #EXCEPT (admission_status_c),
     accepted.*,
     admission.*,
     
@@ -207,32 +215,9 @@ SELECT
         WHEN application_status = "Accepted" THEN 4
         WHEN application_status = "No College Application" THEN 5
         ELSE 0
-    END AS sort_helper_app_status,    
+    END AS sort_helper_app_status 
     
-    #CASE
-    #    WHEN admission_status = "Accepted" THEN 1
-    #    WHEN admission_status = "Accepted and Enrolled" THEN 2
-    #    WHEN admission_status = "Accepted and Deferred" THEN 3
-    #    WHEN admission_status = "Wait-listed" THEN 4
-    #    WHEN admission_status = "Conditional" THEN 5
-    #    WHEN admission_status = "Withdrew Application" THEN 6
-    #    WHEN admission_status = "Undecided" THEN 7
-    #    WHEN admission_status = "Denied" THEN 8
-    #    WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
-    #    ELSE 0
-    #END AS sort_helper_admission_status,
-    
-    CASE
-        WHEN fit_type_enrolled_category = "Best Fit" THEN 1
-        WHEN fit_type_enrolled_category = "Situational" THEN 2
-        WHEN fit_type_enrolled_category = "Good Fit" THEN 3
-        WHEN fit_type_enrolled_category = "Local Affordable" THEN 4
-        WHEN fit_type_enrolled_category = "None - 4-year" THEN 5
-        WHEN fit_type_enrolled_category = "None - 2-year or technical" THEN 6
-        ELSE 0
-    END AS sort_helper_enroll_by_fit_type
-    
-    
+
 FROM filtered_data AS filtered_data
 
 LEFT JOIN acceptance_data AS accepted
