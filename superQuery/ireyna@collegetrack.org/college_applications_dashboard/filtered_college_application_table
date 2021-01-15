@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -58,6 +67,7 @@ SELECT
     CA.Situational_Fit_Type_c,
     CA.Strategic_Type_c AS match_type, #match type
     CA.Verification_Status_c,
+    CA.Student_c,
 
 #Contact 
     C.full_name_c,
@@ -135,9 +145,9 @@ WHERE C.grade_c = '12th Grade'
 fit_type_acceptances AS 
 (
 SELECT
-    student_c, #contact id
+    student_c AS contact_id_accepted, #contact id
     accnt.name AS school_name_accepted,
-    College_Fit_Type_Applied_c AS fit_type_applied_accepted,
+    College_Fit_Type_Applied_c AS fit_type_accepted,
     CASE 
         WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
         THEN 1
@@ -152,8 +162,10 @@ WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted 
 
 )
 
-SELECT *
-    EXCEPT (admission_status_c),
+SELECT 
+    filtered_data.*
+        EXCEPT (admission_status_c),
+    acc.*,
     
     CASE
         WHEN application_status = "Prospect" THEN 1
@@ -173,10 +185,11 @@ SELECT *
         WHEN admission_status = "Withdrew Application" THEN 6
         WHEN admission_status = "Undecided" THEN 7
         WHEN admission_status = "Denied" THEN 8
-        WHEN admission_status = "Admission Status Not Updated" THEN 9
+        WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
         ELSE 0
     END AS sort_helper_admission_status
     
 FROM filtered_data AS filtered_data
 LEFT JOIN fit_type_acceptances AS acc
-  ON filtered_data.contact_id = acc.student_c
+  ON filtered_data.contact_id = acc.contact_id_accepted
+
