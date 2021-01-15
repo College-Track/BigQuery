@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -114,16 +123,6 @@ SELECT
         ELSE C.fa_req_fafsa_c 
     END AS FAFSA_status,
     
-#College Aspiration data
-    CAP.Id AS aspiration_id,
-    CAP.Aspiration_Category_c,
-    CASE 
-        WHEN CAP.Id IS NULL THEN "No College Aspiration"
-        WHEN CAP.Aspiration_Category_c IS NULL THEN "Category Not Selected"
-        ELSE CAP.Aspiration_Category_c
-    END AS aspiration_category,
-    CAP. College_University_c AS aspiration_college_id,
-    
 #Academic Term data 
     A_T.gpa_semester_cumulative_c AS CGPA_11th,
     A_T.Name AS Name_AT, #academic term name
@@ -132,8 +131,7 @@ SELECT
     A_T.ct_coach_c,
     
 #Account object mapping
-    ACCNT_APP.Name AS app_college_name, 
-    ACCNT_ASP.Name AS aspiration_college_name
+    ACCNT_APP.Name AS app_college_name
     
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
@@ -141,10 +139,6 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
         ON C.contact_id = CA.student_c
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_app #pull in college name in application 
         ON CA.college_university_c = accnt_app.id
-LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` AS CAP
-        ON C.contact_id = CAP.student_c
-LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_asp #pull in college name in aspiration
-        ON CAP.college_university_c = accnt_asp.id        
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
         ON C.contact_Id = A_T.contact_Id 
         
@@ -155,17 +149,7 @@ WHERE C.grade_c = '12th Grade'
 )
 
 SELECT *
-    EXCEPT (application_status_c, Aspiration_Category_c, admission_status_c),
-    
-    CASE
-        WHEN Aspiration_Category = "Guaranteed" THEN 1
-        WHEN Aspiration_Category = "Match" THEN 2
-        WHEN Aspiration_Category = "Likely" THEN 3
-        WHEN Aspiration_Category = "Reach" THEN 4
-        WHEN Aspiration_Category = "Category Not Selected" THEN 5
-        WHEN Aspiration_Category = "No College Aspiration" THEN 6
-        ELSE 0
-    END AS sort_helper_aspiration_category,
+    EXCEPT (application_status_c, admission_status_c),
     
     CASE
         WHEN application_status = "Prospect" THEN 1
@@ -190,3 +174,4 @@ SELECT *
     END AS sort_helper_admission_status
     
 FROM filtered_data
+
