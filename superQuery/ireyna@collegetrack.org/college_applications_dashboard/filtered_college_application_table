@@ -169,6 +169,7 @@ acceptance_data AS
 SELECT
     student_c AS contact_id_accepted, #contact id
     accnt.name AS school_name_accepted,
+    app.id AS college_accepted_app_id,
     College_Fit_Type_Applied_c AS fit_type_accepted,
     CASE 
         WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
@@ -188,6 +189,7 @@ admission_data AS
 SELECT 
     student_c AS contact_id_admissions,
     accnt.name AS school_name_enrolled,
+    app.id AS college_enrolled_app_id,
     Type_of_School_c as school_type_enrolled,
     CASE
         WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded__c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not Classified")))  THEN "None - 2-year or technical"
@@ -209,7 +211,7 @@ SELECT
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.College_University_c = accnt.id
      
-    WHERE admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred")
+    WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
 )
 
 SELECT 
