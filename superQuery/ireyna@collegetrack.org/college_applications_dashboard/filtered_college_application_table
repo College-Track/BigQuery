@@ -187,7 +187,7 @@ SELECT
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
         ON app.College_University_c = accnt.id
      
-    WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
+    WHERE admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred")
 )
 
 SELECT 
