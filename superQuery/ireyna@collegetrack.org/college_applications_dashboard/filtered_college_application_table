@@ -16,7 +16,7 @@ SELECT
     CA.College_University_c AS app_college_id,
     CA.admission_status_c,
     CASE
-        WHEN admission_status_c IS NULL THEN "Admission Status Not Updated"
+        WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         ELSE admission_status_c
     END AS admission_status_c,
     
