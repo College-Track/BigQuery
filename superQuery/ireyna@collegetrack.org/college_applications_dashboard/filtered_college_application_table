@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application, College Aspiration data. Pulls GPA data from Academic Term"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -252,8 +261,12 @@ SELECT
         WHEN fit_type_enrolled_admission_table = "None - 4-year" THEN 5
         WHEN fit_type_enrolled_admission_table = "None - 2-year or technical" THEN 6
         ELSE 7
-    END AS sort_helper_enroll_by_fit_type
+    END AS sort_helper_enroll_by_fit_type,
     
+    CASE 
+        WHEN admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred") THEN contact_id_accepted
+        ELSE NULL 
+    END AS contact_id_acceptance   
 
 FROM filtered_data AS filtered_data
 
@@ -263,3 +276,4 @@ LEFT JOIN acceptance_data AS accepted
 LEFT JOIN admission_data AS admission 
     ON filtered_data.contact_id = admission.contact_id_admissions
   
+
