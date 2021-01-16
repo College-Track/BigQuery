@@ -71,15 +71,6 @@ SELECT
         ELSE fit_type_enrolled_c
     END AS fit_type_enrolled_c,
     
-    #CASE
-    #    WHEN CA.fit_type_enrolled_c = "Best Fit" THEN 1
-    #    WHEN CA.fit_type_enrolled_c = "Situational" THEN 2
-    #    WHEN CA.fit_type_enrolled_c = "Good Fit" THEN 3
-    #    WHEN CA.fit_type_enrolled_c = "Local Affordable" THEN 4
-    #    WHEN CA.fit_type_enrolled_c = "None" THEN 5
-    #    ELSE 0
-    #END AS sort_helper_enroll_by_fit_type,
-    CA.Housing_Application_c,
     CA.id as college_app_id,
     CA.Predominant_Degree_Awarded_c,
     CA.Type_of_School_c,
@@ -173,7 +164,7 @@ WHERE C.grade_c = '12th Grade'
 acceptance_data AS 
 (
 SELECT
-    student_c AS contact_id_accepted, #contact id
+    student_c, #contact id
     accnt.name AS school_name_accepted,
     app.id AS college_accepted_app_id,
     CASE 
@@ -223,7 +214,8 @@ SELECT
 SELECT 
     filtered_data.*
         EXCEPT (College_Fit_Type_Applied_c),
-    accepted.*,
+    accepted.*
+        EXCEPT (student_c),
     admission.*,
     
     CASE
@@ -264,14 +256,14 @@ SELECT
     END AS sort_helper_enroll_by_fit_type,
     
     CASE 
-        WHEN admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred") THEN contact_id_accepted
+        WHEN admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred") THEN accepted.student_c
         ELSE NULL 
-    END AS contact_id_acceptance   
+    END AS contact_id_accepted   
 
 FROM filtered_data AS filtered_data
 
 LEFT JOIN acceptance_data AS accepted
-  ON filtered_data.contact_id = accepted.contact_id_accepted
+  ON filtered_data.contact_id = accepted.student_c
   
 LEFT JOIN admission_data AS admission 
     ON filtered_data.contact_id = admission.contact_id_admissions
