@@ -6,7 +6,6 @@ WITH gather_data AS (
     site_short,
     site_sort,
     high_school_graduating_class_c,
-    gpa_hs_cumulative_c,
     gpa_semester_cumulative_c,
     gpa_semester_c,
     AT_Id,
@@ -17,6 +16,7 @@ WITH gather_data AS (
   WHERE
     college_track_status_c IN ('18a', '11A', '12A')
     AND term_c != 'Summer'
+    AND GAS_End_Date <= CURRENT_DATE() 
   ORDER BY
     Contact_Id,
     GAS_Start_Date
