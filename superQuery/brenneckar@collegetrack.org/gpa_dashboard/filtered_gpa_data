@@ -38,27 +38,14 @@ gather_9th_grade_spring_gpa AS (
     AND gpa_semester_cumulative_c IS NOT NULL
     AND AT_Grade_c = '9th Grade'
 ),
+
 gather_aa_attendance AS (
-  SELECT
-    student_c,
-    academic_semester_c,
-    CASE
-      WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
-      ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
-    END AS attendance_rate
-  FROM
-    `data-warehouse-289815.salesforce_clean.class_template`
-  WHERE
-    department_c = 'Academic Affairs'
-  GROUP BY
-    student_c,
-    academic_semester_c
+
+SELECT student_c, academic_semester_c, (SUM(Attendance_Numerator_c) /SUM(Attendance_Denominator_c)) AS attendance_rate
+FROM `data-warehouse-289815.salesforce_clean.class_template`
+WHERE department_c = 'Academic Affairs'
+GROUP BY student_c, academic_semester_c
 )
-
--- SELECT *
--- FROM gather_aa_attendance
--- LIMIT 100
-
 SELECT
   GD.*,
   G9GPA.gpa_semester_cumulative_c as ninth_cum_gpa,
