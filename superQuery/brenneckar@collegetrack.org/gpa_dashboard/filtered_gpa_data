@@ -5,10 +5,12 @@ WITH gather_data AS (
     site_abrev,
     site_short,
     site_sort,
+    region_abrev,
     high_school_graduating_class_c,
     gpa_semester_cumulative_c,
     gpa_semester_c,
     AT_Id,
+    Current_HS_CT_Coach_c,
     REPLACE(
       GAS_Name,
       ' (Semester)',
@@ -42,5 +44,3 @@ SELECT
 FROM
   gather_data GD
   LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
-LIMIT
-  1000
