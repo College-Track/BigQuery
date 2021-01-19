@@ -1,0 +1,27 @@
+WITH gather_data AS (
+  SELECT
+    Contact_Id,
+    full_name_c,
+    site_abrev,
+    site_short,
+    site_sort,
+    high_school_graduating_class_c,
+    gpa_hs_cumulative_c,
+    gpa_semester_cumulative_c,
+    gpa_semester_c,
+    AT_Name,
+    GAS_Start_Date
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    college_track_status_c IN ('18a', '11A', '12A')
+  ORDER BY
+    Contact_Id,
+    GAS_Start_Date
+)
+SELECT
+  *
+FROM
+  gather_data
+LIMIT
+  1000
