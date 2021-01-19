@@ -54,11 +54,16 @@ gather_aa_attendance AS (
     student_c,
     academic_semester_c
 )
-SELECT
-  GD.*,
-  G9GPA.gpa_semester_cumulative_c as ninth_cum_gpa,
-  AA.attendance_rate
-FROM
-  gather_data GD
-  LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
-  LEFT JOIN gather_aa_attendance AA ON AA.academic_semester_c = GD.AT_Id
+
+SELECT *
+FROM gather_aa_attendance
+LIMIT 100
+
+-- SELECT
+--   GD.*,
+--   G9GPA.gpa_semester_cumulative_c as ninth_cum_gpa,
+--   AA.attendance_rate
+-- FROM
+--   gather_data GD
+--   LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
+--   LEFT JOIN gather_aa_attendance AA ON AA.academic_semester_c = GD.AT_Id
