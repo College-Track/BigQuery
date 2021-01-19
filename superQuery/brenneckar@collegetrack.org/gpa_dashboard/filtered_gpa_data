@@ -9,21 +9,38 @@ WITH gather_data AS (
     gpa_semester_cumulative_c,
     gpa_semester_c,
     AT_Id,
-    AT_Name,
+    REPLACE(
+      GAS_Name,
+      ' (Semester)',
+      ''
+    ) AS GAS_Name,
     GAS_Start_Date
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     college_track_status_c IN ('18a', '11A', '12A')
     AND term_c != 'Summer'
-    AND GAS_End_Date <= CURRENT_DATE() 
+    AND GAS_End_Date <= CURRENT_DATE()
   ORDER BY
     Contact_Id,
     GAS_Start_Date
+),
+gather_9th_grade_spring_gpa AS (
+  SELECT
+    Contact_Id,
+    gpa_semester_cumulative_c
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    term_c = 'Spring'
+    AND gpa_semester_cumulative_c IS NOT NULL
+    AND AT_Grade_c = '9th Grade'
 )
 SELECT
-  *
+  GD.*,
+  G9GPA.gpa_semester_cumulative_c as ninth_cum_gpa
 FROM
-  gather_data
+  gather_data GD
+  LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
 LIMIT
   1000
