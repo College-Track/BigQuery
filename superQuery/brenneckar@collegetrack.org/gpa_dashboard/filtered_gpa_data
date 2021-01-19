@@ -9,6 +9,7 @@ WITH gather_data AS (
     gpa_hs_cumulative_c,
     gpa_semester_cumulative_c,
     gpa_semester_c,
+    AT_Id,
     AT_Name,
     GAS_Start_Date
   FROM
