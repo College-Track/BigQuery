@@ -20,7 +20,7 @@ WITH gather_data AS (
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
-    college_track_status_c IN ('18a', '11A', '12A')
+    college_track_status_c IN ('11A', '12A')
     AND term_c != 'Summer'
     AND GAS_End_Date <= CURRENT_DATE()
   ORDER BY
