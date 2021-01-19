@@ -57,7 +57,17 @@ gather_aa_attendance AS (
 combine_data AS (
   SELECT
     GD.*,
-    G9GPA.gpa_semester_cumulative_c as ninth_cum_gpa,
+    G9GPA.gpa_semester_cumulative_c AS ninth_cum_gpa,
+    CASE
+      WHEN G9GPA.gpa_semester_cumulative_c IS NULL THEN "No Data"
+      WHEN G9GPA.gpa_semester_cumulative_c < 2.5 THEN "<2.5"
+      WHEN G9GPA.gpa_semester_cumulative_c < 2.75 THEN "2.5-2.74"
+      WHEN G9GPA.gpa_semester_cumulative_c < 3.0 THEN "2.75 - 2.99"
+      WHEN G9GPA.gpa_semester_cumulative_c < 3.25 THEN "3.0 - 3.24"
+      WHEN G9GPA.gpa_semester_cumulative_c < 3.5 THEN "3.25 - 3.49"
+      WHEN G9GPA.gpa_semester_cumulative_c < 3.75 THEN "3.5 - 3.74"
+      WHEN G9GPA.gpa_semester_cumulative_c >= 3.75 THEN "3.75+"
+    END AS ninth_cum_gpa_bucket,
     AA.attendance_rate,
     CASE
       WHEN AA.attendance_rate IS NULL THEN "No Data"
