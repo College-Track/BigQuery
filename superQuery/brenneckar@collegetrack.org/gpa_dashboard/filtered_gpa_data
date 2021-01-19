@@ -5,34 +5,82 @@ WITH gather_data AS (
     site_abrev,
     site_short,
     site_sort,
+    region_abrev,
     high_school_graduating_class_c,
     gpa_semester_cumulative_c,
     gpa_semester_c,
     AT_Id,
-    AT_Name,
+    Current_HS_CT_Coach_c,
+    REPLACE(
+      GAS_Name,
+      ' (Semester)',
+      ''
+    ) AS GAS_Name,
     GAS_Start_Date
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     college_track_status_c IN ('18a', '11A', '12A')
     AND term_c != 'Summer'
-    AND GAS_End_Date <= CURRENT_DATE() 
+    AND GAS_End_Date <= CURRENT_DATE()
   ORDER BY
     Contact_Id,
     GAS_Start_Date
 ),
-
 gather_9th_grade_spring_gpa AS (
-SELECT Contact_Id, gpa_semester_cumulative_c
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE term_c = 'Spring' AND gpa_semester_cumulative_c IS NOT NULL AND AT_Grade_c = '9th Grade'
-
+  SELECT
+    Contact_Id,
+    gpa_semester_cumulative_c
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    term_c = 'Spring'
+    AND gpa_semester_cumulative_c IS NOT NULL
+    AND AT_Grade_c = '9th Grade'
+),
+gather_aa_attendance AS (
+  SELECT
+    student_c,
+    academic_semester_c,
+    CASE
+      WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
+      ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
+    END AS attendance_rate
+  FROM
+    `data-warehouse-289815.salesforce_clean.class_template`
+  WHERE
+    department_c = 'Academic Affairs'
+  GROUP BY
+    student_c,
+    academic_semester_c
+),
+combine_data AS (
+  SELECT
+    GD.*,
+    G9GPA.gpa_semester_cumulative_c as ninth_cum_gpa,
+    AA.attendance_rate,
+    CASE
+      WHEN AA.attendance_rate IS NULL THEN "No Data"
+      WHEN AA.attendance_rate <.65 THEN "< 65%"
+      WHEN AA.attendance_rate >=.65
+      AND AA.attendance_rate <.8 THEN "65% -79%"
+      WHEN AA.attendance_rate >= 0.8
+      AND AA.attendance_rate <.9 THEN "80% - 89%"
+      ELSE "90%+"
+    END AS attendance_bucket
+  FROM
+    gather_data GD
+    LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
+    LEFT JOIN gather_aa_attendance AA ON AA.academic_semester_c = GD.AT_Id
 )
 SELECT
-  GD.*,
-  G9GPA.gpa_semester_cumulative_c as ninth_cum_gpa
+  *,
+  CASE
+    WHEN attendance_bucket = 'No Data' THEN 1
+    WHEN attendance_bucket = '< 65%' THEN 2
+    WHEN attendance_bucket = '65% -79%' THEN 3
+    WHEN attendance_bucket = '80% - 89%' THEN 4
+    WHEN attendance_bucket = '90%+' THEN 5
+  END AS sort_attendance_bucket
 FROM
-  gather_data GD
-  LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
-LIMIT
-  1000
+  combine_data
