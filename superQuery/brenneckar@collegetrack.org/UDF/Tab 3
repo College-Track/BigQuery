@@ -1,7 +1,7 @@
 SELECT
   Contact_Id,
   GPA_Semester_c,
-  `data-warehouse-289815.UDF.determine_buckets`(GPA_Semester_c, .5, 2.5, 3.5, "%") as gpa_bucket
+  `data-warehouse-289815.UDF.determine_buckets`(GPA_Semester_c, .5, 2.5, 3.5, "") as gpa_bucket
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE
