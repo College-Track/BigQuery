@@ -230,6 +230,7 @@ SELECT
     accepted.*
         EXCEPT (student_c),
     admission.*,
+    applied.*,
     
     CASE
         WHEN application_status = "Prospect" THEN 1
