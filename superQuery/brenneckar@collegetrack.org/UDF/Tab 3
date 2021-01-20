@@ -1,3 +1,4 @@
 SELECT Contact_Id, GPA_Semester_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE gpa_semester_c IS NOT NULL
 LIMIT 10
