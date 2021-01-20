@@ -11,9 +11,10 @@ LANGUAGE js AS """
     else {
         while(i <= num_internals){
             if (value < (low_number + increment * i)) return {return (low_number + increment * i) + bucket_type + "-" + (low_number + increment * (i +1))+ bucket_type}
+            i ++;
         }
         
-    }
+    };
     
     
 
