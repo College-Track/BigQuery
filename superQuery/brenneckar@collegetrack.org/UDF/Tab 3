@@ -1,0 +1,3 @@
+SELECT Contact_Id, GPA_Semester_c
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+LIMIT 10
