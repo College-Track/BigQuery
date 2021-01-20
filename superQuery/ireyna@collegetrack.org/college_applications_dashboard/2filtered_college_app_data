@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_test`
+OPTIONS
+    (
+    description= "Filtered College Application test"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
@@ -198,9 +205,9 @@ college_application_data AS
 (
 SELECT
     filtered.contact_id AS contact_id_applied,
-    accnt.name AS school_name_applied,
-    college_app_id AS college_applied_app_id,
     Type_of_School_c as school_type_applied,
+    accnt.name AS school_name_applied,
+    filtered.app_college_id AS college_applied_app_id,
     
     #accepted_data
     student_c_accepted,
