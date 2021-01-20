@@ -1,13 +1,21 @@
 CREATE OR REPLACE FUNCTION `data-warehouse-289815.UDF.determine_buckets`(value FLOAT64, increment FLOAT64, low_number FLOAT64, high_number FLOAT64, bucket_type STRING) 
 RETURNS STRING 
 LANGUAGE js AS """
+    var range = high_number - low_number
+    var num_intervals = range / increment
+    var i = 1 
+    
     if (value == null) {return "No Data"}
-    else if (value <= low_number){return "<=" + low_number + bucket_type}
+    else if (value < low_number){return "< " + low_number + bucket_type}
     else if (value >= high_number){return high_number + bucket_type + "+"}
-    else if (value <= (low_number + increment * 1)){return (low_number) + bucket_type + "-" + (low_number + increment * 1) + bucket_type}
-    else if (value <= (low_number + increment * 2)){return (low_number + increment * 1) + bucket_type + "-" + (low_number + increment * 2)+ bucket_type}
-    else if (value <= (low_number + increment * 3)){return (low_number + increment * 2) + bucket_type + "-" + (low_number + increment * 3)+ bucket_type}
-    else if (value <= (low_number + increment * 4)){return (low_number + increment * 3) + bucket_type + "-" + (low_number + increment * 4)+ bucket_type}
-    else {return null};
+    else {
+        while(i <= num_internals){
+            if (value < (low_number + increment * i)) return {return (low_number + increment * i) + bucket_type + "-" + (low_number + increment * (i +1))+ bucket_type}
+        }
+        
+    }
+    
+    
+
     
 """;
