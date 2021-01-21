@@ -82,6 +82,7 @@ SELECT
     C.contact_id,
     --((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
     C.high_school_graduating_class_c,
+    C.npsp_primary_affiliation_c, 
     C.College_Track_Status_Name,
     C.gpa_cumulative_c,
     CASE
@@ -134,10 +135,6 @@ SELECT
         ELSE C.fa_req_fafsa_c 
     END AS FAFSA_status,
 
-    
-#Account object mapping
-    ACCNT_APP.Name AS app_college_name
-    
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
