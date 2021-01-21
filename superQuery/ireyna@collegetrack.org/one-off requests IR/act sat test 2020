@@ -24,7 +24,7 @@ FROM `data-warehouse-289815.salesforce_clean.test_clean` AS test
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
 ON test.academic_semester_c = A_T.AT_id
 )
-SELECT max_score.*,student_info.*
+SELECT max_s.*,student_info.*
 FROM student_info AS student_info
 RIGHT JOIN max_score AS max_S
     ON max_s.contact_id = student_info.contact_id
