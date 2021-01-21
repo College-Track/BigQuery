@@ -11,8 +11,8 @@ OR REPLACE FUNCTION `data-warehouse-289815.UDF.determine_buckets`(
     var i = 1;
 
     if (value == null) { return " No Data " }
-    else if (value < low_number) { return " < " + low_number + bucket_type }
-    else if (value >= high_number) { return high_number + bucket_type + " + " }
+    else if (value < low_number) { return "< " + low_number + bucket_type }
+    else if (value >= high_number) { return high_number + bucket_type + "+" }
     else {
         while (i <= num_intervals) {
             var test_value = low_number + increment * i;
