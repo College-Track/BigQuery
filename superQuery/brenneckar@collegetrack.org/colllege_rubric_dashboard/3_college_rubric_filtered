@@ -48,26 +48,26 @@ WITH contact_at AS (
     Grade_c,
     Current_School_c,
     Fit_Type_c,
-    GPA_Cumulative_c,
+    college_eligibility_gpa_11th_grade AS GPA_Cumulative_c,
     CASE
-      WHEN GPA_Cumulative_c < 3 THEN "Below 3.0"
-      WHEN GPA_Cumulative_c < 3.25 THEN "3.0 - 3.24"
-      WHEN GPA_Cumulative_c >= 3.25 THEN "3.25+"
+      WHEN college_eligibility_gpa_11th_grade < 2.75 THEN "Below 2.75"
+      WHEN college_eligibility_gpa_11th_grade < 3.5 THEN "2.75 - 3.5"
+      WHEN college_eligibility_gpa_11th_grade >= 3.5 THEN "3.5+"
       ELSE "Missing"
     END AS CGPA_11th_bucket,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
     Most_Recent_GPA_Semester_c,
     CASE
-      WHEN Most_Recent_GPA_Semester_c < 3 THEN "Below 3.0"
-      WHEN Most_Recent_GPA_Semester_c < 3.25 THEN "3.0 - 3.24"
-      WHEN Most_Recent_GPA_Semester_c >= 3.25 THEN "3.25+"
+      WHEN Most_Recent_GPA_Semester_c < 2.75 THEN "Below 2.75"
+      WHEN Most_Recent_GPA_Semester_c < 3.5 THEN "2.75 - 3.5"
+      WHEN Most_Recent_GPA_Semester_c >= 3.5 THEN "3.5+"
       ELSE "Missing"
     END AS Most_Recent_GPA_Semester_bucket,
     Most_Recent_GPA_Cumulative_c,
     CASE
-      WHEN Most_Recent_GPA_Cumulative_c < 3 THEN "Below 3.0"
-      WHEN Most_Recent_GPA_Cumulative_c < 3.25 THEN "3.0 - 3.24"
-      WHEN Most_Recent_GPA_Cumulative_c >= 3.25 THEN "3.25+"
+      WHEN Most_Recent_GPA_Cumulative_c < 2.75 THEN "Below 2.75"
+      WHEN Most_Recent_GPA_Cumulative_c < 3.5 THEN "2.75 - 3.5"
+      WHEN Most_Recent_GPA_Cumulative_c >= 3.5 THEN "3.5+"
       ELSE "Missing"
     END AS Most_Recent_GPA_Cumulative_bucket,
     CASE
