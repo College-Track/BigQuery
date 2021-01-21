@@ -1,8 +1,8 @@
 SELECT
   Contact_Id,
   GPA_Semester_c,
-  `data-warehouse-289815.UDF.determine_buckets`(GPA_Semester_c,.5, 2.5, 3.5, "") as gpa_bucket,
-  `data-warehouse-289815.UDF.sort_created_buckets`(GPA_Semester_c,.5, 2.5, 3.5) as sortgpa_bucket,
+  `data-warehouse-289815.UDF.determine_buckets`(GPA_Semester_c,.25, 2.5, 3.5, "") as gpa_bucket,
+  `data-warehouse-289815.UDF.sort_created_buckets`(GPA_Semester_c,.25, 2.5, 3.5) as sortgpa_bucket,
 --   attendance_rate_c,
 --   `data-warehouse-289815.UDF.determine_buckets`(attendance_rate_c, 10, 65, 90, "%") as attendance_bucket
 FROM
