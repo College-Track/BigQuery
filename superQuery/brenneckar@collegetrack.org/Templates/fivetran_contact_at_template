@@ -15,7 +15,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
   WITH ValidStudentContact AS (
     SELECT
       C.Id AS Contact_Id,
-      C.GPA_Cumulative_c AS college_eligibility_gpa_11th_grade,
+      C.GPA_Cumulative_c AS GPA_Cumulative_c, -- want to rename to college_eligibility_gpa_11th_grade when ready
       C.*
     EXCEPT
       (
@@ -366,8 +366,8 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       A.record_type_id AS AT_RecordType_ID,
       A.Enrollment_Status_c AS AT_Enrollment_Status_c,
       A.Grade_c AS AT_Grade_c,
-      A.GPA_semester_c AS AT_Term_GPA,
-      A.GPA_semester_cumulative_c AS AT_Cumulative_GPA,
+      A.GPA_semester_c AS GPA_semester_c, -- want to rename to AT_Term_GPA when ready
+      A.GPA_semester_cumulative_c AS GPA_semester_cumulative_c, -- want to rename to AT_Cumulative_GPA when ready
       A.*
     EXCEPT(
         Id,
@@ -413,7 +413,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       `data-warehouse-289815.UDF.determine_buckets`(A.GPA_semester_c,.25, 2.5, 3.5, "") AS AT_Term_GPA_bucket,
       `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_c,.25, 2.5, 3.5) AS sort_AT_Term_GPA_bucket,
       `data-warehouse-289815.UDF.determine_buckets`(A.GPA_semester_cumulative_c,.25, 2.5, 3.5, "") AS AT_Cumulative_GPA_bucket,
-      `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_cumulative_c,.25, 2.5, 3.5) AS sort_AT_Cumulative_GPA,
+      `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_cumulative_c,.25, 2.5, 3.5) AS sort_AT_Cumulative_GPA,      
       CASE
         WHEN CURRENT_DATE() >= GAS.start_date_c
         AND CURRENT_DATE() <= GAS.end_date_c THEN true
