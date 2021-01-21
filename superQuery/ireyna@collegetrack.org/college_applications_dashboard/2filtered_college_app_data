@@ -3,25 +3,28 @@ WITH filtered_data AS #compile college application, contact data, academic term 
 SELECT
     
 #college application data    
-    CA.name,
+   /* CA.name,
     CA.College_University_c AS app_college_id,
-    CASE
-        WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
-        ELSE admission_status_c
-    END AS admission_status_c,
+    Type_of_School_c as school_type_applied,
+    accnt.name AS school_name_applied,
+    filtered.app_college_id AS college_applied_app_id,
+    #CASE
+    #    WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
+    #    ELSE admission_status_c
+    #END AS admission_status_c,
     
-    CASE
-        WHEN admission_status_c = "Accepted" THEN 1
-        WHEN admission_status_c = "Accepted and Enrolled" THEN 2
-        WHEN admission_status_c = "Accepted and Deferred" THEN 3
-        WHEN admission_status_c = "Wait-listed" THEN 4
-        WHEN admission_status_c = "Conditional" THEN 5
-        WHEN admission_status_c = "Withdrew Application" THEN 6
-        WHEN admission_status_c = "Undecided" THEN 7
-        WHEN admission_status_c = "Denied" THEN 8
-        WHEN admission_status_c = "Admission Status Not Yet Updated" THEN 9
-        ELSE 0
-    END AS sort_helper_admission_status,
+    #CASE
+    #    WHEN admission_status_c = "Accepted" THEN 1
+    #    WHEN admission_status_c = "Accepted and Enrolled" THEN 2
+    #    WHEN admission_status_c = "Accepted and Deferred" THEN 3
+    #    WHEN admission_status_c = "Wait-listed" THEN 4
+    #    WHEN admission_status_c = "Conditional" THEN 5
+    #    WHEN admission_status_c = "Withdrew Application" THEN 6
+    #    WHEN admission_status_c = "Undecided" THEN 7
+    #    WHEN admission_status_c = "Denied" THEN 8
+    #    WHEN admission_status_c = "Admission Status Not Yet Updated" THEN 9
+    #    ELSE 0
+    #END AS sort_helper_admission_status,
     
     CASE  
         WHEN CA.application_status_c IS NULL THEN "No College Application"
@@ -47,14 +50,14 @@ SELECT
         WHEN CA.School_Financial_Aid_Form_Status_c IS NULL THEN 'Missing Status'
         ELSE CA.School_Financial_Aid_Form_Status_c
     END AS School_Financial_Aid_Form_Status,
-    CA.Fit_Type_Current_c,
-    CA.Fit_Type_Enrolled_c AS Fit_Type_Enrolled_c_orig,
+    #CA.Fit_Type_Current_c,
+    #CA.Fit_Type_Enrolled_c AS Fit_Type_Enrolled_c_orig,
     
-    CASE
-        WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
-        WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
-        ELSE fit_type_enrolled_c
-    END AS fit_type_enrolled_c,
+    #CASE
+    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+    #    ELSE fit_type_enrolled_c
+    #END AS fit_type_enrolled_c,
     
     CA.id as college_app_id,
     CA.Predominant_Degree_Awarded_c,
@@ -62,7 +65,7 @@ SELECT
     CA.Situational_Fit_Type_c,
     CA.Strategic_Type_c AS match_type, #match type
     CA.Verification_Status_c,
-    CA.Student_c,
+    CA.Student_c, */
 
 #Contact 
     C.full_name_c,
@@ -124,10 +127,10 @@ SELECT
 
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
-LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
-        ON C.contact_id = CA.student_c
+/*#LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
+#        ON C.contact_id = CA.student_c
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_app #pull in college name in application 
-        ON CA.college_university_c = accnt_app.id
+        ON CA.college_university_c = accnt_app.id */
         
 WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
@@ -173,10 +176,28 @@ SELECT
     Type_of_School_c as school_type_enrolled,
     
     CASE
+        WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
+        ELSE admission_status_c
+    END AS admission_status_c,
+    
+    CASE
         WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
         WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         ELSE fit_type_enrolled_c
-    END AS fit_type_enrolled_admission_table,
+    END AS fit_type_enrolled_c,
+    
+    CASE
+        WHEN admission_status_c = "Accepted" THEN 1
+        WHEN admission_status_c = "Accepted and Enrolled" THEN 2
+        WHEN admission_status_c = "Accepted and Deferred" THEN 3
+        WHEN admission_status_c = "Wait-listed" THEN 4
+        WHEN admission_status_c = "Conditional" THEN 5
+        WHEN admission_status_c = "Withdrew Application" THEN 6
+        WHEN admission_status_c = "Undecided" THEN 7
+        WHEN admission_status_c = "Denied" THEN 8
+        WHEN admission_status_c = "Admission Status Not Yet Updated" THEN 9
+        ELSE 0
+    END AS sort_helper_admission_status,
     
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
     LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
@@ -188,63 +209,101 @@ SELECT
 college_application_data AS 
 (
 SELECT
-    filtered.contact_id AS contact_id_applied,
-    Type_of_School_c as school_type_applied,
+    app.name,
+    app.Student_c AS contact_id_applied,
+    app.Type_of_School_c as school_type_applied,
     accnt.name AS school_name_applied,
-    filtered.app_college_id AS college_applied_app_id,
+    app.College_University_c AS app_college_id, #college id
+    CASE  
+        WHEN app.application_status_c IS NULL THEN "No College Application"
+        ELSE app.application_status_c
+    END AS application_status,
+    
+    app.Average_Financial_Aid_Package_c,
+    app.Avg_Debt_of_Graduates_c,
+    app.Award_Letter_c,
+    app.CSS_Profile_Required_c,
+    app.CSS_Profile_c,
+    CASE
+        WHEN app.CSS_Profile_c IS NULL THEN 'Missing Status'
+        ELSE app.CSS_Profile_c
+    END AS CSS_profile_status,
+    app.College_Fit_Type_Applied_c,
+    app.College_University_Academic_Calendar_c,
+    app.Control_of_Institution_c, #private or public school,
+    app.Enrollment_Deposit_c,
+    app.School_s_Financial_Aid_Form_Required_c, #yes/no
+    app.School_Financial_Aid_Form_Status_c,
+    CASE 
+        WHEN app.School_Financial_Aid_Form_Status_c IS NULL THEN 'Missing Status'
+        ELSE app.School_Financial_Aid_Form_Status_c
+    END AS School_Financial_Aid_Form_Status,
+    #CA.Fit_Type_Current_c,
+    #CA.Fit_Type_Enrolled_c AS Fit_Type_Enrolled_c_orig,
+    
+    #CASE
+    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+    #    ELSE fit_type_enrolled_c
+    #END AS fit_type_enrolled_c,
+    
+    app.id as college_app_id,
+    app.Predominant_Degree_Awarded_c,
+    app.Type_of_School_c,
+    app.Situational_Fit_Type_c,
+    app.Strategic_Type_c AS match_type, #match type
+    app.Verification_Status_c,
+    
     CASE
         WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
         WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
        ELSE College_Fit_Type_Applied_c
     END AS College_Fit_Type_Applied,
     
-    #accepted_data
+    #accepted_data 
+    
     student_c_accepted,
     school_name_accepted,
     college_accepted_app_id,
-    CASE 
-        WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
-        THEN 1
-        ELSE 0
-    END AS accepted,
+    #CASE 
+    #    WHEN admission_status_c = "Accepted" OR admission_status_c = "Accepted and Enrolled" OR admission_status_c = "Accepted and Deferred" 
+    #    THEN 1
+    #    ELSE 0
+   accepted,
     
-    CASE 
+    /*CASE 
         WHEN ((admission_status_c = "Accepted") AND (College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
         WHEN ((admission_status_c = "Accepted") AND (College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         WHEN admission_status_c = "Accepted" THEN  College_Fit_Type_Applied_c
         WHEN ((admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) AND (fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
         WHEN ((admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")) AND (fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         ELSE fit_type_enrolled_c
-    END AS fit_type_accepted,
+    END AS */ fit_type_accepted,
     
     #admissions_data
     contact_id_admissions,
     school_name_enrolled,
     college_enrolled_app_id,
     school_type_enrolled,
-    
-    CASE
-        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
-        WHEN ((fit_type_enrolled_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
-        ELSE fit_type_enrolled_c
-    END AS fit_type_enrolled_admission_table
+    admissions.admission_status_c,
+    admissions.fit_type_enrolled_c,
+    sort_helper_admission_status,
     
     
-FROM filtered_data AS filtered
+FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
-        ON filtered.app_college_id = accnt.id  
+        ON app.id = accnt.id  
         
 LEFT JOIN acceptance_data AS acceptance
-    ON filtered.contact_id = acceptance.student_c_accepted
+    ON app.student_c = acceptance.student_c_accepted
 
 LEFT JOIN admission_data AS admissions
-    ON filtered.contact_id = admissions.contact_id_admissions
+    ON app.student_c = admissions.contact_id_admissions
 )
 
 SELECT 
-    filtered_data.*
-        EXCEPT (College_Fit_Type_Applied_c),
-    applied.*,
+    filtered_data.*,
+    college_application_data.*,
     
     CASE
         WHEN application_status = "Prospect" THEN 1
@@ -273,7 +332,7 @@ SELECT
         ELSE 6
     END AS sort_helper_acceptance_by_fit_type,
     
-    CASE
+    /*CASE
         WHEN fit_type_enrolled_admission_table = "Best Fit" THEN 1
         WHEN fit_type_enrolled_admission_table = "Situational" THEN 2
         WHEN fit_type_enrolled_admission_table = "Good Fit" THEN 3
@@ -281,7 +340,7 @@ SELECT
         WHEN fit_type_enrolled_admission_table = "None - 4-year" THEN 5
         WHEN fit_type_enrolled_admission_table = "None - 2-year or technical" THEN 6
         ELSE 7
-    END AS sort_helper_enroll_by_fit_type,
+    END AS sort_helper_enroll_by_fit_type, */
     
     CASE 
         WHEN admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred") THEN student_c_accepted
@@ -296,5 +355,5 @@ FROM filtered_data AS filtered_data
 #LEFT JOIN admission_data AS admission 
 #    ON filtered_data.contact_id = admission.contact_id_admissions
 
-LEFT JOIN college_application_data  AS applied 
-    ON filtered_data.contact_id = applied.contact_id_applied
+LEFT JOIN college_application_data  AS college_application_data
+    ON filtered_data.contact_id = college_application_data.contact_id_applied
