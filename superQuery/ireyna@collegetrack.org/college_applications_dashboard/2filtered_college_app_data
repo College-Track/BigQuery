@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_test`
+OPTIONS
+    (
+    description= "Filtered College Application test"
+    )
+AS
+
 WITH filtered_data AS #compile college application, contact data, academic term data for GPA
 (
 SELECT
