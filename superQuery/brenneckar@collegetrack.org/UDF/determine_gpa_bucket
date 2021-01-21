@@ -23,7 +23,7 @@ OR REPLACE FUNCTION `data-warehouse-289815.UDF.determine_buckets`(
 
     }
 
-};
+;
     
     
 
