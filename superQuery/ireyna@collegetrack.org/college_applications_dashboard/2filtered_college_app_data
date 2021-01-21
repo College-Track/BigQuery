@@ -5,8 +5,9 @@ SELECT
 #college application data    
     #CA.name,
     CA.College_University_c AS college_id_filtered_data,
-    accnt.name AS app_school_name_filtered_data,
-
+    accnt.name AS college_name_applied_filtered_table,
+    #Type_of_School_c as school_type_applied,
+    #accnt.name AS school_name_applied,
     #filtered.app_college_id AS college_applied_app_id,
     #CASE
     #    WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
@@ -133,9 +134,12 @@ SELECT
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
         ON C.contact_id = CA.student_c 
-LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name in application 
+LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name from contact
         ON C.npsp_primary_affiliation_c = accnt.id 
         
+LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college name in application 
+        ON CA.College_University_c  = accnt_2.id         
+
 WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
    
