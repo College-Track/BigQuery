@@ -44,7 +44,7 @@ SELECT
         WHEN CA.CSS_Profile_c IS NULL THEN 'Missing Status'
         ELSE CA.CSS_Profile_c
     END AS CSS_profile_status,
-    CA.College_Fit_Type_Applied_c,
+    #CA.College_Fit_Type_Applied_c,
     CA.College_University_Academic_Calendar_c,
     CA.Control_of_Institution_c, #private or public school,
     CA.Enrollment_Deposit_c,
