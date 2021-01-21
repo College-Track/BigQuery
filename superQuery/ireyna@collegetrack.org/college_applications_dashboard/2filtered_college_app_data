@@ -163,7 +163,7 @@ SELECT
     accnt.name AS high_school_name_filter,
     accnt_2.name AS college_name_applied_filter,
     
-    #test 
+    #test & academic term data
     max_ACT_composite,
     max_SAT_total,
     max_ACT_math, 
