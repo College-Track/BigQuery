@@ -1,4 +1,3 @@
-#TOPS = 2.5 GPA+ and 20+ ACT composite,
 SELECT 
 A_T.contact_id, 
 act_highest_composite_c,
@@ -14,8 +13,8 @@ WHERE test.record_type_id IN ('01246000000RNndAAG','01246000000RNnUAAW')
 AND version_c = 'Official'
 AND status_c = 'Completed'
 AND grade_c = '12th Grade'
-AND act_highest_composite_c = TRUE
-AND sat_highest_composite_single_sitting_c = TRUE
+AND act_highest_composite_c = True
+AND sat_highest_composite_single_sitting_c = True
 
 #GROUP BY
 #A_T.contact_id, 
