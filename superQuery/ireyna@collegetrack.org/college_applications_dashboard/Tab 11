@@ -10,5 +10,3 @@ AND status_c = 'Completed'
 AND test_date_c >= '2019-02-28'
 AND AT_grade_c = '11th Grade'
 AND high_school_class_c = '2020'
-
-LIMIT 10
