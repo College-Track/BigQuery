@@ -5,7 +5,6 @@ SELECT
 #college application data    
     #CA.name,
     CA.College_University_c AS college_id_filtered_data,
-    accnt.name AS college_name_applied_filtered_table,
     #Type_of_School_c as school_type_applied,
     #accnt.name AS school_name_applied,
     #filtered.app_college_id AS college_applied_app_id,
@@ -130,6 +129,7 @@ SELECT
     
     #account
     accnt.name AS high_school_name,
+    accnt_2.name AS college_name_applied_filtered_table,
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
