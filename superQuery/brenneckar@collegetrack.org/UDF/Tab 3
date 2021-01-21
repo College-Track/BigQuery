@@ -6,7 +6,6 @@ SELECT
   `data-warehouse-289815.UDF.determine_buckets`(attendance_rate_c, 10, 65, 90, "%") as attendance_bucket
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE
-  gpa_semester_c IS NULL
+
 LIMIT
-  10
+  1000
