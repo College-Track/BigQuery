@@ -77,6 +77,7 @@ SELECT
 #Contact 
     C.full_name_c,
     C.contact_id,
+    C.current_cc_advisor_2_c AS hs_ct_coach,
     --((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
     C.high_school_graduating_class_c,
     C.npsp_primary_affiliation_c, 
@@ -131,13 +132,15 @@ SELECT
         WHEN C.fa_req_fafsa_c IS NULL THEN 'Missing Status' 
         ELSE C.fa_req_fafsa_c 
     END AS FAFSA_status,
-
+    
+    #account
+    accnt.name AS high_school_name,
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 /*#LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
-#        ON C.contact_id = CA.student_c
-LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_app #pull in college name in application 
-        ON CA.college_university_c = accnt_app.id */
+#        ON C.contact_id = CA.student_c */
+LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name in application 
+        ON C.npsp_primary_affiliation_c = accnt.id 
         
 WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
