@@ -23,21 +23,8 @@ act_mathematics_c,sat_math_c, version_c, status_c,test_date_c,high_school_class_
 FROM `data-warehouse-289815.salesforce_clean.test_clean` AS test
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
 ON test.academic_semester_c = A_T.AT_id
-
-group by 
-A_T.contact_id ,full_name_c, AT_grade_c, #MAX(act_composite_score_c),MAX(sat_total_score_c),
-act_mathematics_c,sat_math_c, version_c, status_c,test_date_c,high_school_class_c
 )
-SELECT max_s.* except(full_name_c, contact_id),student_info.* (except act_mathematics_c,sat_math_c)
+SELECT max_score.*,student_info.*
 FROM student_info AS student_info
 RIGHT JOIN max_score AS max_S
     ON max_s.contact_id = student_info.contact_id
-    
-WHERE version_c = 'Official'
-AND status_c = 'Completed'
-AND test_date_c <= '2019-02-28'
-AND hs_grade_level = '11th Grade'
-AND high_school_class_c = '2020'
-group by 
- contact_id,full_name_c,max_act, max_sat,hs_grade_level, #
- version_c, status_c,test_date_c,high_school_class_c
