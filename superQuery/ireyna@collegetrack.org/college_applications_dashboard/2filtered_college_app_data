@@ -162,7 +162,7 @@ SELECT
     test.max_ACT_math, 
     test.max_SAT_math,
     CASE
-        WHEN site_short = 'New Orleans' AND max_ACT_composite >= 20 AND gpa_cumulative_c >=2.5 THEN 'TOPS eligible'
+        WHEN (site_short = 'New Orleans' AND max_ACT_composite >= 20 AND gpa_cumulative_c >=2.5) THEN 'TOPS eligible'
         WHEN site_short <> 'New Orleans' THEN 'Not Applicable'
         ELSE 'Not TOPS eligible'
     END AS TOPS_eligibility   
