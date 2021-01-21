@@ -206,6 +206,8 @@ college_application_data AS
 SELECT
     filtered.contact_id AS contact_id_applied,
     Type_of_School_c as school_type_applied,
+    accnt.name AS school_name_applied,
+    filtered.app_college_id AS college_applied_app_id,
     
     #accepted_data
     student_c_accepted,
