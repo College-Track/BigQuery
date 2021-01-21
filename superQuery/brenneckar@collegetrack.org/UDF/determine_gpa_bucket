@@ -17,15 +17,10 @@ OR REPLACE FUNCTION `data-warehouse-289815.UDF.determine_buckets`(
         while (i <= num_intervals) {
             var test_value = low_number + increment * i;
             if (value < (test_value)) { return ((test_value - increment) + bucket_type + " - " + test_value + bucket_type) }
-            // test_value + bucket_type + " - " + (test_value + increment) + bucket_type) }
             else { i++ }
         }
-
     }
 
 ;
-    
-    
-
     
 """;
