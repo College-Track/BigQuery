@@ -1,0 +1,153 @@
+
+SELECT
+    
+#college application data
+    CA.application_status_c,
+    CASE  
+        WHEN application_status_c IS NULL THEN 'No College Application'
+        ELSE application_status_c
+    END AS application_status,
+    #CA.name,
+    #CA.College_University_c AS college_id_filtered_data,
+    #Type_of_School_c as school_type_applied,
+    #accnt.name AS school_name_applied,
+    #filtered.app_college_id AS college_applied_app_id,
+    #CASE
+    #    WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
+    #    ELSE admission_status_c
+    #END AS admission_status_c,
+    
+    #CASE
+    #    WHEN admission_status_c = "Accepted" THEN 1
+    #    WHEN admission_status_c = "Accepted and Enrolled" THEN 2
+    #    WHEN admission_status_c = "Accepted and Deferred" THEN 3
+    #    WHEN admission_status_c = "Wait-listed" THEN 4
+    #    WHEN admission_status_c = "Conditional" THEN 5
+    #    WHEN admission_status_c = "Withdrew Application" THEN 6
+    #    WHEN admission_status_c = "Undecided" THEN 7
+    #    WHEN admission_status_c = "Denied" THEN 8
+    #    WHEN admission_status_c = "Admission Status Not Yet Updated" THEN 9
+    #    ELSE 0
+    #END AS sort_helper_admission_status,
+    /*
+    CASE  
+        WHEN CA.application_status_c IS NULL THEN "No College Application"
+        ELSE CA.application_status_c
+    END AS application_status,
+    
+    CA.Average_Financial_Aid_Package_c,
+    CA.Avg_Debt_of_Graduates_c,
+    CA.Award_Letter_c,
+    CA.CSS_Profile_Required_c,
+    CA.CSS_Profile_c,
+    CASE
+        WHEN CA.CSS_Profile_c IS NULL THEN 'Missing Status'
+        ELSE CA.CSS_Profile_c
+    END AS CSS_profile_status,
+    CA.College_Fit_Type_Applied_c,
+    CA.College_University_Academic_Calendar_c,
+    CA.Control_of_Institution_c, #private or public school,
+    CA.Enrollment_Deposit_c,
+    CA.School_s_Financial_Aid_Form_Required_c, #yes/no
+    CA.School_Financial_Aid_Form_Status_c,
+    CASE 
+        WHEN CA.School_Financial_Aid_Form_Status_c IS NULL THEN 'Missing Status'
+        ELSE CA.School_Financial_Aid_Form_Status_c
+    END AS School_Financial_Aid_Form_Status,
+    #CA.Fit_Type_Current_c,
+    #CA.Fit_Type_Enrolled_c AS Fit_Type_Enrolled_c_orig,
+    
+    #CASE
+    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+    #    ELSE fit_type_enrolled_c
+    #END AS fit_type_enrolled_c,
+    
+    CA.id as college_app_id,
+    CA.Predominant_Degree_Awarded_c,
+    CA.Type_of_School_c,
+    CA.Situational_Fit_Type_c,
+    CA.Strategic_Type_c AS match_type, #match type
+    CA.Verification_Status_c,
+    CA.Student_c, 
+    */
+
+#Contact 
+    C.full_name_c,
+    C.contact_id,
+    C.current_cc_advisor_2_c AS hs_ct_coach,
+    --((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
+    C.high_school_graduating_class_c,
+    C.npsp_primary_affiliation_c, 
+    C.College_Track_Status_Name,
+    C.gpa_cumulative_c, #College Elig GPA (11th CGPA)
+    CASE
+        WHEN C.gpa_cumulative_c < 2.5 THEN '2.49 or below'
+        WHEN (C.gpa_cumulative_c >=2.5 AND C.gpa_cumulative_c < 3) THEN '2.5 - 2.99'
+        WHEN (C.gpa_cumulative_c >=3 AND C.gpa_cumulative_c < 3.5) THEN '3 - 3.49'
+        WHEN (C.gpa_cumulative_c >=3.5 AND C.gpa_cumulative_c < 4) THEN '3.5 - 3.99'
+        WHEN (C.gpa_cumulative_c >=4 AND C.gpa_cumulative_c < 4.5) THEN '4 - 4.49'
+        ELSE '4.5+ or above'
+    END cgpa_11th_grade_bucket,
+    C.grade_c, 
+    C.Gender_c ,
+    C.Ethnic_background_c ,
+    C.indicator_low_income_c,
+    C.first_generation_fy_20_c, 
+    C.site_short,
+    CASE
+        WHEN C.site_short = "East Palo Alto" THEN 1
+        WHEN C.site_short = "Oakland" THEN 2
+        WHEN C.site_short = "San Francisco" THEN 3
+        WHEN C.site_short = "Sacramento" THEN 4
+        WHEN C.site_short = "New Orleans" THEN 5
+        WHEN C.site_short = "Aurora" THEN 6
+        WHEN C.site_short = "Denver" THEN 7
+        WHEN C.site_short = "Boyle Heights" THEN 8
+        WHEN C.site_short = "Watts" THEN 9
+        ELSE 0
+    END AS sort_helper_site,
+    CASE
+      WHEN C.site_short IS NOT NULL THEN "National"
+    END AS National,
+    C.region_short,
+    C.readiness_english_official_c,
+    C.readiness_composite_off_c,
+    C.readiness_math_official_c,
+    C.fa_req_expected_financial_contribution_c, 
+    CASE 
+        WHEN C.fa_req_expected_financial_contribution_c IS NULL THEN 'Missing EFC'
+        ELSE 'Reported EFC' 
+    END AS EFC_indicator,
+    CASE 
+        WHEN C.fa_req_expected_financial_contribution_c = 0 THEN 'Full Pell'
+        WHEN C.fa_req_expected_financial_contribution_c >= 1 AND C.fa_req_expected_financial_contribution_c < 5711 THEN 'Partial Pell'
+        WHEN C.fa_req_expected_financial_contribution_c >= 5711 THEN 'Pell Ineligible'
+        WHEN C.fa_req_expected_financial_contribution_c IS NULL THEN 'Missing EFC'
+    END AS Pell_indicator,
+    C.fa_req_fafsa_c,
+    CASE 
+        WHEN C.fa_req_fafsa_c IS NULL THEN 'Missing Status' 
+        ELSE C.fa_req_fafsa_c 
+    END AS FAFSA_status,
+    
+    #account
+    accnt.name AS high_school_name_filter,
+    accnt_2.name AS college_name_applied_filter,
+    
+    
+        
+FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
+LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
+        ON C.contact_id = CA.student_c 
+LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name from contact
+        ON C.npsp_primary_affiliation_c = accnt.id 
+LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college name in application 
+        ON CA.College_University_c  = accnt_2.id    
+
+    
+WHERE C.grade_c = '12th Grade'
+    AND C.College_Track_Status_Name = 'Current CT HS Student'
+    
+    and CA.name = 'APP-00006088'
+   
