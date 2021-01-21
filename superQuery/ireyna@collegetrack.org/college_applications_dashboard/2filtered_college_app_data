@@ -1,5 +1,3 @@
-filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
-(
 SELECT
     
 #college application data    
@@ -155,4 +153,3 @@ LEFT JOIN test_data AS test
     
 WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
-   
