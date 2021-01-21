@@ -3,7 +3,12 @@ WITH gather_data AS (
     C.Contact_Id,
     C.contact_url,
     C.Full_Name_c,
-    C.College_Track_Status_Name,
+    CASE
+      WHEN C.College_Track_Status_Name = 'Not Admitted' THEN "Declined / Not Admitted"
+      WHEN C.College_Track_Status_Name = 'Admitted and Declined' THEN "Declined / Not Admitted"
+      WHEN C.College_Track_Status_Name = 'Voluntarily rescinded application' THEN "Declined / Not Admitted"
+      ELSE C.College_Track_Status_Name
+    END AS College_Track_Status_Name,
     C.site_short,
     C.region_short,
     C.Gender_c,
@@ -37,7 +42,10 @@ WITH gather_data AS (
       'Wait-listed',
       'Onboarding',
       'Current CT HS Student',
-      'Leave of Absence'
+      'Leave of Absence',
+      'Not Admitted',
+      'Admitted and Declined',
+      'Voluntarily rescinded application'
     )
 )
 SELECT
@@ -50,14 +58,16 @@ SELECT
     WHEN College_Track_Status_Name = "Admitted" THEN 5
     WHEN College_Track_Status_Name = "Wait-listed" THEN 6
     WHEN College_Track_Status_Name = "Onboarding" THEN 7
-    ELSE 8
+    WHEN College_Track_Status_Name = "Declined / Not Admitted" THEN 8
+    ELSE 9
   END AS sort_ct_status,
   CASE
     WHEN Contact_Record_Type_Name = "Student: Applicant" THEN 1
+    WHEN College_Track_Status_Name = 'Declined / Not Admitted' THEN 0
     WHEN College_Track_Status_Name = "Onboarding" THEN 1
     ELSE 0
   END AS applicant_count,
-    CASE
+  CASE
     WHEN College_Track_Status_Name = "Onboarding" THEN 1
     ELSE 0
   END AS onboarding_count,
