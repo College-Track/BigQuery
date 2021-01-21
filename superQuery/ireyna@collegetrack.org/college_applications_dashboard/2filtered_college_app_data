@@ -1,9 +1,10 @@
+#TOPS = 2.5 GPA+ and 20+ ACT composite,
 SELECT 
 A_T.contact_id, 
-act_highest_composite_c,
-sat_highest_composite_single_sitting_c,
-#MAX(act_mathematics_c) AS max_ACT_math, 
-#MAX(sat_math_c) AS max_SAT_math
+#act_highest_composite_c,
+#sat_highest_composite_single_sitting_c,
+MAX(act_mathematics_c) AS max_ACT_math, 
+MAX(sat_math_c) AS max_SAT_math
 
 FROM `data-warehouse-289815.salesforce_clean.test_clean` AS test
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
@@ -15,6 +16,4 @@ AND status_c = 'Completed'
 AND grade_c = '12th Grade'
 
 GROUP BY
-A_T.contact_id, 
-act_highest_composite_c,
-sat_highest_composite_single_sitting_c
+A_T.contact_id
