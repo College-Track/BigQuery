@@ -1,20 +1,4 @@
-academic_term_data AS #academic term data(GPA))
-(
-SELECT 
-    A_T.contact_id,
-    A_T.gpa_semester_cumulative_c AS CGPA_11th,
-    A_T.Name AS Name_AT, #academic term name
-    A_T.AT_Grade_c, #grade on AT
-    A_T.AT_Record_Type_Name,
-    
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
-
-WHERE AT_Record_Type_Name = 'High School Semester'
-AND A_T.indicator_years_since_hs_grad_to_date_c = -1.34 #11th Grade Spring Term  
-
-),
-
-test_data AS
+WITH test_data AS
 (
 
 SELECT 
@@ -117,7 +101,7 @@ SELECT
     C.high_school_graduating_class_c,
     C.npsp_primary_affiliation_c, 
     C.College_Track_Status_Name,
-    C.gpa_cumulative_c,
+    C.gpa_cumulative_c, #College Elig GPA (11th CGPA)
     CASE
         WHEN C.gpa_cumulative_c < 2.5 THEN '2.49 or below'
         WHEN (C.gpa_cumulative_c >=2.5 AND C.gpa_cumulative_c < 3) THEN '2.5 - 2.99'
@@ -173,14 +157,12 @@ SELECT
     accnt_2.name AS college_name_applied_filter,
     
     #test & academic term data
-    #TOPS = 2.5 GPA+ and 20+ ACT composite
-    CGPA_11th,
     max_ACT_composite,
     max_SAT_total,
     max_ACT_math, 
     max_SAT_math,
     CASE
-        WHEN max_ACT_composite >= 20 AND CGPA_11TH >=2.5 THEN 'TOPS eligible'
+        WHEN max_ACT_composite >= 20 AND gpa_cumulative_c >=2.5 THEN 'TOPS eligible'
         ELSE 'Not TOPS eligible'
     END AS TOPS_eligibility   
     
@@ -190,13 +172,10 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
         ON C.contact_id = CA.student_c 
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name from contact
         ON C.npsp_primary_affiliation_c = accnt.id 
-        
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college name in application 
-        ON CA.College_University_c  = accnt_2.id         
+        ON CA.College_University_c  = accnt_2.id    
 LEFT JOIN test_data AS test
     ON C.contact_id = test.contact_id
-LEFT JOIN academic_term_data AS a_t
-    ON C.contact_id = a_t.contact_id
     
 WHERE C.grade_c = '12th Grade'
     AND C.College_Track_Status_Name = 'Current CT HS Student'
