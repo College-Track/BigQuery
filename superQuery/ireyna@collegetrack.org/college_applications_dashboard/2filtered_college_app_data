@@ -28,6 +28,7 @@ filtered_data AS #contact data with college application data (no admission or ac
 SELECT
     
 #college application data
+    CA.application_status_c,
     CASE  
         WHEN application_status_c IS NULL THEN 'No College Application'
         ELSE application_status_c
@@ -299,8 +300,8 @@ SELECT
     app.Verification_Status_c,
     
     CASE
-        WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
-        WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (app.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
        ELSE College_Fit_Type_Applied_c
     END AS College_Fit_Type_Applied,
     
@@ -334,7 +335,7 @@ SELECT
     
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
-LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
+LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id  
         
 LEFT JOIN acceptance_data AS acceptance
