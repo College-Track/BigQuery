@@ -1,0 +1,3 @@
+SELECT college_eligibility_gpa_11th_grade
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+LIMIT 10
