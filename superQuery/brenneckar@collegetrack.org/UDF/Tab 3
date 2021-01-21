@@ -7,5 +7,7 @@ SELECT
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE
+  college_track_status_c = '11A'
+  AND gpa_semester_c IS NOT NULL
 LIMIT
   1000
