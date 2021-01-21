@@ -28,6 +28,7 @@ filtered_data AS #contact data with college application data (no admission or ac
 SELECT
     
 #college application data
+    CA.student_c,
     CA.application_status_c,
     CASE  
         WHEN application_status_c IS NULL THEN 'No College Application'
@@ -401,4 +402,4 @@ FROM filtered_data AS filtered_data
 #    ON filtered_data.contact_id = admission.contact_id_admissions
 
 LEFT JOIN college_application_data  AS college_application_data
-    ON filtered_data.contact_id = college_application_data.contact_id_applied
+    ON filtered_data.student_c = college_application_data.contact_id_applied
