@@ -37,7 +37,7 @@ WITH gather_data AS (
     Most_Recent_GPA_Cumulative_bucket,
     A_S.Name AS anticipated_date_of_graduation_4_year,
     -- Sorting fields
-    sort_most_recent_gpa_bucket,
+    sort_Most_Recent_GPA_Cumulative_bucket AS sort_most_recent_gpa_bucket,
     sort_attendance_bucket,
     sort_covitality,
     -- Create new fields
