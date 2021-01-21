@@ -1,3 +1,5 @@
-SELECT *
-FROM `data-warehouse-289815.salesforce_clean.test_clean`
+SELECT A_T.contact_id, test.*
+FROM `data-warehouse-289815.salesforce_clean.test_clean` AS test
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
+    ON test.academic_semester_c = A_T.AT_id
 LIMIT 10
