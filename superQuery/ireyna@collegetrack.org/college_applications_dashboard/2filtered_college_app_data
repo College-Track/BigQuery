@@ -1,10 +1,3 @@
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_test`
-OPTIONS
-    (
-    description= "College Application data with Contact, Test, and Academic Term data"
-    )
-AS
-
 WITH test_data AS
 (
 
