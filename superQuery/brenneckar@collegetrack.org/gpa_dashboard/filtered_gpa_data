@@ -7,10 +7,15 @@ WITH gather_data AS (
     site_sort,
     region_abrev,
     high_school_graduating_class_c,
-    gpa_semester_cumulative_c,
-    gpa_semester_c,
+    AT_Term_GPA,
+    AT_Cumulative_GPA,
+    AT_Term_GPA_bucket,
+    sort_AT_Term_GPA_bucket,
+    AT_Cumulative_GPA_bucket,
+    sort_AT_Cumulative_GPA,
     AT_Id,
     Current_HS_CT_Coach_c,
+    AT_Grade_c,
     REPLACE(
       GAS_Name,
       ' (Semester)',
@@ -30,12 +35,14 @@ WITH gather_data AS (
 gather_9th_grade_spring_gpa AS (
   SELECT
     Contact_Id,
-    gpa_semester_cumulative_c
+    AT_Cumulative_GPA,
+    AT_Cumulative_GPA_bucket,
+    sort_AT_Cumulative_GPA
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     term_c = 'Spring'
-    AND gpa_semester_cumulative_c IS NOT NULL
+    AND AT_Cumulative_GPA IS NOT NULL
     AND AT_Grade_c = '9th Grade'
 ),
 gather_aa_attendance AS (
@@ -57,17 +64,9 @@ gather_aa_attendance AS (
 combine_data AS (
   SELECT
     GD.*,
-    G9GPA.gpa_semester_cumulative_c AS ninth_cum_gpa,
-    CASE
-      WHEN G9GPA.gpa_semester_cumulative_c IS NULL THEN "No Data"
-      WHEN G9GPA.gpa_semester_cumulative_c < 2.5 THEN "<2.5"
-      WHEN G9GPA.gpa_semester_cumulative_c < 2.75 THEN "2.5-2.74"
-      WHEN G9GPA.gpa_semester_cumulative_c < 3.0 THEN "2.75 - 2.99"
-      WHEN G9GPA.gpa_semester_cumulative_c < 3.25 THEN "3.0 - 3.24"
-      WHEN G9GPA.gpa_semester_cumulative_c < 3.5 THEN "3.25 - 3.49"
-      WHEN G9GPA.gpa_semester_cumulative_c < 3.75 THEN "3.5 - 3.74"
-      WHEN G9GPA.gpa_semester_cumulative_c >= 3.75 THEN "3.75+"
-    END AS ninth_cum_gpa_bucket,
+    G9GPA.AT_Cumulative_GPA AS ninth_cum_gpa,
+    G9GPA.AT_Cumulative_GPA_bucket AS ninth_cum_gpa_bucket,
+    G9GPA.sort_AT_Cumulative_GPA AS sort_ninth_cum_gpa_bucket,
     AA.attendance_rate,
     CASE
       WHEN AA.attendance_rate IS NULL THEN "No Data"
