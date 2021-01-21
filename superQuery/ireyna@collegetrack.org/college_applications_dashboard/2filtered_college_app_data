@@ -2,8 +2,6 @@ SELECT
 A_T.contact_id, 
 act_highest_composite_c,
 sat_highest_composite_single_sitting_c,
-act_mathematics_c,
-sat_math_c
 #MAX(act_mathematics_c) AS max_ACT_math, 
 #MAX(sat_math_c) AS max_SAT_math
 
@@ -15,10 +13,8 @@ WHERE test.record_type_id IN ('01246000000RNndAAG','01246000000RNnUAAW')
 AND version_c = 'Official'
 AND status_c = 'Completed'
 AND grade_c = '12th Grade'
-AND act_highest_composite_c = true
-AND sat_highest_composite_single_sitting_c = true
 
-#GROUP BY
-#A_T.contact_id, 
-#act_highest_composite_c,
-#sat_highest_composite_single_sitting_c
+GROUP BY
+A_T.contact_id, 
+act_highest_composite_c,
+sat_highest_composite_single_sitting_c
