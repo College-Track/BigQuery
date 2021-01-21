@@ -310,7 +310,8 @@ LEFT JOIN admission_data AS admissions
 
 SELECT 
     filtered_data.*,
-    college_application_data.*,
+    college_application_data.*
+        EXCEPT (College_Fit_Type_Applied_c),
     
     CASE
         WHEN application_status = "Prospect" THEN 1
