@@ -7,6 +7,6 @@ SELECT
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE
-  gpa_semester_c IS NOT NULL
+  gpa_semester_c IS NULL
 LIMIT
   10
