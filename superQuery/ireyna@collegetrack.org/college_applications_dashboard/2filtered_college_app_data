@@ -186,7 +186,7 @@ LEFT JOIN test_data AS test
     ON C.contact_id = test.contact_id
     
 WHERE C.grade_c = '12th Grade'
-    AND C.College_Track_Status_Name = 'Current CT HS Student'
+AND C.College_Track_Status_Name = 'Current CT HS Student'
    
 ),
 
@@ -266,8 +266,6 @@ SELECT
     app.Type_of_School_c as school_type_applied,
     accnt.name AS school_name_applied,
     app.College_University_c AS app_college_id, #college id
-    app.Average_Financial_Aid_Package_c,
-    app.Avg_Debt_of_Graduates_c,
     app.Award_Letter_c,
     app.CSS_Profile_Required_c,
     app.CSS_Profile_c,
@@ -395,12 +393,10 @@ SELECT
     END AS contact_id_accepted   
 
 FROM filtered_data AS filtered_data
-
+LEFT JOIN college_application_data  AS college_application_data
+    ON filtered_data.contact_id = college_application_data.contact_id_applied
 #LEFT JOIN acceptance_data AS accepted
 #  ON filtered_data.contact_id = accepted.student_c
   
 #LEFT JOIN admission_data AS admission 
 #    ON filtered_data.contact_id = admission.contact_id_admissions
-
-LEFT JOIN college_application_data  AS college_application_data
-    ON filtered_data.college_application_id= college_application_data.college_app_id
