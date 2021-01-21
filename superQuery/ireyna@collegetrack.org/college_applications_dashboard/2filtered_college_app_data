@@ -176,6 +176,7 @@ SELECT
     
     #test & academic term data
     #TOPS = 2.5 GPA+ and 20+ ACT composite
+    CGPA_11th,
     max_ACT_composite,
     max_SAT_total,
     max_ACT_math, 
