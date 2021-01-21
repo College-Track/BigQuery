@@ -1,0 +1,3 @@
+SELECT * 
+FROM `data-warehouse-289815.salesforce_clean.test_clean`
+LIMIT 15
