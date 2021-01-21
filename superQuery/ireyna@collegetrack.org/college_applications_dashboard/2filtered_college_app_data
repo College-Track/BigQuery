@@ -292,7 +292,7 @@ SELECT
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce_raw.Account` AS accnt
-        ON app.id = accnt.id  
+        ON app.College_University_c = accnt.id  
         
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.student_c_accepted
