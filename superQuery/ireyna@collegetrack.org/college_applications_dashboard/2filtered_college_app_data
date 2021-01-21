@@ -35,12 +35,6 @@ SELECT
         ELSE CA.application_status_c
     END AS application_status,
     
-    CASE
-        WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
-        WHEN ((CA.College_Fit_Type_Applied_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
-       ELSE CA.College_Fit_Type_Applied_c
-    END AS College_Fit_Type_Applied,
-    
     CA.Average_Financial_Aid_Package_c,
     CA.Avg_Debt_of_Graduates_c,
     CA.Award_Letter_c,
@@ -205,6 +199,11 @@ SELECT
     Type_of_School_c as school_type_applied,
     accnt.name AS school_name_applied,
     filtered.app_college_id AS college_applied_app_id,
+    CASE
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+       ELSE College_Fit_Type_Applied_c
+    END AS College_Fit_Type_Applied,
     
     #accepted_data
     student_c_accepted,
