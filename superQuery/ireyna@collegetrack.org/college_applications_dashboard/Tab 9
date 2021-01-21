@@ -1,4 +1,3 @@
 SELECT id, application_status_c
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`
-where name = 'APP-00006088'
 LIMIT 500
