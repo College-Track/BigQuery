@@ -1,23 +1,29 @@
 WITH gather_data AS (
   SELECT
+    region_abrev,
     site_abrev,
     site_short,
     GAS_Name,
     AY_Name,
     AT_Cumulative_GPA_bucket,
     sort_AT_Cumulative_GPA,
+    ninth_cum_gpa_bucket,
+    sort_ninth_cum_gpa_bucket,
     COUNT(Contact_Id) AS student_count,
     SUM(above_325_gpa) AS above_325_gpa,
     SUM(below_275_gpa) AS below_275_gpa
   FROM
     `data-studio-260217.gpa_dashboard.filtered_gpa_data`
   GROUP BY
+    region_abrev,
     site_abrev,
     site_short,
     GAS_Name,
     AY_Name,
     AT_Cumulative_GPA_bucket,
-    sort_AT_Cumulative_GPA
+    sort_AT_Cumulative_GPA,
+    ninth_cum_gpa_bucket,
+    sort_ninth_cum_gpa_bucket
 )
 SELECT
   GD.*
