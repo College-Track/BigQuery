@@ -1,8 +1,12 @@
 with gather_test_data AS (
   SELECT
     T.contact_name_c,
-    RT.Name,
-    version_c,
+    -- RT.Name,
+    -- CASE WHEN version_c = 'Official' THEN 'Official'
+    -- WHEN version_c = 'Entrance into CT Diagnostic' THEN "Diagnostic"
+    -- WHEN version_c = 'End of Year Diagnostic' THEN 'Diagnostic'
+    -- ELSE "Other"
+    -- END AS version_c,
     MAX(T.act_composite_score_c) as max_act_composite,
     MAX(T.sat_total_score_c) AS max_sat_total,
     MAX(T.act_english_c) AS max_act_english,
@@ -22,8 +26,8 @@ with gather_test_data AS (
     -- )
   GROUP BY
     T.contact_name_c,
-    RT.Name,
-    version_c
+    -- RT.Name
+    -- version_c
 )
 -- ,
 -- format_test_data AS (
@@ -40,3 +44,7 @@ with gather_test_data AS (
 
 SELECT *
 FROM gather_test_data
+
+
+
+
