@@ -35,5 +35,5 @@ AND status_c = 'Completed'
 AND test_date_c <= '2019-02-28'
 AND AT_grade_c = '11th Grade'
 AND high_school_class_c = '2020'    
-group by Contact_Id, full_name_c,act_composite_score_c, sat_total_score_c, readiness_composite_off_c, readiness_math_official_c,readiness_english_official_c
-high_school_class_c, site_short
+group by Contact_Id, full_name_c,act_composite_score_c, sat_total_score_c, readiness_composite_off_c, readiness_math_official_c,
+readiness_english_official_c,high_school_class_c, site_short
