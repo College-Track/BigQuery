@@ -33,4 +33,4 @@ format_test_data AS (
 
 
 SELECT *
-FROM gather_test_data
+FROM format_test_data
