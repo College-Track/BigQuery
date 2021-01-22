@@ -7,8 +7,11 @@ WITH gather_data AS (
     site_sort,
     region_abrev,
     high_school_graduating_class_c,
+    
     AT_Term_GPA,
     AT_Cumulative_GPA,
+    AT_Cumulative_GPA - Prev_Prev_Prev_AT_Cum_GPA AS year_over_year_cum_gpa_change,
+    AT_Term_GPA - Prev_Prev_Prev_AT_Term_GPA AS year_over_year_term_gpa_change,
     AT_Term_GPA_bucket,
     sort_AT_Term_GPA_bucket,
     AT_Cumulative_GPA_bucket,
@@ -32,11 +35,11 @@ WITH gather_data AS (
     AY_Name,
     AY_Start_Date,
     CASE
-      WHEN Most_Recent_GPA_Cumulative_c > 3.25 THEN 1
+      WHEN AT_Cumulative_GPA > 3.25 THEN 1
       ELSE 0
     END AS above_325_gpa,
     CASE
-      WHEN Most_Recent_GPA_Cumulative_c < 2.75 THEN 1
+      WHEN AT_Cumulative_GPA < 2.75 THEN 1
       ELSE 0
     END AS below_275_gpa
   FROM
@@ -93,7 +96,10 @@ combine_data AS (
       WHEN AA.attendance_rate >= 0.8
       AND AA.attendance_rate <.9 THEN "80% - 89%"
       ELSE "90%+"
-    END AS attendance_bucket
+    END AS attendance_bucket,
+    `data-warehouse-289815.UDF.determine_buckets`(year_over_year_cum_gpa_change, .25, -0.5, 0.5, "") AS year_over_year_cum_gpa_bucket,
+    `data-warehouse-289815.UDF.sort_created_buckets`(year_over_year_cum_gpa_change, .25, -0.5, 0.5) AS sort_year_over_year_cum_gpa_bucket,
+    
   FROM
     gather_data GD
     LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
