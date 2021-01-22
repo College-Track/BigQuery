@@ -17,6 +17,7 @@ WITH gather_data AS (
     SUM(below_275_gpa) AS below_275_gpa
   FROM
     `data-studio-260217.gpa_dashboard.filtered_gpa_data`
+    WHERE current_as_c = true
   GROUP BY
     region_abrev,
     site_abrev,
