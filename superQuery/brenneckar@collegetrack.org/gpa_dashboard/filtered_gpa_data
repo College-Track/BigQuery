@@ -20,7 +20,7 @@ WITH gather_data AS (
     sort_Most_Recent_GPA_Cumulative_bucket,
     Most_Recent_GPA_Cumulative_c,
     AT_Id,
-    current_as_c,
+    previous_as_c,
     Current_HS_CT_Coach_c,
     AT_Grade_c,
     REPLACE(
