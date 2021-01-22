@@ -85,7 +85,7 @@ SELECT
 
 #Contact 
     C.full_name_c,
-    C.contact_id,
+    C.contact_id, #use in "Application Status" chart as Metric
     C.current_cc_advisor_2_c AS hs_ct_coach,
     --((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
     C.high_school_graduating_class_c,
@@ -284,7 +284,8 @@ SELECT
     CASE
         WHEN ((College_Fit_Type_Applied_c = "None") AND (app.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
         WHEN ((College_Fit_Type_Applied_c = "None") AND (app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
-       ELSE College_Fit_Type_Applied_c
+        WHEN College_Fit_Type_Applied_c IS NULL THEN 'Has Not Yet Applied'
+        ELSE College_Fit_Type_Applied_c
     END AS College_Fit_Type_Applied,
     
     #accepted_data 
