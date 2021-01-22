@@ -17,7 +17,7 @@ SELECT
     (SELECT CA2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS CA2
         WHERE CA2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting"
-        AND CA.student_c = CA2.student_c
+        #AND CA.student_c = CA2.student_c
         group by CA2.student_c
         #AND app.Student_c = app2.Student_c
         ) AS  contact_id_applied_4_year,
