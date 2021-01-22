@@ -395,8 +395,3 @@ SELECT
 FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
     ON filtered_data.contact_id = college_application_data.contact_id_applied
-#LEFT JOIN acceptance_data AS accepted
-#  ON filtered_data.contact_id = accepted.student_c
-  
-#LEFT JOIN admission_data AS admission 
-#    ON filtered_data.contact_id = admission.contact_id_admissions
