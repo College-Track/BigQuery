@@ -1,9 +1,10 @@
 WITH student_data AS (
-SELECT A_T.contact_id AS contact_id,full_name_c
+SELECT A_T.contact_id AS contact_id,full_name_c,act_composite_score_c
 
 FROM `data-warehouse-289815.salesforce_clean.test_clean` AS test
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
     ON test.academic_semester_c = A_T.AT_id
+    
 )
 
 SELECT Contact_Id
