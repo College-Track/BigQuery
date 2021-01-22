@@ -17,9 +17,7 @@ WITH gather_student_data AS (
     summer_experience_form_link_c,
     current_academic_semester_c,
     previous_academic_semester_c,
-    attendance_rate_previous_term_c,
-    community_service_form_link_c,
-    summer_experience_form_link_c
+    attendance_rate_previous_term_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
@@ -76,13 +74,10 @@ gather_test_data AS (
     status_c = 'Completed'
     AND is_deleted = false
     AND RT.Name IN ('SAT', 'ACT')
-
   GROUP BY
-    T.contact_name_c
-    -- RT.Name
+    T.contact_name_c -- RT.Name
     -- version_c
 )
-
 SELECT
   GSD.*,
   GWD.*
@@ -99,8 +94,3 @@ FROM
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
   AND GSD.previous_academic_semester_c = GWD.Academic_Semester_c
   LEFT JOIN gather_test_data GTD ON GTD.contact_name_c = GSD.Contact_Id
-  
-  
-  
-  
-  
