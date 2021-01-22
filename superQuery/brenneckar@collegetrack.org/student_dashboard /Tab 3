@@ -25,7 +25,7 @@ with gather_test_data AS (
     --   OR sat_total_score_c IS NOT NULL
     -- )
   GROUP BY
-    T.contact_name_c,
+    T.contact_name_c
     -- RT.Name
     -- version_c
 )
