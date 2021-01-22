@@ -2,17 +2,9 @@ with gather_test_data AS (
   SELECT
     T.contact_name_c,
     RT.Name,
-    CASE WHEN version_c = 'Official' THEN 'Official'
-    WHEN version_c = 'Entrance into CT Diagnostic' THEN "Diagnostic"
-    WHEN version_c = 'End of Year Diagnostic' THEN 'Diagnostic'
-    ELSE "Other"
-    END AS version_c,
-    MAX(T.act_composite_score_c) as max_act_composite,
-    MAX(T.sat_total_score_c) AS max_sat_total,
-    MAX(T.act_english_c) AS max_act_english,
-    MAX(T.act_mathematics_c) AS max_act_math,
-    MAX(T.sat_math_c) AS max_sat_math,
-    MAX(T.sat_reading_writing_c) AS max_sat_english
+    version_c,
+    MAX(T.act_composite_score_c) as max_act,
+    MAX(T.sat_total_score_c) AS max_sat,
   FROM
     `data-warehouse-289815.salesforce.test_c` T
     LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT on RT.id = T.record_type_id
@@ -28,23 +20,18 @@ with gather_test_data AS (
     T.contact_name_c,
     RT.Name,
     version_c
+),
+format_test_data AS (
+  SELECT
+    contact_name_c,
+    MAX(max_act) as max_act,
+    MAX(max_sat) as max_sat
+  FROM
+    gather_test_data
+  GROUP BY
+    contact_name_c
 )
--- ,
--- format_test_data AS (
---   SELECT
---     contact_name_c,
---     MAX(max_act) as max_act,
---     MAX(max_sat) as max_sat
---   FROM
---     gather_test_data
---   GROUP BY
---     contact_name_c
--- )
 
 
 SELECT *
 FROM gather_test_data
-
-
-
-
