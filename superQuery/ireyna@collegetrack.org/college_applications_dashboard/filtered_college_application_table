@@ -188,7 +188,7 @@ SELECT
     app.Student_c AS contact_id_applied,
     CASE
         WHEN app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN app.Student_c
-        ELSE "N/A"
+        ELSE NULL
     END AS contact_id_applied_4_year,
     app.Type_of_School_c as school_type_applied,
     accnt.name AS school_name_applied,
