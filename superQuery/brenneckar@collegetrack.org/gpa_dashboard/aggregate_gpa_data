@@ -1,3 +1,23 @@
-SELECT site_abrev, site_short, GAS_Name, AY_Name, AVG(AT_Cumulative_GPA) AS avg_cum_gpa, COUNT(Contact_Id) AS student_count 
-FROM `data-studio-260217.gpa_dashboard.filtered_gpa_data`
-GROUP BY site_abrev, site_short, GAS_Name, AY_Name
+WITH gather_data AS (
+  SELECT
+    site_abrev,
+    site_short,
+    GAS_Name,
+    AY_Name,
+    AT_Cumulative_GPA_bucket,
+    COUNT(Contact_Id) AS student_count,
+    SUM(above_325_gpa) AS above_325_gpa,
+    SUM(below_275_gpa) AS below_275_gpa
+  FROM
+    `data-studio-260217.gpa_dashboard.filtered_gpa_data`
+  GROUP BY
+    site_abrev,
+    site_short,
+    GAS_Name,
+    AY_Name,
+    AT_Cumulative_GPA_bucket
+)
+SELECT
+  GD.*
+FROM
+  gather_data GD
