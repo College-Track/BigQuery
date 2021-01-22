@@ -18,7 +18,7 @@ AND status_c = 'Completed'
 AND test_date_c <= '2019-02-28'
 AND AT_grade_c = '11th Grade'
 AND high_school_class_c = '2020'))
-AND (act_composite_score_c = 
+OR (act_composite_score_c = 
     (select max(act_composite_score_c) AS max_act 
     FROM student_Data as s2
     WHERE s1.contact_id = s2.contact_id
@@ -28,3 +28,4 @@ AND test_date_c <= '2019-02-28'
 AND AT_grade_c = '11th Grade'
 AND high_school_class_c = '2020')
     )
+group by Contact_Id
