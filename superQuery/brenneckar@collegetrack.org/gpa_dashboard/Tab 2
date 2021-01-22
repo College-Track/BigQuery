@@ -1,4 +1,4 @@
 SELECT Contact_Id,
 Prev_Prev_Prev_AT_Cum_GPA, AT_Cumulative_GPA
 FROM `data-studio-260217.gpa_dashboard.filtered_gpa_data`
-WHERE GAS_Name = 'Spring 2019-20' AND Prev_Prev_Prev_AT_Cum_GPA > 0
+WHERE GAS_Name = 'Spring 2019-20' AND Prev_Prev_Prev_AT_Cum_GPA > 0 AND AT_Cumulative_GPA > 0
