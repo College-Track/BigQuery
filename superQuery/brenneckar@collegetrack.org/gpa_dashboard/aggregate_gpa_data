@@ -17,6 +17,8 @@ WITH gather_data AS (
     COUNT(Contact_Id) AS student_count,
     SUM(above_325_gpa) AS above_325_gpa,
     SUM(below_275_gpa) AS below_275_gpa,
+    AVG(prev_prev_prev_at_cum_gpa) as avg_prev_year_cum_gpa,
+    AVG(AT_Cumulative_GPA) AS avg_cum_gpa
     
   FROM
     `data-studio-260217.gpa_dashboard.filtered_gpa_data`
@@ -39,5 +41,6 @@ WITH gather_data AS (
 )
 SELECT
   GD.*
+  
 FROM
   gather_data GD
