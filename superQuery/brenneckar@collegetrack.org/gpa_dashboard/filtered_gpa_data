@@ -18,6 +18,7 @@ WITH gather_data AS (
     `data-warehouse-289815.UDF.sort_created_buckets`(GPA_Growth_prev_semester_c, .25, -0.5, 0.5) AS sort_gpa_growth_bucket,
     Most_Recent_GPA_Cumulative_bucket,
     sort_Most_Recent_GPA_Cumulative_bucket,
+    Most_Recent_GPA_Cumulative_c,
     AT_Id,
     Current_HS_CT_Coach_c,
     AT_Grade_c,
@@ -30,11 +31,11 @@ WITH gather_data AS (
     AY_Name,
     AY_Start_Date,
     CASE
-      WHEN AT_Cumulative_GPA > 3.25 THEN 1
+      WHEN Most_Recent_GPA_Cumulative_c > 3.25 THEN 1
       ELSE 0
     END AS above_325_gpa,
     CASE
-      WHEN AT_Cumulative_GPA < 2.75 THEN 1
+      WHEN Most_Recent_GPA_Cumulative_c < 2.75 THEN 1
       ELSE 0
     END AS below_275_gpa
   FROM
