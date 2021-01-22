@@ -5,7 +5,31 @@ OPTIONS
     )
 AS
 
-WITH 
+WITH test_data AS
+(
+
+SELECT 
+A_T.contact_id, 
+MAX(act_composite_score_c) AS max_ACT_composite,
+MAX(sat_total_score_c)  AS max_SAT_total,
+MAX(act_mathematics_c) AS max_ACT_math, 
+MAX(sat_math_c) AS max_SAT_math
+
+FROM `data-warehouse-289815.salesforce_clean.test_clean` AS test
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
+    ON test.academic_semester_c = A_T.AT_id
+    
+WHERE test.record_type_id IN ('01246000000RNndAAG','01246000000RNnUAAW')
+AND version_c = 'Official'
+AND status_c = 'Completed'
+AND grade_c = '12th Grade'
+
+GROUP BY
+A_T.contact_id 
+
+
+),
+
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
 SELECT
@@ -109,13 +133,6 @@ SELECT
     C.act_math_highest_official_c, 
     C.sat_highest_total_single_sitting_c,
     C.sat_math_highest_official_c,
-    
-    CASE
-        WHEN (site_short = 'New Orleans' AND act_highest_composite_official_c >= 20 AND college_eligibility_gpa_11th_grade >=2.5) THEN 'TOPS eligible'
-        WHEN site_short <> 'New Orleans' THEN 'Not Applicable'
-        ELSE 'Not TOPS eligible'
-    END AS TOPS_eligibility, 
-    
     C.site_short,
     CASE
         WHEN C.site_short = "East Palo Alto" THEN 1
@@ -156,7 +173,17 @@ SELECT
     #account
     accnt.name AS high_school_name_filter,
     accnt_2.name AS college_name_applied_filter,
-
+    
+    #test 
+    test.max_ACT_composite,
+    test.max_SAT_total,
+    test.max_ACT_math, 
+    test.max_SAT_math,
+    CASE
+        WHEN (site_short = 'New Orleans' AND max_ACT_composite >= 20 AND college_eligibility_gpa_11th_grade >=2.5) THEN 'TOPS eligible'
+        WHEN site_short <> 'New Orleans' THEN 'Not Applicable'
+        ELSE 'Not TOPS eligible'
+    END AS TOPS_eligibility   
     
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
@@ -166,6 +193,8 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name f
         ON C.npsp_primary_affiliation_c = accnt.id 
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college name in application 
         ON CA.College_University_c  = accnt_2.id    
+LEFT JOIN test_data AS test
+    ON C.contact_id = test.contact_id
     
 WHERE C.grade_c = '12th Grade'
 AND C.College_Track_Status_Name = 'Current CT HS Student'
