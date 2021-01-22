@@ -11,6 +11,7 @@ WITH gather_data AS (
     AT_Term_GPA,
     AT_Cumulative_GPA,
     AT_Cumulative_GPA - Prev_Prev_Prev_AT_Cum_GPA AS year_over_year_cum_gpa_change,
+    Prev_Prev_Prev_AT_Cum_GPA,
     AT_Term_GPA - Prev_Prev_Prev_AT_Term_GPA AS year_over_year_term_gpa_change,
     AT_Term_GPA_bucket,
     sort_AT_Term_GPA_bucket,
