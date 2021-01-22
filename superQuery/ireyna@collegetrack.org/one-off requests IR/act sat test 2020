@@ -9,7 +9,7 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS A_T
 
 SELECT Contact_Id
 FROM student_Data as s1
-WHERE SAT_TOTAL_score_c = 
+WHERE sat_total_score_c = 
     (select max(sat_total_score_c) AS max_sat
     FROM student_Data as s2
     WHERE s1.contact_id = s2.contact_id
