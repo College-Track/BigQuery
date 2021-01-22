@@ -1,7 +1,8 @@
 SELECT
   Contact_Id,
   AT_Cumulative_GPA,
-  prev_prev_prev_at_cum_gpa
+  prev_prev_prev_at_cum_gpa,
+  test
 FROM
   `data-studio-260217.gpa_dashboard.filtered_gpa_data`
-WHERE GAS_Name = 'Spring 2019-20'  AND Contact_id = '0031M00002v3qe6QAA'
+WHERE GAS_Name = 'Fall 2019-20'  AND Contact_id = '0031M00002v3qe6QAA'
