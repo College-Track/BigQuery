@@ -18,7 +18,7 @@ WITH gather_data AS (
     
   FROM
     `data-studio-260217.gpa_dashboard.filtered_gpa_data`
-  WHERE current_as_c = true
+  WHERE previous_as_c = true
   GROUP BY
     region_abrev,
     site_abrev,
