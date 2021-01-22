@@ -14,6 +14,6 @@
 
 
 SELECT 
-Contact_Id, AT_Cumulative_GPA, Prev_AT_Cum_GPA, Prev_Prev_AT_Cum_GPA, Prev_Prev_Prev_AT_Cum_GPA
+Contact_Id, AT_Cumulative_GPA, Prev_AT_Cum_GPA, Prev_Prev_AT_Cum_GPA, Prev_Prev_Prev_AT_Cum_GPA, GAS_Name
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE Contact_Id = '0031M00002v3qe6QAA' AND GAS_Name = 'Spring 2019-20 (Semester'
+WHERE Contact_Id = '0031M00002v3qe6QAA'
