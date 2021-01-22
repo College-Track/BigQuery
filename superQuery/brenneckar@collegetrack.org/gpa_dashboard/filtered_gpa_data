@@ -24,7 +24,9 @@ WITH gather_data AS (
       ' (Semester)',
       ''
     ) AS GAS_Name,
-    GAS_Start_Date
+    GAS_Start_Date,
+    AY_Name,
+    AY_Start_Date
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
