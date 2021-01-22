@@ -1,3 +1,7 @@
-SELECT Contact_Id,
-Prev_Prev_Prev_AT_Cum_GPA, AT_Cumulative_GPA
-FROM `data-studio-260217.gpa_dashboard.filtered_gpa_data`
+SELECT
+  Contact_Id,
+  AT_Cumulative_GPA,
+  prev_prev_prev_at_cum_gpa
+FROM
+  `data-studio-260217.gpa_dashboard.filtered_gpa_data`
+WHERE GAS_Name = 'Spring 2019-20 (Semester)'  AND Contact_id = '0031M00002v3qe6QAA'
