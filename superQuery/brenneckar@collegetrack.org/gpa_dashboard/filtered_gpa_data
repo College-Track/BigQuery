@@ -14,8 +14,8 @@ WITH gather_data AS (
     AT_Cumulative_GPA_bucket,
     sort_AT_Cumulative_GPA,
     GPA_Growth_prev_semester_c,
-    `data-warehouse-289815.UDF.determine_buckets`(GPA_Growth_prev_semester_c, .25, -0.5, 0.5, "") AS gpa_growth_bucket,
-    `data-warehouse-289815.UDF.sort_created_buckets`(GPA_Growth_prev_semester_c, .25, -0.5, 0.5) AS sort_gpa_growth_bucket,
+    `data-warehouse-289815.UDF.determine_buckets`(GPA_Growth_prev_semester_c,.25, -0.5, 0.5, "") AS gpa_growth_bucket,
+    `data-warehouse-289815.UDF.sort_created_buckets`(GPA_Growth_prev_semester_c,.25, -0.5, 0.5) AS sort_gpa_growth_bucket,
     AT_Id,
     Current_HS_CT_Coach_c,
     AT_Grade_c,
@@ -26,7 +26,15 @@ WITH gather_data AS (
     ) AS GAS_Name,
     GAS_Start_Date,
     AY_Name,
-    AY_Start_Date
+    AY_Start_Date,
+    CASE
+      WHEN AT_Cumulative_GPA > 3.25 THEN 1
+      ELSE 0
+    END AS above_325_gpa,
+    CASE
+      WHEN AT_Cumulative_GPA < 2.75 THEN 1
+      ELSE 0
+    END AS below_275_gpa
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
