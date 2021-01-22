@@ -28,4 +28,4 @@ AND test_date_c <= '2019-02-28'
 AND AT_grade_c = '11th Grade'
 AND high_school_class_c = '2020')
     )
-group by Contact_Id,full_name_c,act_composite_score_c, sat_total_score_c,version_c, status_c, test_date_c, AT_grade_c, high_school_class_c
+group by Contact_Id,full_name_c,max_act, max_sat,version_c, status_c, test_date_c, AT_grade_c, high_school_class_c
