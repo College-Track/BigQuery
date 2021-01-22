@@ -8,7 +8,7 @@ WITH gather_data AS (
     CAT.region_abrev,
     CAT.high_school_graduating_class_c,
     CAT.Gender_c,
-    CAT.Ethnic_background_c,
+    CAT.Ethnic_background_c
     
     CAT.AT_Term_GPA,
     CAT.AT_Cumulative_GPA,
