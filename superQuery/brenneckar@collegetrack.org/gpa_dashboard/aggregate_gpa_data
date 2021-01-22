@@ -1,0 +1,17 @@
+SELECT
+  site_abrev,
+  site_short,
+  GAS_Name,
+  AY_Name,
+  AT_Cumulative_GPA_bucket,
+  AVG(AT_Cumulative_GPA) AS avg_cum_gpa,
+  
+  COUNT(Contact_Id) AS student_count
+FROM
+  `data-studio-260217.gpa_dashboard.filtered_gpa_data`
+GROUP BY
+  site_abrev,
+  site_short,
+  GAS_Name,
+  AY_Name,
+  AT_Cumulative_GPA_bucket
