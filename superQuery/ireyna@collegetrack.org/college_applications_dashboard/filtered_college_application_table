@@ -1,3 +1,4 @@
 SELECT app.Student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS app
         WHERE app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting"
+        GROUP BY app.Student_c
