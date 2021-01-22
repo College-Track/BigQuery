@@ -12,7 +12,6 @@ WITH gather_data AS (
     CAT.AT_Cumulative_GPA,
     AT_Cumulative_GPA - Prev_Prev_Prev_AT.gpa_semester_cumulative_c AS year_over_year_cum_gpa_change,
     Prev_Prev_Prev_AT.gpa_semester_cumulative_c AS prev_prev_prev_at_cum_gpa,
-    Prev_Prev_Prev_AT.name as test,
     -- AT_Term_GPA - Prev_Prev_Prev_AT_Term_GPA AS year_over_year_term_gpa_change,
     CAT.AT_Term_GPA_bucket,
     CAT.sort_AT_Term_GPA_bucket,
@@ -46,7 +45,7 @@ WITH gather_data AS (
     END AS below_275_gpa
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
-    LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_AT ON Prev_AT.id = CAT.AT_Id
+    LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_AT ON Prev_AT.id = CAT.previous_academic_semester_c
   LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_AT ON Prev_Prev_AT.id = Prev_AT.Previous_Academic_Semester_c
   LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_Prev_AT ON Prev_Prev_Prev_AT.id = Prev_Prev_AT.Previous_Academic_Semester_c
   WHERE
