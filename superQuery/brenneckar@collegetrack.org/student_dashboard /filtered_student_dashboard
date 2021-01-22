@@ -17,7 +17,9 @@ WITH gather_student_data AS (
     summer_experience_form_link_c,
     current_academic_semester_c,
     previous_academic_semester_c,
-    attendance_rate_previous_term_c
+    attendance_rate_previous_term_c,
+    community_service_form_link_c,
+    summer_experience_form_link_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
@@ -55,9 +57,18 @@ gather_workshop_data AS (
 gather_test_data AS (
   SELECT
     T.contact_name_c,
-    RT.Name,
-    MAX(T.act_composite_score_c) as max_act,
-    MAX(T.sat_total_score_c) AS max_sat,
+    -- RT.Name,
+    -- CASE WHEN version_c = 'Official' THEN 'Official'
+    -- WHEN version_c = 'Entrance into CT Diagnostic' THEN "Diagnostic"
+    -- WHEN version_c = 'End of Year Diagnostic' THEN 'Diagnostic'
+    -- ELSE "Other"
+    -- END AS version_c,
+    MAX(T.act_composite_score_c) as max_act_composite,
+    MAX(T.sat_total_score_c) AS max_sat_total,
+    MAX(T.act_english_c) AS max_act_english,
+    MAX(T.act_mathematics_c) AS max_act_math,
+    MAX(T.sat_math_c) AS max_sat_math,
+    MAX(T.sat_reading_writing_c) AS max_sat_english
   FROM
     `data-warehouse-289815.salesforce.test_c` T
     LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT on RT.id = T.record_type_id
@@ -65,24 +76,11 @@ gather_test_data AS (
     status_c = 'Completed'
     AND is_deleted = false
     AND RT.Name IN ('SAT', 'ACT')
-    AND version_c = 'Official'
-    AND (
-      act_composite_score_c IS NOT NULL
-      OR sat_total_score_c IS NOT NULL
-    )
+
   GROUP BY
-    T.contact_name_c,
-    RT.Name
-),
-format_test_data AS (
-  SELECT
-    contact_name_c,
-    MAX(max_act) as max_act,
-    MAX(max_sat) as max_sat
-  FROM
-    gather_test_data
-  GROUP BY
-    contact_name_c
+    T.contact_name_c
+    -- RT.Name
+    -- version_c
 )
 
 SELECT
@@ -90,10 +88,19 @@ SELECT
   GWD.*
 EXCEPT
   (student_c, academic_semester_c),
-  FTD.max_act,
-  FTD.max_sat
+  GTD.max_act_composite,
+  GTD.max_act_english,
+  GTD.max_act_math,
+  GTD.max_sat_total,
+  GTD.max_sat_english,
+  GTD.max_sat_math,
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
   AND GSD.previous_academic_semester_c = GWD.Academic_Semester_c
-  LEFT JOIN format_test_data FTD ON FTD.contact_name_c = GSD.Contact_Id
+  LEFT JOIN gather_test_data GTD ON GTD.contact_name_c = GSD.Contact_Id
+  
+  
+  
+  
+  
