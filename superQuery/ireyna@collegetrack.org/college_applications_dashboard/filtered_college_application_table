@@ -188,7 +188,7 @@ SELECT
     app.Student_c AS contact_id_applied,
         (SELECT app2.Student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
-        RIGHT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS app ON app.student_c = app2.student_c
+        INNER JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS app ON app.student_c = app2.student_c
         WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting"
         AND app.student_c = app2.student_c
         group by app2.student_c
