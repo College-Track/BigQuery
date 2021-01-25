@@ -35,14 +35,17 @@ END
   
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template` AS Contact
+
 LEFT JOIN (
   SELECT
     api_name,
     Status
   FROM
     `data-warehouse-289815.roles.ct_status` ) AS status
+    
 ON
   Contact.College_Track_Status_c = status.api_name
+  
 LEFT JOIN (
   SELECT
     Name,
@@ -53,4 +56,6 @@ ON
   GAT.Id = Global_Academic_Semester_c
 WHERE
   Contact.Site_Text_c != 'College Track Arlen'
+  
   AND (status.Status = 'Current CT HS Student')
+  AND  Contact.attendance_rate_c IS NOT NULL
