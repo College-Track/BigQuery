@@ -13,10 +13,13 @@ WITH aggregate_data AS (
     COUNT(Contact_Id) AS student_count,
     MAX(College_Track_FY_HS_Planned_Enrollment_c) AS budget_target,
     MAX(College_Track_High_School_Capacity_c) AS capacity_target,
-
   FROM
     `data-studio-260217.ct_application.ct_application_filtered_data`
-WHERE (Contact_Record_Type_Name = 'Student: High School') OR (Created_Date >= "2020-01-15")
+  WHERE
+    (
+      Contact_Record_Type_Name = 'Student: High School'
+    )
+    OR (Created_Date >= "2020-01-15")
   GROUP BY
     site_short,
     site_sort,
@@ -30,22 +33,27 @@ WHERE (Contact_Record_Type_Name = 'Student: High School') OR (Created_Date >= "2
     Ethnic_background_c
 ),
 applicant_count_data AS (
-SELECT site_short, SUM(applicant_count) AS applicant_count
-FROM `data-studio-260217.ct_application.ct_application_filtered_data`
-WHERE Created_Date >= "2020-01-15"
-GROUP BY site_short
+  SELECT
+    site_short,
+    SUM(applicant_count) AS applicant_count,
+    SUM(onboarding_count) AS onboarding_count
+  FROM
+    `data-studio-260217.ct_application.ct_application_filtered_data`
+  WHERE
+    Created_Date >= "2020-01-15"
+  GROUP BY
+    site_short
 ),
-
 student_count_data AS (
-SELECT site_short, SUM(current_student_count) AS current_student_count
-FROM `data-studio-260217.ct_application.ct_application_filtered_data`
-GROUP BY site_short
-)
-
-
+  SELECT
+    site_short,
+    SUM(current_student_count) AS current_student_count,
     
-
-
+  FROM
+    `data-studio-260217.ct_application.ct_application_filtered_data`
+  GROUP BY
+    site_short
+)
 SELECT
   aggregate_data.*,
   CASE
@@ -59,7 +67,8 @@ SELECT
     ELSE 8
   END AS sort_ct_status,
   applicant_count_data.applicant_count,
-  student_count_data.current_student_count
+  student_count_data.current_student_count,
+    applicant_count_data.onboarding_count
 FROM
   aggregate_data
   LEFT JOIN applicant_count_data ON aggregate_data.site_short = applicant_count_data.site_short
