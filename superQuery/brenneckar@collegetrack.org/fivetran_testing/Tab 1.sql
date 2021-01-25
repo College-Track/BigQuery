@@ -1,2 +1,2 @@
 SELECT *
-FROM `data-warehouse-289815.salesforce.attachment`
+FROM `data-warehouse-289815.salesforce.att
