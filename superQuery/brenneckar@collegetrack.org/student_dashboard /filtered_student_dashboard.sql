@@ -7,7 +7,7 @@ WITH gather_student_data AS (
     grade_c,
     full_name_c,
     CASE
-      WHEN full_name_c = 'Jordan Soto' THEN 'brenneckar@collegetrack.org'
+      WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org'
       ELSE email
     END AS email,
     Most_Recent_GPA_Cumulative_c,
