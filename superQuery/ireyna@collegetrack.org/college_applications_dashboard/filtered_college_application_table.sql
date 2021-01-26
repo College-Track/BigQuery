@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
+    )
+AS
+
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -222,7 +231,7 @@ SELECT
     app.id as college_app_id,
     app.Predominant_Degree_Awarded_c,
     app.Type_of_School_c,
-    site AS site_applied,
+    C.site_short AS site_applied,
     app.Situational_Fit_Type_c,
     app.Strategic_Type_c,
     app.Verification_Status_c,
@@ -253,6 +262,8 @@ SELECT
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id  
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C  
+        ON C.contact_id = app.student_c 
         
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.student_c_accepted
@@ -320,4 +331,5 @@ SELECT
 FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
     ON filtered_data.contact_id = college_application_data.contact_id_applied
+
 
