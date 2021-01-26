@@ -1,3 +1,2 @@
-SELECT *
-FROM `data-warehouse-289815.salesforce.attachment`
-LIMIT 1000
+SELECT Count(Id)
+FROM `data-warehouse-289815.salesforce.academic_semester_c`
