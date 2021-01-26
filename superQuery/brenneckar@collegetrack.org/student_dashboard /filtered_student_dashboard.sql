@@ -96,5 +96,5 @@ EXCEPT
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
-  AND GSD.previous_academic_semester_c = GWD.Academic_Semester_c
+  AND GSD.current_academic_semester_c = GWD.Academic_Semester_c
   LEFT JOIN gather_test_data GTD ON GTD.contact_name_c = GSD.Contact_Id
