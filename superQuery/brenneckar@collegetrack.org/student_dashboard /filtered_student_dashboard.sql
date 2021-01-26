@@ -6,9 +6,8 @@ WITH gather_student_data AS (
     high_school_graduating_class_c,
     grade_c,
     full_name_c,
-    CASE
-      WHEN full_name_c = 'Daniel Aguilar' THEN 'bakerrenneckar@gmail.com'
-      ELSE email
+    CASE WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org'
+    ELSE email
     END AS email,
     Most_Recent_GPA_Cumulative_c,
     most_recent_gpa_semester_c,
@@ -105,4 +104,5 @@ FROM
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
   AND GSD.current_academic_semester_c = GWD.Academic_Semester_c -- switch to current AS
   LEFT JOIN gather_test_data GTD ON GTD.contact_name_c = GSD.Contact_Id
+  LEFT JOIN `data-warehouse-289815.salesforce.user` U ON U.id = GWD.primary_staff_c 
   LEFT JOIN `data-warehouse-289815.salesforce.user` U ON U.id = GWD.primary_staff_c
