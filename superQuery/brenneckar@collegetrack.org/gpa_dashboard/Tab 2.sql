@@ -4,4 +4,5 @@ SELECT
   
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE term_c = 'Spring'
+WHERE term_c = 'Spring' 
+LIMIT 1000
