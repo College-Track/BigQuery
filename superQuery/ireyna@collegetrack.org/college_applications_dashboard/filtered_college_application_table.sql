@@ -231,7 +231,7 @@ SELECT
     app.id as college_app_id,
     app.Predominant_Degree_Awarded_c,
     app.Type_of_School_c,
-    site_short AS site_applied,
+    site AS site_applied,
     app.Situational_Fit_Type_c,
     app.Strategic_Type_c,
     app.Verification_Status_c,
