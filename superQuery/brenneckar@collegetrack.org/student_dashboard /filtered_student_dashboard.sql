@@ -11,7 +11,7 @@ WITH gather_student_data AS (
     most_recent_gpa_semester_c,
     total_bank_book_balance_contact_c,
     community_service_hours_c,
-    Attendance_Rate_Current_AS_c / 100 AS Attendance_Rate_Current_AS_c,
+    Attendance_Rate_Current_AS_c,
     Current_HS_CT_Coach_c,
     community_service_form_link_c,
     summer_experience_form_link_c,
@@ -26,7 +26,7 @@ WITH gather_student_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     college_track_status_c IN ('11A', '18a', '12A')
-    AND current_as_c = true
+    AND previous_as_c = true
 ),
 gather_workshop_data AS (
   SELECT
@@ -96,5 +96,5 @@ EXCEPT
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
-  AND GSD.current_academic_semester_c = GWD.Academic_Semester_c
+  AND GSD.previous_academic_semester_c = GWD.Academic_Semester_c
   LEFT JOIN gather_test_data GTD ON GTD.contact_name_c = GSD.Contact_Id
