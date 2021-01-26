@@ -1,3 +1,3 @@
-SELECT Count(Id)
-FROM `data-warehouse-289815.salesforce.academic_semester_c`
-WHEre is_deleted = false AND created_date >= '2021-01-18'
+SELECT workshop_instructor_c, 
+FROM `data-warehouse-289815.salesforce_clean.class_template`
+LIMIT 100
