@@ -11,7 +11,7 @@ WITH gather_student_data AS (
     most_recent_gpa_semester_c,
     total_bank_book_balance_contact_c,
     community_service_hours_c,
-    Attendance_Rate_Current_AS_c,
+    Attendance_Rate_Current_AS_c / 100 AS Attendance_Rate_Current_AS_c,
     Current_HS_CT_Coach_c,
     community_service_form_link_c,
     summer_experience_form_link_c,
