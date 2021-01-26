@@ -11,7 +11,7 @@ WITH gather_student_data AS (
     most_recent_gpa_semester_c,
     total_bank_book_balance_contact_c,
     community_service_hours_c,
-    Attendance_Rate_Current_AS_c,
+    Attendance_Rate_Current_AS_c / 100 AS Attendance_Rate_Current_AS_c,
     Current_HS_CT_Coach_c,
     community_service_form_link_c,
     summer_experience_form_link_c,
@@ -26,7 +26,7 @@ WITH gather_student_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     college_track_status_c IN ('11A', '18a', '12A')
-    AND previous_as_c = true
+    AND current_as_c = true
 ),
 gather_workshop_data AS (
   SELECT
@@ -38,6 +38,7 @@ gather_workshop_data AS (
     C.Academic_Semester_c,
     SUM(C.Attendance_Numerator_c) AS attended_sessions,
     SUM(C.Attendance_Denominator_c) AS enrolled_sessions,
+    primary_staff_c,
     CASE
       WHEN SUM(C.Attendance_Denominator_c) = 0 THEN NULL
       ELSE SUM(C.Attendance_Numerator_c) / SUM(C.Attendance_Denominator_c)
@@ -54,7 +55,8 @@ gather_workshop_data AS (
     start_time_c,
     recurring_days_c,
     class_status,
-    Academic_Semester_c
+    Academic_Semester_c,
+    primary_staff_c
 ),
 gather_test_data AS (
   SELECT
@@ -93,8 +95,11 @@ EXCEPT
   GTD.max_sat_total,
   GTD.max_sat_english,
   GTD.max_sat_math,
+  U.name AS workshop_staff,
+  U.email AS workshop_staff_email
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
-  AND GSD.previous_academic_semester_c = GWD.Academic_Semester_c
+  AND GSD.current_academic_semester_c = GWD.Academic_Semester_c -- switch to current AS
   LEFT JOIN gather_test_data GTD ON GTD.contact_name_c = GSD.Contact_Id
+  LEFT JOIN `data-warehouse-289815.salesforce.user` U ON U.id = GWD.primary_staff_c 
