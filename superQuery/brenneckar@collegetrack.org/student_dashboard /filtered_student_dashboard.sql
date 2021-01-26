@@ -17,7 +17,11 @@ WITH gather_student_data AS (
     summer_experience_form_link_c,
     current_academic_semester_c,
     previous_academic_semester_c,
-    attendance_rate_previous_term_c
+    attendance_rate_previous_term_c,
+    CASE
+      WHEN (attended_workshops_c - enrolled_sessions_c) > 0 THEN 0
+      ELSE ABS((attended_workshops_c - enrolled_sessions_c))
+    END AS workshops_to_make_up
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
@@ -89,10 +93,6 @@ EXCEPT
   GTD.max_sat_total,
   GTD.max_sat_english,
   GTD.max_sat_math,
-  CASE
-    WHEN (GWD.attended_sessions - GWD.enrolled_sessions) > 0 THEN 0
-    ELSE ABS((GWD.attended_sessions - GWD.enrolled_sessions))
-  END AS workshops_to_make_up
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
