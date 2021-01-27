@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
+    )
+AS
+
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -279,15 +288,7 @@ SELECT
     filtered_data.*,
     college_application_data.*,
         #EXCEPT (College_Fit_Type_Applied_c),
-    
-    (SELECT (COUNT (DISTINCT contact_id_accepted_4_year)/COUNT (DISTINCT contact_id))
-        FROM college_application_data AS app
-        LEFT JOIN filtered_data
-        ON contact_id = app.contact_id_accepted_4_year
-        where contact_id = app.contact_id_accepted_4_year
-        group by app.contact_id_accepted_4_year
-        ) AS  contact_id_accepted_4_year_chart,
-        
+  
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
         WHEN Strategic_Type_c IS NULL THEN 'No Type Selected'
@@ -342,6 +343,7 @@ FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
     ON filtered_data.contact_id = college_application_data.contact_id_applied
 
+/*
 GROUP BY    
     college_application_id,
     student_c,
@@ -419,6 +421,5 @@ GROUP BY
     admission_status_c,
     fit_type_enrolled_c,
     sort_helper_admission_status
-    
-
+*/
 
