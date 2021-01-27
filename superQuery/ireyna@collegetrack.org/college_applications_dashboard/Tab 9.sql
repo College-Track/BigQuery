@@ -1,4 +1,6 @@
-SELECT site_short, (SELECT app2.student_c
+with subquery AS
+
+(SELECT site_short, contact_id,(SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
         AND app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
@@ -15,4 +17,9 @@ AND site_short = 'Aurora'
 
 group by
 contact_id_accepted_4_year,
-site_short
+site_short,
+contact_id
+)
+
+SELECT COUNT(DISTINCT contact_id_accepted_4_year)/count (distinct contact_id)
+FROM subquery
