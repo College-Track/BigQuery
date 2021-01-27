@@ -281,8 +281,8 @@ SELECT
         #EXCEPT (College_Fit_Type_Applied_c),
     
     (SELECT (COUNT (DISTINCT contact_id_accepted_4_year)/COUNT (DISTINCT contact_id))
-        FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C 
-        LEFT JOIN college_application_data AS app
+        FROM college_application_data AS app
+        LEFT JOIN filtered_data
         ON contact_id = app.contact_id_accepted_4_year
         where contact_id = app.contact_id_accepted_4_year
         group by app.contact_id_accepted_4_year
