@@ -6,6 +6,10 @@ SELECT  (SELECT app2.student_c
         ) AS  contact_id_accepted_4_year
 
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS app
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C   
+ON app.student_c = C.Contact_Id
 
+WHERE C.grade_c = '12th Grade'
+AND C.College_Track_Status_Name = 'Current CT HS Student'
 group by
 contact_id_accepted_4_year
