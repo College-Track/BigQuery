@@ -137,7 +137,6 @@ admission_data AS
 (
 SELECT 
     student_c AS contact_id_admissions,
-    admission_status_c,
     accnt.name AS school_name_enrolled,
     app.id AS college_enrolled_app_id,
     Type_of_School_c as school_type_enrolled,
@@ -235,20 +234,7 @@ SELECT
     CASE
         WHEN app.admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         ELSE app.admission_status_c
-    END AS admission_status_table,
-    
-    CASE
-        WHEN app.admission_status_c = "Accepted" THEN 1
-        WHEN app.admission_status_c = "Accepted and Enrolled" THEN 2
-        WHEN app.admission_status_c = "Accepted and Deferred" THEN 3
-        WHEN app.admission_status_c = "Wait-listed" THEN 4
-        WHEN app.admission_status_c = "Conditional" THEN 5
-        WHEN app.admission_status_c = "Withdrew Application" THEN 6
-        WHEN app.admission_status_c = "Undecided" THEN 7
-        WHEN app.admission_status_c = "Denied" THEN 8
-        WHEN app.admission_status_c = "Admission Status Not Yet Updated" THEN 9
-        ELSE 0
-    END AS sort_helper_admission_status,
+    END AS admission_status, #for Admission Status chart
     
     #accepted_data 
     student_c_accepted,
@@ -313,6 +299,19 @@ SELECT
         WHEN fit_type_accepted = "None - 2-year or technical" THEN 5
         ELSE 6
     END AS sort_helper_acceptance_by_fit_type,
+    
+    CASE
+        WHEN admission_status = "Accepted" THEN 1
+        WHEN admission_status = "Accepted and Enrolled" THEN 2
+        WHEN admission_status = "Accepted and Deferred" THEN 3
+        WHEN admission_status = "Wait-listed" THEN 4
+        WHEN admission_status = "Conditional" THEN 5
+        WHEN admission_status = "Withdrew Application" THEN 6
+        WHEN admission_status = "Undecided" THEN 7
+        WHEN admission_status = "Denied" THEN 8
+        WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
+        ELSE 0
+    END AS sort_helper_admission_status,
     
     /*
     CASE
