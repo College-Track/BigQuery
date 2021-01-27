@@ -6,7 +6,6 @@ SELECT  (SELECT app2.student_c
         ) AS  contact_id_accepted_4_year
 
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS app
-WHERE C.grade_c = '12th Grade'
-AND C.College_Track_Status_Name = 'Current CT HS Student'
+
 group by
 contact_id_accepted_4_year
