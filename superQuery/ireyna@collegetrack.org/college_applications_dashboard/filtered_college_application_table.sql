@@ -1,5 +1,4 @@
-SELECT 
-    student_c AS contact_id_admissions,
+student_c AS contact_id_admissions,
     accnt.name AS school_name_enrolled,
     app.id AS college_enrolled_app_id,
     Type_of_School_c as school_type_enrolled,
