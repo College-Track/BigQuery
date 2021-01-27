@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -201,6 +192,7 @@ SELECT
     app.Type_of_School_c as school_type_applied,
     accnt.name AS school_name_applied,
     app.College_University_c AS app_college_id, #college id
+    app.admission_status_c,
     app.Award_Letter_c,
     app.CSS_Profile_Required_c,
     app.CSS_Profile_c,
@@ -243,7 +235,20 @@ SELECT
     CASE
         WHEN app.admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         ELSE app.admission_status_c
-    END AS admission_status, #for Admission Status chart
+    END AS admission_status_table,
+    
+    CASE
+        WHEN app.admission_status_c = "Accepted" THEN 1
+        WHEN app.admission_status_c = "Accepted and Enrolled" THEN 2
+        WHEN app.admission_status_c = "Accepted and Deferred" THEN 3
+        WHEN app.admission_status_c = "Wait-listed" THEN 4
+        WHEN app.admission_status_c = "Conditional" THEN 5
+        WHEN app.admission_status_c = "Withdrew Application" THEN 6
+        WHEN app.admission_status_c = "Undecided" THEN 7
+        WHEN app.admission_status_c = "Denied" THEN 8
+        WHEN app.admission_status_c = "Admission Status Not Yet Updated" THEN 9
+        ELSE 0
+    END AS sort_helper_admission_status,
     
     #accepted_data 
     student_c_accepted,
@@ -308,19 +313,6 @@ SELECT
         WHEN fit_type_accepted = "None - 2-year or technical" THEN 5
         ELSE 6
     END AS sort_helper_acceptance_by_fit_type,
-    
-    CASE
-        WHEN admission_status = "Accepted" THEN 1
-        WHEN admission_status = "Accepted and Enrolled" THEN 2
-        WHEN admission_status = "Accepted and Deferred" THEN 3
-        WHEN admission_status = "Wait-listed" THEN 4
-        WHEN admission_status = "Conditional" THEN 5
-        WHEN admission_status = "Withdrew Application" THEN 6
-        WHEN admission_status = "Undecided" THEN 7
-        WHEN admission_status = "Denied" THEN 8
-        WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
-        ELSE 0
-    END AS sort_helper_admission_status
     
     /*
     CASE
