@@ -6,3 +6,6 @@ SELECT  (SELECT app2.student_c
         ) AS  contact_id_accepted_4_year, admission_status_c, predominant_degree_awarded_c
 
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS app
+
+group by
+contact_id_accepted_4_year, admission_status_c, predominant_degree_awarded_c
