@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -201,6 +192,20 @@ SELECT
         group by app2.student_c
         ) AS  contact_id_applied_2_year,
         
+        (SELECT app2.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
+        AND admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+        group by app2.student_c
+        ) AS  contact_id_accepted_4_year, #to use in formula in final join
+        
+        (SELECT app2.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
+        AND admission_status_c = "Accepted and Enrolled"
+        group by app2.student_c
+        ) AS  contact_id_enrolled_4_year,
+        
     app.Type_of_School_c as school_type_applied,
     accnt.name AS school_name_applied,
     app.College_University_c AS app_college_id, #college id
@@ -274,7 +279,6 @@ SELECT
     filtered_data.*,
     college_application_data.*,
         #EXCEPT (College_Fit_Type_Applied_c),
-    
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
         WHEN Strategic_Type_c IS NULL THEN 'No Type Selected'
