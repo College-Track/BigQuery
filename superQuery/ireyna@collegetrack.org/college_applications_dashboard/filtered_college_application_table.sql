@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -15,7 +6,6 @@ SELECT
 #college application data
     CA.id AS college_application_id,
     CA.student_c,
-    CA.application_status_c,
     CASE  
         WHEN CA.application_status_c IS NULL THEN 'No College Application'
         ELSE CA.application_status_c
@@ -243,7 +233,7 @@ SELECT
     CASE
         WHEN app.admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         ELSE app.admission_status_c
-    END AS admission_status_table, #for Admission Status chart
+    END AS admission_status, #for Admission Status chart
     
     #accepted_data 
     student_c_accepted,
@@ -310,15 +300,15 @@ SELECT
     END AS sort_helper_acceptance_by_fit_type,
     
     CASE
-        WHEN admission_status_table = "Accepted" THEN 1
-        WHEN admission_status_table = "Accepted and Enrolled" THEN 2
-        WHEN admission_status_table = "Accepted and Deferred" THEN 3
-        WHEN admission_status_table = "Wait-listed" THEN 4
-        WHEN admission_status_table = "Conditional" THEN 5
-        WHEN admission_status_table = "Withdrew Application" THEN 6
-        WHEN admission_status_table = "Undecided" THEN 7
-        WHEN admission_status_table = "Denied" THEN 8
-        WHEN admission_status_table = "Admission Status Not Yet Updated" THEN 9
+        WHEN admission_status = "Accepted" THEN 1
+        WHEN admission_status = "Accepted and Enrolled" THEN 2
+        WHEN admission_status = "Accepted and Deferred" THEN 3
+        WHEN admission_status = "Wait-listed" THEN 4
+        WHEN admission_status = "Conditional" THEN 5
+        WHEN admission_status = "Withdrew Application" THEN 6
+        WHEN admission_status = "Undecided" THEN 7
+        WHEN admission_status = "Denied" THEN 8
+        WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
         ELSE 0
     END AS sort_helper_admission_status,
     
@@ -422,4 +412,3 @@ GROUP BY
     fit_type_enrolled_c,
     sort_helper_admission_status
 */
-
