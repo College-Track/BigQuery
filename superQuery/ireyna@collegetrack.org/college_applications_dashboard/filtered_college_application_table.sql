@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -288,8 +279,13 @@ SELECT
     filtered_data.*,
     college_application_data.*,
         #EXCEPT (College_Fit_Type_Applied_c),
-        
-   (COUNT (DISTINCT contact_id_accepted_4_year)/COUNT (DISTINCT contact_id)) AS contact_id_accepted_4_year_chart,
+    
+    (SELECT (COUNT (DISTINCT contact_id_accepted_4_year)/COUNT (DISTINCT contact_id))
+        FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C 
+        LEFT JOIN college_application_data AS app
+        ON contact_id = app.contact_id_accepted_4_year
+        group by app.contact_id_accepted_4_year
+        ) AS  contact_id_accepted_4_year_chart,
         
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
