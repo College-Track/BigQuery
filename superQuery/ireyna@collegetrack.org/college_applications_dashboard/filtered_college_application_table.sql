@@ -284,6 +284,7 @@ SELECT
         FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C 
         LEFT JOIN college_application_data AS app
         ON contact_id = app.contact_id_accepted_4_year
+        where contact_id = app.contact_id_accepted_4_year
         group by app.contact_id_accepted_4_year
         ) AS  contact_id_accepted_4_year_chart,
         
