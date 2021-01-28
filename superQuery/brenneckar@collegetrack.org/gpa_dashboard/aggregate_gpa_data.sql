@@ -22,7 +22,7 @@ WITH gather_data AS (
     
   FROM
     `data-studio-260217.gpa_dashboard.filtered_gpa_data`
-  WHERE GAS_Name = 'Spring 2019-20' -- Has to be manually adjusted each new complete term
+--   WHERE GAS_Name = 'Spring 2019-20'
   GROUP BY
     region_abrev,
     site_abrev,
