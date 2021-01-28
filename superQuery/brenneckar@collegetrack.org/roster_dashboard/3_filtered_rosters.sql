@@ -204,7 +204,7 @@ most_recent_complete_at_gpa AS (
 ),
 final_prep AS (
   SELECT
-    modify_data.*,
+    *,
     CASE
       WHEN community_service_bucket = "On Track" THEN 1
       WHEN community_service_bucket = "Near On Track" THEN 2
