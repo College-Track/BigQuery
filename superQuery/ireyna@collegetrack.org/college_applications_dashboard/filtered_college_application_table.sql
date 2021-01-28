@@ -204,7 +204,11 @@ SELECT
         ) AS  contact_id_enrolled_4_year,
         
     app.Type_of_School_c as school_type_applied,
-    accnt.name AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
+    #accnt.name,
+    CASE WHEN 
+        accnt.name IS NULL THEN 'No College Application'
+        ELSE accnt.name 
+    END AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
     app.College_University_c AS app_college_id, #college id
     app.admission_status_c,
     app.Award_Letter_c,
