@@ -204,7 +204,7 @@ SELECT
         ) AS  contact_id_enrolled_4_year,
         
     app.Type_of_School_c as school_type_applied,
-    accnt.name AS school_name_applied, #Each college application appended to college name. Top filter on Admissions & Enrollment page
+    accnt.name AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
     app.College_University_c AS app_college_id, #college id
     app.admission_status_c,
     app.Award_Letter_c,
