@@ -98,7 +98,7 @@ SELECT
     
     #account
     accnt.name AS high_school_name_filter,
-    accnt_2.name AS college_name_applied_filter,
+    accnt_2.name AS college_name_applied_single_school, 
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
@@ -204,7 +204,7 @@ SELECT
         ) AS  contact_id_enrolled_4_year,
         
     app.Type_of_School_c as school_type_applied,
-    accnt.name AS school_name_applied,
+    accnt.name AS school_name_applied, #Each college application appended to college name. Top filter on Admissions & Enrollment page
     app.College_University_c AS app_college_id, #college id
     app.admission_status_c,
     app.Award_Letter_c,
