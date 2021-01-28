@@ -204,11 +204,7 @@ SELECT
         ) AS  contact_id_enrolled_4_year,
         
     app.Type_of_School_c as school_type_applied,
-    #accnt.name,
-    CASE WHEN 
-        accnt.name IS NULL THEN 'No College Application'
-        ELSE accnt.name 
-    END AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
+    accnt.name AS college_name__on_app_for_case_statement,
     app.College_University_c AS app_college_id, #college id
     app.admission_status_c,
     app.Award_Letter_c,
@@ -283,9 +279,15 @@ LEFT JOIN admission_data AS admissions
 
 SELECT 
     filtered_data.*,
-    college_application_data.*,
+    college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
-  
+        EXCEPT (college_name__on_app_for_case_statement),
+        
+    CASE WHEN 
+        college_name__on_app_for_case_statement IS NULL THEN 'No College Application'
+        ELSE college_name__on_app_for_case_statement 
+    END AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
+    
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
         WHEN Strategic_Type_c IS NULL THEN 'No Type Selected'
