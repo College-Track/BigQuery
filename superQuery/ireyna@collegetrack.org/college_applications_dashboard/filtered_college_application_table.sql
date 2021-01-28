@@ -13,7 +13,7 @@ filtered_data AS #contact data with college application data (no admission or ac
 SELECT
     
 #college application data
-    CA.id AS college_application_id,
+    CA.id AS college_app_id_contact,
     CA.student_c,
     CASE  
         WHEN CA.application_status_c IS NULL THEN 'No College Application'
