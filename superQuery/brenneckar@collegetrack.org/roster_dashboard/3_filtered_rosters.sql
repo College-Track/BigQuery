@@ -4,6 +4,7 @@ WITH gather_data AS (
     Contact_Id,
     SITE_c,
     contact_url,
+    College_Track_Status_c,
     Current_Enrollment_Status_c,
     school_type,
     PS_Internships_c,
@@ -14,7 +15,6 @@ WITH gather_data AS (
     Current_CC_Advisor_c,
     Grade_c,
     Attendance_Rate_Current_AS_c / 100 as attendance_rate,
-    
     Indicator_Low_Income_c,
     Summer_Experiences_Previous_Summer_c,
     college_applications_all_fit_types_c,
@@ -34,9 +34,9 @@ WITH gather_data AS (
     Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
     School_Name,
     Most_Recent_GPA_Cumulative_bucket,
-    
+    A_S.Name AS anticipated_date_of_graduation_4_year,
     -- Sorting fields
-    sort_most_recent_gpa_bucket,
+    sort_Most_Recent_GPA_Cumulative_bucket AS sort_most_recent_gpa_bucket,
     sort_attendance_bucket,
     sort_covitality,
     -- Create new fields
@@ -90,10 +90,12 @@ WITH gather_data AS (
       ) > 60 THEN "60+ Days"
     END AS last_contact_range,
   FROM
-    `data-warehouse-289815.salesforce_clean.contact_at_template`
+    `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+    LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` A_S ON A_S.Id = CAT.anticipated_date_of_graduation_4_year_c
   WHERE
-    Current_AS_c = True
+    CAT.Current_AS_c = True
     AND College_Track_Status_c IN ('11A', '18a', '12A', '15A')
+    AND CAT.grade_c != '8th Grade'
 ),
 current_as AS (
   SELECT
@@ -188,14 +190,34 @@ modify_data AS (
   FROM
     gather_data GD
     LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
+),
+most_recent_complete_at_gpa AS (
+  SELECT
+    Contact_Id,
+    AT_Cumulative_GPA_bucket,
+    student_audit_status_c,
+    AT_Cumulative_GPA
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    GAS_Name LIKE '%Spring 2019-20%'
+),
+final_prep AS (
+  SELECT
+    modify_data.*,
+    CASE
+      WHEN community_service_bucket = "On Track" THEN 1
+      WHEN community_service_bucket = "Near On Track" THEN 2
+      WHEN community_service_bucket = "Off Track" THEN 3
+      ELSE 0
+    END AS sort_community_service_bucket,
+    MRCGPA.student_audit_status_c AS valid_gpa_status,
+    MRCGPA.AT_Cumulative_GPA AS valid_gpa
+  from
+    modify_data
+    LEFT JOIN most_recent_complete_at_gpa MRCGPA ON modify_data.Contact_Id = MRCGPA.Contact_Id
 )
 SELECT
-  *,
-  CASE
-    WHEN community_service_bucket = "On Track" THEN 1
-    WHEN community_service_bucket = "Near On Track" THEN 2
-    WHEN community_service_bucket = "Off Track" THEN 3
-    ELSE 0
-  END AS sort_community_service_bucket,
-from
-  modify_data
+  *
+FROM
+  final_prep
