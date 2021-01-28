@@ -1,12 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -116,7 +107,7 @@ AND C.College_Track_Status_Name = 'Current CT HS Student'
 acceptance_data AS 
 (
 SELECT
-    student_c AS student_c_accepted, #contact id
+    student_c AS contact_id_accepted, #contact id
     accnt.name AS school_name_accepted,
     app.id AS college_accepted_app_id,
     CASE 
@@ -166,14 +157,14 @@ college_application_data AS #combine acceptance and admission data to college ap
 (
 SELECT
     app.name,
-    app.Student_c AS student_c_app_table,
+    app.Student_c AS student_c_app_table, # For metric on "Applications" Page of Dashboard (vs. Admissions). Pulls in all students with apps regardless of Application Status
     
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app.student_c=app2.student_c
         AND application_status_c = "Applied"
         group by app2.student_c
-        ) AS  contact_id_applied_status,
+        ) AS  contact_id_applied_status, #For metric on "Admissions" Page of Dashboard. Will only pull in students with Status of Applied.
     
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
@@ -252,7 +243,7 @@ SELECT
     END AS admission_status, #for Admission Status chart
     
     #accepted_data 
-    student_c_accepted,
+    contact_id_accepted,
     school_name_accepted,
     college_accepted_app_id,
     accepted,
@@ -270,7 +261,7 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id  
         
 LEFT JOIN acceptance_data AS acceptance
-    ON app.student_c = acceptance.student_c_accepted
+    ON app.student_c = acceptance.contact_id_accepted
 
 LEFT JOIN admission_data AS admissions
     ON app.student_c = admissions.contact_id_admissions
