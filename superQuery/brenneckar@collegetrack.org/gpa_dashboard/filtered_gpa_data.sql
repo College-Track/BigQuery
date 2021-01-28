@@ -27,7 +27,6 @@ WITH gather_data AS (
     CAT.sort_Most_Recent_GPA_Cumulative_bucket,
     CAT.Most_Recent_GPA_Cumulative_c,
     CAT.AT_Id,
-    CONCAT('https://ctgraduates.lightning.force.com/', CAT.AT_ID) AS at_url,
     CAT.previous_as_c,
     CAT.Current_HS_CT_Coach_c,
     CAT.AT_Grade_c,
