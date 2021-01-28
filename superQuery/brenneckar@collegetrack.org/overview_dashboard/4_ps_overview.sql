@@ -30,9 +30,17 @@ WITH calculate_metrics AS(
       WHEN Fit_Type_c = "Best Fit" THEN 1
       WHEN Fit_Type_c = "Situational Best Fit" THEN 1
       ELSE 0
-    END AS met_fit_type_goal
+    END AS met_fit_type_goal,
+    CASE
+      WHEN valid_gpa_status = 'Active: Post-Secondary' THEN 1
+      ELSE 0
+    END AS count_gpa,
+    CASE
+      WHEN valid_gpa >= 3.25 THEN 1
+      ELSE 0
+    END AS met_gpa_goal_valid
   FROM
-    `data-studio-260217.rosters.filtered_roster_test`
+    `data-studio-260217.rosters.filtered_roster`
   WHERE
     Contact_Record_Type_Name = "Student: Post-Secondary"
 )
@@ -46,7 +54,9 @@ SELECT
   SUM(CM.met_contact_goal) AS met_contact_goal,
   SUM(CM.met_internship_goal) AS met_internship_goal,
   SUM(CM.met_fit_type_goal) as met_fit_type_goal,
-  SUM(CM.met_on_track_goal) as met_on_track_goal
+  SUM(CM.met_on_track_goal) as met_on_track_goal,
+  SUM(CM.met_gpa_goal_valid) AS met_gpa_goal_valid,
+  SUM(CM.count_gpa) AS count_gpa
 FROM
   calculate_metrics CM
 GROUP BY
