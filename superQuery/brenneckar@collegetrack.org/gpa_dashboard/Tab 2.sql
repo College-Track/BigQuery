@@ -1,7 +1,3 @@
-SELECT
-  Contact_Id,
-  AT_Cumulative_GPA_bucket
-  
-FROM
-  `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE term_c = 'Spring'
+SELECT *
+FROM `data-studio-260217.gpa_dashboard.filtered_gpa_data`
+WHERE GAS_Name = 'Spring 2019-20'
