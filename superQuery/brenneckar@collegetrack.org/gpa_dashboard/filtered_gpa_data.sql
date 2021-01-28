@@ -27,6 +27,7 @@ WITH gather_data AS (
     CAT.sort_Most_Recent_GPA_Cumulative_bucket,
     CAT.Most_Recent_GPA_Cumulative_c,
     CAT.AT_Id,
+    CONCAT('https://ctgraduates.lightning.force.com/', CAT.AT_ID) AS at_url,
     CAT.previous_as_c,
     CAT.Current_HS_CT_Coach_c,
     CAT.AT_Grade_c,
@@ -39,7 +40,7 @@ WITH gather_data AS (
     CAT.AY_Name,
     CAT.AY_Start_Date,
     CASE
-      WHEN AT_Cumulative_GPA > 3.25 THEN 1
+      WHEN AT_Cumulative_GPA >= 3.25 THEN 1
       ELSE 0
     END AS above_325_gpa,
     CASE
