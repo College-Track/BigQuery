@@ -24,9 +24,18 @@ WITH calculate_metrics AS(
     CASE
       WHEN college_applications_all_fit_types_c >= 1 THEN 1
       ELSE 0
-    END AS met_college_app_goal
-  FROM
-    `data-studio-260217.rosters.filtered_roster_test`
+    END AS met_college_app_goal,
+    CASE
+      WHEN valid_gpa_status = 'Current CT HS Student'
+      OR valid_gpa_status = 'Leave of Absence' THEN 1
+      ELSE 0
+    END AS count_gpa,
+    CASE WHEN valid_gpa >= 3.25 THEN 1
+    ELSE 0
+    END AS met_gpa_goal_valid
+    
+  FROM 
+    `data-studio-260217.rosters.filtered_roster`
   WHERE
     Contact_Record_Type_Name = "Student: High School"
 ),
@@ -36,7 +45,7 @@ senior_count AS (
     site_short,
     COUNT(Contact_Id) AS senior_count
   FROM
-    `data-studio-260217.rosters.filtered_roster_test`
+    `data-studio-260217.rosters.filtered_roster`
   WHERE
     Grade_c = "12th Grade"
   GROUP BY
@@ -56,12 +65,13 @@ SELECT
   SUM(CM.met_college_app_goal) as met_college_app_goal,
   MAX(SC.senior_count) as senior_count,
   MAX(Account.College_Track_High_School_Capacity_c) AS hs_capacity,
-  MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS  hs_budget_capacity
+  MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS hs_budget_capacity,
+  SUM(CM.met_gpa_goal_valid) AS met_gpa_goal_valid,
+  SUM(CM.count_gpa) AS count_gpa
 FROM
   calculate_metrics CM
-   LEFT JOIN senior_count SC ON SC.site_short = CM.site_short
-    LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = CM.SITE_c
-
+  LEFT JOIN senior_count SC ON SC.site_short = CM.site_short
+  LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = CM.SITE_c
 GROUP BY
   SITE_c,
   region_short,
