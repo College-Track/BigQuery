@@ -4,7 +4,8 @@ WITH gather_data AS (
     Contact_Id,
     SITE_c,
     contact_url,
-    College_Track_Status_c,
+        College_Track_Status_c,
+
     Current_Enrollment_Status_c,
     school_type,
     PS_Internships_c,
@@ -191,16 +192,11 @@ modify_data AS (
     gather_data GD
     LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
 ),
+
 most_recent_complete_at_gpa AS (
-  SELECT
-    Contact_Id,
-    AT_Cumulative_GPA_bucket,
-    student_audit_status_c,
-    AT_Cumulative_GPA
-  FROM
-    `data-warehouse-289815.salesforce_clean.contact_at_template`
-  WHERE
-    GAS_Name LIKE '%Spring 2019-20%'
+SELECT Contact_Id,AT_Cumulative_GPA_bucket, student_audit_status_c, AT_Cumulative_GPA
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE GAS_Name LIKE '%Spring 2019-20%'
 ),
 final_prep AS (
   SELECT
@@ -221,3 +217,4 @@ SELECT
   *
 FROM
   final_prep
+  
