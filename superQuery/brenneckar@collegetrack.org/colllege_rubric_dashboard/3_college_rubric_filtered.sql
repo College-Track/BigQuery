@@ -7,15 +7,16 @@ WITH contact_at AS (
       "/view"
     ) AS at_url,
     Full_Name_c,
+    site_abrev,
     GAS_Name,
     school_type,
     Current_school_name,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c IS NULL THEN "Frosh"
-      WHEN Credits_Accumulated_Most_Recent_c < 25 THEN "Frosh"
-      WHEN Credits_Accumulated_Most_Recent_c < 50 THEN "Sophomore"
-      WHEN Credits_Accumulated_Most_Recent_c < 75 THEN "Junior"
-      WHEN Credits_Accumulated_Most_Recent_c >= 75 THEN "Senior"
+      WHEN Advising_Rubric_Credits_Accumlated_c IS NULL THEN "Frosh"
+      WHEN Advising_Rubric_Credits_Accumlated_c < 25 THEN "Frosh"
+      WHEN Advising_Rubric_Credits_Accumlated_c < 50 THEN "Sophomore"
+      WHEN Advising_Rubric_Credits_Accumlated_c < 75 THEN "Junior"
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 75 THEN "Senior"
     END AS college_class,
     CASE
       WHEN Latest_Reciprocal_Communication_Date_c IS NULL THEN "No Data"
@@ -47,26 +48,26 @@ WITH contact_at AS (
     Grade_c,
     Current_School_c,
     Fit_Type_c,
-    GPA_Cumulative_c,
+    college_eligibility_gpa_11th_grade AS GPA_Cumulative_c,
     CASE
-      WHEN GPA_Cumulative_c < 3 THEN "Below 3.0"
-      WHEN GPA_Cumulative_c < 3.25 THEN "3.0 - 3.24"
-      WHEN GPA_Cumulative_c >= 3.25 THEN "3.25+"
+      WHEN college_eligibility_gpa_11th_grade < 2.75 THEN "Below 2.75"
+      WHEN college_eligibility_gpa_11th_grade < 3.5 THEN "2.75 - 3.5"
+      WHEN college_eligibility_gpa_11th_grade >= 3.5 THEN "3.5+"
       ELSE "Missing"
     END AS CGPA_11th_bucket,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
     Most_Recent_GPA_Semester_c,
     CASE
-      WHEN Most_Recent_GPA_Semester_c < 3 THEN "Below 3.0"
-      WHEN Most_Recent_GPA_Semester_c < 3.25 THEN "3.0 - 3.24"
-      WHEN Most_Recent_GPA_Semester_c >= 3.25 THEN "3.25+"
+      WHEN Most_Recent_GPA_Semester_c < 2.75 THEN "Below 2.75"
+      WHEN Most_Recent_GPA_Semester_c < 3.5 THEN "2.75 - 3.5"
+      WHEN Most_Recent_GPA_Semester_c >= 3.5 THEN "3.5+"
       ELSE "Missing"
     END AS Most_Recent_GPA_Semester_bucket,
     Most_Recent_GPA_Cumulative_c,
     CASE
-      WHEN Most_Recent_GPA_Cumulative_c < 3 THEN "Below 3.0"
-      WHEN Most_Recent_GPA_Cumulative_c < 3.25 THEN "3.0 - 3.24"
-      WHEN Most_Recent_GPA_Cumulative_c >= 3.25 THEN "3.25+"
+      WHEN Most_Recent_GPA_Cumulative_c < 2.75 THEN "Below 2.75"
+      WHEN Most_Recent_GPA_Cumulative_c < 3.5 THEN "2.75 - 3.5"
+      WHEN Most_Recent_GPA_Cumulative_c >= 3.5 THEN "3.5+"
       ELSE "Missing"
     END AS Most_Recent_GPA_Cumulative_bucket,
     CASE
@@ -108,15 +109,15 @@ WITH contact_at AS (
     e_fund_c,
     -- Seniors Only
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c >= 75 THEN Repayment_Plan_c
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 75 THEN Repayment_Plan_c
       ELSE "N/A"
     END AS Repayment_Plan_c,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c >= 75 THEN Loan_Exit_c
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 75 THEN Loan_Exit_c
       ELSE "N/A"
     END AS Loan_Exit_c,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c >= 75 THEN Repayment_Policies_c
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 75 THEN Repayment_Policies_c
       ELSE "N/A"
     END AS Repayment_Policies_c,
     -- Academics
@@ -126,23 +127,23 @@ WITH contact_at AS (
     Transfer_2_Year_Schools_Only_c,
     -- Below 50% Credis
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c < 50 THEN Academic_Networking_50_Cred_c
+      WHEN Advising_Rubric_Credits_Accumlated_c < 50 THEN Academic_Networking_50_Cred_c
       ELSE "N/A"
     END AS Academic_Networking_50_Cred_c,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c >= 50 THEN Academic_Networking_over_50_Credits_c
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 50 THEN Academic_Networking_over_50_Credits_c
       ELSE "N/A"
     END AS Academic_Networking_over_50_Credits_c,
     Degree_Plan_c,
     -- Juniors Only
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c >= 50
-      AND Credits_Accumulated_Most_Recent_c < 75 THEN X_075_Credit_Completion_Juniors_c
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 50
+      AND Advising_Rubric_Credits_Accumlated_c < 75 THEN X_075_Credit_Completion_Juniors_c
       ELSE "N/A"
     END AS X075_Credit_Completion_Juniors_c,
     -- Seniors Only
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c >= 75 THEN X_5_Credit_Completion_Seniors_c
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 75 THEN X_5_Credit_Completion_Seniors_c
       ELSE "N/A"
     END AS X5_Credit_Completion_Seniors_c,
     Courseload_c,
@@ -158,49 +159,50 @@ WITH contact_at AS (
     Oncampus_Housing_c,
     Family_Dependents_c,
     -- Career
-    -- Juniors Only
-    CASE
-      WHEN Credits_Accumulated_Most_Recent_c < 75
-      AND Credits_Accumulated_Most_Recent_c >= 50 THEN Finding_Opportunities_75_c
-      ELSE "N/A"
-    END AS Finding_Opportunities_75_c,
-    CASE
-      WHEN Credits_Accumulated_Most_Recent_c < 75
-      AND Credits_Accumulated_Most_Recent_c >= 50 THEN Internship_5075_credits_c
+    -- Above 50% Credits
+        CASE
+      WHEN Advising_Rubric_Credits_Accumlated_c >= 50 THEN Internship_5075_credits_c
       ELSE "N/A"
     END AS Internship_5075_credits_c,
+    -- Juniors Only
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c < 75
-      AND Credits_Accumulated_Most_Recent_c >= 50 THEN Post_Graduate_Plans_5075_creds_c
+      WHEN Advising_Rubric_Credits_Accumlated_c < 75
+      AND Advising_Rubric_Credits_Accumlated_c >= 50 THEN Finding_Opportunities_75_c
+      ELSE "N/A"
+    END AS Finding_Opportunities_75_c,
+
+    CASE
+      WHEN Advising_Rubric_Credits_Accumlated_c < 75
+      AND Advising_Rubric_Credits_Accumlated_c >= 50 THEN Post_Graduate_Plans_5075_creds_c
       ELSE "N/A"
     END AS PostGraduate_Plans_5075_creds_c,
     -- Sophmoores Only
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c < 50
-      AND Credits_Accumulated_Most_Recent_c >= 25 THEN Career_Counselor_25_credits_c
+      WHEN Advising_Rubric_Credits_Accumlated_c < 50
+      AND Advising_Rubric_Credits_Accumlated_c >= 25 THEN Career_Counselor_25_credits_c
       ELSE "N/A"
     END AS Career_Counselor_25_credits_c,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c < 50
-      AND Credits_Accumulated_Most_Recent_c >= 25 THEN Career_Field_2550_credits_c
+      WHEN Advising_Rubric_Credits_Accumlated_c < 50
+      AND Advising_Rubric_Credits_Accumlated_c >= 25 THEN Career_Field_2550_credits_c
       ELSE "N/A"
     END AS Career_Field_2550_credits_c,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c < 50
-      AND Credits_Accumulated_Most_Recent_c >= 25 THEN Resources_2550_credits_c
+      WHEN Advising_Rubric_Credits_Accumlated_c < 50
+      AND Advising_Rubric_Credits_Accumlated_c >= 25 THEN Resources_2550_credits_c
       ELSE "N/A"
     END AS Resources_2550_credits_c,
     -- Seniors Only
+    -- CASE
+    --   WHEN Advising_Rubric_Credits_Accumlated_c <= 75 THEN Internships_c
+    --   ELSE "N/A"
+    -- END AS Internships_c,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c <= 75 THEN Internships_c
-      ELSE "N/A"
-    END AS Internships_c,
-    CASE
-      WHEN Credits_Accumulated_Most_Recent_c <= 75 THEN Alumni_Network_75_credits_c
+      WHEN Advising_Rubric_Credits_Accumlated_c <= 75 THEN Alumni_Network_75_credits_c
       ELSE "N/A"
     END AS Alumni_Network_75_credits_c,
     CASE
-      WHEN Credits_Accumulated_Most_Recent_c <= 75 THEN Post_Graduate_Opportunities_75_cred_c
+      WHEN Advising_Rubric_Credits_Accumlated_c <= 75 THEN Post_Graduate_Opportunities_75_cred_c
       ELSE "N/A"
     END AS Post_Graduate_Opportunities_75_cred_c,
     -- All
@@ -239,7 +241,7 @@ WITH contact_at AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     (
-      Current_AS_c = TRUE --   OR Previous_AS_c = TRUE
+      Current_AS_c = TRUE OR previous_as_c = TRUE
     )
     AND AT_Record_Type_Name = "College/University Semester"
     AND Current_CT_Status_c = "Active: Post-Secondary"
@@ -293,7 +295,7 @@ calc_question_scores AS (
     `data-studio-260217.college_rubric.format_question_as_num`(Career_Field_2550_credits_c) AS question_career_Career_Field_2550_credits_score,
     `data-studio-260217.college_rubric.format_question_as_num`(Resources_2550_credits_c) AS question_career_Resources_2550_credits_score,
     `data-studio-260217.college_rubric.format_question_as_num`(Internship_5075_credits_c) AS question_career_Internship_5075_credits_score,
-    `data-studio-260217.college_rubric.format_question_as_num`(Internships_c) AS question_career_Internships_score,
+    -- `data-studio-260217.college_rubric.format_question_as_num`(Internships_c) AS question_career_Internships_score,
     `data-studio-260217.college_rubric.format_question_as_num`(PostGraduate_Plans_5075_creds_c) AS question_career_PostGraduate_Plans_5075_creds_score,
     `data-studio-260217.college_rubric.format_question_as_num`(Post_Graduate_Opportunities_75_cred_c) AS question_career_Post_Graduate_Opportunities_75_cred_score,
     `data-studio-260217.college_rubric.format_question_as_num`(Alumni_Network_75_credits_c) AS question_career_Alumni_Network_75_credits_score,
