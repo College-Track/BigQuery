@@ -21,5 +21,7 @@
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
     WHERE
-    finance_reporting_date_c > "2020-07-01"
+    record_type_id = "01246000000ZNhsAAG" OR
+    record_type_id = "01246000000ZNhtAAG" AND
+    finance_reporting_date_c >= "2020-07-01"
     
