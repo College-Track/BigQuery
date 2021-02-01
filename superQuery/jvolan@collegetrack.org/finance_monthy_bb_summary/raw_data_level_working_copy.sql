@@ -56,7 +56,7 @@ student_bb_balance_list AS
     `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN bb_balance ON bb_balance.student_c = Contact_Id
     WHERE College_Track_Status_c IN ('11A', '12A','15A', '16A')
-    AND bb_balance.Finance_BB_Balance > 0
+    AND bb_balance.Finance_BB_Balance IS NOT NULL
 ),
 
 bb_raw AS
