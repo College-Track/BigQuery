@@ -9,7 +9,7 @@ WITH bb_d_e_fy AS
     earning_type_c,
     name,
     id AS bb_id,
-    FORMAT_DATE ("%x", finance_reporting_date_c) AS finance_reporting_date, 
+    finance_reporting_date_c AS finance_reporting_date, 
     CASE
         WHEN record_type_id = "01246000000ZNhsAAG"then "BB Disbursement"
         WHEN record_type_id = "01246000000ZNhtAAG"then "BB Earnings"
