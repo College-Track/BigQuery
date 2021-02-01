@@ -147,7 +147,6 @@ combine_data AS (
       AND CTAA.attendance_rate_ct_career <.9 THEN "80% - 89%"
       ELSE "90%+"
     END AS attendance_bucket_ct_career,
-    
   FROM
     gather_data GD
     LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
@@ -162,6 +161,13 @@ SELECT
     WHEN attendance_bucket = '65% -79%' THEN 3
     WHEN attendance_bucket = '80% - 89%' THEN 4
     WHEN attendance_bucket = '90%+' THEN 5
-  END AS sort_attendance_bucket
+  END AS sort_attendance_bucket,
+  CASE
+    WHEN attendance_bucket_ct_career = 'No Data' THEN 1
+    WHEN attendance_bucket_ct_career = '< 65%' THEN 2
+    WHEN attendance_bucket_ct_career = '65% -79%' THEN 3
+    WHEN attendance_bucket_ct_career = '80% - 89%' THEN 4
+    WHEN attendance_bucket_ct_career = '90%+' THEN 5
+  END AS sort_attendance_bucket_ct_career
 FROM
   combine_data
