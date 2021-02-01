@@ -1,3 +1,3 @@
-SELECT Contact_Id, Advising_Rubric_Credits_Accumlated_c
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE Advising_Rubric_Credits_Accumlated_c IS NOT NULL
+SELECT *
+FROM `data-warehouse-289815.salesforce_raw.User`
+WHERE Email = 'bakerrenneckar@gmail.com'
