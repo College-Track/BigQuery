@@ -6,6 +6,8 @@ WITH bb_d_e_fy AS
     student_c, 
     amount_c, 
     transaction_status_c,
+    earning_type_c,
+    name,
     id AS bb_id,
     FORMAT_DATE ("%x", finance_reporting_date_c) AS finance_reporting_date, 
     CASE
@@ -70,6 +72,8 @@ bb_raw AS
     bb_d_e_fy.BB_Disbursement_Amount,
     bb_d_e_fy.BB_Earnings_Amount,
     bb_d_e_fy.finance_reporting_date,
+    bb_d_e_fy.earning_type_c,
+    bb_d_e_fy.name,
     bb_d_e_fy.transaction_status_c, 
     bb_d_e_fy.report_month, 
     bb_d_e_fy.report_date, 
