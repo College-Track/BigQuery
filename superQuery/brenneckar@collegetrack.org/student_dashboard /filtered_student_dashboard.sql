@@ -102,10 +102,12 @@ EXCEPT
   GTD.max_sat_english,
   GTD.max_sat_math,
   U.name AS workshop_staff,
-  U.email AS workshop_staff_email
+  U.email AS workshop_staff_email,
+  GS.url as google_site_url
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
   AND GSD.current_academic_semester_c = GWD.Academic_Semester_c -- switch to current AS
   LEFT JOIN gather_test_data GTD ON GTD.contact_name_c = GSD.Contact_Id
   LEFT JOIN `data-warehouse-289815.salesforce.user` U ON U.id = GWD.primary_staff_c
+  LEFT JOIN `data-studio-260217.student_dashboard.google_sites` GS ON GSD.site_short = GS.site_short
