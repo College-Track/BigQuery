@@ -21,7 +21,7 @@ WITH bb_d_e_fy AS
         WHEN record_type_id = "01246000000ZNhtAAG"then amount_c
         END AS BB_Earnings_Amount,
     FORMAT_DATE("%m", CURRENT_DATE()) AS report_month,
-    FORMAT_DATE("%x", CURRENT_DATE()) AS report_date,    
+    CAST (CURRENT_DATE() AS DATE) AS report_date,    
     
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
