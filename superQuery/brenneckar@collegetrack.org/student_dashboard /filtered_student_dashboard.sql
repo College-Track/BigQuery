@@ -8,8 +8,8 @@ WITH gather_student_data AS (
     full_name_c,
     CASE
     --   WHEN full_name_c = 'Daniel Aguilar' THEN 'bakerrenneckar@gmail.com'
-    --   WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org'
-      WHEN full_name_c = 'Daniel Aguilar' THEN'baker_test12345@yahoo.com'
+      WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org'
+    --   WHEN full_name_c = 'Daniel Aguilar' THEN'baker_test12345@yahoo.com'
 
       ELSE email
     END AS email,
