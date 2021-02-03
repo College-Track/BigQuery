@@ -20,6 +20,7 @@ WITH gather_data AS (
     END GPA_Bucket,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` AS Contact
+    WHERE Contact.college_track_status_c IN ('11A', '12A')
 ),
 calc_attendance AS (
   SELECT
@@ -55,7 +56,7 @@ join_data AS (
 )
 SELECT
   site_short,
-  HIGH_SCHOOL_GRADUATING_CLASS_c,
+--   HIGH_SCHOOL_GRADUATING_CLASS_c,
   GAS_Name,
   region_short,
   region_abrev,
@@ -69,7 +70,7 @@ FROM
   WHERE GAS_Name = 'Fall 2020-21'
 GROUP BY
   site_short,
-  HIGH_SCHOOL_GRADUATING_CLASS_c,
+--   HIGH_SCHOOL_GRADUATING_CLASS_c,
   GAS_Name,
   region_short,
   region_abrev,
