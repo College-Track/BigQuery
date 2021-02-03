@@ -290,7 +290,7 @@ SELECT
     filtered_data.*,
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
-        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table,fit_type_accepted),
+        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table),#fit_type_accepted),
         
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
@@ -320,7 +320,7 @@ SELECT
     END AS sort_helper_app_status, 
     
     CASE
-        WHEN College_Fit_Type_Applied = "Best Fit" THEN 1
+        WHEN College_Fit_Type_Applied  = "Best Fit" THEN 1
         WHEN College_Fit_Type_Applied  = "Good Fit" THEN 2
         WHEN College_Fit_Type_Applied  = "Local Affordable" THEN 3
         WHEN College_Fit_Type_Applied  = "None - 4-year" THEN 4
@@ -346,7 +346,7 @@ SELECT
         WHEN admission_status = "Withdrew Application" THEN 6
         WHEN admission_status = "Undecided" THEN 7
         WHEN admission_status = "Denied" THEN 8
-        WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
+        WHEN admission_status = "Admission Status  Updated" THEN 9
         ELSE 0
     END AS sort_helper_admission_status,
     
