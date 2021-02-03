@@ -1,3 +1,11 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
+    )
+AS
 
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
@@ -199,6 +207,12 @@ SELECT
     accnt.name AS college_name_on_app_for_case_statement,
     app.College_University_c AS app_college_id, #college id
     app.admission_status_c,
+    
+    CASE
+        WHEN app.application_status_c IS NULL THEN 'No College Application'
+        ELSE app.application_status_c 
+    END AS application_status_tight,
+    
     app.Award_Letter_c,
     app.CSS_Profile_Required_c,
     app.CSS_Profile_c,
@@ -294,6 +308,16 @@ SELECT
         WHEN application_status = "No College Application" THEN 5
         ELSE 6
     END AS sort_helper_app_status, 
+    
+    CASE
+        WHEN application_status_tight = "Prospect" THEN 1
+        WHEN application_status_tight = "In Progress" THEN 2
+        WHEN application_status_tight = "Applied" THEN 3
+        WHEN application_status_tight = "Accepted" THEN 4
+        WHEN application_status_tight = "No College Application" THEN 5
+        ELSE 6
+    END AS sort_helper_app_status_tight, 
+    
     
     CASE
         WHEN College_Fit_Type_Applied = "Best Fit" THEN 1
