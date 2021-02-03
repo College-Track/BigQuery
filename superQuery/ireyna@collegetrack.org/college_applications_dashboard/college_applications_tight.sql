@@ -162,7 +162,7 @@ college_application_data AS #combine acceptance and admission data to college ap
 SELECT
     app.name,
     app.Student_c AS student_c_app_table, # For metric on "Applications" Page of Dashboard (vs. Admissions). Pulls in all students with apps regardless of Application Status
-    
+    app.application_status_c AS application_status_app,
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app.student_c=app2.student_c
@@ -288,6 +288,11 @@ SELECT
         WHEN Strategic_Type_c IS NULL THEN 'No Type Selected'
         ELSE Strategic_Type_c
     END AS match_type, #match type
+    
+    CASE 
+        WHEN application_status <> 'No College Application' THEN application_status_app
+        ELSE application_status 
+    END AS application_status_tight, 
     
     CASE
         WHEN application_status = "Prospect" THEN 1
