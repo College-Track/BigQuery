@@ -4,7 +4,7 @@ WITH gather_data AS (
     AT_Id,
     site_short,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
-    REPLACE(GAS_Name, ' (Semester)', '') AS GAS_Name,
+    REPLACE(GAS_Name, ' (Semester)', '') AS Workshop_Global_Academic_Semester_c,
     region_short,
     region_abrev,
     site_abrev,
@@ -54,7 +54,7 @@ join_data AS (
 SELECT
   site_short,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
-  GAS_Name,
+  Workshop_Global_Academic_Semester_c,
   region_short,
   region_abrev,
   site_abrev,
@@ -70,7 +70,7 @@ FROM
 GROUP BY
   site_short,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
-  GAS_Name,
+  Workshop_Global_Academic_Semester_c,
   region_short,
   region_abrev,
   site_abrev,
