@@ -8,7 +8,7 @@ WITH gather_data AS (
     region_short,
     region_abrev,
     site_abrev,
-    Most_Recent_GPA_Cumulative_bucket AS GPA_Bucket
+    Most_Recent_GPA_Cumulative_bucket AS GPA_Bucket,
     Co_Vitality_Scorecard_Color_Most_Recent_c,
     Composite_Readiness_Most_Recent_c
   FROM
