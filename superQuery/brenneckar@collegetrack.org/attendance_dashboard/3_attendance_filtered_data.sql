@@ -31,16 +31,9 @@ WITH gather_data AS(
     CAT.Indicator_Student_on_Intervention_c,
     CAT.GPA_prev_semester_cumulative_c,
     CAT.Composite_Readiness_Most_Recent_c,
-    CASE
-      WHEN CAT.GPA_prev_semester_cumulative_c < 2.5 THEN '2.49 or less'
-      WHEN CAT.GPA_prev_semester_cumulative_c >= 2.5
-      AND CAT.GPA_prev_semester_cumulative_c < 2.75 THEN '2.5 - 2.74'
-      WHEN CAT.GPA_prev_semester_cumulative_c >= 2.75
-      AND CAT.GPA_prev_semester_cumulative_c < 3 THEN '2.75 - 2.99'
-      WHEN CAT.GPA_prev_semester_cumulative_c >= 3
-      AND CAT.GPA_prev_semester_cumulative_c < 3.5 THEN '3.0 - 3.49'
-      ELSE '3.5 or Greater'
-    END GPA_Bucket,
+    CAT.Most_Recent_GPA_Cumulative_bucket AS GPA_Bucket,
+
+
     CAT.site_abrev,
     CAT.site_short,
     CAT.CT_Coach_c,
@@ -104,17 +97,47 @@ create_col_number AS (
 -- FROM gather_data
 -- -- ORDER BY WSA_Id
 ,
+
+calc_attendance_rate AS (
+  SELECT
+    student_c,
+    academic_semester_c,
+    SUM(Attendance_Denominator_c) AS Attendance_Denominator_c,
+    SUM(Attendance_Numerator_c) AS Attendance_Numerator_c,
+    CASE
+      WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
+      ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
+    END AS attendance_rate
+  FROM
+    `data-warehouse-289815.salesforce_clean.class_template`
+
+  GROUP BY
+    student_c,
+    academic_semester_c
+),
+
 final_pull AS (
   SELECT
     MD.*
   EXCEPT(dosage_combined),
     GD.Attendance_Numerator_c,
     GD.Attendance_Denominator_c,
+        CASE
+      WHEN AA.attendance_rate IS NULL THEN "No Data"
+      WHEN AA.attendance_rate <.65 THEN "< 65%"
+      WHEN AA.attendance_rate >=.65
+      AND AA.attendance_rate <.8 THEN "65% -79%"
+      WHEN AA.attendance_rate >= 0.8
+      AND AA.attendance_rate <.9 THEN "80% - 89%"
+      ELSE "90%+"
+    END AS attendance_bucket,
+    AA.attendance_rate AS AT_attendance_rate
     --   GD.* EXCEPT(dosage_combined)
     --   MD.dosage_split
   FROM
     create_col_number MD
     LEFT JOIN gather_data GD ON GD.Class_Attendance_Id = MD.Class_Attendance_Id
+    LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = GD.Academic_Semester_c
     AND MD.group_count = GD.group_base
   ORDER BY
     GD.Class_Attendance_Id
@@ -133,3 +156,5 @@ WHERE
     mod_denominator > 0
     OR mod_numerator > 0
   )
+ 
+  
