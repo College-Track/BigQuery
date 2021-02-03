@@ -284,7 +284,7 @@ SELECT
     filtered_data.*,
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
-        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table),
+        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table,admission_status_admission_table),
         
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
@@ -304,9 +304,7 @@ SELECT
     END AS application_status_tight, 
     
     CASE 
-        WHEN admission_status <> 'Accepted' THEN admission_status_admission_table
-        WHEN admission_status <> 'Accepted and Deferred' THEN admission_status_admission_table
-        WHEN admission_status <> 'Accepted and Enrolled' THEN admission_status_admission_table
+        WHEN accepted = 1 THEN admission_status_admission_table
         ELSE admission_status
     END AS admission_status_tight,    
     
