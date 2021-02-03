@@ -60,12 +60,13 @@ SELECT
   region_short,
   region_abrev,
   site_abrev,
-  GPA_Bucket,
+--   GPA_Bucket,
   COUNT(Contact_Id) AS student_count,
   SUM(above_80_attendance) AS above_80_attendance,
   SUM(below_65_attendance) AS below_65_attendance
 FROM
   join_data
+  WHERE GAS_Name = 'Fall 2020-21'
 GROUP BY
   site_short,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
@@ -73,4 +74,4 @@ GROUP BY
   region_short,
   region_abrev,
   site_abrev,
-  GPA_Bucket
+--   GPA_Bucket
