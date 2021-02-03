@@ -15,6 +15,7 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template` AS Contact
   WHERE
     Contact.college_track_status_c IN ('11A')
+    AND GAS_Start_Date >= "2019-08-01"
 ),
 calc_attendance AS (
   SELECT
