@@ -1,3 +1,12 @@
+#college applications for current academic year, graduating HS class
+
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
+OPTIONS
+    (
+    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
+    )
+AS
+
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -188,7 +197,6 @@ SELECT
         AND acc2.college_accepted_app_id=app.id
         group by acc2.fit_type_accepted, acc2.college_accepted_app_id
         ) AS  fit_type_accepted_tight,
-        
 
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
@@ -282,7 +290,7 @@ SELECT
     filtered_data.*,
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
-        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table),
+        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table,fit_type_accepted),
         
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
@@ -321,11 +329,11 @@ SELECT
     END AS sort_helper_app_by_fit_type,
     
     CASE
-        WHEN fit_type_accepted = "Best Fit" THEN 1
-        WHEN fit_type_accepted = "Good Fit" THEN 2
-        WHEN fit_type_accepted = "Local Affordable" THEN 3
-        WHEN fit_type_accepted = "None - 4-year" THEN 4
-        WHEN fit_type_accepted = "None - 2-year or technical" THEN 5
+        WHEN fit_type_accepted_tight = "Best Fit" THEN 1
+        WHEN fit_type_accepted_tight = "Good Fit" THEN 2
+        WHEN fit_type_accepted_tight = "Local Affordable" THEN 3
+        WHEN fit_type_accepted_tight = "None - 4-year" THEN 4
+        WHEN fit_type_accepted_tight = "None - 2-year or technical" THEN 5
         ELSE 6
     END AS sort_helper_acceptance_by_fit_type,
     
