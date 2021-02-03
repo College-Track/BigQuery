@@ -182,10 +182,12 @@ SELECT
         group by app2.student_c
         ) AS  contact_id_applied_4_year,
         
-        (SELECT app2.student_c
+        (SELECT app2.college_fit_type_applied_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE application_status_c = "Applied"
-        group by app2.student_c
+        AND app.student_c=app2.student_c
+        AND app.id=app2.id
+        group by app2.college_fit_type_applied_c, app2.student_c
         ) AS  college_fit_type_applied_tight,
         
         (SELECT app2.student_c
