@@ -73,5 +73,5 @@ GROUP BY
   GAS_Name,
   region_short,
   region_abrev,
-  site_abrev,
+  site_abrev
 --   GPA_Bucket
