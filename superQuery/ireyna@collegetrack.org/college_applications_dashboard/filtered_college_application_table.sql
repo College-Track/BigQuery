@@ -290,8 +290,8 @@ SELECT
     
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
-        WHEN application_status <> 'No College Application' THEN strategic_type_app_table
         WHEN strategic_type_app_table IS NULL THEN 'No Type Selected'
+        WHEN application_status <> 'No College Application' THEN strategic_type_app_table
         ELSE strategic_type_app_table
     END AS match_type, #match type
     
