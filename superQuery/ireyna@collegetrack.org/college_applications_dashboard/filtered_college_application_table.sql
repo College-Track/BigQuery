@@ -315,7 +315,7 @@ SELECT
     CASE 
         WHEN accepted = 1 THEN application_status_app_table
         WHEN application_status <> 'No College Application' THEN application_status_app_table
-        ELSE application_status_app_table
+        ELSE application_status
     END AS application_status_tight, 
     
     CASE
@@ -336,11 +336,11 @@ SELECT
         ELSE 6
     END AS sort_helper_app_by_fit_type,
     
-    CASE 
-        WHEN accepted = 1 
-        THEN "Yes"
-        ELSE "No"
-    END AS accepted_indicator_status,
+    #CASE 
+    #    WHEN accepted = 1 THEN "Yes"
+    #    WHEN admission_status = "Admission Status Not Yet Updated" THEN admission_status
+    #    ELSE "No"
+    #END AS accepted_indicator_status,
     
     CASE
         WHEN fit_type_accepted_tight = "Best Fit" THEN 1
@@ -364,23 +364,6 @@ SELECT
         ELSE 0
     END AS sort_helper_admission_status,
     
-    /*
-    CASE
-        WHEN fit_type_enrolled_admission_table = "Best Fit" THEN 1
-        WHEN fit_type_enrolled_admission_table = "Situational" THEN 2
-        WHEN fit_type_enrolled_admission_table = "Good Fit" THEN 3
-        WHEN fit_type_enrolled_admission_table = "Local Affordable" THEN 4
-        WHEN fit_type_enrolled_admission_table = "None - 4-year" THEN 5
-        WHEN fit_type_enrolled_admission_table = "None - 2-year or technical" THEN 6
-        ELSE 7
-    END AS sort_helper_enroll_by_fit_type, 
-    */
-    /*
-    CASE  
-        WHEN admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred") THEN student_c_accepted
-        ELSE NULL 
-    END AS contact_id_accepted   
-    */
 FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
     ON filtered_data.contact_id = college_application_data.student_c_app_table
