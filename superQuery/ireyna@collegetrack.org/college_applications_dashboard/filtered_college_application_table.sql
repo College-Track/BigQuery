@@ -290,7 +290,7 @@ SELECT
     filtered_data.*,
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
-        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table),#fit_type_accepted),
+        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted),
         
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
