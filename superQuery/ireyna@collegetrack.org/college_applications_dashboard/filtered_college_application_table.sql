@@ -1,4 +1,5 @@
-ITH 
+
+WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
 SELECT
