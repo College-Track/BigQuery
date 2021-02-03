@@ -53,6 +53,7 @@ join_data AS (
   FROM
     gather_data GD
     LEFT JOIN calc_attendance CA ON CA.academic_semester_c = GD.AT_Id
+    WHERE CA.attendance_rate IS NOT NULL
 )
 SELECT
   site_short,
