@@ -65,8 +65,7 @@ SELECT
   SUM(below_65_attendance) AS below_65_attendance
 FROM
   join_data
-WHERE
-  GAS_Name = 'Fall 2020-21'
+
 GROUP BY
   site_short,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
