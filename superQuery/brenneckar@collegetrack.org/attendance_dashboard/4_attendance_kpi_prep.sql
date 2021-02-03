@@ -4,18 +4,22 @@ WITH gather_data AS (
     AT_Id,
     site_short,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
-    REPLACE(GAS_Name, ' (Semester)', '') AS Workshop_Global_Academic_Semester_c,
+    REPLACE(GAS_Name, ' (Semester)', '') AS GAS_Name,
     region_short,
     region_abrev,
     site_abrev,
-    Most_Recent_GPA_Cumulative_bucket AS GPA_Bucket,
-    Co_Vitality_Scorecard_Color_Most_Recent_c,
-    Composite_Readiness_Most_Recent_c
+    CASE
+      WHEN GPA_prev_semester_cumulative_c < 2.5 THEN '2.49 or less'
+      WHEN GPA_prev_semester_cumulative_c >= 2.5
+      AND GPA_prev_semester_cumulative_c < 2.75 THEN '2.5 - 2.74'
+      WHEN GPA_prev_semester_cumulative_c >= 2.75
+      AND GPA_prev_semester_cumulative_c < 3 THEN '2.75 - 2.99'
+      WHEN GPA_prev_semester_cumulative_c >= 3
+      AND GPA_prev_semester_cumulative_c < 3.5 THEN '3.0 - 3.49'
+      ELSE '3.5 or Greater'
+    END GPA_Bucket,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` AS Contact
-  WHERE
-    Contact.college_track_status_c IN ('11A')
-    AND GAS_Start_Date >= "2019-08-01"
 ),
 calc_attendance AS (
   SELECT
@@ -48,32 +52,26 @@ join_data AS (
   FROM
     gather_data GD
     LEFT JOIN calc_attendance CA ON CA.academic_semester_c = GD.AT_Id
-  WHERE
-    CA.attendance_rate IS NOT NULL
 )
 SELECT
   site_short,
-  HIGH_SCHOOL_GRADUATING_CLASS_c,
-  Workshop_Global_Academic_Semester_c,
+--   HIGH_SCHOOL_GRADUATING_CLASS_c,
+  GAS_Name,
   region_short,
   region_abrev,
   site_abrev,
-  GPA_Bucket,
-  Co_Vitality_Scorecard_Color_Most_Recent_c,
-  Composite_Readiness_Most_Recent_c,
+--   GPA_Bucket,
   COUNT(Contact_Id) AS student_count,
   SUM(above_80_attendance) AS above_80_attendance,
   SUM(below_65_attendance) AS below_65_attendance
 FROM
   join_data
-
+  WHERE GAS_Name = 'Fall 2020-21'
 GROUP BY
   site_short,
-  HIGH_SCHOOL_GRADUATING_CLASS_c,
-  Workshop_Global_Academic_Semester_c,
+--   HIGH_SCHOOL_GRADUATING_CLASS_c,
+  GAS_Name,
   region_short,
   region_abrev,
-  site_abrev,
-  GPA_Bucket,
-  Co_Vitality_Scorecard_Color_Most_Recent_c,
-  Composite_Readiness_Most_Recent_c
+  site_abrev
+--   GPA_Bucket
