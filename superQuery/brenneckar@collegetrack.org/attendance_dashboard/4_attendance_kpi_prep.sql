@@ -4,9 +4,10 @@ WITH gather_data AS (
     AT_Id,
     site_short,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
-    REPLACE(GAS_Name, ' (Semester)', '') AS Academic_Term,
+    REPLACE(GAS_Name, ' (Semester)', '') AS GAS_Name,
     region_short,
-    region_abrev site_abrev,
+    region_abrev,
+    site_abrev,
     CASE
       WHEN GPA_prev_semester_cumulative_c < 2.5 THEN '2.49 or less'
       WHEN GPA_prev_semester_cumulative_c >= 2.5
@@ -35,10 +36,41 @@ calc_attendance AS (
   GROUP BY
     student_c,
     academic_semester_c
+),
+join_data AS (
+  SELECT
+    GD.*,
+    CA.attendance_rate,
+    CASE
+      WHEN CA.attendance_rate >= 0.8 THEN 1
+      ELSE 0
+    END AS above_80_attendance,
+    CASE
+      WHEN CA.attendance_rate < 0.65 THEN 1
+      ELSE 0
+    END AS below_65_attendance
+  FROM
+    gather_data GD
+    LEFT JOIN calc_attendance CA ON CA.academic_semester_c = GD.AT_Id
 )
 SELECT
-  GD.*,
-  CA.attendance_rate
+  site_short,
+  HIGH_SCHOOL_GRADUATING_CLASS_c,
+  GAS_Name,
+  region_short,
+  region_abrev,
+  site_abrev,
+  GPA_Bucket,
+  COUNT(Contact_Id) AS student_count,
+  SUM(above_80_attendance) AS above_80_attendance,
+  SUM(below_65_attendance) AS below_65_attendance
 FROM
-  gather_data GD
-  LEFT JOIN calc_attendance CA ON CA.academic_semester_c = GD.AT_Id
+  join_data
+GROUP BY
+  site_short,
+  HIGH_SCHOOL_GRADUATING_CLASS_c,
+  GAS_Name,
+  region_short,
+  region_abrev,
+  site_abrev,
+  GPA_Bucket
