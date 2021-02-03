@@ -192,7 +192,7 @@ SELECT
         
          (SELECT acc2.fit_type_accepted
         FROM `acceptance_data`AS acc2
-        WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
+        WHERE admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred")
         AND acc2.contact_id_accepted=app.student_c
         AND acc2.college_accepted_app_id=app.id
         group by acc2.fit_type_accepted, acc2.college_accepted_app_id
