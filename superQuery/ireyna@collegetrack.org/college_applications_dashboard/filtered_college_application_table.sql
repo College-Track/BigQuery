@@ -145,6 +145,7 @@ admission_data AS
 (
 SELECT 
     student_c AS contact_id_admissions,
+    admission_status_c AS admission_status_admission_table,
     accnt.name AS school_name_enrolled,
     app.id AS college_enrolled_app_id,
     Type_of_School_c as school_type_enrolled,
@@ -182,11 +183,12 @@ SELECT
         group by app2.student_c
         ) AS  contact_id_applied_4_year,
         
-        (SELECT app2.student_c
+        (SELECT app2.college_fit_type_applied_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE application_status_c = "Applied"
         AND app.student_c=app2.student_c
-        group by app2.student_c
+        AND app.id=app2.id
+        group by app2.college_fit_type_applied_c, app2.student_c
         ) AS  college_fit_type_applied_tight,
         
         (SELECT app2.student_c
@@ -260,6 +262,7 @@ SELECT
     
     #admissions_data
     contact_id_admissions,
+    admission_status_admission_table,
     school_name_enrolled,
     college_enrolled_app_id,
     school_type_enrolled,
@@ -299,6 +302,13 @@ SELECT
         WHEN application_status <> 'No College Application' THEN application_status_app_table
         ELSE application_status 
     END AS application_status_tight, 
+    
+    CASE 
+        WHEN admission_status <> 'Accepted' THEN admission_status_admission_table
+        WHEN admission_status <> 'Accepted and Deferred' THEN admission_status_admission_table
+        WHEN admission_status <> 'Accepted and Enrolled' THEN admission_status_admission_table
+        ELSE admission_status
+    END AS admission_status_tight,    
     
     CASE
         WHEN application_status = "Prospect" THEN 1
