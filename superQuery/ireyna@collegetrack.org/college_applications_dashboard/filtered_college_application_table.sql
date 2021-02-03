@@ -304,7 +304,7 @@ SELECT
     END AS application_status_tight, 
     
     CASE 
-        WHEN accepted = 1 THEN admission_status_admission_table
+        WHEN admission_status <> 'Admission Status Not Yet Updated' THEN admission_status_admission_table
         ELSE admission_status
     END AS admission_status_tight,    
     
