@@ -190,6 +190,14 @@ SELECT
         group by app2.college_fit_type_applied_c, app2.student_c
         ) AS  college_fit_type_applied_tight,
         
+        (SELECT acc2.school_name_accepted
+        FROM `acceptance_data`AS acc2
+        WHERE admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred")
+        AND acc2.contact_id_accepted=app.student_c
+        AND acc2.college_accepted_app_id=app.id
+        group by acc2.school_name_accepted, acc2.college_accepted_app_id
+        ) AS school_name_accepted_tight,
+        
          (SELECT acc2.fit_type_accepted
         FROM `acceptance_data`AS acc2
         WHERE admission_status_c IN ("Accepted","Accepted and Enrolled", "Accepted and Deferred")
