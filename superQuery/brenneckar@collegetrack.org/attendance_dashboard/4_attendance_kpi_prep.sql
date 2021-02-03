@@ -8,16 +8,7 @@ WITH gather_data AS (
     region_short,
     region_abrev,
     site_abrev,
-    CASE
-      WHEN GPA_prev_semester_cumulative_c < 2.5 THEN '2.49 or less'
-      WHEN GPA_prev_semester_cumulative_c >= 2.5
-      AND GPA_prev_semester_cumulative_c < 2.75 THEN '2.5 - 2.74'
-      WHEN GPA_prev_semester_cumulative_c >= 2.75
-      AND GPA_prev_semester_cumulative_c < 3 THEN '2.75 - 2.99'
-      WHEN GPA_prev_semester_cumulative_c >= 3
-      AND GPA_prev_semester_cumulative_c < 3.5 THEN '3.0 - 3.49'
-      ELSE '3.5 or Greater'
-    END GPA_Bucket,
+    Most_Recent_GPA_Cumulative_bucket AS GPA_Bucket
     Co_Vitality_Scorecard_Color_Most_Recent_c,
     Composite_Readiness_Most_Recent_c
   FROM
