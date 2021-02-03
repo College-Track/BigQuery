@@ -336,6 +336,12 @@ SELECT
         ELSE 6
     END AS sort_helper_app_by_fit_type,
     
+    CASE 
+        WHEN accepted = 1 
+        THEN "Yes"
+        ELSE "No"
+    END AS accepted_indicator_status,
+    
     CASE
         WHEN fit_type_accepted_tight = "Best Fit" THEN 1
         WHEN fit_type_accepted_tight = "Good Fit" THEN 2
