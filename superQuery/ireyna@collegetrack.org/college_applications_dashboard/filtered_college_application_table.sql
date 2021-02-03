@@ -184,10 +184,9 @@ SELECT
         
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
-        WHERE app2.Predominant_Degree_Awarded_c = "Predominantly associate's-degree granting" AND app.student_c=app2.student_c
-        AND application_status_c = "Applied"
+        WHERE application_status_c = "Applied"
         group by app2.student_c
-        ) AS  contact_id_applied_2_year,
+        ) AS  college_fit_type_applied_tight,
         
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
