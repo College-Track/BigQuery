@@ -236,7 +236,7 @@ SELECT
     app.Predominant_Degree_Awarded_c,
     app.Type_of_School_c,
     app.Situational_Fit_Type_c,
-    app.Strategic_Type_c,
+    app.Strategic_Type_c AS strategic_type_app_table,
     app.Verification_Status_c,
     
     CASE
@@ -290,8 +290,9 @@ SELECT
     
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
-        WHEN Strategic_Type_c IS NULL THEN 'No Type Selected'
-        ELSE Strategic_Type_c
+        WHEN application_status <> 'No College Application' THEN strategic_type_app_table
+        WHEN strategic_type_app_table IS NULL THEN 'No Type Selected'
+        ELSE strategic_type_app_table
     END AS match_type, #match type
     
     CASE 
