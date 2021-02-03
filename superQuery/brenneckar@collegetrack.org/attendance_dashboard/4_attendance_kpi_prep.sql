@@ -20,7 +20,7 @@ WITH gather_data AS (
     END GPA_Bucket,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` AS Contact
-    WHERE Contact.college_track_status_c IN ('11A', '12A')
+    WHERE Contact.college_track_status_c IN ('11A')
 ),
 calc_attendance AS (
   SELECT
