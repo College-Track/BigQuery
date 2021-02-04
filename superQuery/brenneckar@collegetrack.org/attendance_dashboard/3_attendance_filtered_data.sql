@@ -122,34 +122,34 @@ combined_metrics AS (
     AND MD.group_count = GD.group_base
   ORDER BY
     GD.Class_Attendance_Id
-)
--- format_metrics AS (
---   SELECT
---     CM.*
---   EXCEPT(dosage_split),
---     TRIM(dosage_split) AS dosage_split,
---     CASE
---       WHEN AA.attendance_rate IS NULL THEN "No Data"
---       WHEN AA.attendance_rate <.65 THEN "< 65%"
---       WHEN AA.attendance_rate >=.65
---       AND AA.attendance_rate <.8 THEN "65% -79%"
---       WHEN AA.attendance_rate >= 0.8
---       AND AA.attendance_rate <.9 THEN "80% - 89%"
---       ELSE "90%+"
---     END AS attendance_bucket,
---     AA.attendance_rate AS AT_attendance_rate,
---     AA.Attendance_Numerator_c AS AT_attendance_numerator
---   FROM
---     combined_metrics CM
---     LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = CM.Academic_Semester_c
---   WHERE
---     Date_c <= CURRENT_DATE()
---     AND Attendance_Excluded_c = FALSE --   AND dosage_types_c IS NOT NULL
+),
+format_metrics AS (
+  SELECT
+    CM.*
+  EXCEPT(dosage_split),
+    TRIM(dosage_split) AS dosage_split,
+    CASE
+      WHEN AA.attendance_rate IS NULL THEN "No Data"
+      WHEN AA.attendance_rate <.65 THEN "< 65%"
+      WHEN AA.attendance_rate >=.65
+      AND AA.attendance_rate <.8 THEN "65% -79%"
+      WHEN AA.attendance_rate >= 0.8
+      AND AA.attendance_rate <.9 THEN "80% - 89%"
+      ELSE "90%+"
+    END AS attendance_bucket,
+    AA.attendance_rate AS AT_attendance_rate,
+    AA.Attendance_Numerator_c AS AT_attendance_numerator
+  FROM
+    combined_metrics CM
+    LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = CM.Academic_Semester_c
+  WHERE
+    Date_c <= CURRENT_DATE()
+    AND Attendance_Excluded_c = FALSE --   AND dosage_types_c IS NOT NULL
 --     --   AND (
 --     --     mod_denominator > 0
 --     --     OR mod_numerator > 0
 --     --   )
--- )
+)
 -- SELECT
 --   *,
 --   CASE
@@ -164,4 +164,4 @@ combined_metrics AS (
 
 
 SELECT *
-FROM combined_metrics
+FROM format_metrics
