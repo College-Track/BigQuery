@@ -69,6 +69,7 @@ SELECT
   Composite_Readiness_Most_Recent_c,
   sort_Most_Recent_GPA_Cumulative_bucket,
   site_sort,
+  sort_covitality,
   COUNT(Contact_Id) AS student_count,
   SUM(above_80_attendance) AS above_80_attendance,
   SUM(below_65_attendance) AS below_65_attendance
@@ -88,7 +89,8 @@ GROUP BY
   Co_Vitality_Scorecard_Color_Most_Recent_c,
   Composite_Readiness_Most_Recent_c,
   sort_Most_Recent_GPA_Cumulative_bucket,
-  site_sort
+  site_sort,
+  sort_covitality
 
 -- SELECT *
 -- FROM gather_data
