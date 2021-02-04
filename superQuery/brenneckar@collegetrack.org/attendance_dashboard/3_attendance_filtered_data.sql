@@ -108,6 +108,7 @@ calc_attendance_rate AS (
     END AS attendance_rate
   FROM
     `data-warehouse-289815.salesforce_clean.class_template`
+    WHERE outcome_c != 'Scheduled'
 
   GROUP BY
     academic_semester_c
