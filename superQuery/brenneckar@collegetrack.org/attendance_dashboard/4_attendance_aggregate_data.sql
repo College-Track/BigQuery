@@ -22,6 +22,7 @@ SELECT
   COUNT(Student_c) AS record_count
 FROM
   `data-studio-260217.attendance_dashboard.attendance_filtered_data`
+  WHERE Date_c <= CURRENT_DATE()
 
 
 
