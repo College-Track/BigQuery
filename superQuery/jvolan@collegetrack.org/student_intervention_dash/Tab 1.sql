@@ -20,12 +20,16 @@ SELECT
         WHEN Indicator_Intervention_Previous_2_ATs_c = TRUE THEN 1
         ELSE 0
     END AS intervention_prev_2,
-    indicator_high_risk_for_dismissal_c AS high_risk_dismissal,
+    CASE
+        WHEN indicator_high_risk_for_dismissal_c = TRUE THEN 1
+        ELSE 0
+        END AS high_risk_dismissal,
     of_high_school_terms_on_intervention_c,
     latest_reciprocal_communication_date_c,
     
     --primary contact info
-    primary_contact_c,
+    primary_contact_name_mobile_formula_c,
+    npsp_primary_contact_c
     primary_contact_email_address_c,
     primary_contact_mobile_c,
     primary_home_language_c
@@ -33,8 +37,8 @@ SELECT
     --current AT attendance & gpa data
     AT_Id,
     AT_Name,
-    global_academic_semester_c,
-    academic_year_c,
+    GAS_Name,
+    AY_Name,
     AT_Grade_c,
     attendance_rate_c,
     enrolled_sessions_c,
