@@ -166,8 +166,8 @@ college_application_data AS #combine acceptance and admission data to college ap
 (
 SELECT
     app.name,
-    app.Student_c AS contact_id_app_table, # For metric on "Applications" Page of Dashboard (vs. Admissions). Pulls in all students with apps regardless of Application Status
-    app.application_status_c AS application_status_app_table,
+    app.Student_c AS contact_id_app_table, # "# With Applications" on Application Progress (Overview) table. Pulls in all students with apps regardless of Application Status
+    app.application_status_c AS application_status_app_table, #
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app.student_c=app2.student_c
@@ -260,8 +260,7 @@ SELECT
         WHEN ((College_Fit_Type_Applied_c = "None") AND (app.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
         WHEN ((College_Fit_Type_Applied_c = "None") AND (app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
         WHEN College_Fit_Type_Applied_c IS NULL THEN 'Has Not Yet Applied'
-        ELSE College_Fit_Type_Applied_c
-    END AS College_Fit_Type_Applied,
+    END AS College_Fit_Type_Applied_sort,
     
     CASE
         WHEN app.admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
@@ -328,13 +327,24 @@ SELECT
     END AS sort_helper_app_status, 
     
     CASE
-        WHEN College_Fit_Type_Applied  = "Best Fit" THEN 1
-        WHEN College_Fit_Type_Applied  = "Good Fit" THEN 2
-        WHEN College_Fit_Type_Applied  = "Local Affordable" THEN 3
-        WHEN College_Fit_Type_Applied  = "None - 4-year" THEN 4
-        WHEN College_Fit_Type_Applied  = "None - 2-year or technical" THEN 5
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (college_application_data.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (college_application_data.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        WHEN application_status = 'No College Application' THEN 'No College Application'
+        WHEN College_Fit_Type_Applied_c IS NULL THEN 'Has Not Yet Applied'
+        ELSE College_Fit_Type_Applied_c
+    END AS College_Fit_Type_Applied,
+    
+    CASE
+        WHEN College_Fit_Type_Applied_sort  = "Best Fit" THEN 1
+        WHEN College_Fit_Type_Applied_sort  = "Good Fit" THEN 2
+        WHEN College_Fit_Type_Applied_sort  = "Local Affordable" THEN 3
+        WHEN College_Fit_Type_Applied_sort  = "None - 4-year" THEN 4
+        WHEN College_Fit_Type_Applied_sort  = "None - 2-year or technical" THEN 5
+        WHEN application_status = 'No College Application' THEN 7
+        WHEN application_status <> "Applied" THEN 6
         ELSE 6
     END AS sort_helper_app_by_fit_type,
+    
     
     #CASE 
     #    WHEN accepted = 1 THEN "Yes"
