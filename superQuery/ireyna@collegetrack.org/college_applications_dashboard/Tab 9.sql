@@ -1,11 +1,13 @@
-with subquery AS
+CREATE OR REPLACE TABLE `data-studio-260217.college_applications.College_application_senior_count`
+OPTIONS
+    (
+    description= "senior count by site"
+    )
+AS
 
-(SELECT site_short, contact_id,(SELECT app2.student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
-        WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
-        AND app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
-        group by app2.student_c
-        ) AS  contact_id_accepted_4_year
+With senior_aggregate_count AS
+
+(SELECT site_short, contact_id
 
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS app
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C   
@@ -16,11 +18,10 @@ AND C.College_Track_Status_Name = 'Current CT HS Student'
 #AND site_short = 'Aurora'
 
 group by
-contact_id_accepted_4_year,
 site_short,
 contact_id
 )
 
-SELECT site_short, count (distinct contact_id)
-FROM subquery
+SELECT site_short, count (distinct contact_id) AS total_senior_count
+FROM senior_aggregate_count
 group by site_short
