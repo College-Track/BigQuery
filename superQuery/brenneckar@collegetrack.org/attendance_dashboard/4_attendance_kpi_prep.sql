@@ -11,8 +11,11 @@ WITH gather_data AS (
     region_abrev,
     site_abrev,
     Most_Recent_GPA_Cumulative_bucket AS GPA_Bucket,
+    sort_Most_Recent_GPA_Cumulative_bucket,
     Co_Vitality_Scorecard_Color_Most_Recent_c,
-    Composite_Readiness_Most_Recent_c
+    sort_covitality,
+    Composite_Readiness_Most_Recent_c,
+    site_sort
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` AS Contact
   WHERE
@@ -64,9 +67,12 @@ SELECT
   GPA_Bucket,
   Co_Vitality_Scorecard_Color_Most_Recent_c,
   Composite_Readiness_Most_Recent_c,
+  sort_Most_Recent_GPA_Cumulative_bucket,
+  site_sort,
   COUNT(Contact_Id) AS student_count,
   SUM(above_80_attendance) AS above_80_attendance,
   SUM(below_65_attendance) AS below_65_attendance
+  
 FROM
   join_data
 
@@ -80,7 +86,9 @@ GROUP BY
   site_abrev,
   GPA_Bucket,
   Co_Vitality_Scorecard_Color_Most_Recent_c,
-  Composite_Readiness_Most_Recent_c
+  Composite_Readiness_Most_Recent_c,
+  sort_Most_Recent_GPA_Cumulative_bucket,
+  site_sort
 
 -- SELECT *
 -- FROM gather_data
