@@ -11,12 +11,15 @@ SELECT
     Current_HS_CT_Coach_c,
     Gender_c,
     Ethnic_background_c,
-    english_language_learner_c_c,
-    student_has_iep_c,
+    english_language_learner_c_c AS ELL,
+    student_has_iep_c AS IEP,
     first_generation_c,
     indicator_low_income_c,
     co_vitality_scorecard_color_most_recent_c,
-    Indicator_Intervention_Previous_2_ATs_c AS intervention_prev_2,
+    CASE
+        WHEN Indicator_Intervention_Previous_2_ATs_c = TRUE THEN 1
+        ELSE 0
+    END AS intervention_prev_2,
     indicator_high_risk_for_dismissal_c AS high_risk_dismissal,
     of_high_school_terms_on_intervention_c,
     latest_reciprocal_communication_date_c,
