@@ -7,7 +7,7 @@ SELECT
     region_abrev AS region,
     high_school_graduating_class_c AS HS_Class,
     College_Track_Status_Name AS CT_Status,
-    Current_School_c,
+    Current_school_name,
     Current_HS_CT_Coach_c,
     Gender_c,
     Ethnic_background_c,
