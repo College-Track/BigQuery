@@ -344,8 +344,8 @@ SELECT
     END AS sort_helper_app_by_fit_type,
     
     CASE 
-        WHEN admission_status NOT IN ('Accepted','Accepted and Enrolled', 'Accepted and Deferred') THEN 'Not Accepted'
         WHEN admission_status = 'Admission Status Not Yet Updated' THEN admission_status
+        WHEN admission_status NOT IN ('Accepted','Accepted and Enrolled', 'Accepted and Deferred') THEN 'Not Accepted'
         ELSE fit_type_accepted_tight
     END AS fit_type_accepted,
     
