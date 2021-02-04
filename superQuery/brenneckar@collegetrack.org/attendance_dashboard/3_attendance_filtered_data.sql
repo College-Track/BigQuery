@@ -155,10 +155,10 @@ FROM
 WHERE
   Date_c <= CURRENT_DATE()
   AND Attendance_Excluded_c = FALSE
-  AND dosage_types_c IS NOT NULL
-  AND (
-    mod_denominator > 0
-    OR mod_numerator > 0
-  )
+--   AND dosage_types_c IS NOT NULL
+--   AND (
+--     mod_denominator > 0
+--     OR mod_numerator > 0
+--   )
  
   
