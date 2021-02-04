@@ -76,6 +76,7 @@ SELECT
       WHEN C.site_short IS NOT NULL THEN "National"
     END AS National,
     C.region_short,
+    C.Region_Specific_Funding_Eligibility_c,
     C.readiness_english_official_c,
     C.readiness_composite_off_c,
     C.readiness_math_official_c,
