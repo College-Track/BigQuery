@@ -14,7 +14,7 @@ SELECT
         (SELECT COUNT(DISTINCT c2.contact_id) AS senior_count_subquery
         FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C2
         WHERE c.contact_id=c2.contact_id
-        group by c.contact_id=c2.contact_id
+        group by c.site_short=c2.site_short
         ) AS senior_count,
     
     
