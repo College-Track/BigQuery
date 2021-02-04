@@ -12,7 +12,6 @@ WITH gather_data AS(
     WSA.Outcome_c,
     WSA.Department_c,
     WSA.Workshop_Display_Name_c,
-    
     CAT.HIGH_SCHOOL_GRADUATING_CLASS_c,
     WSA.Attendance_Excluded_c,
     CAT.Indicator_High_Risk_for_Dismissal_c,
@@ -52,18 +51,15 @@ WITH gather_data AS(
       WSA.Class_c,
       "/view"
     ) AS workshop_url,
-    WSA.workshop_instructor_c 
-    
+    WSA.workshop_instructor_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` WSA ON  WSA.Academic_Semester_c = CAT.AT_Id
-    -- LEFT JOIN `data-warehouse-289815.salesforce_raw.Class_Session_c` WS ON WS.Id = WSA.Class_Session_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` WSA ON WSA.Academic_Semester_c = CAT.AT_Id -- LEFT JOIN `data-warehouse-289815.salesforce_raw.Class_Session_c` WS ON WS.Id = WSA.Class_Session_c
     -- LEFT JOIN `data-warehouse-289815.salesforce_raw.Class_c` W ON W.Id = WS.Class_c
   WHERE
-     (
-      CAT.College_Track_Status_Name = 'Current CT HS Student'
-    --   OR CAT.College_Track_Status_Name = 'Onboarding'
-    --   OR CAT.College_Track_Status_Name = 'Leave of Absence'
+    (
+      CAT.College_Track_Status_Name = 'Current CT HS Student' --   OR CAT.College_Track_Status_Name = 'Onboarding'
+      --   OR CAT.College_Track_Status_Name = 'Leave of Absence'
     )
     AND WSA.Date_c >= "2019-08-01"
     AND outcome_c != 'Scheduled'
@@ -95,47 +91,45 @@ create_col_number AS (
 -- FROM gather_data
 -- -- ORDER BY WSA_Id
 ,
-
 calc_attendance_rate AS (
   SELECT
     academic_semester_c,
     SUM(Attendance_Denominator_c) AS Attendance_Denominator_c,
     SUM(Attendance_Numerator_c) AS Attendance_Numerator_c,
     CASE
-      WHEN SUM(Attendance_Denominator_c) = 0 AND SUM(Attendance_Numerator_c) = 0 THEN NULL
-      WHEN SUM(Attendance_Denominator_c) = 0 AND SUM(Attendance_Numerator_c) > 0 THEN 1
+      WHEN SUM(Attendance_Denominator_c) = 0
+      AND SUM(Attendance_Numerator_c) = 0 THEN NULL
+      WHEN SUM(Attendance_Denominator_c) = 0
+      AND SUM(Attendance_Numerator_c) > 0 THEN 1
       ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
     END AS attendance_rate
   FROM
     `data-warehouse-289815.salesforce_clean.class_template`
-    WHERE outcome_c != 'Scheduled'
-
+  WHERE
+    -- outcome_c != 'Scheduled'
   GROUP BY
     academic_semester_c
 ),
-
-final_pull AS (
+combined_metrics AS (
   SELECT
     MD.*
   EXCEPT(dosage_combined),
     GD.Attendance_Numerator_c,
     GD.Attendance_Denominator_c,
-      
     --   GD.* EXCEPT(dosage_combined)
     --   MD.dosage_split
   FROM
     create_col_number MD
     LEFT JOIN gather_data GD ON GD.Class_Attendance_Id = MD.Class_Attendance_Id
-    
     AND MD.group_count = GD.group_base
   ORDER BY
     GD.Class_Attendance_Id
-), 
-final_final_pull AS (SELECT
-  
-  *
-EXCEPT(dosage_split),
-  TRIM(dosage_split) AS dosage_split,
+),
+format_metrics AS (
+  SELECT
+    CM.*
+  EXCEPT(dosage_split),
+    TRIM(dosage_split) AS dosage_split,
     CASE
       WHEN AA.attendance_rate IS NULL THEN "No Data"
       WHEN AA.attendance_rate <.65 THEN "< 65%"
@@ -147,29 +141,25 @@ EXCEPT(dosage_split),
     END AS attendance_bucket,
     AA.attendance_rate AS AT_attendance_rate,
     AA.Attendance_Numerator_c AS AT_attendance_numerator
-
-FROM
-  final_pull FP
-  LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = FP.Academic_Semester_c 
-WHERE
-  Date_c <= CURRENT_DATE()
-  AND Attendance_Excluded_c = FALSE
---   AND dosage_types_c IS NOT NULL
---   AND (
---     mod_denominator > 0
---     OR mod_numerator > 0
---   )
- 
-  
+  FROM
+    combined_metrics CM
+    LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = CM.Academic_Semester_c
+  WHERE
+    Date_c <= CURRENT_DATE()
+    AND Attendance_Excluded_c = FALSE --   AND dosage_types_c IS NOT NULL
+    --   AND (
+    --     mod_denominator > 0
+    --     OR mod_numerator > 0
+    --   )
 )
-
-SELECT *
-,
-    CASE
+SELECT
+  *,
+  CASE
     WHEN attendance_bucket = 'No Data' THEN 1
     WHEN attendance_bucket = '< 65%' THEN 2
     WHEN attendance_bucket = '65% -79%' THEN 3
     WHEN attendance_bucket = '80% - 89%' THEN 4
     WHEN attendance_bucket = '90%+' THEN 5
   END AS sort_attendance_bucket,
-FROM final_final_pull
+FROM
+  format_metrics
