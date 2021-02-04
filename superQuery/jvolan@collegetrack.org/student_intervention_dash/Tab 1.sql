@@ -60,19 +60,15 @@ SELECT
     CASE
         WHEN indicator_prev_gpa_below_2_75_c = TRUE THEN 1
         Else 0
-    End,
+    END AS intervention_AT_gpa_2_75,    
     CASE
         WHEN indicator_sem_attendance_below_65_c = TRUE THEN 1
         Else 0
-    End,
+    End AS intervention_AT_attendance_65,
     CASE
         WHEN indicator_student_on_intervention_c = TRUE THEN 1
         Else 0
-    End,
-    CASE
-        WHEN indicator_prev_gpa_below_2_75_c = TRUE THEN 1
-        Else 0
-    End,
+    End AS intervention_AT,
     academic_intervention_needed_c,
     academic_intervention_received_c
     
