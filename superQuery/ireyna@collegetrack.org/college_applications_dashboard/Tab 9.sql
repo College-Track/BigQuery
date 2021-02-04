@@ -21,6 +21,6 @@ site_short,
 contact_id
 )
 
-SELECT site_short, COUNT(DISTINCT contact_id_accepted_4_year)/count (distinct contact_id)
+SELECT site_short, count (distinct contact_id)
 FROM subquery
 group by site_short
