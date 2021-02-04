@@ -70,6 +70,12 @@ SELECT
         ELSE 0
     END AS intervention_AT_both,
     CASE
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = TRUE THEN "GPA & Attendance"
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = FALSE THEN "GPA Only"
+        WHEN indicator_prev_gpa_below_2_75_c = FALSE AND indicator_sem_attendance_below_65_c = TRUE THEN "Attendance Only"
+        ELSE "None"
+    END AS intervention_AT_bucket,
+    CASE
         WHEN indicator_student_on_intervention_c = TRUE THEN 1
         Else 0
     End AS intervention_AT,
