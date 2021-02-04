@@ -166,7 +166,7 @@ college_application_data AS #combine acceptance and admission data to college ap
 (
 SELECT
     app.name,
-    app.Student_c AS student_c_app_table, # For metric on "Applications" Page of Dashboard (vs. Admissions). Pulls in all students with apps regardless of Application Status
+    app.Student_c AS contact_id_app_table, # For metric on "Applications" Page of Dashboard (vs. Admissions). Pulls in all students with apps regardless of Application Status
     app.application_status_c AS application_status_app_table,
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
@@ -298,7 +298,7 @@ SELECT
     filtered_data.*,
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
-        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted, student_c_app_table,strategic_type_app_table),
+        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted,strategic_type_app_table),
     
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
@@ -366,7 +366,7 @@ SELECT
     
 FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
-    ON filtered_data.contact_id = college_application_data.student_c_app_table
+    ON filtered_data.contact_id = college_application_data.contact_id_app_table
 
 /*
 GROUP BY  
