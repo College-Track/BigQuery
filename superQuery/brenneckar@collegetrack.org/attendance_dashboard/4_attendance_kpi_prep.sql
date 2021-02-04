@@ -5,6 +5,7 @@ WITH gather_data AS (
     site,
     site_short,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
+    current_as_c,
     REPLACE(GAS_Name, ' (Semester)', '') AS Workshop_Global_Academic_Semester_c,
     region_short,
     region_abrev,
@@ -50,7 +51,7 @@ join_data AS (
     gather_data GD
     LEFT JOIN calc_attendance CA ON CA.academic_semester_c = GD.AT_Id
   WHERE
-    CA.attendance_rate IS NOT NULL
+    (CA.attendance_rate IS NOT NULL AND current_as_c != true) OR current_as_c = true
 )
 SELECT
   site_short,
