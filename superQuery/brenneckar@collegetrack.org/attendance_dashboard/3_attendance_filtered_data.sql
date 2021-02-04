@@ -76,18 +76,19 @@ mod_dosage AS (
   FROM
     gather_data
     CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
+),
+create_col_number AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY Class_Attendance_Id
+      ORDER BY
+        Class_Attendance_Id
+    ) - 1 As group_count,
+  from
+    mod_dosage
 )
--- create_col_number AS (
---   SELECT
---     *,
---     ROW_NUMBER() OVER (
---       PARTITION BY Class_Attendance_Id
---       ORDER BY
---         Class_Attendance_Id
---     ) - 1 As group_count,
---   from
---     mod_dosage
--- ) -- SELECT COUNT(DISTINCT(WSA_ID))
+-- SELECT COUNT(DISTINCT(WSA_ID))
 -- -- FROM gather_data
 -- -- -- ORDER BY WSA_Id
 -- ,
@@ -167,4 +168,4 @@ mod_dosage AS (
 
 
 SELECT *
-FROM mod_dosage
+FROM create_col_number
