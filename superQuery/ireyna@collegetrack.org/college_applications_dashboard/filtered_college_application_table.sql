@@ -379,7 +379,7 @@ SELECT
     CASE 
         WHEN admission_status IN ('Accepted and Enrolled') THEN school_type
         WHEN admission_status <> 'Accepted and Enrolled' THEN 'Not Yet Enrolled'
-        WHEN admission_status IS NULL THEN 'Admission Status Not Yet Updated'
+        WHEN admission_status IS NULL THEN "Admission Status Not Yet Updated"
     END AS school_type_enrolled,    
     
 FROM filtered_data AS filtered_data
