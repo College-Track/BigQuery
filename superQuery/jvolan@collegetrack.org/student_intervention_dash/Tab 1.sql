@@ -66,6 +66,10 @@ SELECT
         Else 0
     End AS intervention_AT_attendance_65,
     CASE
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = TRUE THEN 1
+        ELSE 0
+    END AS intervention_AT_both,
+    CASE
         WHEN indicator_student_on_intervention_c = TRUE THEN 1
         Else 0
     End AS intervention_AT,
@@ -75,3 +79,4 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
     AND college_track_status_c IN ("11A", "12A")
+    
