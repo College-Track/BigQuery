@@ -305,11 +305,6 @@ SELECT
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
         EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted, student_c_app_table,strategic_type_app_table),
-     
-        (SELECT SUM(f2.senior_count) 
-        FROM filtered_data AS f2
-        WHERE f2.contact_id=contact_id
-        GROUP BY f2.site_short) AS total_senior_count,
     
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
