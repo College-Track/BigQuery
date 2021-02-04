@@ -145,7 +145,14 @@ final_pull AS (
 SELECT
   *
 EXCEPT(dosage_split),
-  TRIM(dosage_split) AS dosage_split
+  TRIM(dosage_split) AS dosage_split,
+    CASE
+    WHEN attendance_bucket = 'No Data' THEN 1
+    WHEN attendance_bucket = '< 65%' THEN 2
+    WHEN attendance_bucket = '65% -79%' THEN 3
+    WHEN attendance_bucket = '80% - 89%' THEN 4
+    WHEN attendance_bucket = '90%+' THEN 5
+  END AS sort_attendance_bucket,
 FROM
   final_pull
 WHERE
