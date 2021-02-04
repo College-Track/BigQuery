@@ -344,8 +344,8 @@ SELECT
     END AS sort_helper_app_by_fit_type,
     
     CASE 
-        WHEN admission_status NOT IN ('Accepted','Accepted and Enrolled', 'Accepted and Deferred') THEN 'Not Accepted'
-        WHEN admission_status = 'Admission Status Not Yet Updated' THEN 'Admission Status Not Yet Updated'
+        WHEN admission_status = 'Admission Status Not Yet Updated' THEN admission_status
+        WHEN admission_status NOT IN ('Accepted','Accepted and Enrolled', 'Accepted and Deferred') THEN 'Denied,Waitlisted,Conditional'
         ELSE fit_type_accepted_tight
     END AS fit_type_accepted,
     
@@ -355,7 +355,7 @@ SELECT
         WHEN fit_type_accepted_tight = "Local Affordable" THEN 3
         WHEN fit_type_accepted_tight = "None - 4-year" THEN 4
         WHEN fit_type_accepted_tight = "None - 2-year or technical" THEN 5
-        WHEN fit_type_accepted_tight = 'Not Accepted' THEN 6
+        WHEN fit_type_accepted_tight = 'Denied,Waitlisted,Conditional' THEN 6
         WHEN fit_type_accepted_tight = 'Admission Status Not Yet Updated' THEN 7
     END AS sort_helper_acceptance_by_fit_type,
     
@@ -368,7 +368,7 @@ SELECT
         WHEN admission_status = "Withdrew Application" THEN 6
         WHEN admission_status = "Undecided" THEN 7
         WHEN admission_status = "Denied" THEN 8
-        WHEN admission_status = "Admission Status  Updated" THEN 9
+        WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
         ELSE 0
     END AS sort_helper_admission_status,
     
