@@ -76,7 +76,12 @@ SELECT
       WHEN C.site_short IS NOT NULL THEN "National"
     END AS National,
     C.region_short,
-    C.Region_Specific_Funding_Eligibility_c,
+    #C.Region_Specific_Funding_Eligibility_c,
+    CASE
+        WHEN (site_short ='New Orleans' AND Region_Specific_Funding_Eligibility_c IN ('TOPS Honors Award Eligible','TOPS Performance Award Eligible','TOPS Opportunity Award Eligible','TOPS Tech Award Eligible','Not Eligible')) THEN Region_Specific_Funding_Eligibility_c
+        WHEN (site_short IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts') AND Region_Specific_Funding_Eligibility_c IN ('Cal Grant A Eligible','Cal Grant B Eligible','Cal Grant C Eligible','Not Eligible')) THEN Region_Specific_Funding_Eligibility_c
+        WHEN site_short NOT IN ('New Orleans','East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts') THEN 'Not Eligible'
+    END AS Region_Specific_Funding_Eligibility,
     C.readiness_english_official_c,
     C.readiness_composite_off_c,
     C.readiness_math_official_c,
