@@ -10,7 +10,10 @@ SELECT
     Current_school_name,
     Current_HS_CT_Coach_c,
     Gender_c,
-    Ethnic_background_c,
+    CASE
+        WHEN Ethnic_background_c IN ("Decline to state", "Missing") THEN "Missing"
+        Else Ethnic_background_c
+    END AS Ethnic_background_c,
     english_language_learner_c_c AS ELL,
     student_has_iep_c AS IEP,
     first_generation_c,
