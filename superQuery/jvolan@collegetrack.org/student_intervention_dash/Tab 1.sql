@@ -29,8 +29,8 @@ SELECT
     
     --primary contact info
     primary_contact_name_mobile_formula_c,
-    npsp_primary_contact_c
-    primary_contact_email_address_c,
+    npsp_primary_contact_c,
+    primary_contact_email_c,
     primary_contact_mobile_c,
     primary_home_language_c
     
