@@ -1,5 +1,4 @@
 SELECT
 *
 FROM
-`data-warehouse-289815.salesforce.user`
-WHERE email = 'ashah@collegetrack.org'
+    `data-warehouse-289815.roles.role_table` AS Roles
