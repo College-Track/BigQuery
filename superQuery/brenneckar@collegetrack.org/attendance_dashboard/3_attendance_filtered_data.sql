@@ -143,8 +143,8 @@ format_metrics AS (
     combined_metrics CM
     LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = CM.Academic_Semester_c
   WHERE
-    Date_c <= CURRENT_DATE()
-    AND Attendance_Excluded_c = FALSE --   AND dosage_types_c IS NOT NULL
+    -- Date_c <= CURRENT_DATE()
+     Attendance_Excluded_c = FALSE --   AND dosage_types_c IS NOT NULL
 --     --   AND (
 --     --     mod_denominator > 0
 --     --     OR mod_numerator > 0
