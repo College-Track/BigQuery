@@ -102,7 +102,8 @@ calc_attendance_rate AS (
     SUM(Attendance_Denominator_c) AS Attendance_Denominator_c,
     SUM(Attendance_Numerator_c) AS Attendance_Numerator_c,
     CASE
-      WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
+      WHEN SUM(Attendance_Denominator_c) = 0 AND SUM(Attendance_Numerator_c) = 0 THEN NULL
+      WHEN SUM(Attendance_Denominator_c) = 0 AND SUM(Attendance_Numerator_c) > 0 THEN 1
       ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
     END AS attendance_rate
   FROM
