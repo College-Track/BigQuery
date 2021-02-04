@@ -63,103 +63,108 @@ WITH gather_data AS(
     )
     AND WSA.Date_c >= "2019-08-01"
     -- AND outcome_c != 'Scheduled'
-),
-mod_dosage AS (
-  SELECT
-    *
-  EXCEPT(
-      Attendance_Numerator_c,
-      Attendance_Denominator_c
-    ),
-    Attendance_Numerator_c AS mod_numerator,
-    Attendance_Denominator_c AS mod_denominator
-  FROM
-    gather_data
-    CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
-),
-create_col_number AS (
-  SELECT
-    *,
-    ROW_NUMBER() OVER (
-      PARTITION BY Class_Attendance_Id
-      ORDER BY
-        Class_Attendance_Id
-    ) - 1 As group_count,
-  from
-    mod_dosage
-) -- SELECT COUNT(DISTINCT(WSA_ID))
--- FROM gather_data
--- -- ORDER BY WSA_Id
-,
-calc_attendance_rate AS (
-  SELECT
-    academic_semester_c,
-    SUM(Attendance_Denominator_c) AS Attendance_Denominator_c,
-    SUM(Attendance_Numerator_c) AS Attendance_Numerator_c,
-    CASE
-      WHEN SUM(Attendance_Denominator_c) = 0
-      AND SUM(Attendance_Numerator_c) = 0 THEN NULL
-      WHEN SUM(Attendance_Denominator_c) = 0
-      AND SUM(Attendance_Numerator_c) > 0 THEN 1
-      ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
-    END AS attendance_rate
-  FROM
-    `data-warehouse-289815.salesforce_clean.class_template`
+-- ),
+-- mod_dosage AS (
+--   SELECT
+--     *
+--   EXCEPT(
+--       Attendance_Numerator_c,
+--       Attendance_Denominator_c
+--     ),
+--     Attendance_Numerator_c AS mod_numerator,
+--     Attendance_Denominator_c AS mod_denominator
+--   FROM
+--     gather_data
+--     CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
+-- ),
+-- create_col_number AS (
+--   SELECT
+--     *,
+--     ROW_NUMBER() OVER (
+--       PARTITION BY Class_Attendance_Id
+--       ORDER BY
+--         Class_Attendance_Id
+--     ) - 1 As group_count,
+--   from
+--     mod_dosage
+-- ) -- SELECT COUNT(DISTINCT(WSA_ID))
+-- -- FROM gather_data
+-- -- -- ORDER BY WSA_Id
+-- ,
+-- calc_attendance_rate AS (
+--   SELECT
+--     academic_semester_c,
+--     SUM(Attendance_Denominator_c) AS Attendance_Denominator_c,
+--     SUM(Attendance_Numerator_c) AS Attendance_Numerator_c,
+--     CASE
+--       WHEN SUM(Attendance_Denominator_c) = 0
+--       AND SUM(Attendance_Numerator_c) = 0 THEN NULL
+--       WHEN SUM(Attendance_Denominator_c) = 0
+--       AND SUM(Attendance_Numerator_c) > 0 THEN 1
+--       ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
+--     END AS attendance_rate
+--   FROM
+--     `data-warehouse-289815.salesforce_clean.class_template`
+-- --   WHERE
+--     -- outcome_c != 'Scheduled'
+--   GROUP BY
+--     academic_semester_c
+-- ),
+-- combined_metrics AS (
+--   SELECT
+--     MD.*
+--   EXCEPT(dosage_combined),
+--     GD.Attendance_Numerator_c,
+--     GD.Attendance_Denominator_c,
+--     --   GD.* EXCEPT(dosage_combined)
+--     --   MD.dosage_split
+--   FROM
+--      gather_data GD
+    
+--     LEFT JOIN create_col_number MD ON GD.Class_Attendance_Id = MD.Class_Attendance_Id
+--     AND MD.group_count = GD.group_base
+--   ORDER BY
+--     GD.Class_Attendance_Id
+-- ),
+-- format_metrics AS (
+--   SELECT
+--     CM.*
+--   EXCEPT(dosage_split),
+--     TRIM(dosage_split) AS dosage_split,
+--     CASE
+--       WHEN AA.attendance_rate IS NULL THEN "No Data"
+--       WHEN AA.attendance_rate <.65 THEN "< 65%"
+--       WHEN AA.attendance_rate >=.65
+--       AND AA.attendance_rate <.8 THEN "65% -79%"
+--       WHEN AA.attendance_rate >= 0.8
+--       AND AA.attendance_rate <.9 THEN "80% - 89%"
+--       ELSE "90%+"
+--     END AS attendance_bucket,
+--     AA.attendance_rate AS AT_attendance_rate,
+--     AA.Attendance_Numerator_c AS AT_attendance_numerator
+--   FROM
+--     combined_metrics CM
+--     LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = CM.Academic_Semester_c
 --   WHERE
-    -- outcome_c != 'Scheduled'
-  GROUP BY
-    academic_semester_c
-),
-combined_metrics AS (
-  SELECT
-    MD.*
-  EXCEPT(dosage_combined),
-    GD.Attendance_Numerator_c,
-    GD.Attendance_Denominator_c,
-    --   GD.* EXCEPT(dosage_combined)
-    --   MD.dosage_split
-  FROM
-    create_col_number MD
-    LEFT JOIN gather_data GD ON GD.Class_Attendance_Id = MD.Class_Attendance_Id
-    AND MD.group_count = GD.group_base
-  ORDER BY
-    GD.Class_Attendance_Id
-),
-format_metrics AS (
-  SELECT
-    CM.*
-  EXCEPT(dosage_split),
-    TRIM(dosage_split) AS dosage_split,
-    CASE
-      WHEN AA.attendance_rate IS NULL THEN "No Data"
-      WHEN AA.attendance_rate <.65 THEN "< 65%"
-      WHEN AA.attendance_rate >=.65
-      AND AA.attendance_rate <.8 THEN "65% -79%"
-      WHEN AA.attendance_rate >= 0.8
-      AND AA.attendance_rate <.9 THEN "80% - 89%"
-      ELSE "90%+"
-    END AS attendance_bucket,
-    AA.attendance_rate AS AT_attendance_rate,
-    AA.Attendance_Numerator_c AS AT_attendance_numerator
-  FROM
-    combined_metrics CM
-    LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = CM.Academic_Semester_c
-  WHERE
-    Date_c <= CURRENT_DATE()
-    AND Attendance_Excluded_c = FALSE --   AND dosage_types_c IS NOT NULL
-    --   AND (
-    --     mod_denominator > 0
-    --     OR mod_numerator > 0
-    --   )
+--     Date_c <= CURRENT_DATE()
+--     AND Attendance_Excluded_c = FALSE --   AND dosage_types_c IS NOT NULL
+--     --   AND (
+--     --     mod_denominator > 0
+--     --     OR mod_numerator > 0
+--     --   )
+-- )
+-- SELECT
+--   *,
+--   CASE
+--     WHEN attendance_bucket = 'No Data' THEN 1
+--     WHEN attendance_bucket = '< 65%' THEN 2
+--     WHEN attendance_bucket = '65% -79%' THEN 3
+--     WHEN attendance_bucket = '80% - 89%' THEN 4
+--     WHEN attendance_bucket = '90%+' THEN 5
+--   END AS sort_attendance_bucket,
+-- FROM
+--   format_metrics
+
 )
-SELECT
-  *,
-  CASE
-    WHEN attendance_bucket = 'No Data' THEN 1
-    WHEN attendance_bucket = '< 65%' THEN 2
-    WHEN attendance_bucket = '65% -79%' THEN 3
-    WHEN attendance_bucket = '80% - 89%' THEN 4
-    WHEN attendance_bucket = '90%+' THEN 5
-  END AS sort_attendance_bucket,
-FROM
-  format_metrics
+SELECT *
+FROM gather_data
