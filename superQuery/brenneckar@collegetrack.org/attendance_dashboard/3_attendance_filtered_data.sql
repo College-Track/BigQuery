@@ -133,7 +133,7 @@ final_pull AS (
 ), 
 final_final_pull AS (SELECT
   
-  FP.*
+  *
 EXCEPT(dosage_split),
   TRIM(dosage_split) AS dosage_split,
     CASE
