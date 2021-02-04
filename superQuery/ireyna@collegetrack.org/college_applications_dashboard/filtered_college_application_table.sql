@@ -308,7 +308,7 @@ SELECT
      
         (SELECT SUM(f2.senior_count) 
         FROM filtered_data AS f2
-        WHERE f2.site_short=site_short
+        WHERE f2.contact_id=contact_id
         GROUP BY f2.site_short) AS total_senior_count,
     
     CASE WHEN 
