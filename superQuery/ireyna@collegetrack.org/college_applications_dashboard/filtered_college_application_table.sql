@@ -11,12 +11,6 @@ WITH
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
 SELECT
-        (SELECT COUNT(DISTINCT c2.contact_id) AS senior_count_subquery
-        FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C2
-        WHERE c.contact_id=c2.contact_id
-        group by c.site_short=c2.site_short
-        ) AS senior_count,
-    
     
 #college application data
     CA.id AS college_app_id_contact,
@@ -374,7 +368,7 @@ FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
     ON filtered_data.contact_id = college_application_data.student_c_app_table
 
-
+/*
 GROUP BY  
     student_c,
     application_status,
@@ -455,8 +449,8 @@ GROUP BY
     admission_status,
     college_name_on_app_for_case_statement,
     strategic_type_app_table,
-    application_status_app_table,
-    senior_count
+    application_status_app_table
+    */
     
 
 
