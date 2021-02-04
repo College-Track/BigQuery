@@ -377,7 +377,6 @@ LEFT JOIN college_application_data  AS college_application_data
 
 
 GROUP BY  
-    total_senior_count,
     student_c,
     application_status,
     full_name_c,
