@@ -49,37 +49,37 @@ join_data AS (
   FROM
     gather_data GD
     LEFT JOIN calc_attendance CA ON CA.academic_semester_c = GD.AT_Id
---   WHERE
-    -- CA.attendance_rate IS NOT NULL
+  WHERE
+    CA.attendance_rate IS NOT NULL
 )
--- SELECT
---   site_short,
---   site,
---   HIGH_SCHOOL_GRADUATING_CLASS_c,
---   Workshop_Global_Academic_Semester_c,
---   region_short,
---   region_abrev,
---   site_abrev,
---   GPA_Bucket,
---   Co_Vitality_Scorecard_Color_Most_Recent_c,
---   Composite_Readiness_Most_Recent_c,
---   COUNT(Contact_Id) AS student_count,
---   SUM(above_80_attendance) AS above_80_attendance,
---   SUM(below_65_attendance) AS below_65_attendance
--- FROM
---   join_data
+SELECT
+  site_short,
+  site,
+  HIGH_SCHOOL_GRADUATING_CLASS_c,
+  Workshop_Global_Academic_Semester_c,
+  region_short,
+  region_abrev,
+  site_abrev,
+  GPA_Bucket,
+  Co_Vitality_Scorecard_Color_Most_Recent_c,
+  Composite_Readiness_Most_Recent_c,
+  COUNT(Contact_Id) AS student_count,
+  SUM(above_80_attendance) AS above_80_attendance,
+  SUM(below_65_attendance) AS below_65_attendance
+FROM
+  join_data
 
--- GROUP BY
---   site_short,
---   site,
---   HIGH_SCHOOL_GRADUATING_CLASS_c,
---   Workshop_Global_Academic_Semester_c,
---   region_short,
---   region_abrev,
---   site_abrev,
---   GPA_Bucket,
---   Co_Vitality_Scorecard_Color_Most_Recent_c,
---   Composite_Readiness_Most_Recent_c
+GROUP BY
+  site_short,
+  site,
+  HIGH_SCHOOL_GRADUATING_CLASS_c,
+  Workshop_Global_Academic_Semester_c,
+  region_short,
+  region_abrev,
+  site_abrev,
+  GPA_Bucket,
+  Co_Vitality_Scorecard_Color_Most_Recent_c,
+  Composite_Readiness_Most_Recent_c
 
-SELECT *
-FROM gather_data
+-- SELECT *
+-- FROM gather_data
