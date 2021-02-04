@@ -2,7 +2,7 @@ WITH gather_data AS (
   SELECT
     Contact_Id,
     AT_Id,
-    site,
+    -- site,
     site_short,
     HIGH_SCHOOL_GRADUATING_CLASS_c,
     REPLACE(GAS_Name, ' (Semester)', '') AS Workshop_Global_Academic_Semester_c,
