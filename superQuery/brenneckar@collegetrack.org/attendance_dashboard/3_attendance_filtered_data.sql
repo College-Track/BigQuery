@@ -120,7 +120,23 @@ final_pull AS (
   EXCEPT(dosage_combined),
     GD.Attendance_Numerator_c,
     GD.Attendance_Denominator_c,
-        CASE
+      
+    --   GD.* EXCEPT(dosage_combined)
+    --   MD.dosage_split
+  FROM
+    create_col_number MD
+    LEFT JOIN gather_data GD ON GD.Class_Attendance_Id = MD.Class_Attendance_Id
+    
+    AND MD.group_count = GD.group_base
+  ORDER BY
+    GD.Class_Attendance_Id
+), 
+final_final_pull AS (SELECT
+  
+  FP.*
+EXCEPT(dosage_split),
+  TRIM(dosage_split) AS dosage_split,
+    CASE
       WHEN AA.attendance_rate IS NULL THEN "No Data"
       WHEN AA.attendance_rate <.65 THEN "< 65%"
       WHEN AA.attendance_rate >=.65
@@ -131,29 +147,10 @@ final_pull AS (
     END AS attendance_bucket,
     AA.attendance_rate AS AT_attendance_rate,
     AA.Attendance_Numerator_c AS AT_attendance_numerator
-    --   GD.* EXCEPT(dosage_combined)
-    --   MD.dosage_split
-  FROM
-    create_col_number MD
-    LEFT JOIN gather_data GD ON GD.Class_Attendance_Id = MD.Class_Attendance_Id
-    LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = GD.Academic_Semester_c
-    AND MD.group_count = GD.group_base
-  ORDER BY
-    GD.Class_Attendance_Id
-)SELECT
-  
-  *
-EXCEPT(dosage_split),
-  TRIM(dosage_split) AS dosage_split,
-    CASE
-    WHEN attendance_bucket = 'No Data' THEN 1
-    WHEN attendance_bucket = '< 65%' THEN 2
-    WHEN attendance_bucket = '65% -79%' THEN 3
-    WHEN attendance_bucket = '80% - 89%' THEN 4
-    WHEN attendance_bucket = '90%+' THEN 5
-  END AS sort_attendance_bucket,
+
 FROM
-  final_pull
+  final_pull FP
+  LEFT JOIN calc_attendance_rate AA ON AA.academic_semester_c = FP.Academic_Semester_c 
 WHERE
   Date_c <= CURRENT_DATE()
   AND Attendance_Excluded_c = FALSE
@@ -164,3 +161,15 @@ WHERE
 --   )
  
   
+)
+
+SELECT *
+,
+    CASE
+    WHEN attendance_bucket = 'No Data' THEN 1
+    WHEN attendance_bucket = '< 65%' THEN 2
+    WHEN attendance_bucket = '65% -79%' THEN 3
+    WHEN attendance_bucket = '80% - 89%' THEN 4
+    WHEN attendance_bucket = '90%+' THEN 5
+  END AS sort_attendance_bucket,
+FROM final_final_pull
