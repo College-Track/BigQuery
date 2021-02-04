@@ -54,7 +54,7 @@ join_data AS (
 )
 SELECT
   site_short,
-  site,
+--   site,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
   Workshop_Global_Academic_Semester_c,
   region_short,
@@ -71,7 +71,7 @@ FROM
 
 GROUP BY
   site_short,
-  site,
+--   site,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
   Workshop_Global_Academic_Semester_c,
   region_short,
