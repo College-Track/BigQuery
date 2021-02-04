@@ -97,7 +97,6 @@ create_col_number AS (
 
 calc_attendance_rate AS (
   SELECT
-    student_c,
     academic_semester_c,
     SUM(Attendance_Denominator_c) AS Attendance_Denominator_c,
     SUM(Attendance_Numerator_c) AS Attendance_Numerator_c,
@@ -110,7 +109,6 @@ calc_attendance_rate AS (
     `data-warehouse-289815.salesforce_clean.class_template`
 
   GROUP BY
-    student_c,
     academic_semester_c
 ),
 
