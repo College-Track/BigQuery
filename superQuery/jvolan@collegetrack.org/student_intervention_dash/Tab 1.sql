@@ -43,8 +43,8 @@ SELECT
     enrolled_sessions_c,
     attended_workshops_c,
     attendance_rate_previous_term_c,
-    DEP_GPA_Prev_semester_c,
-    gpa_prev_semester_cumulative_c,
+    DEP_GPA_Prev_semester_c AS prev_term_GPA,
+    gpa_prev_semester_cumulative_c AS prev_CGPA,
     CASE
       WHEN DEP_GPA_Prev_semester_c < 2.75 THEN "Below 2.75"
       WHEN DEP_GPA_Prev_semester_c < 3.5 THEN "2.75 - 3.5"
