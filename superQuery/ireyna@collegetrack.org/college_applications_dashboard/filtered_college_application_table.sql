@@ -305,7 +305,7 @@ SELECT
     filtered_data.*,
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
-        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted),
+        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted, student_c_app_table,strategic_type_app_table),
         
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
@@ -375,11 +375,10 @@ FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
     ON filtered_data.contact_id = college_application_data.student_c_app_table
 
-/*
-GROUP BY    
-    college_application_id,
+
+GROUP BY  
+    total_senior_count,
     student_c,
-    application_status_c,
     application_status,
     full_name_c,
     contact_id, #use in "Application Status" chart as Metric
@@ -413,15 +412,12 @@ GROUP BY
     fa_req_fafsa_c,
     FAFSA_status,
     high_school_name_filter,
-    college_name_applied_filter,
     name,
-    contact_id_applied,
+    contact_id_accepted,
     contact_id_applied_4_year,
-    contact_id_applied_2_year,
     contact_id_accepted_4_year, #to use in formula in final join
     contact_id_enrolled_4_year,
     school_type_applied,
-    school_name_applied,
     app_college_id, #college id
     Award_Letter_c,
     CSS_Profile_Required_c,
@@ -438,10 +434,8 @@ GROUP BY
     Predominant_Degree_Awarded_c,
     Type_of_School_c,
     Situational_Fit_Type_c,
-    Strategic_Type_c,
     Verification_Status_c,
     College_Fit_Type_Applied,
-    student_c_accepted,
     school_name_accepted,
     college_accepted_app_id,
     accepted,
@@ -452,6 +446,18 @@ GROUP BY
     school_type_enrolled,
     admission_status_c,
     fit_type_enrolled_c,
-    sort_helper_admission_status
-*/
+    sort_helper_admission_status,
+    college_app_id_contact,
+    college_name_applied_wide,
+    contact_id_applied_status,
+    college_fit_type_applied_tight,
+    school_name_accepted_tight,
+    fit_type_accepted_tight,
+    housing_application_c,
+    admission_status,
+    college_name_on_app_for_case_statement,
+    strategic_type_app_table,
+    application_status_app_table
+    
+
 
