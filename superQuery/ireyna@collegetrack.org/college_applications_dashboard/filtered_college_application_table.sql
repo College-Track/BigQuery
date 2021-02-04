@@ -152,7 +152,6 @@ SELECT
     student_c AS contact_id_admissions,
     accnt.name AS school_name_enrolled,
     app.id AS college_enrolled_app_id,
-    Type_of_School_c as school_type_enrolled,
     
     CASE
         WHEN ((fit_type_enrolled_c = "None") AND (app.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
@@ -266,6 +265,12 @@ SELECT
         ELSE app.admission_status_c
     END AS admission_status, #for Admission Status chart
     
+    CASE 
+        WHEN admission_status_c IN ('Accepted and Enrolled') THEN Type_of_School_c
+        WHEN admission_status_c <> 'Accepted and Enrolled' THEN 'Not Yet Enrolled'
+        WHEN admission_status_c IS NULL THEN 'Admission Status Not Yet Updated'
+    END AS school_type_enrolled,    
+    
     #accepted_data 
     contact_id_accepted,
     school_name_accepted,
@@ -277,7 +282,6 @@ SELECT
     contact_id_admissions,
     school_name_enrolled,
     college_enrolled_app_id,
-    school_type_enrolled,
     admissions.fit_type_enrolled_c,
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
