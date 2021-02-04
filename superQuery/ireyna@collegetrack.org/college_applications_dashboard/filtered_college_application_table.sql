@@ -13,7 +13,7 @@ filtered_data AS #contact data with college application data (no admission or ac
 SELECT
         (SELECT COUNT(DISTINCT c2.contact_id) AS senior_count_subquery
         FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C2
-        WHERE C.site_short=C2.site_short
+        WHERE c.contact_id=c2.contact_id
         group by C2.site_short
         ) AS senior_count,
     
