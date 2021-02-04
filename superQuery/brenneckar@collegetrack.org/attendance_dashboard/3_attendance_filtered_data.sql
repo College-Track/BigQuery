@@ -129,7 +129,8 @@ final_pull AS (
       AND AA.attendance_rate <.9 THEN "80% - 89%"
       ELSE "90%+"
     END AS attendance_bucket,
-    AA.attendance_rate AS AT_attendance_rate
+    AA.attendance_rate AS AT_attendance_rate,
+    AA.Attendance_Numerator_c AS AT_attendance_numerator
     --   GD.* EXCEPT(dosage_combined)
     --   MD.dosage_split
   FROM
