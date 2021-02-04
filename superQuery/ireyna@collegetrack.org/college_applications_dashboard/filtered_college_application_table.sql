@@ -16,7 +16,7 @@ SELECT
         WHERE C.contact_id=C2.contact_id
         AND C.site_short=C2.site_short
         group by C2.site_short
-        ) AS total_senior_count,
+        ) AS senior_count,
     
     
 #college application data
@@ -306,7 +306,7 @@ SELECT
     college_application_data.*
         #EXCEPT (College_Fit_Type_Applied_c),
         EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted, student_c_app_table,strategic_type_app_table),
-        
+    MAX(senior_count) AS total_senior_count,
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
         ELSE college_name_on_app_for_case_statement 
@@ -457,7 +457,8 @@ GROUP BY
     admission_status,
     college_name_on_app_for_case_statement,
     strategic_type_app_table,
-    application_status_app_table
+    application_status_app_table,
+    senior_count
     
 
 
