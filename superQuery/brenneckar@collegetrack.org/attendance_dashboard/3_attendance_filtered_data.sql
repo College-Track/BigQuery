@@ -63,20 +63,20 @@ WITH gather_data AS(
     )
     AND WSA.Date_c >= "2019-08-01"
     -- AND outcome_c != 'Scheduled'
--- ),
--- mod_dosage AS (
---   SELECT
---     *
---   EXCEPT(
---       Attendance_Numerator_c,
---       Attendance_Denominator_c
---     ),
---     Attendance_Numerator_c AS mod_numerator,
---     Attendance_Denominator_c AS mod_denominator
---   FROM
---     gather_data
---     CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
--- ),
+),
+mod_dosage AS (
+  SELECT
+    *
+  EXCEPT(
+      Attendance_Numerator_c,
+      Attendance_Denominator_c
+    ),
+    Attendance_Numerator_c AS mod_numerator,
+    Attendance_Denominator_c AS mod_denominator
+  FROM
+    gather_data
+    CROSS JOIN UNNEST(gather_data.dosage_combined) AS dosage_split
+)
 -- create_col_number AS (
 --   SELECT
 --     *,
@@ -165,6 +165,6 @@ WITH gather_data AS(
 -- FROM
 --   format_metrics
 
-)
+
 SELECT *
-FROM gather_data
+FROM mod_dosage
