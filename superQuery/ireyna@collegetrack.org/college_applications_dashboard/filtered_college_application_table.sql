@@ -266,10 +266,10 @@ SELECT
     END AS admission_status, #for Admission Status chart
     
     CASE 
-        WHEN admission_status_c IN ('Accepted and Enrolled') THEN Type_of_School_c
-        WHEN admission_status_c <> 'Accepted and Enrolled' THEN 'Not Yet Enrolled'
-        WHEN admission_status_c IS NULL THEN 'Admission Status Not Yet Updated'
-    END AS school_type_enrolled,    
+        WHEN app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN "4-year"
+        WHEN app.Predominant_Degree_Awarded_c = "Predominantly associate's-degree granting" THEN "2-year"
+        WHEN app.Predominant_Degree_Awarded_c IN ("Predominantly certificate-degree granting", "Not classified") THEN "Vocational or not Classified"
+    END AS school_type,    
     
     #accepted_data 
     contact_id_accepted,
@@ -375,6 +375,12 @@ SELECT
         WHEN admission_status = "Admission Status Not Yet Updated" THEN 9
         ELSE 0
     END AS sort_helper_admission_status,
+    
+    CASE 
+        WHEN admission_status IN ('Accepted and Enrolled') THEN school_type
+        WHEN admission_status <> 'Accepted and Enrolled' THEN 'Not Yet Enrolled'
+        WHEN admission_status IS NULL THEN 'Admission Status Not Yet Updated'
+    END AS school_type_enrolled,    
     
 FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
