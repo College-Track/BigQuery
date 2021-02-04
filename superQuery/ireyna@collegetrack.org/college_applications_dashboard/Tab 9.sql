@@ -9,9 +9,7 @@ With senior_aggregate_count AS
 
 (SELECT site_short, contact_id
 
-FROM `data-warehouse-289815.salesforce_clean.college_application_clean` AS app
-LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C   
-ON app.student_c = C.Contact_Id
+FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C   
 
 WHERE C.grade_c = '12th Grade'
 AND C.College_Track_Status_Name = 'Current CT HS Student'
