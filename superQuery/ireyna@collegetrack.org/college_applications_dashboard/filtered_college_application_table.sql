@@ -76,7 +76,6 @@ SELECT
       WHEN C.site_short IS NOT NULL THEN "National"
     END AS National,
     C.region_short,
-    #C.Region_Specific_Funding_Eligibility_c,
     CASE
         WHEN (site_short ='New Orleans' AND Region_Specific_Funding_Eligibility_c IN ('TOPS Honors Award Eligible','TOPS Performance Award Eligible','TOPS Opportunity Award Eligible','TOPS Tech Award Eligible','Not Eligible')) THEN Region_Specific_Funding_Eligibility_c
         WHEN (site_short IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts') AND Region_Specific_Funding_Eligibility_c IN ('Cal Grant A Eligible','Cal Grant B Eligible','Cal Grant C Eligible','Not Eligible')) THEN Region_Specific_Funding_Eligibility_c
@@ -249,12 +248,6 @@ SELECT
         ELSE app.School_Financial_Aid_Form_Status_c
     END AS School_Financial_Aid_Form_Status,
     
-    #CASE
-    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
-    #    WHEN ((fit_type_enrolled_c = "None") AND (CA.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
-    #    ELSE fit_type_enrolled_c
-    #END AS fit_type_enrolled_c,
-    
     app.id as college_app_id,
     app.Predominant_Degree_Awarded_c,
     app.Type_of_School_c,
@@ -348,15 +341,13 @@ SELECT
         WHEN College_Fit_Type_Applied_sort  = "None - 2-year or technical" THEN 5
         WHEN application_status = 'No College Application' THEN 7
         WHEN application_status <> "Applied" THEN 6
-        ELSE 6
     END AS sort_helper_app_by_fit_type,
     
-    
-    #CASE 
-    #    WHEN accepted = 1 THEN "Yes"
-    #    WHEN admission_status = "Admission Status Not Yet Updated" THEN admission_status
-    #    ELSE "No"
-    #END AS accepted_indicator_status,
+    CASE 
+        WHEN admission_status NOT IN ('Accepted','Accepted and Enrolled', 'Accepted and Deferred') THEN 'Not Accepted'
+        WHEN admission_status IS NULL THEN 'Admission Status Not Yet Updated'
+        ELSE fit_type_accepted_tight
+    END AS fit_type_accepted,
     
     CASE
         WHEN fit_type_accepted_tight = "Best Fit" THEN 1
@@ -364,7 +355,8 @@ SELECT
         WHEN fit_type_accepted_tight = "Local Affordable" THEN 3
         WHEN fit_type_accepted_tight = "None - 4-year" THEN 4
         WHEN fit_type_accepted_tight = "None - 2-year or technical" THEN 5
-        ELSE 6
+        WHEN fit_type_accepted_tight = 'Not Accepted' THEN 6
+        WHEN fit_type_accepted_tight = 'Admission Status Not Yet Updated' THEN 7
     END AS sort_helper_acceptance_by_fit_type,
     
     CASE
