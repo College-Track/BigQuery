@@ -13,7 +13,7 @@ ON app.student_c = C.Contact_Id
 
 WHERE C.grade_c = '12th Grade'
 AND C.College_Track_Status_Name = 'Current CT HS Student'
-AND site_short = 'Aurora'
+#AND site_short = 'Aurora'
 
 group by
 contact_id_accepted_4_year,
