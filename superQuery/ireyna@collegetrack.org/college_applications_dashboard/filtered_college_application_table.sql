@@ -355,8 +355,8 @@ SELECT
         WHEN fit_type_accepted_tight = "Local Affordable" THEN 3
         WHEN fit_type_accepted_tight = "None - 4-year" THEN 4
         WHEN fit_type_accepted_tight = "None - 2-year or technical" THEN 5
-        WHEN fit_type_accepted_tight = 'Denied,Waitlisted,Conditional' THEN 6
-        WHEN fit_type_accepted_tight = 'Admission Status Not Yet Updated' THEN 7
+        WHEN fit_type_accepted_tight = "Denied,Waitlisted,Conditional" THEN 6
+        WHEN fit_type_accepted_tight = "Admission Status Not Yet Updated" THEN 7
     END AS sort_helper_acceptance_by_fit_type,
     
     CASE
