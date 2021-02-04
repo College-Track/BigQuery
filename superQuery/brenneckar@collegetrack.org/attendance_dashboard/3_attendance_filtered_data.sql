@@ -32,8 +32,6 @@ WITH gather_data AS(
     CAT.GPA_prev_semester_cumulative_c,
     CAT.Composite_Readiness_Most_Recent_c,
     CAT.Most_Recent_GPA_Cumulative_bucket AS GPA_Bucket,
-
-
     CAT.site_abrev,
     CAT.site_short,
     CAT.CT_Coach_c,
@@ -57,9 +55,8 @@ WITH gather_data AS(
     WSA.workshop_instructor_c 
     
   FROM
-    `data-warehouse-289815.salesforce_clean.class_template` AS WSA
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON WSA.Student_c = CAT.Contact_Id
-    AND WSA.Academic_Semester_c = CAT.AT_Id
+    `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` WSA ON  WSA.Academic_Semester_c = CAT.AT_Id
     -- LEFT JOIN `data-warehouse-289815.salesforce_raw.Class_Session_c` WS ON WS.Id = WSA.Class_Session_c
     -- LEFT JOIN `data-warehouse-289815.salesforce_raw.Class_c` W ON W.Id = WS.Class_c
   WHERE
@@ -141,8 +138,8 @@ final_pull AS (
     AND MD.group_count = GD.group_base
   ORDER BY
     GD.Class_Attendance_Id
-)
-SELECT
+)SELECT
+  
   *
 EXCEPT(dosage_split),
   TRIM(dosage_split) AS dosage_split,
