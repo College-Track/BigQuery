@@ -66,6 +66,7 @@ WITH gather_data AS(
     --   OR CAT.College_Track_Status_Name = 'Leave of Absence'
     )
     AND WSA.Date_c >= "2019-08-01"
+    AND outcomes_c != 'Scheduled'
 ),
 mod_dosage AS (
   SELECT
