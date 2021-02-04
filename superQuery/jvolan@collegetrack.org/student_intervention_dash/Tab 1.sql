@@ -29,8 +29,7 @@ SELECT
     
     --primary contact info
     primary_contact_name_mobile_formula_c,
-    npsp_primary_contact_c,
-    primary_contact_email_address_c,
+    primary_contact_email_c,
     primary_contact_mobile_c,
     primary_home_language_c
     
@@ -44,19 +43,36 @@ SELECT
     enrolled_sessions_c,
     attended_workshops_c,
     attendance_rate_previous_term_c,
-    AT_Term_GPA,
-    AT_Term_GPA_bucket,
-    AT_Cumulative_GPA,
-    AT_Cumulative_GPA_bucket,
     DEP_GPA_Prev_semester_c,
-    gpa_growth_prev_semester_c,
-    
-    gpa_bucket_running_cumulative_c,
     gpa_prev_semester_cumulative_c,
-    indicator_prev_gpa_below_2_75_c,
-    indicator_sem_attendance_below_65_c,
-    indicator_student_on_intervention_c,
-    
+    CASE
+      WHEN DEP_GPA_Prev_semester_c < 2.75 THEN "Below 2.75"
+      WHEN DEP_GPA_Prev_semester_c < 3.5 THEN "2.75 - 3.5"
+      WHEN DEP_GPA_Prev_semester_c >= 3.5 THEN "3.5+"
+      ELSE "Missing"
+    END AS prev_term_gpa_bucket,
+     CASE
+      WHEN gpa_prev_semester_cumulative_c < 2.75 THEN "Below 2.75"
+      WHEN gpa_prev_semester_cumulative_c < 3.5 THEN "2.75 - 3.5"
+      WHEN gpa_prev_semester_cumulative_c >= 3.5 THEN "3.5+"
+      ELSE "Missing"
+    END AS prev_cgpa_bucket,
+    CASE
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE THEN 1
+        Else 0
+    End,
+    CASE
+        WHEN indicator_sem_attendance_below_65_c = TRUE THEN 1
+        Else 0
+    End,
+    CASE
+        WHEN indicator_student_on_intervention_c = TRUE THEN 1
+        Else 0
+    End,
+    CASE
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE THEN 1
+        Else 0
+    End,
     academic_intervention_needed_c,
     academic_intervention_received_c
     
