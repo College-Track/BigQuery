@@ -19,18 +19,11 @@ SELECT
         WHEN CA.application_status_c IS NULL THEN 'No College Application'
         ELSE CA.application_status_c
     END AS application_status,
-    /*
-    CASE
-        WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
-        ELSE admission_status_c
-    END AS admission_status_c,
-    */
-
+ 
 #Contact 
     C.full_name_c,
     C.contact_id, #use in "Application Status" chart as Metric
     C.current_cc_advisor_2_c AS hs_ct_coach,
-    --((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
     C.high_school_graduating_class_c,
     C.npsp_primary_affiliation_c, 
     C.College_Track_Status_Name,
@@ -145,23 +138,6 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         
 WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
 ),
-
-/*
-admission_data AS
-(
-SELECT 
-    student_c AS contact_id_admissions,
-    accnt.name AS school_name_enrolled,
-    app.id AS college_enrolled_app_id,
-    
-    FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
-    LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
-        ON app.College_University_c = accnt.id
-     
-    WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
-),
-*/
-    
 
 
 college_application_data AS #combine acceptance and admission data to college application data
@@ -292,11 +268,6 @@ SELECT
     accepted,
     fit_type_accepted,
     
-    #admissions_data
-    #contact_id_admissions,
-   #school_name_enrolled,
-    #college_enrolled_app_id,
-    
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id  
@@ -304,16 +275,17 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.contact_id_accepted
 
-#LEFT JOIN admission_data AS admissions
-#    ON app.student_c = admissions.contact_id_admissions
-
 )
 
 SELECT 
     filtered_data.*,
     college_application_data.*
-        #EXCEPT (College_Fit_Type_Applied_c),
-        EXCEPT (college_name_on_app_for_case_statement,application_status_app_table, fit_type_accepted,strategic_type_app_table),
+        EXCEPT (college_name_on_app_for_case_statement, 
+                application_status_app_table, 
+                fit_type_accepted,
+                strategic_type_app_table,
+                College_Fit_Type_Applied_sort,
+                fit_type_accepted_tight),
     
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
@@ -326,12 +298,6 @@ SELECT
         WHEN application_status <> 'No College Application' THEN strategic_type_app_table
         ELSE strategic_type_app_table
     END AS match_type, #match type
-    
-    CASE 
-        WHEN accepted = 1 THEN application_status_app_table
-        WHEN application_status <> 'No College Application' THEN application_status_app_table
-        ELSE application_status
-    END AS application_status_tight, 
     
     CASE
         WHEN application_status = "Prospect" THEN 1
