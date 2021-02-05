@@ -205,6 +205,22 @@ SELECT
         group by app2.student_c
         ) AS  contact_id_enrolled_4_year,
         
+        (SELECT app2.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app.student_c=app2.student_c
+        AND app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+        AND fit_type_enrolled_c IN ("Best Fit","Good Fit","Local Affordable", "Situational")
+        group by app2.student_c
+        ) AS  contact_id_accepted_affordable_option,
+        
+        (SELECT app2.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app.student_c=app2.student_c
+        AND app2.admission_status_c = "Accepted and Enrolled"
+        AND fit_type_enrolled_c IN ("Best Fit","Good Fit","Local Affordable", "Situational")
+        group by app2.student_c
+        ) AS  contact_id_enrolled_affordable_option,
+        
     app.Type_of_School_c as school_type_applied,
     accnt.name AS college_name_on_app_for_case_statement,
     app.College_University_c AS app_college_id, #college id
@@ -217,8 +233,6 @@ SELECT
         ELSE app.CSS_Profile_c
     END AS CSS_profile_status,
     app.College_Fit_Type_Applied_c,
-    app.College_University_Academic_Calendar_c,
-    app.Control_of_Institution_c, #private or public school,
     app.Enrollment_Deposit_c,
     app.housing_application_c,
     app.School_s_Financial_Aid_Form_Required_c, #yes/no
@@ -244,7 +258,7 @@ SELECT
     CASE
         WHEN app.admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         ELSE app.admission_status_c
-    END AS admission_status, #for Admission Status chart
+    END AS admission_status, 
     
     CASE 
         WHEN app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN "4-year"
