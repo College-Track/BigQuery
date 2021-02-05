@@ -146,6 +146,7 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
 WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
 ),
 
+/*
 admission_data AS
 (
 SELECT 
@@ -153,18 +154,15 @@ SELECT
     accnt.name AS school_name_enrolled,
     app.id AS college_enrolled_app_id,
     
-    CASE
-        WHEN ((fit_type_enrolled_c = "None") AND (app.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
-        WHEN ((fit_type_enrolled_c = "None") AND (app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
-        ELSE fit_type_enrolled_c
-    END AS fit_type_enrolled_c,
-    
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
     LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id
      
     WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
 ),
+*/
+    
+
 
 college_application_data AS #combine acceptance and admission data to college application data
 (
@@ -271,6 +269,15 @@ SELECT
         WHEN app.Predominant_Degree_Awarded_c IN ("Predominantly certificate-degree granting", "Not classified") THEN "Vocational or not Classified"
     END AS school_type,    
     
+    CASE
+        WHEN ((fit_type_enrolled_c = "None") AND (app.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+        WHEN ((fit_type_enrolled_c = "None") AND (app.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
+        WHEN admission_status_c <> 'Accepted and Enrolled' THEN 'Not Yet Enrolled'
+        ELSE fit_type_enrolled_c
+    END AS fit_type_enrolled,
+    
+    
     #accepted_data 
     contact_id_accepted,
     school_name_accepted,
@@ -279,10 +286,9 @@ SELECT
     fit_type_accepted,
     
     #admissions_data
-    contact_id_admissions,
-    school_name_enrolled,
-    college_enrolled_app_id,
-    admissions.fit_type_enrolled_c,
+    #contact_id_admissions,
+   #school_name_enrolled,
+    #college_enrolled_app_id,
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
@@ -291,8 +297,8 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.contact_id_accepted
 
-LEFT JOIN admission_data AS admissions
-    ON app.student_c = admissions.contact_id_admissions
+#LEFT JOIN admission_data AS admissions
+#    ON app.student_c = admissions.contact_id_admissions
 
 )
 
@@ -359,7 +365,7 @@ SELECT
         WHEN fit_type_accepted_tight = "Local Affordable" THEN 3
         WHEN fit_type_accepted_tight = "None - 4-year" THEN 4
         WHEN fit_type_accepted_tight = "None - 2-year or technical" THEN 5
-        WHEN fit_type_accepted_tight = "Denied,Waitlisted,Conditional" THEN 6
+        WHEN fit_type_accepted_tight = "Denied, Waitlisted, Conditional" THEN 6
         WHEN fit_type_accepted_tight = "Admission Status Not Yet Updated" THEN 7
     END AS sort_helper_acceptance_by_fit_type,
     
@@ -378,8 +384,8 @@ SELECT
     
     CASE 
         WHEN admission_status IN ('Accepted and Enrolled') THEN school_type
+        WHEN admission_status = "Admission Status Not Yet Updated" THEN admission_status 
         WHEN admission_status <> 'Accepted and Enrolled' THEN 'Not Yet Enrolled'
-        WHEN admission_status = 'Admission Status Not Yet Updated' THEN admission_status
     END AS school_type_enrolled,    
     
 FROM filtered_data AS filtered_data
