@@ -11,7 +11,7 @@ SELECT
     Current_HS_CT_Coach_c,
     Gender_c,
     CASE
-        WHEN Ethnic_background_c = "Decline to state" THEN "Missing"
+        WHEN Ethnic_background_c = "Decline to State" THEN "Missing"
         Else Ethnic_background_c
     END AS Ethnic_background_c,
     english_language_learner_c_c AS ELL,
