@@ -146,6 +146,7 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
 WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
 ),
 
+/*
 admission_data AS
 (
 SELECT 
@@ -159,6 +160,9 @@ SELECT
      
     WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
 ),
+*/
+    
+
 
 college_application_data AS #combine acceptance and admission data to college application data
 (
@@ -210,6 +214,13 @@ SELECT
         AND app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
         group by app2.student_c
         ) AS  contact_id_accepted_4_year, #to use in formula in final join
+        
+        (SELECT app2.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app2.admission_status_c = "Accepted and Enrolled"
+        AND app.student_c=app2.student_c
+        group by app2.student_c
+        ) AS  contact_id_admissions,
         
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
@@ -282,9 +293,9 @@ SELECT
     fit_type_accepted,
     
     #admissions_data
-    contact_id_admissions,
-    school_name_enrolled,
-    college_enrolled_app_id,
+    #contact_id_admissions,
+   #school_name_enrolled,
+    #college_enrolled_app_id,
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
@@ -293,8 +304,8 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.contact_id_accepted
 
-LEFT JOIN admission_data AS admissions
-    ON app.student_c = admissions.contact_id_admissions
+#LEFT JOIN admission_data AS admissions
+#    ON app.student_c = admissions.contact_id_admissions
 
 )
 
