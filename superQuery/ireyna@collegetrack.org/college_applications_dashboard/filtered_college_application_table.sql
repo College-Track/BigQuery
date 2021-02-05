@@ -207,9 +207,9 @@ SELECT
         
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
-        WHERE app.student_c=app2.student_c
-        AND app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+        WHERE app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
         AND College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Local Affordable", "Situational")
+        AND app.student_c=app2.student_c
         group by app2.student_c
         ) AS  contact_id_accepted_affordable_option,
         
