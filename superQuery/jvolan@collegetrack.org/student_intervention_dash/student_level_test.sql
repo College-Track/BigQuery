@@ -11,7 +11,7 @@ WITH recent_logged_activities AS
     
     FROM `data-warehouse-289815.salesforce_raw.Task`
     WHERE NOT (Subject LIKE '%List Email%')
-    AND CreatedDate BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 6 MONTH) AND CURRENT_DATE()
+    AND CreatedDate BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 12 MONTH) AND CURRENT_DATE()
 
 ),
 
@@ -123,5 +123,5 @@ SELECT
     FROM student_data_with_activities
     LEFT JOIN recent_logged_activities ON WhoId = Contact_Id
     WHERE HS_Class IS NOT NULL
-    
+    AND intervention_at = 1
     
