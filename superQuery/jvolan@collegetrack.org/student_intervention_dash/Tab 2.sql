@@ -105,7 +105,10 @@ SELECT
     recent_logged_activities.Subject,
     recent_logged_activities.Description,
     recent_logged_activities.X18_Digit_Activity_ID__c,
-    recent_logged_activities.Reciprocal_Communication__c
+    CASE
+        WHEN recent_logged_activities.Reciprocal_Communication__c = TRUE THEN 1
+        Else 0
+    END AS Indicator_reciprocal    
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN recent_logged_activities ON WhoId = Contact_Id
