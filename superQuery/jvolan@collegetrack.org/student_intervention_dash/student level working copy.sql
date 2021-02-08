@@ -116,7 +116,10 @@ SELECT
     recent_logged_activities.Subject,
     recent_logged_activities.Description,
     recent_logged_activities.X18_Digit_Activity_ID__c,
-    recent_logged_activities.Reciprocal_Communication__c
+    CASE
+        WHEN recent_logged_activities.Reciprocal_Communication__c = TRUE Then 1
+        ELSE 0
+        END AS indicator_reciprocal
     FROM student_data_with_activities
     LEFT JOIN recent_logged_activities ON WhoId = Contact_Id
     WHERE HS_Class IS NOT NULL
