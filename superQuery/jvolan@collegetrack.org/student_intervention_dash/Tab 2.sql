@@ -97,7 +97,15 @@ SELECT
         Else 0
     End AS intervention_AT,
     academic_intervention_needed_c,
-    academic_intervention_received_c
+    academic_intervention_received_c,
+    
+    recent_logged_activities.WhoId,
+    recent_logged_activities.Related_to,
+    recent_logged_activities.Date,
+    recent_logged_activities.Subject,
+    recent_logged_activities.Description,
+    recent_logged_activities.X18_Digit_Activity_ID__c,
+    recent_logged_activities.Reciprocal_Communication__c
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN recent_logged_activities ON WhoId = Contact_Id
