@@ -7,7 +7,9 @@ WITH recent_logged_activities AS
     Subject,
     Description,
     X18_Digit_Activity_ID__c,
-    Reciprocal_Communication__c
+    Reciprocal_Communication__c,
+    OwnerId AS assigned_to,
+    PTE_Staff_Name_Optional__c AS PTE_staff
     
     FROM `data-warehouse-289815.salesforce_raw.Task`
     WHERE NOT (Subject LIKE '%List Email%')
@@ -60,7 +62,7 @@ SELECT
     GAS_Name,
     AY_Name,
     AT_Grade_c,
-    attendance_rate_c,
+    Attendance_Rate_Current_AS_c AS attendance_rate,
     enrolled_sessions_c,
     attended_workshops_c,
     attendance_rate_previous_term_c,
@@ -116,6 +118,8 @@ SELECT
     recent_logged_activities.Subject,
     recent_logged_activities.Description,
     recent_logged_activities.X18_Digit_Activity_ID__c,
+    recent_logged_activities.assigned_to,
+    recent_logged_activities.PTE_staff,
     CASE
         WHEN recent_logged_activities.Reciprocal_Communication__c = TRUE Then 1
         ELSE 0
