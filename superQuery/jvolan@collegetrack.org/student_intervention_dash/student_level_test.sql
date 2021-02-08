@@ -9,7 +9,7 @@ WITH recent_logged_activities AS
     X18_Digit_Activity_ID__c,
     Reciprocal_Communication__c,
     OwnerId AS assigned_to,
-    PTE_Staff_Name_Optional__c AS PTE_staff
+    PTE_Staff_Name_Optional__c
     
     FROM `data-warehouse-289815.salesforce_raw.Task`
     WHERE NOT (Subject LIKE '%List Email%')
@@ -118,8 +118,6 @@ SELECT
     recent_logged_activities.Subject,
     recent_logged_activities.Description,
     recent_logged_activities.X18_Digit_Activity_ID__c,
-    recent_logged_activities.assigned_to,
-    recent_logged_activities.PTE_staff,
     CASE
         WHEN recent_logged_activities.Reciprocal_Communication__c = TRUE Then 1
         ELSE 0
