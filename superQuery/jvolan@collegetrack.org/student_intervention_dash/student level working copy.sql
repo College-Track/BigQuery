@@ -11,7 +11,7 @@ WITH recent_logged_activities AS
     
     FROM `data-warehouse-289815.salesforce_raw.Task`
     WHERE NOT (Subject LIKE '%List Email%')
-    AND CreatedDate BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 1 MONTH) AND CURRENT_DATE()
+    AND CreatedDate BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 12 MONTH) AND CURRENT_DATE()
 
 ),
 
@@ -103,25 +103,23 @@ SELECT
     academic_intervention_needed_c,
     academic_intervention_received_c,
     
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE current_as_c = TRUE
-    AND college_track_status_c IN ("11A", "12A")
-    )
-    
-    SELECT
-    student_data_with_activities.*,
     recent_logged_activities.WhoId,
     recent_logged_activities.Related_to,
     recent_logged_activities.Date,
     recent_logged_activities.Subject,
     recent_logged_activities.Description,
     recent_logged_activities.X18_Digit_Activity_ID__c,
-    CASE
-        WHEN recent_logged_activities.Reciprocal_Communication__c = TRUE Then 1
-        ELSE 0
-        END AS indicator_reciprocal
-    FROM student_data_with_activities
+    recent_logged_activities.Reciprocal_Communication__c
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN recent_logged_activities ON WhoId = Contact_Id
+    WHERE current_as_c = TRUE
+    AND college_track_status_c IN ("11A", "12A")
+    )
+    
+    SELECT
+    *
+    FROM student_data_with_activities
     WHERE HS_Class IS NOT NULL
     
     
