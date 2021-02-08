@@ -62,7 +62,7 @@ SELECT
     GAS_Name,
     AY_Name,
     AT_Grade_c,
-    Attendance_Rate_Current_AS_c AS attendance_rate,
+    attendance_rate_c,
     enrolled_sessions_c,
     attended_workshops_c,
     attendance_rate_previous_term_c,
