@@ -11,10 +11,8 @@ WITH recent_logged_activities AS
     
     FROM `data-warehouse-289815.salesforce_raw.Task`
     WHERE CreatedDate BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 1 MONTH) AND CURRENT_DATE()
-),
+)
 
-student_data AS
-(
 SELECT
 --basic contact info & demos
     Contact_Id,
@@ -105,9 +103,5 @@ SELECT
     LEFT JOIN recent_logged_activities ON WhoId = Contact_Id
     WHERE current_as_c = TRUE
     AND college_track_status_c IN ("11A", "12A")
-    )
     
-    SELECT
-    *
-    FROM student_data
     
