@@ -1,3 +1,3 @@
-SELECT site_short, count(Contact_Id)
+SELECT email
 FROM `data-studio-260217.student_dashboard.student_dashboard`
-GROUP BY site_short
+WHERE Contact_Id = '0031M000032xrocQAA'
