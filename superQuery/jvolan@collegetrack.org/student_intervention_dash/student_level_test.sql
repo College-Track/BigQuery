@@ -9,12 +9,29 @@ WITH recent_logged_activities AS
     X18_Digit_Activity_ID__c,
     Reciprocal_Communication__c,
     OwnerId AS assigned_to,
-    PTE_Staff_Name_Optional__c
-    
+    PTE_Staff_Name_Optional__c AS PTE_staff
+
     FROM `data-warehouse-289815.salesforce_raw.Task`
     WHERE NOT (Subject LIKE '%List Email%')
     AND CreatedDate BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 12 MONTH) AND CURRENT_DATE()
+),
 
+recent_logged_activites_users AS
+(
+SELECT  
+    x_18_digit_user_id_c,
+    CONCAT(first_name," ",last_name) AS assigned_to_name,
+    recent_logged_activities.WhoId,
+    recent_logged_activities.Related_to,
+    recent_logged_activities.Date,
+    recent_logged_activities.Subject,
+    recent_logged_activities.Description,
+    recent_logged_activities.X18_Digit_Activity_ID__c,
+    recent_logged_activities.Reciprocal_Communication__c,
+    recent_logged_activities.assigned_to,
+    recent_logged_activities.PTE_staff
+    FROM `data-warehouse-289815.salesforce_clean.user_clean`
+    LEFT JOIN recent_logged_activities ON assigned_to = x_18_digit_user_id_c
 ),
 
 student_data_with_activities AS
@@ -62,7 +79,7 @@ SELECT
     GAS_Name,
     AY_Name,
     AT_Grade_c,
-    attendance_rate_c,
+    (attendance_rate_c/100) AS attendance_rate_c,
     enrolled_sessions_c,
     attended_workshops_c,
     attendance_rate_previous_term_c,
@@ -109,21 +126,23 @@ SELECT
     WHERE current_as_c = TRUE
     AND college_track_status_c IN ("11A", "12A")
     )
-    
+
     SELECT
     student_data_with_activities.*,
-    recent_logged_activities.WhoId,
-    recent_logged_activities.Related_to,
-    recent_logged_activities.Date,
-    recent_logged_activities.Subject,
-    recent_logged_activities.Description,
-    recent_logged_activities.X18_Digit_Activity_ID__c,
+    recent_logged_activites_users.WhoId,
+    recent_logged_activites_users.Related_to,
+    recent_logged_activites_users.Date,
+    recent_logged_activites_users.Subject,
+    recent_logged_activites_users.Description,
+    recent_logged_activites_users.X18_Digit_Activity_ID__c,
+    recent_logged_activites_users.assigned_to_name,
+    recent_logged_activites_users.PTE_staff,
     CASE
-        WHEN recent_logged_activities.Reciprocal_Communication__c = TRUE Then 1
+        WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 1
         ELSE 0
         END AS indicator_reciprocal
     FROM student_data_with_activities
-    LEFT JOIN recent_logged_activities ON WhoId = Contact_Id
+    LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
     WHERE HS_Class IS NOT NULL
     AND intervention_at = 1
     
