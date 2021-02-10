@@ -93,7 +93,9 @@ SELECT
         Else 0
     End AS intervention_AT,
     academic_intervention_needed_c,
-    academic_intervention_received_c
+    academic_intervention_received_c,
+    attendance_bucket_current_at,
+    sort_attendance_bucket
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
