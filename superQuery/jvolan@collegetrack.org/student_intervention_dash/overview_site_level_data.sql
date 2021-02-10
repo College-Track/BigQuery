@@ -26,7 +26,11 @@ SELECT
     CASE
         WHEN indicator_high_risk_for_dismissal_c = TRUE THEN 1
         ELSE 0
-        END AS high_risk_dismissal,
+        END AS indicator_high_risk_dismissal,
+    CASE
+        WHEN indicator_high_risk_for_dismissal_c = TRUE THEN 'Yes'
+        ELSE 'No'
+        END AS high_risk_dismissal_y_n,
     of_high_school_terms_on_intervention_c,
     latest_reciprocal_communication_date_c,
     
