@@ -5,5 +5,6 @@ WHERE subject LIKE '%CT Corporate Residency Summer%' AND C.region_short = 'Color
 AND T.is_deleted = false
 )
 
-SELECT *
+SELECT shite_short, subject, count(who_id)
 FROM gather_data
+GROUP BY shite_short, subject
