@@ -1,4 +1,3 @@
-SELECT
-DISTINCT(Role, role_id)
-FROM
-    `data-warehouse-289815.roles.role_table` AS Roles
+SELECT id, subject 
+FROM `data-warehouse-289815.salesforce.task`
+WHERE subject LIKE '%CT Corporate Residency Summer 2019%'
