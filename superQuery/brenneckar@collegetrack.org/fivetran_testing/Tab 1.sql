@@ -5,6 +5,11 @@ WHERE subject LIKE '%CT Corporate Residency Summer%' AND C.region_short = 'Color
 AND T.is_deleted = false
 )
 
-SELECT subject, count(who_id) AS student_count
+-- SELECT subject, count(distinct(who_id)) AS student_count
+-- FROM gather_data
+-- GROUP BY subject
+
+
+SELECT subject, description, count(distinct(who_id)) AS student_count
 FROM gather_data
-GROUP BY subject
+GROUP BY subject, description
