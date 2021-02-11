@@ -1,8 +1,23 @@
+WITH workshop_enrolled AS
+(
 SELECT
-    Student__c,
     COUNT(Class__c) AS workshops_enrolled,
-    Academic_Semester__c AS workshop_AT
+    Academic_Semester__c,
     FROM `data-warehouse-289815.salesforce_raw.Class_Registration__c`
-    WHERE Current_AT__c = TRUE
-    AND Status__c = 'Enrolled'
-    GROUP BY Student__c, Academic_Semester__c
+    WHERE Status__c = 'Enrolled'
+    GROUP BY Academic_Semester__c
+)
+
+SELECT
+--basic contact info & demos
+    Contact_Id,
+    Full_Name_c,
+    site_abrev AS Site,
+    region_abrev AS region,
+    AT_Id,
+    AT_Name,
+    workshop_enrolled.workshops_enrolled,
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    LEFT JOIN workshop_enrolled ON workshop_enrolled.Academic_Semester__c = AT_Id
+    WHERE current_as_c = TRUE
+    AND college_track_status_c IN ("11A", "12A")
