@@ -23,10 +23,17 @@ SELECT
     AND college_track_status_c IN ("11A", "12A")
 )
 
-SELECT  
-    student_at.*,
-    workshop_enrollments.Academic_Semester__c,
-    workshop_enrollments.workshops_enrolled,
+-- SELECT  
+--     student_at.*,
+--     workshop_enrollments.Academic_Semester__c,
+--     workshop_enrollments.workshops_enrolled,
     
-    FROM student_at
-    LEFT JOIN workshop_enrollments ON workshop_enrollments.Academic_Semester__c = AT_Id
+--     FROM student_at
+--     LEFT JOIN workshop_enrollments ON workshop_enrollments.Academic_Semester__c = AT_Id
+    
+
+SELECT 
+*
+FROM
+workshop_enrollments
+LIMIT 10
