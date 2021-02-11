@@ -14,8 +14,9 @@ SELECT
     Full_Name_c,
     site_abrev AS Site,
     region_abrev AS region,
-    AT_Id,
     AT_Name,
+    AT_Id,
+    workshop_enrolled.Academic_Semester__c,
     workshop_enrolled.workshops_enrolled,
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN workshop_enrolled ON workshop_enrolled.Academic_Semester__c = AT_Id
