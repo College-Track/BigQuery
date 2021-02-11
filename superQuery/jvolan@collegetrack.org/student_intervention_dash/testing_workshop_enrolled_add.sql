@@ -33,7 +33,7 @@ SELECT
     recent_logged_activities.assigned_to,
     recent_logged_activities.PTE_staff
     FROM `data-warehouse-289815.salesforce_clean.user_clean`
-    LEFT JOIN recent_logged_activities ON assigned_to = x_18_digit_user_id_c
+    LEFT JOIN recent_logged_activities ON recent_logged_activities.assigned_to = x_18_digit_user_id_c
 ),
 
 workshops_enrolled AS
@@ -171,9 +171,9 @@ student_activity_workshop_combined AS
     SELECT
     activities_with_student_AT.*,
     workshops_enrolled.workshops_enrolled,
-    workshops_enrolled.workshop_AT
+    workshops_enrolled.workshop_AT,
     FROM activities_with_student_AT
-    LEFT OUTER JOIN workshops_enrolled ON workshop_AT = AT_Id
+    LEFT JOIN workshops_enrolled ON workshops_enrolled.workshop_AT = AT_Id
     )
 
     SELECT *
