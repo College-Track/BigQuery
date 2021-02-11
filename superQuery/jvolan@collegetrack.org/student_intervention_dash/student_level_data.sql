@@ -38,11 +38,12 @@ class_registration AS
 (
 SELECT
     Student__c,
+    Academic_Semester__c AS workshop_AT,
     COUNT(class__c) AS workshops_enrolled
     FROM `data-warehouse-289815.salesforce_raw.Class_Registration__c`
     WHERE Status__c = 'Enrolled'
     AND Current_AT__c = TRUE
-    GROUP BY Student__c
+    GROUP BY Student__c, Academic_Semester__c
 ),
 
 
@@ -162,7 +163,6 @@ SELECT
     
     FROM student_data_with_activities
     LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
-    LEFT JOIN class_registration ON Student__c = Contact_Id
-    WHERE HS_Class IS NOT NULL
+    LEFT JOIN class_registration ON workshop_AT = AT_Id
     AND intervention_at = 1
     
