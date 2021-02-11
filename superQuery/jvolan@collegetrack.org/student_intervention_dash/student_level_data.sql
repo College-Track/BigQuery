@@ -44,7 +44,7 @@ SELECT
     GROUP BY academic_semester_c
 ),
 
-student_data_with_activities AS
+student_data_at AS
 (
 SELECT
 --basic contact info & demos
@@ -135,10 +135,12 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
     AND college_track_status_c IN ("11A", "12A")
-    )
+    ),
 
+student_data_with_activities AS
+(    
     SELECT
-    student_data_with_activities.*,
+    student_data_at.*,
     recent_logged_activites_users.WhoId,
     recent_logged_activites_users.Related_to,
     recent_logged_activites_users.Date,
@@ -155,10 +157,20 @@ SELECT
         WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 'Yes'
         ELSE 'No'
         END AS reciprocal_y_n,
-    workshop_enrollments.workshops_enrolled,
-    
-    FROM student_data_with_activities
+    FROM student_data_at
     LEFT JOIN recent_logged_activites_users ON recent_logged_activites_users.WhoId = Contact_Id
-    LEFT JOIN workshop_enrollments ON workshop_enrollments.academic_semester_c = AT_Id
     AND intervention_at = 1
+    ),
     
+student_data_with_activities_enrollments AS
+(
+    SELECT
+    student_data_with_activities.*,
+    workshop_enrollments.workshops_enrolled,
+    FROM student_data_with_activities
+    LEFT JOIN workshop_enrollments ON workshop_enrollments.academic_semester_c = AT_Id
+    )
+    
+    SELECT
+    *
+    FROM student_data_with_activities_enrollments
