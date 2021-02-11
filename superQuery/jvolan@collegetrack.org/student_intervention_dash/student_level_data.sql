@@ -31,7 +31,7 @@ SELECT
     recent_logged_activities.assigned_to,
     recent_logged_activities.PTE_staff,
     FROM `data-warehouse-289815.salesforce_clean.user_clean`
-    LEFT JOIN recent_logged_activities ON assigned_to = x_18_digit_user_id_c
+    LEFT JOIN recent_logged_activities ON recent_logged_activities.assigned_to = x_18_digit_user_id_c
 ),
 
 
