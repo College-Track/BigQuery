@@ -95,7 +95,7 @@ SELECT
     End AS intervention_AT,
     academic_intervention_needed_c,
     academic_intervention_received_c,
-    workshops_enrolled,
+    workshops_enrolled.workshops_enrolled,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN workshops_enrolled ON workshop_AT = AT_Id
