@@ -9,7 +9,7 @@ WITH recent_logged_activities AS
     X18_Digit_Activity_ID__c,
     Reciprocal_Communication__c,
     OwnerId AS assigned_to,
-    PTE_Staff_Name_Optional__c AS PTE_staff
+    PTE_Staff_Name_Optional__c AS PTE_staff,
 
     FROM `data-warehouse-289815.salesforce_raw.Task`
     WHERE NOT (Subject LIKE '%List Email%')
@@ -29,7 +29,7 @@ SELECT
     recent_logged_activities.X18_Digit_Activity_ID__c,
     recent_logged_activities.Reciprocal_Communication__c,
     recent_logged_activities.assigned_to,
-    recent_logged_activities.PTE_staff
+    recent_logged_activities.PTE_staff,
     FROM `data-warehouse-289815.salesforce_clean.user_clean`
     LEFT JOIN recent_logged_activities ON assigned_to = x_18_digit_user_id_c
 ),
@@ -145,9 +145,9 @@ SELECT
     CASE
         WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 'Yes'
         ELSE 'No'
-        END AS reciprocal_y_n
+        END AS reciprocal_y_n,
 
     FROM student_data_with_activities
-    LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
+    LEFT JOIN recent_logged_activites_users ON recent_logged_activites_users.WhoId = Contact_Id
     AND intervention_at = 1
     
