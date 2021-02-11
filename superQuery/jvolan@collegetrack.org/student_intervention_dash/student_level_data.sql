@@ -34,6 +34,19 @@ SELECT
     LEFT JOIN recent_logged_activities ON assigned_to = x_18_digit_user_id_c
 ),
 
+class_registration AS
+(
+SELECT
+    Student__c,
+    COUNT(class__c) AS workshops_enrolled
+    FROM `data-warehouse-289815.salesforce_raw.Class_Registration__c`
+    WHERE Status__c = 'Enrolled'
+    AND Current_AT__c = TRUE
+    GROUP BY Student__c
+),
+
+
+
 student_data_with_activities AS
 (
 SELECT
@@ -143,10 +156,13 @@ SELECT
         END AS indicator_reciprocal,
     CASE
         WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 'Yes'
-        ELSE '-'
-        END AS reciprocal_y_n    
+        ELSE 'No'
+        END AS reciprocal_y_n,
+    class_registration.workshops_enrolled
+    
     FROM student_data_with_activities
     LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
+    LEFT JOIN class_registration ON Student__c = Contact_Id
     WHERE HS_Class IS NOT NULL
     AND intervention_at = 1
     
