@@ -145,7 +145,7 @@ SELECT
     CASE
         WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 'Yes'
         ELSE 'No'
-        END AS reciprocal_y_n,
+        END AS reciprocal_y_n
 
     FROM student_data_with_activities
     LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
