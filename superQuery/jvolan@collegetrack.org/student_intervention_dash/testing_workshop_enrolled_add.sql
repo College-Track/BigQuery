@@ -163,3 +163,4 @@ SELECT
     LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
     AND intervention_at = 1
     
+    
