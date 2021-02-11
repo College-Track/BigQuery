@@ -40,11 +40,12 @@ workshops_enrolled AS
 (
 SELECT
     Student__c,
-    COUNT(Class__c) AS workshops_enrolled
+    COUNT(Class__c) AS workshops_enrolled,
+    Academic_Semester__c AS workshop_AT
     FROM `data-warehouse-289815.salesforce_raw.Class_Registration__c`
     WHERE Current_AT__c = TRUE
     AND Status__c = 'Enrolled'
-    GROUP BY Student__c
+    GROUP BY Student__c, Academic_Semester__c
 ),
 
 student_data_with_activities AS
@@ -158,9 +159,13 @@ SELECT
         WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 'Yes'
         ELSE 'No'
         END AS reciprocal_y_n,
+    workshops_enrolled.workshops_enrolled,
+    workshops_enrolled.workshop_AT
+
 
     FROM student_data_with_activities
     LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
+    LEFT OUTER JOIN workshops_enrolled ON workshop_AT = AT_Id
     AND intervention_at = 1
     
     
