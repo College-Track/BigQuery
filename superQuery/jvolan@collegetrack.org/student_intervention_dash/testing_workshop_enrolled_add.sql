@@ -139,8 +139,10 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
     AND college_track_status_c IN ("11A", "12A")
-    )
-    
+    ),
+
+activities_with_student_AT AS    
+(    
     SELECT
     student_data_with_activities.*,
     recent_logged_activites_users.WhoId,
@@ -158,14 +160,21 @@ SELECT
     CASE
         WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 'Yes'
         ELSE 'No'
-        END AS reciprocal_y_n,
-    workshops_enrolled.workshops_enrolled,
-    workshops_enrolled.workshop_AT
-
-
+        END AS reciprocal_y_n
     FROM student_data_with_activities
     LEFT JOIN recent_logged_activites_users ON WhoId = Contact_Id
-    LEFT OUTER JOIN workshops_enrolled ON workshop_AT = AT_Id
     AND intervention_at = 1
+    ),
     
-    
+student_activity_workshop_combined AS
+(
+    SELECT
+    activities_with_student_AT.*,
+    workshops_enrolled.workshops_enrolled,
+    workshops_enrolled.workshop_AT
+    FROM activities_with_student_AT
+    LEFT OUTER JOIN workshops_enrolled ON workshop_AT = AT_Id
+    )
+
+    SELECT *
+    FROM student_activity_workshop_combined
