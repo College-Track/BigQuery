@@ -99,4 +99,5 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN workshops_enrolled ON workshops_enrolled.Academic_Semester__c = AT_Id
     WHERE current_as_c = TRUE
+    AND AT_Id IS NOT NULL
     AND college_track_status_c IN ("11A", "12A")
