@@ -1,3 +1,4 @@
-SELECT COUNT(contact_id), site_short
-FROM `data-studio-260217.gpa_dashboard.filtered_gpa_data`
-GROUP BY site_short
+SELECT COUNT(contact_id), student_audit_status_c
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE site_short = 'Crenshaw'
+GROUP BY student_audit_status_c
