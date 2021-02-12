@@ -61,7 +61,7 @@ WITH gather_data AS (
     LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_Prev_AT ON Prev_Prev_Prev_AT.id = Prev_Prev_AT.Previous_Academic_Semester_c
   WHERE
     CAT.college_track_status_c IN ('11A', '12A')
-    AND CAT.student_audit_status_c IN ('Current CT HS Student', 'Leave of Absence')
+    AND CAT.student_audit_status_c IN ('Current CT HS Student', 'Leave of Absence', 'Onboarding', 'Prior to joining CT HS Program')
     AND CAT.term_c != 'Summer'
     AND CAT.GAS_End_Date <= CURRENT_DATE()
   ORDER BY
@@ -147,6 +147,7 @@ combine_data AS (
       AND CTAA.attendance_rate_ct_career <.9 THEN "80% - 89%"
       ELSE "90%+"
     END AS attendance_bucket_ct_career,
+    
   FROM
     gather_data GD
     LEFT JOIN gather_9th_grade_spring_gpa G9GPA ON G9GPA.Contact_Id = GD.Contact_Id
@@ -162,7 +163,7 @@ SELECT
     WHEN attendance_bucket = '80% - 89%' THEN 4
     WHEN attendance_bucket = '90%+' THEN 5
   END AS sort_attendance_bucket,
-  CASE
+    CASE
     WHEN attendance_bucket_ct_career = 'No Data' THEN 1
     WHEN attendance_bucket_ct_career = '< 65%' THEN 2
     WHEN attendance_bucket_ct_career = '65% -79%' THEN 3
