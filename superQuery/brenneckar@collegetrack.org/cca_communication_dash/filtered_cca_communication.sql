@@ -9,9 +9,9 @@ WITH gather_data AS(
     Most_Recent_GPA_Cumulative_bucket,
     most_recent_gpa_semester_bucket,
     grade_c,
-    credits_accumulated_c,
     credit_accumulation_pace_c,
-    high_school_graduating_class_c
+    high_school_graduating_class_c,
+    credits_accumulated_most_recent_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
