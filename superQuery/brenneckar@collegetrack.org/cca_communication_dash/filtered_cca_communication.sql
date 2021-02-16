@@ -24,7 +24,8 @@ gather_communication_data AS (
     date_of_contact_c,
     subject,
     id AS task_id,
-    description
+    description,
+    type
   FROM
     `data-warehouse-289815.salesforce.task`
 ),
