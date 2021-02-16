@@ -53,18 +53,41 @@ join_data AS (
   SELECT
     GD.*,
     -- GCD.*
---   EXCEPT(who_id),
+    --   EXCEPT(who_id),
     MRR.most_recent_reciprocal_date,
-    MRO.most_recent_outreach_date
+    MRO.most_recent_outreach_date,
+    ABS(
+      DATE_DIFF(
+        MRR.most_recent_reciprocal_date,
+        CURRENT_DATE,
+        DAY
+      )
+    ) AS days_between_reciprocal,
+    ABS(
+      DATE_DIFF(MRO.most_recent_outreach_date, CURRENT_DATE, DAY)
+    ) AS days_between_outreach
   FROM
-    gather_data GD
-    -- LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
+    gather_data GD -- LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = GD.Contact_Id
     LEFT JOIN most_recent_outreach MRO ON MRO.who_id = GD.Contact_Id
 )
 SELECT
   *,
-  DATE_DIFF(most_recent_reciprocal_date, CURRENT_DATE, DAY) AS days_between_reciprocal,
-  DATE_DIFF(most_recent_outreach_date, CURRENT_DATE, DAY) AS days_between_outreach
+  CASE
+    WHEN days_between_reciprocal <= 30 THEN true
+    ELSE false
+  END AS reciprocal_30_days_or_less,
+  CASE
+    WHEN days_between_reciprocal > 60 THEN true
+    ELSE false
+  END AS reciprocal_more_than_60_days,
+  CASE
+    WHEN days_between_outreach <= 30 THEN true
+    ELSE false
+  END AS outreach_30_days_or_less,
+  CASE
+    WHEN days_between_outreach > 60 THEN true
+    ELSE false
+  END AS outreach_more_than_60_days
 FROM
   join_data
