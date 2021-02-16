@@ -80,20 +80,20 @@ join_data AS (
 SELECT
   *,
   CASE
-    WHEN days_between_reciprocal <= 30 THEN 1
-    ELSE 0
+    WHEN days_between_reciprocal <= 30 THEN true
+    ELSE false
   END AS reciprocal_30_days_or_less,
   CASE
-    WHEN days_between_reciprocal > 60 THEN 1
-    ELSE 0
+    WHEN days_between_reciprocal > 60 THEN true
+    ELSE false
   END AS reciprocal_more_than_60_days,
   CASE
-    WHEN days_between_outreach <= 30 THEN 1
-    ELSE 0
+    WHEN days_between_outreach <= 30 THEN true
+    ELSE false
   END AS outreach_30_days_or_less,
   CASE
-    WHEN days_between_outreach > 60 THEN 1
-    ELSE 0
+    WHEN days_between_outreach > 60 THEN true
+    ELSE false
   END AS outreach_more_than_60_days
 FROM
   join_data
