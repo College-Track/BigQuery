@@ -66,5 +66,3 @@ SELECT
   *
 FROM
   join_data
-LIMIT
-  100
