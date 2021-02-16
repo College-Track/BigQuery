@@ -11,12 +11,21 @@ WITH gather_data AS(
     credit_accumulation_pace_c,
     high_school_graduating_class_c,
     credits_accumulated_most_recent_c,
-    anticipated_date_of_graduation_4_year_c,
+    anticipated_date_of_graduation_ay_c,
     site_short,
     site_sort,
     site_abrev,
     region_short,
     region_abrev,
+     school_type,
+    CASE
+      WHEN credits_accumulated_most_recent_c IS NULL THEN "Frosh"
+      WHEN credits_accumulated_most_recent_c < 25 THEN "Frosh"
+      WHEN credits_accumulated_most_recent_c < 50 THEN "Sophomore"
+      WHEN credits_accumulated_most_recent_c < 75 THEN "Junior"
+      WHEN credits_accumulated_most_recent_c >= 75 THEN "Senior"
+    END AS college_class,
+    
     
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
