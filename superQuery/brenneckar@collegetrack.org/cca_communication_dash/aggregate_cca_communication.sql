@@ -15,6 +15,9 @@ WITH gather_aggregate_data AS (
     days_between_outreach_bucket,
     days_between_reciprocal_bucket,
     sort_days_between_reciprocal_bucket,
+    anticipated_date_of_graduation_ay_c,
+    college_class,
+    school_type,
     COUNT(Contact_Id) AS student_count,
     SUM(reciprocal_30_days_or_less) AS reciprocal_30_days_or_less,
     SUM(reciprocal_more_than_60_days) AS reciprocal_more_than_60_days,
@@ -40,7 +43,10 @@ WITH gather_aggregate_data AS (
     sort_days_between_outreach_bucket,
     days_between_outreach_bucket,
     days_between_reciprocal_bucket,
-    sort_days_between_reciprocal_bucket
+    sort_days_between_reciprocal_bucket,
+    anticipated_date_of_graduation_ay_c,
+    college_class,
+    school_type
 )
 SELECT
   *
