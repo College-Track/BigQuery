@@ -17,7 +17,12 @@ WITH gather_data AS(
     site_abrev,
     region_short,
     region_abrev,
-     school_type,
+    school_type,
+    Advising_Rubric_Academic_Readiness_c,
+    Advising_Rubric_Career_Readiness_c,
+    Advising_Rubric_Financial_Success_c,
+    Advising_Rubric_Wellness_c,
+     
     CASE
       WHEN credits_accumulated_most_recent_c IS NULL THEN "Frosh"
       WHEN credits_accumulated_most_recent_c < 25 THEN "Frosh"
