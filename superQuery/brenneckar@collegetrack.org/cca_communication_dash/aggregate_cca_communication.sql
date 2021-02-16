@@ -10,6 +10,10 @@ SELECT
   site_abrev,
   region_short,
   region_abrev,
+  sort_days_between_outreach_bucket,
+  days_between_outreach_bucket,
+  days_between_reciprocal_bucket,
+  sort_days_between_reciprocal_bucket,
   COUNT(Contact_Id) AS student_count,
   SUM(reciprocal_30_days_or_less) AS reciprocal_30_days_or_less,
   SUM(reciprocal_more_than_60_days) AS reciprocal_more_than_60_days,
@@ -28,4 +32,8 @@ GROUP BY
   site_sort,
   site_abrev,
   region_short,
-  region_abrev
+  region_abrev,
+  sort_days_between_outreach_bucket,
+  days_between_outreach_bucket,
+  days_between_reciprocal_bucket,
+  sort_days_between_reciprocal_bucket
