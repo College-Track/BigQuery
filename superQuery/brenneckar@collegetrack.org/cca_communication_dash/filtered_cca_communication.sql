@@ -16,30 +16,10 @@ WITH gather_data AS(
   WHERE
     current_as_c = True
     AND college_track_status_c = '15A'
-),
-gather_communication_data AS (
-  SELECT
-    who_id,
-    reciprocal_communication_c,
-    date_of_contact_c,
-    subject,
-    id AS task_id,
-    description,
-    type
-  FROM
-    `data-warehouse-289815.salesforce.task`
-),
-join_data AS (
-  SELECT
-    GD.*,
-    GCD.* EXCEPT(who_id)
-  FROM
-    gather_data GD
-    LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
 )
 SELECT
   *
 FROM
-  join_data
+  gather_data
 LIMIT
-  100
+  10
