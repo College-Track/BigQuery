@@ -52,13 +52,13 @@ most_recent_outreach AS (
 join_data AS (
   SELECT
     GD.*,
-    GCD.*
-  EXCEPT(who_id),
+    -- GCD.*
+--   EXCEPT(who_id),
     MRR.most_recent_reciprocal_date,
     MRO.most_recent_outreach_date
   FROM
     gather_data GD
-    LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
+    -- LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = GD.Contact_Id
     LEFT JOIN most_recent_outreach MRO ON MRO.who_id = GD.Contact_Id
 )
