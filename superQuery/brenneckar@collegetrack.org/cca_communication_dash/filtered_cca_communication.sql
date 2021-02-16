@@ -63,6 +63,8 @@ join_data AS (
     LEFT JOIN most_recent_outreach MRO ON MRO.who_id = GD.Contact_Id
 )
 SELECT
-  *
+  *,
+  DATE_DIFF(most_recent_reciprocal_date, CURRENT_DATE, DAY) AS days_between_reciprocal,
+  DATE_DIFF(most_recent_outreach_date, CURRENT_DATE, DAY) AS days_between_outreach
 FROM
   join_data
