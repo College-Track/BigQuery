@@ -20,8 +20,9 @@ WITH gather_aggregate_data AS (
     SUM(reciprocal_more_than_60_days) AS reciprocal_more_than_60_days,
     SUM(outreach_30_days_or_less) AS outreach_30_days_or_less,
     SUM(outreach_more_than_60_days) AS outreach_more_than_60_days,
-    SUM(days_between_reciprocal) AS days_between_reciprocal,
-    SUM(days_between_outreach) AS days_between_outreach
+    SUM(days_between_most_recent_reciprocal) AS days_between_reciprocal,
+    SUM(avg_days_between_reciprocal) AS avg_days_between_reciprocal,
+    SUM(avg_days_between_outreach) AS avg_days_between_outreach,
   FROM
     `data-studio-260217.cca_communication.filtered_cca_communication`
   GROUP BY
