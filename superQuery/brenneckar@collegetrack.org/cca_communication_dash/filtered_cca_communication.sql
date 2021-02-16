@@ -78,6 +78,7 @@ join_data AS (
     ) AS days_between_most_recent_reciprocal,
     CASE
       WHEN MRR.num_of_reciprocal_comms IS NULL THEN NULL
+      WHEN MRR.num_of_reciprocal_comms = 0 THEN NULL
       ELSE ABS(
         DATE_DIFF(
           MRR.most_recent_reciprocal_date,
@@ -91,6 +92,7 @@ join_data AS (
     ) AS days_between_most_recent_outreach,
     CASE
       WHEN MRO.num_of_outreach_comms IS NULL THEN NULL
+      WHEN MRO.num_of_outreach_comms = 0 THEN NULL
       ELSE ABS(
         DATE_DIFF(
           MRO.most_recent_outreach_date,
