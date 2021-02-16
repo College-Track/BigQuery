@@ -11,11 +11,13 @@ WITH gather_data AS(
     credit_accumulation_pace_c,
     high_school_graduating_class_c,
     credits_accumulated_most_recent_c,
+    anticipated_date_of_graduation_4_year_c,
     site_short,
     site_sort,
     site_abrev,
     region_short,
-    region_abrev
+    region_abrev,
+    
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
