@@ -21,15 +21,17 @@ gather_communication_data AS (
   SELECT
     who_id,
     reciprocal_communication_c,
-    date_of_contact_c
+    date_of_contact_c,
+    subject,
+    id AS task_id,
+    description
   FROM
     `data-warehouse-289815.salesforce.task`
 ),
 join_data AS (
   SELECT
     GD.*,
-    GCD.reciprocal_communication_c,
-    GCD.date_of_contact_c
+    GCD.* EXCEPT(who_id)
   FROM
     gather_data GD
     LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
