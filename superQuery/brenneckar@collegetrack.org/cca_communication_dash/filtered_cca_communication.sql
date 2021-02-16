@@ -16,7 +16,6 @@ WITH gather_data AS(
     site_abrev,
     region_short,
     region_abrev
-    
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
@@ -80,20 +79,44 @@ join_data AS (
 SELECT
   *,
   CASE
-    WHEN days_between_reciprocal <= 30 THEN true
-    ELSE false
+    WHEN days_between_reciprocal <= 30 THEN 1
+    ELSE 0
   END AS reciprocal_30_days_or_less,
   CASE
-    WHEN days_between_reciprocal > 60 THEN true
-    ELSE false
+    WHEN days_between_reciprocal > 60 THEN 1
+    ELSE 0
   END AS reciprocal_more_than_60_days,
   CASE
-    WHEN days_between_outreach <= 30 THEN true
-    ELSE false
+    WHEN days_between_outreach <= 30 THEN 1
+    ELSE 0
   END AS outreach_30_days_or_less,
   CASE
-    WHEN days_between_outreach > 60 THEN true
-    ELSE false
-  END AS outreach_more_than_60_days
+    WHEN days_between_outreach > 60 THEN 1
+    ELSE 0
+  END AS outreach_more_than_60_days,
+  CASE
+    WHEN days_between_reciprocal <= 30 THEN "30 Days or Less"
+    WHEN days_between_reciprocal <= 60 THEN "60 Days or Less"
+    WHEN days_between_reciprocal > 60 THEN "61 +"
+    ELSE "No Data"
+  END AS days_between_reciprocal_bucket,
+  CASE
+    WHEN days_between_reciprocal <= 30 THEN 1
+    WHEN days_between_reciprocal <= 60 THEN 2
+    WHEN days_between_reciprocal > 60 THEN 3
+    ELSE 0
+  END AS sort_days_between_reciprocal_bucket,
+  CASE
+    WHEN days_between_outreach <= 30 THEN "30 Days or Less"
+    WHEN days_between_outreach <= 60 THEN "60 Days or Less"
+    WHEN days_between_outreach > 60 THEN "61 +"
+    ELSE "No Data"
+  END AS days_between_outreach_bucket,
+  CASE
+    WHEN days_between_outreach <= 30 THEN 1
+    WHEN days_between_outreach <= 60 THEN 2
+    WHEN days_between_outreach > 60 THEN 3
+    ELSE 0
+  END AS sort_days_between_outreach_bucket
 FROM
   join_data
