@@ -37,7 +37,9 @@ gather_communication_data AS (
 most_recent_reciprocal AS (
   SELECT
     who_id,
-    MAX(date_of_contact_c) AS most_recent_reciprocal_date
+    MAX(date_of_contact_c) AS most_recent_reciprocal_date,
+    MIN(date_of_contact_c) AS first_reciprocal_date,
+    COUNT(task_id) AS num_of_reciprocal_comms
   FROM
     gather_communication_data
   WHERE
@@ -48,7 +50,9 @@ most_recent_reciprocal AS (
 most_recent_outreach AS (
   SELECT
     who_id,
-    MAX(date_of_contact_c) AS most_recent_outreach_date
+    MAX(date_of_contact_c) AS most_recent_outreach_date,
+    MIN(date_of_contact_c) AS first_outreach_date,
+    COUNT(task_id) AS num_of_outreach_comms
   FROM
     gather_communication_data
   GROUP BY
@@ -60,17 +64,21 @@ join_data AS (
     -- GCD.*
     --   EXCEPT(who_id),
     MRR.most_recent_reciprocal_date,
+    MRR.first_reciprocal_date,
+    MRR.num_of_reciprocal_comms,
     MRO.most_recent_outreach_date,
+    MRO.first_outreach_date,
+    MRO.num_of_outreach_comms,
     ABS(
       DATE_DIFF(
         MRR.most_recent_reciprocal_date,
         CURRENT_DATE,
         DAY
       )
-    ) AS days_between_reciprocal,
+    ) AS days_between_most_recent_reciprocal,
     ABS(
       DATE_DIFF(MRO.most_recent_outreach_date, CURRENT_DATE, DAY)
-    ) AS days_between_outreach
+    ) AS days_between_most_recent_outreach
   FROM
     gather_data GD -- LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = GD.Contact_Id
@@ -79,44 +87,44 @@ join_data AS (
 SELECT
   *,
   CASE
-    WHEN days_between_reciprocal <= 30 THEN 1
+    WHEN days_between_most_recent_reciprocal <= 30 THEN 1
     ELSE 0
   END AS reciprocal_30_days_or_less,
   CASE
-    WHEN days_between_reciprocal > 60 THEN 1
+    WHEN days_between_most_recent_reciprocal > 60 THEN 1
     ELSE 0
   END AS reciprocal_more_than_60_days,
   CASE
-    WHEN days_between_outreach <= 30 THEN 1
+    WHEN days_between_most_recent_outreach <= 30 THEN 1
     ELSE 0
   END AS outreach_30_days_or_less,
   CASE
-    WHEN days_between_outreach > 60 THEN 1
+    WHEN days_between_most_recent_outreach > 60 THEN 1
     ELSE 0
   END AS outreach_more_than_60_days,
   CASE
-    WHEN days_between_reciprocal <= 30 THEN "30 Days or Less"
-    WHEN days_between_reciprocal <= 60 THEN "60 Days or Less"
-    WHEN days_between_reciprocal > 60 THEN "61 +"
+    WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
+    WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
+    WHEN days_between_most_recent_reciprocal > 60 THEN "61 +"
     ELSE "No Data"
   END AS days_between_reciprocal_bucket,
   CASE
-    WHEN days_between_reciprocal <= 30 THEN 1
-    WHEN days_between_reciprocal <= 60 THEN 2
-    WHEN days_between_reciprocal > 60 THEN 3
+    WHEN days_between_most_recent_reciprocal <= 30 THEN 1
+    WHEN days_between_most_recent_reciprocal <= 60 THEN 2
+    WHEN days_between_most_recent_reciprocal > 60 THEN 3
     ELSE 0
   END AS sort_days_between_reciprocal_bucket,
   CASE
-    WHEN days_between_outreach <= 30 THEN "30 Days or Less"
-    WHEN days_between_outreach <= 60 THEN "60 Days or Less"
-    WHEN days_between_outreach > 60 THEN "61 +"
+    WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
+    WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
+    WHEN days_between_most_recent_outreach > 60 THEN "61 +"
     ELSE "No Data"
   END AS days_between_outreach_bucket,
   CASE
-    WHEN days_between_outreach <= 30 THEN 1
-    WHEN days_between_outreach <= 60 THEN 2
-    WHEN days_between_outreach > 60 THEN 3
+    WHEN days_between_most_recent_outreach <= 30 THEN 1
+    WHEN days_between_most_recent_outreach <= 60 THEN 2
+    WHEN days_between_most_recent_outreach > 60 THEN 3
     ELSE 0
-  END AS sort_days_between_outreach_bucket
+  END AS sort_days_between_outreach_bucket,
 FROM
   join_data
