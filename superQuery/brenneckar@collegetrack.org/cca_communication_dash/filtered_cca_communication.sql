@@ -76,9 +76,24 @@ join_data AS (
         DAY
       )
     ) AS days_between_most_recent_reciprocal,
+    
+    ABS(
+      DATE_DIFF(
+        MRR.most_recent_reciprocal_date,
+        MRR.first_reciprocal_date,
+        DAY
+      )
+    ) / (MRR.num_of_reciprocal_comms - 1) AS avg_days_between_reciprocal,
     ABS(
       DATE_DIFF(MRO.most_recent_outreach_date, CURRENT_DATE, DAY)
-    ) AS days_between_most_recent_outreach
+    ) AS days_between_most_recent_outreach,
+    ABS(
+      DATE_DIFF(
+        MRO.most_recent_outreach_date,
+        MRO.first_outreach_date,
+        DAY
+      )
+    )/(MRO.num_of_outreach_comms - 1) AS avg_days_between_outreach,
   FROM
     gather_data GD -- LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = GD.Contact_Id
@@ -126,5 +141,6 @@ SELECT
     WHEN days_between_most_recent_outreach > 60 THEN 3
     ELSE 0
   END AS sort_days_between_outreach_bucket,
+  
 FROM
   join_data
