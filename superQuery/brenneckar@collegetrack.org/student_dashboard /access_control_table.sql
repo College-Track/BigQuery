@@ -30,3 +30,4 @@ SELECT distinct
   *
 FROM
   create_union
+WHERE Contact_Id = '0031M000033pptaQAA'
