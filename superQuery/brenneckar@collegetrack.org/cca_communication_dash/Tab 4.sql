@@ -1,4 +1,4 @@
-with gather_data AS (SELECT
+SELECT
   DISTINCT Contact_Id,
   full_name_c,
   ABS(
@@ -13,8 +13,5 @@ with gather_data AS (SELECT
     avg_days_between_outreach
     FROM
       `data-studio-260217.cca_communication.filtered_cca_communication`
-      
-      )
-      
-      SELECT AVG(avg_days_between_outreach)
-      FROM gather_data
+    WHERE
+      avg_days_between_outreach < 10
