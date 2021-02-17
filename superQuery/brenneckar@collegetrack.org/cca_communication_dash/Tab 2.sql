@@ -9,7 +9,7 @@ WITH gather_data AS (
     ) value
 )
 SELECT
-  *,
+  Contact_Id,
 
   CASE
     WHEN value IS NULL THEN "No Data"
