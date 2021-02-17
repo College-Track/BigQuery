@@ -9,15 +9,16 @@ WITH gather_data AS (
     ) value
 )
 SELECT
-  Contact_Id,
---   CASE
---     WHEN value IS NULL THEN "No Data"
---     WHEN value = 4 THEN "No Data"
---     WHEN value = 3 THEN "Green"
---     WHEN value = 2 THEN "Yellow"
---     WHEN value = 1 THEN "Red"
---     ELSE "No Data"
---   END AS rubric_section_color,
+  *,
+
+  CASE
+    WHEN value IS NULL THEN "No Data"
+    WHEN value = '4' THEN "No Data"
+    WHEN value = '3' THEN "Green"
+    WHEN value = '2' THEN "Yellow"
+    WHEN value = '1' THEN "Red"
+    ELSE "No Data"
+  END AS rubric_section_color,
   CASE
     WHEN key = 'sort_Advising_Rubric_Career_Readiness_sort' THEN "Career"
     WHEN key = 'sort_Advising_Rubric_Wellness_sort' THEN 'Wellness'
