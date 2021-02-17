@@ -59,7 +59,7 @@ WITH gather_data AS(
     current_as_c = True
     AND college_track_status_c = '15A'
 ),
-gather_communication_data AS (
+gather_all_communication_data AS (
   SELECT
     who_id,
     reciprocal_communication_c,
@@ -75,6 +75,14 @@ gather_communication_data AS (
     type
   FROM
     `data-warehouse-289815.salesforce.task`
+    
+),
+
+gather_communication_data AS (
+SELECT *
+FROM gather_all_communication_data
+WHERE date_of_contact_c >= '2020-07-01'
+
 ),
 most_recent_reciprocal AS (
   SELECT
