@@ -18,7 +18,7 @@ WITH gather_aggregate_data AS (
     anticipated_date_of_graduation_ay_c,
     college_class,
     school_type,
-    COUNT(DISTINCT(Contact_Id)) AS student_count,
+    COUNT((Contact_Id)) AS student_count,
     SUM(reciprocal_30_days_or_less) AS reciprocal_30_days_or_less,
     SUM(reciprocal_more_than_60_days) AS reciprocal_more_than_60_days,
     SUM(outreach_30_days_or_less) AS outreach_30_days_or_less,
