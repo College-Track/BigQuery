@@ -1,11 +1,8 @@
 SELECT
   email,
   full_name_c,
-  CONCAT(
-    REPLACE(SPLIT(email, "@") [OFFSET(0)], ".",""),
-    CONCAT("@", SPLIT(email, "@") [OFFSET(1)])
-  ) AS test
+  SPLIT(email, "@")[0OFFSET 0]
 FROM
   `data-studio-260217.student_dashboard.student_dashboard`
 WHERE
-  Contact_Id = '0034600001FWF7zAAH'
+  Contact_Id = '0031M000032xrocQAA'
