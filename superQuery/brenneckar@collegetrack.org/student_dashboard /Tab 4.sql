@@ -1,7 +1,7 @@
 SELECT
   email,
   full_name_c,
-  SPLIT(email, "@")[OFFSET 0] AS test
+  SPLIT(email, "@")[OFFSET(0)] AS test
 FROM
   `data-studio-260217.student_dashboard.student_dashboard`
 WHERE
