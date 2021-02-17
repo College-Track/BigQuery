@@ -20,6 +20,7 @@ WITH gather_aggregate_data AS (
     school_type,
     rubric_section_color,
     rubric_section,
+    rubric_sort,
     COUNT(DISTINCT(Contact_Id)) AS student_count,
     SUM(reciprocal_30_days_or_less) AS reciprocal_30_days_or_less,
     SUM(reciprocal_more_than_60_days) AS reciprocal_more_than_60_days,
@@ -50,7 +51,8 @@ WITH gather_aggregate_data AS (
     college_class,
     school_type,
     rubric_section_color,
-    rubric_section
+    rubric_section,
+    rubric_sort
 )
 SELECT
   *
