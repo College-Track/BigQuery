@@ -31,7 +31,8 @@ WITH gather_aggregate_data AS (
     SUM(avg_days_between_outreach) AS avg_days_between_outreach,
   FROM
     `data-studio-260217.cca_communication.filtered_cca_communication`
-    GROUP BY
+    WHERE Contact_Id = '0034600001TQsddAAD'
+  GROUP BY
     current_enrollment_status_c,
     Most_Recent_GPA_Cumulative_bucket,
     most_recent_gpa_semester_bucket,
