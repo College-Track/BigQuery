@@ -22,7 +22,7 @@ WITH gather_data AS(
     Advising_Rubric_Career_Readiness_c,
     Advising_Rubric_Financial_Success_c,
     Advising_Rubric_Wellness_c,
-     CASE
+    CASE
       WHEN Advising_Rubric_Financial_Success_c = "Red" THEN 1
       WHEN Advising_Rubric_Financial_Success_c = "Yellow" THEN 2
       WHEN Advising_Rubric_Financial_Success_c = "Green" THEN 3
@@ -46,7 +46,6 @@ WITH gather_data AS(
       WHEN Advising_Rubric_Wellness_c = "Green" THEN 3
       ELSE 4
     END AS sort_Advising_Rubric_Wellness_sort,
-     
     CASE
       WHEN credits_accumulated_most_recent_c IS NULL THEN "Frosh"
       WHEN credits_accumulated_most_recent_c < 25 THEN "Frosh"
@@ -54,8 +53,6 @@ WITH gather_data AS(
       WHEN credits_accumulated_most_recent_c < 75 THEN "Junior"
       WHEN credits_accumulated_most_recent_c >= 75 THEN "Senior"
     END AS college_class,
-    
-    
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
@@ -145,48 +142,79 @@ join_data AS (
     gather_data GD -- LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = GD.Contact_Id
     LEFT JOIN most_recent_outreach MRO ON MRO.who_id = GD.Contact_Id
+),
+calc_metrics AS (
+  SELECT
+    *,
+    CASE
+      WHEN days_between_most_recent_reciprocal <= 30 THEN 1
+      ELSE 0
+    END AS reciprocal_30_days_or_less,
+    CASE
+      WHEN days_between_most_recent_reciprocal > 60 THEN 1
+      ELSE 0
+    END AS reciprocal_more_than_60_days,
+    CASE
+      WHEN days_between_most_recent_outreach <= 30 THEN 1
+      ELSE 0
+    END AS outreach_30_days_or_less,
+    CASE
+      WHEN days_between_most_recent_outreach > 60 THEN 1
+      ELSE 0
+    END AS outreach_more_than_60_days,
+    CASE
+      WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
+      WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
+      WHEN days_between_most_recent_reciprocal > 60 THEN "61 +"
+      ELSE "No Data"
+    END AS days_between_reciprocal_bucket,
+    CASE
+      WHEN days_between_most_recent_reciprocal <= 30 THEN 1
+      WHEN days_between_most_recent_reciprocal <= 60 THEN 2
+      WHEN days_between_most_recent_reciprocal > 60 THEN 3
+      ELSE 0
+    END AS sort_days_between_reciprocal_bucket,
+    CASE
+      WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
+      WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
+      WHEN days_between_most_recent_outreach > 60 THEN "61 +"
+      ELSE "No Data"
+    END AS days_between_outreach_bucket,
+    CASE
+      WHEN days_between_most_recent_outreach <= 30 THEN 1
+      WHEN days_between_most_recent_outreach <= 60 THEN 2
+      WHEN days_between_most_recent_outreach > 60 THEN 3
+      ELSE 0
+    END AS sort_days_between_outreach_bucket,
+  FROM
+    join_data
+),
+add_rubric_sections AS (
+  SELECT
+    calc_metrics.*,
+    value.*
+  FROM
+    calc_metrics,
+    UNNEST(
+      `data-warehouse-289815.UDF.unpivot`(calc_metrics, 'sort_Advising_Rubric_')
+    ) value
 )
 SELECT
-  *,
+  *
+EXCEPT(key, value),
   CASE
-    WHEN days_between_most_recent_reciprocal <= 30 THEN 1
-    ELSE 0
-  END AS reciprocal_30_days_or_less,
-  CASE
-    WHEN days_between_most_recent_reciprocal > 60 THEN 1
-    ELSE 0
-  END AS reciprocal_more_than_60_days,
-  CASE
-    WHEN days_between_most_recent_outreach <= 30 THEN 1
-    ELSE 0
-  END AS outreach_30_days_or_less,
-  CASE
-    WHEN days_between_most_recent_outreach > 60 THEN 1
-    ELSE 0
-  END AS outreach_more_than_60_days,
-  CASE
-    WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
-    WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
-    WHEN days_between_most_recent_reciprocal > 60 THEN "61 +"
+    WHEN value IS NULL THEN "No Data"
+    WHEN value = '4' THEN "No Data"
+    WHEN value = '3' THEN "Green"
+    WHEN value = '2' THEN "Yellow"
+    WHEN value = '1' THEN "Red"
     ELSE "No Data"
-  END AS days_between_reciprocal_bucket,
+  END AS rubric_section_color,
   CASE
-    WHEN days_between_most_recent_reciprocal <= 30 THEN 1
-    WHEN days_between_most_recent_reciprocal <= 60 THEN 2
-    WHEN days_between_most_recent_reciprocal > 60 THEN 3
-    ELSE 0
-  END AS sort_days_between_reciprocal_bucket,
-  CASE
-    WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
-    WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
-    WHEN days_between_most_recent_outreach > 60 THEN "61 +"
-    ELSE "No Data"
-  END AS days_between_outreach_bucket,
-  CASE
-    WHEN days_between_most_recent_outreach <= 30 THEN 1
-    WHEN days_between_most_recent_outreach <= 60 THEN 2
-    WHEN days_between_most_recent_outreach > 60 THEN 3
-    ELSE 0
-  END AS sort_days_between_outreach_bucket,
+    WHEN key = 'sort_Advising_Rubric_Career_Readiness_sort' THEN "Career"
+    WHEN key = 'sort_Advising_Rubric_Wellness_sort' THEN 'Wellness'
+    WHEN key = 'sort_Advising_Rubric_Financial_Success_sort' THEN "Finance"
+    WHEN key = 'sort_Advising_Rubric_Academic_Readiness_sort' THEN "Academic"
+  END AS rubric_section
 FROM
-  join_data
+  add_rubric_sections
