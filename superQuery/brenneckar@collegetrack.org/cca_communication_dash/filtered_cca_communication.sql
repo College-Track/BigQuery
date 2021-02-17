@@ -81,7 +81,7 @@ gather_all_communication_data AS (
 gather_communication_data AS (
 SELECT *
 FROM gather_all_communication_data
-WHERE date_of_contact_c >= '2020-07-01'
+-- WHERE date_of_contact_c >= '2020-07-01'
 
 ),
 most_recent_reciprocal AS (
