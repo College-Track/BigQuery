@@ -104,7 +104,7 @@ EXCEPT
   U.name AS workshop_staff,
   U.email AS workshop_staff_email,
   GS.url as google_site_url,
-  SESSION_USER() AS session_user
+ 
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
