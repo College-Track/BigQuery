@@ -17,5 +17,7 @@ with gather_data AS (
     `data-studio-260217.cca_communication.filtered_cca_communication`
 )
 SELECT
-  *
+  AVG(avg_days_between_outreach),
+  COUNT(Contact_Id)
+FROM
   gather_data
