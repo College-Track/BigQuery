@@ -1,6 +1,24 @@
 WITH gather_data AS (
   SELECT
     Contact_Id,
+    full_name_c,
+    current_cc_advisor_2_c,
+    current_enrollment_status_c,
+    Current_school_name,
+    Most_Recent_GPA_Cumulative_bucket,
+    most_recent_gpa_semester_bucket,
+    grade_c,
+    credit_accumulation_pace_c,
+    high_school_graduating_class_c,
+    credits_accumulated_most_recent_c,
+    anticipated_date_of_graduation_ay_c,
+    site_short,
+    site_sort,
+    site_abrev,
+    region_short,
+    region_abrev,
+    school_type,
+    
     value.*
   FROM
     `data-studio-260217.cca_communication.filtered_cca_communication` rubric_colors,
@@ -9,7 +27,7 @@ WITH gather_data AS (
     ) value
 )
 SELECT
-  Contact_Id,
+  * EXCEPT(key, value),
 
   CASE
     WHEN value IS NULL THEN "No Data"
