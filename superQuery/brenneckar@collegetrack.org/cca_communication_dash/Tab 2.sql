@@ -12,4 +12,4 @@ SELECT
   *
 FROM
   gather_data
-  WHERE value = 'Red'
+  WHERE value = 'Green'
