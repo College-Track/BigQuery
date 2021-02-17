@@ -26,7 +26,7 @@ create_union AS (
   FROM
     create_modified_email
 )
-SELECT
+SELECT distinct
   *
 FROM
   create_union
