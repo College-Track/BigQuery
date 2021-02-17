@@ -131,7 +131,7 @@ join_data AS (
       WHEN MRR.num_of_reciprocal_comms = 1 THEN NULL
       ELSE ABS(
         DATE_DIFF(
-          MRR.most_recent_reciprocal_date,
+          CURRENT_DATE(),
           MRR.first_reciprocal_date,
           DAY
         )
@@ -145,7 +145,7 @@ join_data AS (
       WHEN MRO.num_of_outreach_comms = 1 THEN NULL
       ELSE ABS(
         DATE_DIFF(
-          MRO.most_recent_outreach_date,
+          CURRENT_DATE(),
           MRO.first_outreach_date,
           DAY
         )
