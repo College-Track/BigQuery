@@ -12,4 +12,4 @@ SELECT
   *
 FROM
   gather_data
-  WHERE value IS NOT NULL
+  WHERE value = 'Red'
