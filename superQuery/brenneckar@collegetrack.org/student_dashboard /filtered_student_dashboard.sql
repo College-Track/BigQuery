@@ -103,7 +103,7 @@ EXCEPT
   GTD.max_sat_math,
   U.name AS workshop_staff,
   U.email AS workshop_staff_email,
-  GS.url as google_site_url,
+  GS.url as google_site_url
  
 FROM
   gather_student_data GSD
