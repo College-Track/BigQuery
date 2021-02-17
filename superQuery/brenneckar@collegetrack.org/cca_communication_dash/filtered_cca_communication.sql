@@ -202,6 +202,7 @@ add_rubric_sections AS (
 SELECT
   *
 EXCEPT(key, value),
+value AS rubric_sort,
   CASE
     WHEN value IS NULL THEN "No Data"
     WHEN value = '4' THEN "No Data"
