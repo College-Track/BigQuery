@@ -1,12 +1,10 @@
 SELECT
   current_enrollment_status_c,
-  Current_school_name,
   Most_Recent_GPA_Cumulative_bucket,
   most_recent_gpa_semester_bucket,
   grade_c,
   credit_accumulation_pace_c,
   high_school_graduating_class_c,
-  credits_accumulated_most_recent_c,
   anticipated_date_of_graduation_ay_c,
   site_short,
   site_sort,
@@ -16,7 +14,7 @@ SELECT
   school_type,
   rubric_section,
   rubric_section_color,
-  COUNT(distinct(Contact_Id))
+  COUNT(distinct(Contact_Id)) AS student_count
 FROM
   `data-studio-260217.cca_communication.filtered_rubric_scores`
   GROUP BY 
