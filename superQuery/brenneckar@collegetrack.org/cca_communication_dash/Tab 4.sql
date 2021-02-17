@@ -4,7 +4,7 @@ with gather_data AS (
     full_name_c,
     ABS(
       DATE_DIFF(
-        most_recent_outreach_date,
+        CURRENT_DATE(),
         first_outreach_date,
         DAY
       )
@@ -17,7 +17,9 @@ with gather_data AS (
     `data-studio-260217.cca_communication.filtered_cca_communication`
 )
 SELECT
-  AVG(avg_days_between_outreach),
-  COUNT(Contact_Id)
+  AVG(avg_days_between_outreach) AS avg_days_between_outreach,
+  AVG(num_of_outreach_comms) AS num_of_outreach_comms,
+  AVG(days_between_first_last_outreach) AS days_between_first_last_outreach,
+  COUNT(Contact_Id) AS Contact_Id
 FROM
   gather_data
