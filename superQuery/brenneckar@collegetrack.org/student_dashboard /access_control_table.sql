@@ -30,5 +30,3 @@ SELECT distinct
   *
 FROM
   create_union
-WHERE
-  Contact_Id = '0034600001TR5HZAA1'
