@@ -18,11 +18,7 @@ WITH gather_aggregate_data AS (
     anticipated_date_of_graduation_ay_c,
     college_class,
     school_type,
-    Advising_Rubric_Academic_Readiness_c,
-    Advising_Rubric_Career_Readiness_c,
-    Advising_Rubric_Financial_Success_c,
-    Advising_Rubric_Wellness_c,
-    COUNT(Contact_Id) AS student_count,
+    COUNT(DISTINCT(Contact_Id)) AS student_count,
     SUM(reciprocal_30_days_or_less) AS reciprocal_30_days_or_less,
     SUM(reciprocal_more_than_60_days) AS reciprocal_more_than_60_days,
     SUM(outreach_30_days_or_less) AS outreach_30_days_or_less,
@@ -50,11 +46,7 @@ WITH gather_aggregate_data AS (
     sort_days_between_reciprocal_bucket,
     anticipated_date_of_graduation_ay_c,
     college_class,
-    school_type,
-    Advising_Rubric_Academic_Readiness_c,
-    Advising_Rubric_Career_Readiness_c,
-    Advising_Rubric_Financial_Success_c,
-    Advising_Rubric_Wellness_c
+    school_type
 )
 SELECT
   *
