@@ -63,7 +63,12 @@ gather_communication_data AS (
   SELECT
     who_id,
     reciprocal_communication_c,
-    date_of_contact_c,
+    CASE
+      WHEN activity_date = date_of_contact_c THEN date_of_contact_c
+      WHEN date_of_contact_c IS NULL
+      and activity_date IS NOT NULL THEN activity_date
+      ELSE date_of_contact_c
+    END AS date_of_contact_c,
     subject,
     id AS task_id,
     description,
@@ -202,7 +207,7 @@ add_rubric_sections AS (
 SELECT
   *
 EXCEPT(key, value),
-value AS rubric_sort,
+  value AS rubric_sort,
   CASE
     WHEN value IS NULL THEN "No Data"
     WHEN value = '4' THEN "No Data"
