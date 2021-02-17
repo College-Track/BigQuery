@@ -5,4 +5,4 @@ SELECT
 FROM
   `data-studio-260217.student_dashboard.student_dashboard`
 WHERE
-  full_name_c = '0034600001FWF7zAAH'
+  Contact_Id = '0034600001FWF7zAAH'
