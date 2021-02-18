@@ -1,6 +1,7 @@
-SELECT COUNT(Contact_Id),
+SELECT 
 Advising_Rubric_Academic_Readiness_v_2_c,
-Advising_Rubric_Academic_Readiness_c
+Advising_Rubric_Academic_Readiness_c,
+COUNT(Contact_Id)
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE Advising_Rubric_Academic_Readiness_c IS NOT NULL 
 GROUP BY 
