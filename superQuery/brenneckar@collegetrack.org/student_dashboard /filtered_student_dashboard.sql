@@ -7,8 +7,8 @@ WITH gather_student_data AS (
     grade_c,
     full_name_c,
     CASE
-      WHEN full_name_c = 'Joseline Vazquez' THEN 'baker.renneckar.test@gmail.com'
-      WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
+    --   WHEN full_name_c = 'Daniel Aguilar' THEN 'baker.renneckar.test@gmail.com'
+    --   WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
     --   WHEN full_name_c = 'Sonia Esteva' THEN'soniaesteva_23@sfuhs.org'
 
       ELSE email
