@@ -4,7 +4,7 @@ with gather_data AS (
     full_name_c,
     ABS(
       DATE_DIFF(
-        CURRENT_DATE(),
+        CURRENT_D,
         first_outreach_date,
         DAY
       )
