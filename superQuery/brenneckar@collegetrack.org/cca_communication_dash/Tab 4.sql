@@ -18,7 +18,7 @@ with gather_data AS (
 )
 SELECT
   AVG(avg_days_between_outreach) AS avg_days_between_outreach,
-  STDDEV(avg_days_between_outreach) AS std,
+  STDDEV(avg_days_between_outreach) AS std
   AVG(num_of_outreach_comms) AS num_of_outreach_comms,
   AVG(days_between_first_last_outreach) AS days_between_first_last_outreach,
   COUNT(Contact_Id) AS Contact_Id
