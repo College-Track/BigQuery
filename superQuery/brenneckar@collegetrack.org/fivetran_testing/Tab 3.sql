@@ -1,3 +1,3 @@
-SELECT *
-FROM `data-warehouse-289815.roles.role_table`
-WHERE Role_ID = '00E46000000YcNSEA0'
+SELECT user_role_id
+FROM `data-warehouse-289815.salesforce_clean.user_clean`
+WHERE email = 'lfuentes@collegetrack.org'
