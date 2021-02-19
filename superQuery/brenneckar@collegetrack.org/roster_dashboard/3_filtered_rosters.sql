@@ -4,8 +4,7 @@ WITH gather_data AS (
     Contact_Id,
     SITE_c,
     contact_url,
-        College_Track_Status_c,
-
+    College_Track_Status_c,
     Current_Enrollment_Status_c,
     school_type,
     PS_Internships_c,
@@ -49,22 +48,22 @@ WITH gather_data AS (
     END AS term_number,
     CASE
       WHEN (
-        Advising_Rubric_Academic_Readiness_c = "Red"
-        OR Advising_Rubric_Career_Readiness_c = 'Red'
-        OR Advising_Rubric_Financial_Success_c = "Red"
-        OR Advising_Rubric_Wellness_c = "Red"
+        advising_rubric_academic_readiness_v_2_c = "Red"
+        OR advising_rubric_career_readiness_v_2_c = 'Red'
+        OR advising_rubric_financial_success_v_2_c = "Red"
+        OR advising_rubric_wellness_v_2_c = "Red"
       ) THEN "Red"
       WHEN (
-        Advising_Rubric_Academic_Readiness_c = "Yellow"
-        OR Advising_Rubric_Career_Readiness_c = 'Yellow'
-        OR Advising_Rubric_Financial_Success_c = "Yellow"
-        OR Advising_Rubric_Wellness_c = "Yellow"
+        advising_rubric_academic_readiness_v_2_c = "Yellow"
+        OR advising_rubric_career_readiness_v_2_c = 'Yellow'
+        OR advising_rubric_financial_success_v_2_c = "Yellow"
+        OR advising_rubric_wellness_v_2_c = "Yellow"
       ) THEN "Yellow"
       WHEN (
-        Advising_Rubric_Academic_Readiness_c = "Green"
-        OR Advising_Rubric_Career_Readiness_c = 'Green'
-        OR Advising_Rubric_Financial_Success_c = "Green"
-        OR Advising_Rubric_Wellness_c = "Green"
+        advising_rubric_academic_readiness_v_2_c = "Green"
+        OR advising_rubric_career_readiness_v_2_c = 'Green'
+        OR advising_rubric_financial_success_v_2_c = "Green"
+        OR advising_rubric_wellness_v_2_c = "Green"
       ) THEN "Green"
       ELSE "No Data"
     END AS Overall_Rubric_Color,
@@ -192,15 +191,20 @@ modify_data AS (
     gather_data GD
     LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
 ),
-
 most_recent_complete_at_gpa AS (
-SELECT Contact_Id,AT_Cumulative_GPA_bucket, student_audit_status_c, AT_Cumulative_GPA
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE GAS_Name LIKE '%Spring 2019-20%'
+  SELECT
+    Contact_Id,
+    AT_Cumulative_GPA_bucket,
+    student_audit_status_c,
+    AT_Cumulative_GPA
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    GAS_Name LIKE '%Spring 2019-20%'
 ),
 final_prep AS (
   SELECT
-    *,
+    modify_data.*,
     CASE
       WHEN community_service_bucket = "On Track" THEN 1
       WHEN community_service_bucket = "Near On Track" THEN 2
@@ -217,4 +221,3 @@ SELECT
   *
 FROM
   final_prep
-  
