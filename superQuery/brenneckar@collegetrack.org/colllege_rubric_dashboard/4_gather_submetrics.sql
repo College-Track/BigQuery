@@ -55,7 +55,7 @@ financial_questions AS (
       question_career_Career_Field_2550_credits_score,
       question_career_Resources_2550_credits_score,
       question_career_Internship_5075_credits_score,
-      question_career_Internships_score,
+    --   question_career_Internships_score,
       question_career_PostGraduate_Plans_5075_creds_score,
       question_career_Post_Graduate_Opportunities_75_cred_score,
       question_career_Alumni_Network_75_credits_score
@@ -109,7 +109,7 @@ academic_questions AS (
       question_career_Career_Field_2550_credits_score,
       question_career_Resources_2550_credits_score,
       question_career_Internship_5075_credits_score,
-      question_career_Internships_score,
+    --   question_career_Internships_score,
       question_career_PostGraduate_Plans_5075_creds_score,
       question_career_Post_Graduate_Opportunities_75_cred_score,
       question_career_Alumni_Network_75_credits_score
@@ -163,7 +163,7 @@ wellness_questions AS (
       question_career_Career_Field_2550_credits_score,
       question_career_Resources_2550_credits_score,
       question_career_Internship_5075_credits_score,
-      question_career_Internships_score,
+    --   question_career_Internships_score,
       question_career_PostGraduate_Plans_5075_creds_score,
       question_career_Post_Graduate_Opportunities_75_cred_score,
       question_career_Alumni_Network_75_credits_score
@@ -217,7 +217,7 @@ career_questions AS (
       question_career_Career_Field_2550_credits_score,
       question_career_Resources_2550_credits_score,
       question_career_Internship_5075_credits_score,
-      question_career_Internships_score,
+    --   question_career_Internships_score,
       question_career_PostGraduate_Plans_5075_creds_score,
       question_career_Post_Graduate_Opportunities_75_cred_score,
       question_career_Alumni_Network_75_credits_score
@@ -304,8 +304,8 @@ EXCEPT(submetric, key, value),
     WHEN key = "question_career_Career_Counselor_25_credits_score" THEN "Career Counselor"
     WHEN key = "question_career_Career_Field_2550_credits_score" THEN "Career Field"
     WHEN key = "question_career_Resources_2550_credits_score" THEN "Resources"
-    WHEN key = "question_career_Internship_5075_credits_score" THEN "Internships 50-75% Credits"
-    WHEN key = "question_career_Internships_score" THEN "Internships"
+    WHEN key = "question_career_Internship_5075_credits_score" THEN "Internships 50%+ Credits"
+    -- WHEN key = "question_career_Internships_score" THEN "Internships"
     WHEN key = "question_career_PostGraduate_Plans_5075_creds_score" THEN "Post Graduate Plans"
     WHEN key = "question_career_Post_Graduate_Opportunities_75_cred_score" THEN "Post Graduate Opportunities"
     WHEN key = "question_career_Alumni_Network_75_credits_score" THEN "Alumni Network"
