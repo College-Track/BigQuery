@@ -1,11 +1,12 @@
 SELECT 
-GAS_Name,
-GAS_Start_Date,
-COUNT(Contact_Id)
+Contact_Id,
+Advising_Rubric_Academic_Readiness_c,
+advising_rubric_academic_readiness_v_2_c,
+advising_rubric_career_readiness_c,
+advising_rubric_career_readiness_v_2_c,
+advising_rubric_financial_success_c,
+advising_rubric_financial_success_v_2_c,
+advising_rubric_wellness_c,
+advising_rubric_wellness_v_2_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE Advising_Rubric_Academic_Readiness_c IS NOT NULL AND Advising_Rubric_Academic_Readiness_v_2_c IS NULL
-GROUP BY 
-GAS_Name,
-GAS_Start_Date
-
-ORDER BY GAS_Start_Date
+WHERE advising_rubric_wellness_v_2_c IS NOT NULL
