@@ -1,6 +1,6 @@
 SELECT 
 Contact_Id,
-Advising_Rubric_Academic_Readiness_c,
+Advising_Rubric_Academic_Readiness_c
 advising_rubric_academic_readiness_v_2_c,
 advising_rubric_career_readiness_c,
 advising_rubric_career_readiness_v_2_c,
