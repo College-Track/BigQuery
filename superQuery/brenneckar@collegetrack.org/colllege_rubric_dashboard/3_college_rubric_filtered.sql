@@ -1,3 +1,4 @@
+
 WITH contact_at AS (
   SELECT
     Contact_Id,
@@ -72,30 +73,30 @@ WITH contact_at AS (
     END AS Most_Recent_GPA_Cumulative_bucket,
     CASE
       WHEN (
-        Advising_Rubric_Academic_Readiness_c = "Red"
-        OR Advising_Rubric_Career_Readiness_c = 'Red'
-        OR Advising_Rubric_Financial_Success_c = "Red"
-        OR Advising_Rubric_Wellness_c = "Red"
+        advising_rubric_academic_readiness_v_2_c = "Red"
+        OR advising_rubric_career_readiness_v_2_c = 'Red'
+        OR advising_rubric_financial_success_v_2_c = "Red"
+        OR advising_rubric_wellness_v_2_c = "Red"
       ) THEN "Red"
       WHEN (
-        Advising_Rubric_Academic_Readiness_c = "Yellow"
-        OR Advising_Rubric_Career_Readiness_c = 'Yellow'
-        OR Advising_Rubric_Financial_Success_c = "Yellow"
-        OR Advising_Rubric_Wellness_c = "Yellow"
+        advising_rubric_academic_readiness_v_2_c = "Yellow"
+        OR advising_rubric_career_readiness_v_2_c = 'Yellow'
+        OR advising_rubric_financial_success_v_2_c = "Yellow"
+        OR advising_rubric_wellness_v_2_c = "Yellow"
       ) THEN "Yellow"
       WHEN (
-        Advising_Rubric_Academic_Readiness_c = "Green"
-        OR Advising_Rubric_Career_Readiness_c = 'Green'
-        OR Advising_Rubric_Financial_Success_c = "Green"
-        OR Advising_Rubric_Wellness_c = "Green"
+        advising_rubric_academic_readiness_v_2_c = "Green"
+        OR advising_rubric_career_readiness_v_2_c = 'Green'
+        OR advising_rubric_financial_success_v_2_c = "Green"
+        OR advising_rubric_wellness_v_2_c = "Green"
       ) THEN "Green"
       ELSE "No Data"
     END AS Overall_Rubric_Color,
-    Advising_Rubric_Academic_Readiness_c,
+    advising_rubric_academic_readiness_v_2_c AS Advising_Rubric_Academic_Readiness_c,
     Advising_Rubric_COVID_c,
-    Advising_Rubric_Career_Readiness_c,
-    Advising_Rubric_Financial_Success_c,
-    Advising_Rubric_Wellness_c,
+    advising_rubric_career_readiness_v_2_c AS Advising_Rubric_Career_Readiness_c,
+    advising_rubric_financial_success_v_2_c AS Advising_Rubric_Financial_Success_c,
+    advising_rubric_wellness_v_2_c AS Advising_Rubric_Wellness_c,
     Credit_Accumulation_Pace_c,
     -- Rubric Questions
     -- Finance
@@ -214,27 +215,27 @@ WITH contact_at AS (
     Wellness_COVID_19_c,
     -- Sorting Values
     CASE
-      WHEN Advising_Rubric_Financial_Success_c = "Red" THEN 1
-      WHEN Advising_Rubric_Financial_Success_c = "Yellow" THEN 2
-      WHEN Advising_Rubric_Financial_Success_c = "Green" THEN 3
+      WHEN advising_rubric_financial_success_v_2_c = "Red" THEN 1
+      WHEN advising_rubric_financial_success_v_2_c = "Yellow" THEN 2
+      WHEN advising_rubric_financial_success_v_2_c = "Green" THEN 3
       ELSE 4
     END AS sort_Advising_Rubric_Financial_Success_sort,
     CASE
-      WHEN Advising_Rubric_Academic_Readiness_c = "Red" THEN 1
-      WHEN Advising_Rubric_Academic_Readiness_c = "Yellow" THEN 2
-      WHEN Advising_Rubric_Academic_Readiness_c = "Green" THEN 3
+      WHEN advising_rubric_academic_readiness_v_2_c = "Red" THEN 1
+      WHEN advising_rubric_academic_readiness_v_2_c = "Yellow" THEN 2
+      WHEN advising_rubric_academic_readiness_v_2_c = "Green" THEN 3
       ELSE 4
     END AS sort_Advising_Rubric_Academic_Readiness_sort,
     CASE
-      WHEN Advising_Rubric_Career_Readiness_c = "Red" THEN 1
-      WHEN Advising_Rubric_Career_Readiness_c = "Yellow" THEN 2
-      WHEN Advising_Rubric_Career_Readiness_c = "Green" THEN 3
+      WHEN advising_rubric_career_readiness_v_2_c = "Red" THEN 1
+      WHEN advising_rubric_career_readiness_v_2_c = "Yellow" THEN 2
+      WHEN advising_rubric_career_readiness_v_2_c = "Green" THEN 3
       ELSE 4
     END AS sort_Advising_Rubric_Career_Readiness_sort,
     CASE
-      WHEN Advising_Rubric_Wellness_c = "Red" THEN 1
-      WHEN Advising_Rubric_Wellness_c = "Yellow" THEN 2
-      WHEN Advising_Rubric_Wellness_c = "Green" THEN 3
+      WHEN advising_rubric_wellness_v_2_c = "Red" THEN 1
+      WHEN advising_rubric_wellness_v_2_c = "Yellow" THEN 2
+      WHEN advising_rubric_wellness_v_2_c = "Green" THEN 3
       ELSE 4
     END AS sort_Advising_Rubric_Wellness_sort,
   FROM
