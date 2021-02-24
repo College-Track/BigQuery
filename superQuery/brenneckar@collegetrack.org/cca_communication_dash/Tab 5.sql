@@ -35,16 +35,15 @@ group_outreach_communication_data AS (
     who_id,
     format_date('%Y-%W', date_of_contact_c)
 ),
-
 count_unique_outreach AS (
-SELECT who_id,
-COUNT(year_week_outreach) AS num_unique_outreach
-FROM group_outreach_communication_data
-GROUP BY who_id
-)
-
-
--- most_recent_outreach AS (
+  SELECT
+    who_id,
+    COUNT(year_week_outreach) AS num_unique_outreach
+  FROM
+    group_outreach_communication_data
+  GROUP BY
+    who_id
+) -- most_recent_outreach AS (
 --   SELECT
 --     who_id,
 --     MAX(date_of_contact_c) AS most_recent_outreach_date,
@@ -58,4 +57,5 @@ GROUP BY who_id
 SELECT
   *
 FROM
-  count_unique_outreach
+  group_outreach_communication_data
+  ORDER BY who_id
