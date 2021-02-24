@@ -6,7 +6,6 @@ WITH gather_data AS (
     CAST(is_active AS BOOL) as is_active,
     user_role_id,
     email
-    
   FROM
     `data-warehouse-289815.salesforce.user`
   WHERE
@@ -20,7 +19,6 @@ gather_valid_part_time AS (
     CAST(is_active AS BOOL) as is_active,
     user_role_id,
     email
-    
   FROM
     `data-warehouse-289815.salesforce_clean.tmp_pt_user`
   WHERE
@@ -30,11 +28,19 @@ gather_valid_part_time AS (
       FROM
         gather_data
     )
-)
-
-SELECT *
-FROM gather_data
-UNION ALL (
-SELECT *
+),
+union_data AS (SELECT
+  *
 FROM
-gather_valid_part_time)
+  gather_data
+UNION ALL
+  (
+    SELECT
+      *
+    FROM
+      gather_valid_part_time
+  )
+  )
+  
+SELECT count(email), count(distinct(email))
+FROM union_data
