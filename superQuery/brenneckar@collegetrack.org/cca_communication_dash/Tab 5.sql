@@ -58,5 +58,5 @@ SELECT
   *
 FROM
   group_outreach_communication_data
-  WHERE who_id IS NOT NULL
+  WHERE who_id IS NOT NULL AND who_id = '0031M00002so9jUQAQ'
   ORDER BY who_id
