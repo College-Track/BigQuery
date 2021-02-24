@@ -3,22 +3,18 @@ WITH gather_data AS (
     id,
     first_name,
     last_name,
-    CAST(is_active AS BOOL) as is_active,
+    is_active,
     user_role_id,
     email
+    
   FROM
     `data-warehouse-289815.salesforce.user`
   WHERE
-    is_active = True AND user_role_id IS NOT NULL
+    is_active = True
 ),
 gather_valid_part_time AS (
   SELECT
-    id,
-    first_name,
-    last_name,
-    CAST(is_active AS BOOL) as is_active,
-    user_role_id,
-    email
+    *
   FROM
     `data-warehouse-289815.salesforce_clean.tmp_pt_user`
   WHERE
@@ -28,19 +24,11 @@ gather_valid_part_time AS (
       FROM
         gather_data
     )
-),
-union_data AS (SELECT
-  *
-FROM
-  gather_data
-UNION ALL
-  (
-    SELECT
-      *
-    FROM
-      gather_valid_part_time
-  )
-  )
-  
+)
+
 SELECT *
-FROM union_data
+FROM gather_data
+-- UNION ALL (
+-- SELECT *
+-- FROM
+-- gather_valid_part_time)
