@@ -14,22 +14,36 @@ WITH gather_all_communication_data AS (
     type
   FROM
     `data-warehouse-289815.salesforce.task`
-    
 ),
 gather_communication_data AS (
-SELECT *
-FROM gather_all_communication_data
-WHERE date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY) AND CURRENT_DATE()
-
+  SELECT
+    *
+  FROM
+    gather_all_communication_data
+  WHERE
+    date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
+    AND CURRENT_DATE()
+),
+group_outreach_communication_data AS (
+  SELECT
+    who_id,
+    format_date('%Y-%W', date_of_contact_c) AS year_week_outreach,
+    COUNT(task_id) as count_unique_outreach
+  FROM
+    gather_communication_data
+  GROUP BY
+    who_id,
+    format_date('%Y-%W', date_of_contact_c)
 ),
 
-group_outreach_communication_data AS (
+count_unique_outreach AS (
 SELECT who_id,
-format_date('%Y-%W', date_of_contact_c),
-COUNT(task_id) as count_unique_outreach
-FROM gather_communication_data
-GROUP BY who_id, format_date('%Y-%W', date_of_contact_c)
+COUNT(year_week_outreach) AS num_unique_outreach
+FROM group_outreach_communication_data
+GROUP BY who_id
 )
+
+
 -- most_recent_outreach AS (
 --   SELECT
 --     who_id,
@@ -41,6 +55,7 @@ GROUP BY who_id, format_date('%Y-%W', date_of_contact_c)
 --   GROUP BY
 --     who_id
 -- )
-
-SELECT *
-FROM group_outreach_communication_data
+SELECT
+  *
+FROM
+  count_unique_outreach
