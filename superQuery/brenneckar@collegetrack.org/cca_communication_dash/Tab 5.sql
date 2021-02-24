@@ -59,3 +59,4 @@ SELECT
 FROM
   group_outreach_communication_data
   ORDER BY who_id
+  WHERE who_id IS NOT NULL
