@@ -21,6 +21,14 @@ SELECT *
 FROM gather_all_communication_data
 WHERE date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY) AND CURRENT_DATE()
 
+),
+
+group_outreach_communication_data AS (
+SELECT who_id,
+format_date('%Y%W', date_of_contact_c),
+COUNT(task_id) as count_unique_outreach
+FROM gather_communication_data
+GROUP BY who_id, format_date('%Y%W', date_of_contact_c)
 )
 -- most_recent_outreach AS (
 --   SELECT
@@ -34,5 +42,5 @@ WHERE date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY) AND C
 --     who_id
 -- )
 
-SELECT MAX(date_of_contact_c), MIN(date_of_contact_c)
-FROM gather_communication_data
+SELECT *
+FROM group_outreach_communication_data
