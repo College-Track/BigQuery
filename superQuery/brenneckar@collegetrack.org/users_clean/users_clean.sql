@@ -9,7 +9,7 @@ WITH gather_data AS (
   FROM
     `data-warehouse-289815.salesforce.user`
   WHERE
-    is_active = True
+    is_active = True AND user_role_id IS NOT NULL
 ),
 gather_valid_part_time AS (
   SELECT
