@@ -79,10 +79,33 @@ gather_all_communication_data AS (
 ),
 
 gather_communication_data AS (
-SELECT *
-FROM gather_all_communication_data
--- WHERE date_of_contact_c >= '2020-08-01'
-
+  SELECT
+    *
+  FROM
+    gather_all_communication_data
+  WHERE
+    date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
+    AND CURRENT_DATE()
+),
+group_outreach_communication_data AS (
+  SELECT
+    who_id,
+    format_date('%Y-%W', date_of_contact_c) AS year_week_outreach,
+    COUNT(task_id) as count_unique_outreach
+  FROM
+    gather_communication_data
+  GROUP BY
+    who_id,
+    format_date('%Y-%W', date_of_contact_c)
+),
+count_unique_outreach AS (
+  SELECT
+    who_id,
+    COUNT(year_week_outreach) AS num_unique_outreach
+  FROM
+    group_outreach_communication_data
+  GROUP BY
+    who_id
 ),
 most_recent_reciprocal AS (
   SELECT
@@ -119,6 +142,7 @@ join_data AS (
     MRO.most_recent_outreach_date,
     MRO.first_outreach_date,
     MRO.num_of_outreach_comms,
+    CUO.num_unique_outreach,
     ABS(
       DATE_DIFF(
         MRR.most_recent_reciprocal_date,
@@ -126,35 +150,36 @@ join_data AS (
         DAY
       )
     ) AS days_between_most_recent_reciprocal,
-    CASE
-      WHEN MRR.num_of_reciprocal_comms IS NULL THEN NULL
-      WHEN MRR.num_of_reciprocal_comms = 1 THEN NULL
-      ELSE ABS(
-        DATE_DIFF(
-          CURRENT_DATE(),
-          MRR.first_reciprocal_date,
-          DAY
-        )
-      ) / (MRR.num_of_reciprocal_comms - 1)
-    END AS avg_days_between_reciprocal,
+    -- CASE
+    --   WHEN MRR.num_of_reciprocal_comms IS NULL THEN NULL
+    --   WHEN MRR.num_of_reciprocal_comms = 1 THEN NULL
+    --   ELSE ABS(
+    --     DATE_DIFF(
+    --       CURRENT_DATE(),
+    --       MRR.first_reciprocal_date,
+    --       DAY
+    --     )
+    --   ) / (MRR.num_of_reciprocal_comms - 1)
+    -- END AS avg_days_between_reciprocal,
     ABS(
       DATE_DIFF(MRO.most_recent_outreach_date, CURRENT_DATE, DAY)
     ) AS days_between_most_recent_outreach,
     CASE
-      WHEN MRO.num_of_outreach_comms IS NULL THEN NULL
-      WHEN MRO.num_of_outreach_comms = 1 THEN NULL
+      WHEN CUO.num_unique_outreach IS NULL THEN NULL
+      WHEN CUO.num_unique_outreach = 1 THEN NULL
       ELSE ABS(
         DATE_DIFF(
           CURRENT_DATE(),
           MRO.first_outreach_date,
           DAY
         )
-      ) /(MRO.num_of_outreach_comms - 1)
+      ) /(CUO.num_unique_outreach - 1)
     END AS avg_days_between_outreach,
   FROM
     gather_data GD -- LEFT JOIN gather_communication_data GCD ON GCD.who_id = GD.Contact_Id
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = GD.Contact_Id
     LEFT JOIN most_recent_outreach MRO ON MRO.who_id = GD.Contact_Id
+    LEFT JOIN count_unique_outreach CUO ON CUO.who_id = GD.Contact_Id
 ),
 calc_metrics AS (
   SELECT
