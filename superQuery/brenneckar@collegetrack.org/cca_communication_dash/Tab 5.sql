@@ -57,6 +57,6 @@ count_unique_outreach AS (
 SELECT
   *
 FROM
-  group_outreach_communication_data
-  WHERE who_id IS NOT NULL AND who_id = '0031M00002so9jUQAQ'
+  count_unique_outreach
+  WHERE who_id IS NOT NULL AND who_id = '0034600001TQtymAAD'
   ORDER BY who_id
