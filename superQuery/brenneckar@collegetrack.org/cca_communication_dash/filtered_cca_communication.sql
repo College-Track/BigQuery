@@ -131,6 +131,7 @@ most_recent_outreach AS (
 ),
 prep_com_metrics AS (
   SELECT
+  MRO.who_id,
     MRR.most_recent_reciprocal_date,
     MRR.first_reciprocal_date,
     MRR.num_of_reciprocal_comms,
