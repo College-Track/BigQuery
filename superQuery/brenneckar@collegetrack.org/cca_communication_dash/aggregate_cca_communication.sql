@@ -2,6 +2,7 @@ WITH gather_aggregate_data AS (
   SELECT
     current_enrollment_status_c,
     Most_Recent_GPA_Cumulative_bucket,
+    sort_Most_Recent_GPA_Cumulative_bucket,
     most_recent_gpa_semester_bucket,
     grade_c,
     credit_accumulation_pace_c,
@@ -36,6 +37,7 @@ WITH gather_aggregate_data AS (
     current_enrollment_status_c,
     Most_Recent_GPA_Cumulative_bucket,
     most_recent_gpa_semester_bucket,
+    sort_Most_Recent_GPA_Cumulative_bucket,
     grade_c,
     credit_accumulation_pace_c,
     high_school_graduating_class_c,
