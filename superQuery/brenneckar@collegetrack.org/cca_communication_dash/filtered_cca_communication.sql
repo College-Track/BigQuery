@@ -145,6 +145,10 @@ prep_com_metrics AS (
           MRO.first_outreach_date,
           DAY
         )) AS days_between_today_first_outreach,
+    
+    ABS(
+      DATE_DIFF(MRO.most_recent_outreach_date, CURRENT_DATE, DAY)
+    ) AS days_between_most_recent_outreach,
     ABS(
       DATE_DIFF(
         MRR.most_recent_reciprocal_date,
@@ -152,123 +156,124 @@ prep_com_metrics AS (
         DAY
       )
     ) AS days_between_most_recent_reciprocal,
-    ABS(
-      DATE_DIFF(MRO.most_recent_outreach_date, CURRENT_DATE, DAY)
-    ) AS days_between_most_recent_outreach,
-    -- CASE
-    --   WHEN CUO.num_unique_outreach IS NULL THEN NULL
-    --   WHEN CUO.num_unique_outreach = 1 THEN NULL
-    --   ELSE ABS(
-    --     DATE_DIFF(
-    --       CURRENT_DATE(),
-    --       MRO.first_outreach_date,
-    --       DAY
-    --     )
-    --   ) /(CUO.num_unique_outreach - 1)
-    -- END AS avg_days_between_outreach,
+    
+    
   FROM
     most_recent_outreach MRO
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = MRO.who_id
     LEFT JOIN count_unique_outreach CUO ON CUO.who_id = MRO.who_id
-)
-SELECT *
-FROM prep_com_metrics
+),
 
--- join_data AS (
---   SELECT
---     GD.*,
+join_data AS (
+  SELECT
+    GD.*,
+    PCM.most_recent_reciprocal_date,
+    PCM.first_reciprocal_date,
+    PCM.days_between_most_recent_reciprocal,
+    PCM.num_of_reciprocal_comms,
+    PCM.most_recent_outreach_date,
+    PCM.first_outreach_date,
+    PCM.num_of_outreach_comms,
+    PCM.num_unique_outreach,
+    PCM.days_between_today_first_outreach,
+    PCM.days_between_most_recent_outreach,
+    CASE
+      WHEN PCM.num_unique_outreach IS NULL THEN NULL
+      WHEN PCM.num_unique_outreach = 1 THEN NULL
+      ELSE PCM.days_between_today_first_outreach/(PCM.num_unique_outreach - 1)
+    END AS avg_days_between_outreach
     
+    -- GCD.*
+    --   EXCEPT(who_id),
+    -- CASE
+    --   WHEN MRR.num_of_reciprocal_comms IS NULL THEN NULL
+    --   WHEN MRR.num_of_reciprocal_comms = 1 THEN NULL
+    --   ELSE ABS(
+    --     DATE_DIFF(
+    --       CURRENT_DATE(),
+    --       MRR.first_reciprocal_date,
+    --       DAY
+    --     )
+    --   ) / (MRR.num_of_reciprocal_comms - 1)
+    -- END AS avg_days_between_reciprocal,
+  FROM
+    gather_data GD
+    LEFT JOIN prep_com_metrics PCM ON PCM.who_id = GD.Contact_Id
     
---     -- GCD.*
---     --   EXCEPT(who_id),
---     -- CASE
---     --   WHEN MRR.num_of_reciprocal_comms IS NULL THEN NULL
---     --   WHEN MRR.num_of_reciprocal_comms = 1 THEN NULL
---     --   ELSE ABS(
---     --     DATE_DIFF(
---     --       CURRENT_DATE(),
---     --       MRR.first_reciprocal_date,
---     --       DAY
---     --     )
---     --   ) / (MRR.num_of_reciprocal_comms - 1)
---     -- END AS avg_days_between_reciprocal,
---   FROM
---     gather_data GD
-    
--- ),
--- calc_metrics AS (
---   SELECT
---     *,
---     CASE
---       WHEN days_between_most_recent_reciprocal <= 30 THEN 1
---       ELSE 0
---     END AS reciprocal_30_days_or_less,
---     CASE
---       WHEN days_between_most_recent_reciprocal > 60 THEN 1
---       ELSE 0
---     END AS reciprocal_more_than_60_days,
---     CASE
---       WHEN days_between_most_recent_outreach <= 30 THEN 1
---       ELSE 0
---     END AS outreach_30_days_or_less,
---     CASE
---       WHEN days_between_most_recent_outreach > 60 THEN 1
---       ELSE 0
---     END AS outreach_more_than_60_days,
---     CASE
---       WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
---       WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
---       WHEN days_between_most_recent_reciprocal > 60 THEN "61 +"
---       ELSE "No Data"
---     END AS days_between_reciprocal_bucket,
---     CASE
---       WHEN days_between_most_recent_reciprocal <= 30 THEN 1
---       WHEN days_between_most_recent_reciprocal <= 60 THEN 2
---       WHEN days_between_most_recent_reciprocal > 60 THEN 3
---       ELSE 0
---     END AS sort_days_between_reciprocal_bucket,
---     CASE
---       WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
---       WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
---       WHEN days_between_most_recent_outreach > 60 THEN "61 +"
---       ELSE "No Data"
---     END AS days_between_outreach_bucket,
---     CASE
---       WHEN days_between_most_recent_outreach <= 30 THEN 1
---       WHEN days_between_most_recent_outreach <= 60 THEN 2
---       WHEN days_between_most_recent_outreach > 60 THEN 3
---       ELSE 0
---     END AS sort_days_between_outreach_bucket,
---   FROM
---     join_data
--- ),
--- add_rubric_sections AS (
---   SELECT
---     calc_metrics.*,
---     value.*
---   FROM
---     calc_metrics,
---     UNNEST(
---       `data-warehouse-289815.UDF.unpivot`(calc_metrics, 'sort_Advising_Rubric_')
---     ) value
--- )
--- SELECT
---   *
--- EXCEPT(key, value),
---   value AS rubric_sort,
---   CASE
---     WHEN value IS NULL THEN "No Data"
---     WHEN value = '4' THEN "No Data"
---     WHEN value = '3' THEN "Green"
---     WHEN value = '2' THEN "Yellow"
---     WHEN value = '1' THEN "Red"
---     ELSE "No Data"
---   END AS rubric_section_color,
---   CASE
---     WHEN key = 'sort_Advising_Rubric_Career_Readiness_sort' THEN "Career"
---     WHEN key = 'sort_Advising_Rubric_Wellness_sort' THEN 'Wellness'
---     WHEN key = 'sort_Advising_Rubric_Financial_Success_sort' THEN "Finance"
---     WHEN key = 'sort_Advising_Rubric_Academic_Readiness_sort' THEN "Academic"
---   END AS rubric_section
--- FROM
---   add_rubric_sections
+),
+calc_metrics AS (
+  SELECT
+    *,
+    CASE
+      WHEN days_between_most_recent_reciprocal <= 30 THEN 1
+      ELSE 0
+    END AS reciprocal_30_days_or_less,
+    CASE
+      WHEN days_between_most_recent_reciprocal > 60 THEN 1
+      ELSE 0
+    END AS reciprocal_more_than_60_days,
+    CASE
+      WHEN days_between_most_recent_outreach <= 30 THEN 1
+      ELSE 0
+    END AS outreach_30_days_or_less,
+    CASE
+      WHEN days_between_most_recent_outreach > 60 THEN 1
+      ELSE 0
+    END AS outreach_more_than_60_days,
+    CASE
+      WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
+      WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
+      WHEN days_between_most_recent_reciprocal > 60 THEN "61 +"
+      ELSE "No Data"
+    END AS days_between_reciprocal_bucket,
+    CASE
+      WHEN days_between_most_recent_reciprocal <= 30 THEN 1
+      WHEN days_between_most_recent_reciprocal <= 60 THEN 2
+      WHEN days_between_most_recent_reciprocal > 60 THEN 3
+      ELSE 0
+    END AS sort_days_between_reciprocal_bucket,
+    CASE
+      WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
+      WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
+      WHEN days_between_most_recent_outreach > 60 THEN "61 +"
+      ELSE "No Data"
+    END AS days_between_outreach_bucket,
+    CASE
+      WHEN days_between_most_recent_outreach <= 30 THEN 1
+      WHEN days_between_most_recent_outreach <= 60 THEN 2
+      WHEN days_between_most_recent_outreach > 60 THEN 3
+      ELSE 0
+    END AS sort_days_between_outreach_bucket,
+  FROM
+    join_data
+),
+add_rubric_sections AS (
+  SELECT
+    calc_metrics.*,
+    value.*
+  FROM
+    calc_metrics,
+    UNNEST(
+      `data-warehouse-289815.UDF.unpivot`(calc_metrics, 'sort_Advising_Rubric_')
+    ) value
+)
+SELECT
+  *
+EXCEPT(key, value),
+  value AS rubric_sort,
+  CASE
+    WHEN value IS NULL THEN "No Data"
+    WHEN value = '4' THEN "No Data"
+    WHEN value = '3' THEN "Green"
+    WHEN value = '2' THEN "Yellow"
+    WHEN value = '1' THEN "Red"
+    ELSE "No Data"
+  END AS rubric_section_color,
+  CASE
+    WHEN key = 'sort_Advising_Rubric_Career_Readiness_sort' THEN "Career"
+    WHEN key = 'sort_Advising_Rubric_Wellness_sort' THEN 'Wellness'
+    WHEN key = 'sort_Advising_Rubric_Financial_Success_sort' THEN "Finance"
+    WHEN key = 'sort_Advising_Rubric_Academic_Readiness_sort' THEN "Academic"
+  END AS rubric_section
+FROM
+  add_rubric_sections
