@@ -6,6 +6,7 @@ WITH gather_data AS(
     current_enrollment_status_c,
     Current_school_name,
     Most_Recent_GPA_Cumulative_bucket,
+    sort_Most_Recent_GPA_Cumulative_bucket,
     most_recent_gpa_semester_bucket,
     grade_c,
     credit_accumulation_pace_c,
@@ -223,7 +224,7 @@ calc_metrics AS (
     CASE
       WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
       WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
-      WHEN days_between_most_recent_reciprocal > 60 THEN "61 +"
+      WHEN days_between_most_recent_reciprocal > 60 THEN "61+ Days"
       ELSE "No Data"
     END AS days_between_reciprocal_bucket,
     CASE
@@ -235,7 +236,7 @@ calc_metrics AS (
     CASE
       WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
       WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
-      WHEN days_between_most_recent_outreach > 60 THEN "61 +"
+      WHEN days_between_most_recent_outreach > 60 THEN "61+ Days"
       ELSE "No Data"
     END AS days_between_outreach_bucket,
     CASE
