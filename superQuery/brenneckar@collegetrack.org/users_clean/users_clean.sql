@@ -42,5 +42,5 @@ UNION ALL
   )
   )
   
-SELECT count(email), count(distinct(email))
+SELECT *
 FROM union_data
