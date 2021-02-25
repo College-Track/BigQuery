@@ -276,7 +276,7 @@ calc_metrics AS (
       WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
       WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
       WHEN days_between_most_recent_reciprocal > 60 THEN "61+ Days"
-      ELSE "No Valid Reciprocal"
+      ELSE "No Reciprocal"
     END AS days_between_reciprocal_bucket,
     CASE
       WHEN days_between_most_recent_reciprocal <= 30 THEN 1
@@ -288,7 +288,7 @@ calc_metrics AS (
       WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
       WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
       WHEN days_between_most_recent_outreach > 60 THEN "61+ Days"
-      ELSE "No Valid Outreach"
+      ELSE "No Outreaches"
     END AS days_between_outreach_bucket,
     CASE
       WHEN days_between_most_recent_outreach <= 30 THEN 1
