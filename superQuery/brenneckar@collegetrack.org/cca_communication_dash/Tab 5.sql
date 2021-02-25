@@ -66,4 +66,4 @@ SELECT
 FROM
   gather_communication_data
   WHERE who_id IS NOT NULL
-  ORDER BY who_id
+  ORDER BY date_of_contact_c
