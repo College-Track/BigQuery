@@ -79,12 +79,24 @@ gather_all_communication_data AS (
 ),
 gather_communication_data AS (
   SELECT
-    *
+    GACD.*
   FROM
-    gather_all_communication_data
+    gather_all_communication_data GACD
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.Contact_Id = who_id
   WHERE
-    date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
-    AND CURRENT_DATE()
+    CAT.current_as_c = true
+    AND (
+      (
+        CAT.grade_c != "Year 1"
+        AND date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
+        AND CURRENT_DATE()
+      )
+      OR (
+        CAT.grade_c = "Year 1"
+        AND date_of_contact_c BETWEEN DATE_SUB(CAT.AY_Start_Date, INTERVAL 90 DAY)
+        AND CURRENT_DATE()
+      )
+    )
 ),
 group_outreach_communication_data AS (
   SELECT
@@ -132,7 +144,7 @@ most_recent_outreach AS (
 ),
 prep_com_metrics AS (
   SELECT
-  MRO.who_id,
+    MRO.who_id,
     MRR.most_recent_reciprocal_date,
     MRR.first_reciprocal_date,
     MRR.num_of_reciprocal_comms,
@@ -141,12 +153,12 @@ prep_com_metrics AS (
     MRO.num_of_outreach_comms,
     CUO.num_unique_outreach,
     ABS(
-        DATE_DIFF(
-          CURRENT_DATE(),
-          MRO.first_outreach_date,
-          DAY
-        )) AS days_between_today_first_outreach,
-    
+      DATE_DIFF(
+        CURRENT_DATE(),
+        MRO.first_outreach_date,
+        DAY
+      )
+    ) AS days_between_today_first_outreach,
     ABS(
       DATE_DIFF(MRO.most_recent_outreach_date, CURRENT_DATE, DAY)
     ) AS days_between_most_recent_outreach,
@@ -157,14 +169,11 @@ prep_com_metrics AS (
         DAY
       )
     ) AS days_between_most_recent_reciprocal,
-    
-    
   FROM
     most_recent_outreach MRO
     LEFT JOIN most_recent_reciprocal MRR ON MRR.who_id = MRO.who_id
     LEFT JOIN count_unique_outreach CUO ON CUO.who_id = MRO.who_id
 ),
-
 join_data AS (
   SELECT
     GD.*,
@@ -181,10 +190,8 @@ join_data AS (
     CASE
       WHEN PCM.num_unique_outreach IS NULL THEN NULL
       WHEN PCM.num_unique_outreach = 1 THEN NULL
-      ELSE PCM.days_between_today_first_outreach/(PCM.num_unique_outreach - 1)
-    END AS avg_days_between_outreach
-    
-    -- GCD.*
+      ELSE PCM.days_between_today_first_outreach /(PCM.num_unique_outreach - 1)
+    END AS avg_days_between_outreach -- GCD.*
     --   EXCEPT(who_id),
     -- CASE
     --   WHEN MRR.num_of_reciprocal_comms IS NULL THEN NULL
@@ -200,7 +207,6 @@ join_data AS (
   FROM
     gather_data GD
     LEFT JOIN prep_com_metrics PCM ON PCM.who_id = GD.Contact_Id
-    
 ),
 calc_metrics AS (
   SELECT
