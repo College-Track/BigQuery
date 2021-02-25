@@ -17,7 +17,8 @@ WITH gather_all_communication_data AS (
 ),
 gather_communication_data AS (
   SELECT
-    *
+    *,
+    CAT.AY_Start_Date
   FROM
     gather_all_communication_data
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.Contact_Id = who_id
@@ -27,7 +28,7 @@ gather_communication_data AS (
   CAT.current_as_c = true AND (CAT.grade_c != "Year 1" AND 
     date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
     AND CURRENT_DATE()) OR (CAT.grade_c = "Year 1" AND 
-    date_of_contact_c BETWEEN '2020-12-01'
+    date_of_contact_c BETWEEN DATE_SUB(CAT.AY_Start_Date, INTERVAL 90 DAY)
     AND CURRENT_DATE())
 ),
 group_outreach_communication_data AS (
