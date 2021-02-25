@@ -17,18 +17,19 @@ WITH gather_all_communication_data AS (
 ),
 gather_communication_data AS (
   SELECT
-    *
+    GACD.*,
+    CAT.AY_Start_Date
   FROM
-    gather_all_communication_data
+    gather_all_communication_data GACD
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.Contact_Id = who_id
   WHERE
 --   date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
 --     AND CURRENT_DATE()
-  CAT.current_as_c = true AND (CAT.grade_c != "Year 1" AND 
+  CAT.current_as_c = true AND ((CAT.grade_c != "Year 1" AND 
     date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
     AND CURRENT_DATE()) OR (CAT.grade_c = "Year 1" AND 
-    date_of_contact_c BETWEEN '2019-12-01'
-    AND CURRENT_DATE())
+    date_of_contact_c BETWEEN DATE_SUB(CAT.AY_Start_Date, INTERVAL 90 DAY)
+    AND CURRENT_DATE()))
 ),
 group_outreach_communication_data AS (
   SELECT
@@ -64,5 +65,5 @@ SELECT
   *
 FROM
   gather_communication_data
-  WHERE who_id IS NOT NULL
-  ORDER BY who_id
+  WHERE who_id IS NOT NULL AND who_id ='0034600001TQt1kAAD'
+  ORDER BY date_of_contact_c ASC
