@@ -79,6 +79,7 @@ gather_all_communication_data AS (
     type
   FROM
     `data-warehouse-289815.salesforce.task`
+    WHERE subject NOT LIKE '%List Email%'
 ),
 gather_communication_data AS (
   SELECT
