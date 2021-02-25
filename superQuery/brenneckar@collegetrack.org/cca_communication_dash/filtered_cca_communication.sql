@@ -9,7 +9,10 @@ WITH gather_data AS(
     sort_Most_Recent_GPA_Cumulative_bucket,
     most_recent_gpa_semester_bucket,
     grade_c,
-    credit_accumulation_pace_c,
+    CASE
+      WHEN credit_accumulation_pace_c IS NULL THEN "No Data"
+      ELSE credit_accumulation_pace_c
+    END AS credit_accumulation_pace_c,
     high_school_graduating_class_c,
     credits_accumulated_most_recent_c,
     anticipated_date_of_graduation_ay_c,
@@ -231,7 +234,7 @@ calc_metrics AS (
       WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
       WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
       WHEN days_between_most_recent_reciprocal > 60 THEN "61+ Days"
-      ELSE "No Data"
+      ELSE "No Valid Reciprocal Communication"
     END AS days_between_reciprocal_bucket,
     CASE
       WHEN days_between_most_recent_reciprocal <= 30 THEN 1
@@ -243,7 +246,7 @@ calc_metrics AS (
       WHEN days_between_most_recent_outreach <= 30 THEN "30 Days or Less"
       WHEN days_between_most_recent_outreach <= 60 THEN "60 Days or Less"
       WHEN days_between_most_recent_outreach > 60 THEN "61+ Days"
-      ELSE "No Data"
+      ELSE "No Valid Outreach"
     END AS days_between_outreach_bucket,
     CASE
       WHEN days_between_most_recent_outreach <= 30 THEN 1
@@ -251,6 +254,14 @@ calc_metrics AS (
       WHEN days_between_most_recent_outreach > 60 THEN 3
       ELSE 0
     END AS sort_days_between_outreach_bucket,
+    CASE
+      WHEN credit_accumulation_pace_c IS NULL THEN 0
+      WHEN credit_accumulation_pace_c = '4-Year Track' THEN 1
+      WHEN credit_accumulation_pace_c = '5-Year Track' THEN 2
+      WHEN credit_accumulation_pace_c = '6-Year Track' THEN 3
+      WHEN credit_accumulation_pace_c = '6+ Years' THEN 4
+      ELSE 0
+    END AS sort_credit_accumulation_pace_c,
   FROM
     join_data
 ),
