@@ -25,11 +25,11 @@ gather_communication_data AS (
   WHERE
 --   date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
 --     AND CURRENT_DATE()
-  CAT.current_as_c = true AND (CAT.grade_c != "Year 1" AND 
+  CAT.current_as_c = true AND ((CAT.grade_c != "Year 1" AND 
     date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
     AND CURRENT_DATE()) OR (CAT.grade_c = "Year 1" AND 
     date_of_contact_c BETWEEN DATE_SUB(CAT.AY_Start_Date, INTERVAL 90 DAY)
-    AND CURRENT_DATE())
+    AND CURRENT_DATE()))
 ),
 group_outreach_communication_data AS (
   SELECT
