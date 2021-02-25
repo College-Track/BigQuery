@@ -239,7 +239,7 @@ calc_metrics AS (
       WHEN days_between_most_recent_reciprocal <= 60 THEN "46-60 Days"
       WHEN days_between_most_recent_reciprocal <= 90 THEN "61-90 Days"
       WHEN days_between_most_recent_reciprocal > 90 THEN "90+ Days"
-      ELSE "No Valid Reciprocal"
+      ELSE "No Reciprocal"
     END AS days_between_reciprocal_bucket_granual,
     CASE
       WHEN days_between_most_recent_reciprocal <= 7 THEN 1
@@ -259,7 +259,7 @@ calc_metrics AS (
       WHEN days_between_most_recent_outreach <= 60 THEN "46-60 Days"
       WHEN days_between_most_recent_outreach <= 90 THEN "61-90 Days"
       WHEN days_between_most_recent_outreach > 90 THEN "90+ Days"
-      ELSE "No Valid Outreach"
+      ELSE "No Outreaches"
     END AS days_between_outreach_bucket_granual,
     CASE
       WHEN days_between_most_recent_outreach <= 7 THEN 1
