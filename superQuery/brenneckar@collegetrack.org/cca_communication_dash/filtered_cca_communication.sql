@@ -230,6 +230,48 @@ calc_metrics AS (
       WHEN days_between_most_recent_outreach > 60 THEN 1
       ELSE 0
     END AS outreach_more_than_60_days,
+    
+     CASE
+      WHEN days_between_most_recent_reciprocal <= 7 THEN "7 Days or Less"
+      WHEN days_between_most_recent_reciprocal <= 14 THEN "8 - 14 Days"
+      WHEN days_between_most_recent_reciprocal <= 30 THEN "15 - 30 Days"
+      WHEN days_between_most_recent_reciprocal <= 45 THEN "31 - 45 Days"
+      WHEN days_between_most_recent_reciprocal <= 60 THEN "46 - 60 Days"
+      WHEN days_between_most_recent_reciprocal <= 90 THEN "61 - 90 Days"
+      WHEN days_between_most_recent_reciprocal > 90 THEN "90+ Days"
+      ELSE "No Valid Reciprocal Communication"
+    END AS days_between_reciprocal_bucket_granual,
+    CASE
+      WHEN days_between_most_recent_reciprocal <= 7 THEN 1
+      WHEN days_between_most_recent_reciprocal <= 14 THEN 2
+      WHEN days_between_most_recent_reciprocal <= 30 THEN 3
+      WHEN days_between_most_recent_reciprocal <= 45 THEN 4
+      WHEN days_between_most_recent_reciprocal <= 60 THEN 5
+      WHEN days_between_most_recent_reciprocal <= 90 THEN 6
+      WHEN days_between_most_recent_reciprocal > 90 THEN 7
+      ELSE 0
+    END AS sort_days_between_reciprocal_bucket_granual,
+        CASE
+      WHEN days_between_most_recent_outreach <= 7 THEN "7 Days or Less"
+      WHEN days_between_most_recent_outreach <= 14 THEN "8 - 14 Days"
+      WHEN days_between_most_recent_outreach <= 30 THEN "15 - 30 Days"
+      WHEN days_between_most_recent_outreach <= 45 THEN "31 - 45 Days"
+      WHEN days_between_most_recent_outreach <= 60 THEN "46 - 60 Days"
+      WHEN days_between_most_recent_outreach <= 90 THEN "61 - 90 Days"
+      WHEN days_between_most_recent_outreach > 90 THEN "90+ Days"
+      ELSE "No Valid Outreach"
+    END AS days_between_outreach_bucket_granual,
+    CASE
+      WHEN days_between_most_recent_outreach <= 7 THEN 1
+      WHEN days_between_most_recent_outreach <= 14 THEN 2
+      WHEN days_between_most_recent_outreach <= 30 THEN 3
+      WHEN days_between_most_recent_outreach <= 45 THEN 4
+      WHEN days_between_most_recent_outreach <= 60 THEN 5
+      WHEN days_between_most_recent_outreach <= 90 THEN 6
+      WHEN days_between_most_recent_outreach > 90 THEN 7
+      ELSE 0
+    END AS sort_days_between_outreach_bucket_granual,
+    
     CASE
       WHEN days_between_most_recent_reciprocal <= 30 THEN "30 Days or Less"
       WHEN days_between_most_recent_reciprocal <= 60 THEN "60 Days or Less"
