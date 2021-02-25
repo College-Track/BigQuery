@@ -20,9 +20,11 @@ gather_communication_data AS (
     *
   FROM
     gather_all_communication_data
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.Contact_Id = who_id
   WHERE
+  CAT.current_as_c = true AND (CAT.grade_c != "Year 1" AND 
     date_of_contact_c BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY)
-    AND CURRENT_DATE()
+    AND CURRENT_DATE())
 ),
 group_outreach_communication_data AS (
   SELECT
@@ -57,6 +59,6 @@ count_unique_outreach AS (
 SELECT
   *
 FROM
-  count_unique_outreach
-  WHERE who_id IS NOT NULL AND who_id = '0031M00002so9jUQAQ'
+  gather_communication_data
+  WHERE who_id IS NOT NULL
   ORDER BY who_id
