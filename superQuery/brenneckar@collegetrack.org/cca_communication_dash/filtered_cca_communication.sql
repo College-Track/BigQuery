@@ -1,6 +1,7 @@
 WITH gather_data AS(
   SELECT
     Contact_Id,
+    contact_url,
     full_name_c,
     current_cc_advisor_2_c,
     current_enrollment_status_c,
