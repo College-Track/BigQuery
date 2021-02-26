@@ -5,15 +5,16 @@ WITH gather_student_data AS (
     College_Track_Status_Name,
     high_school_graduating_class_c,
     grade_c,
-    full_name_c,
-    -- CASE
-    -- --   WHEN full_name_c = 'Daniel Aguilar' THEN 'baker.renneckar.test@gmail.com'
-    -- --   WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
-    -- --   WHEN full_name_c = 'Sonia Esteva' THEN'soniaesteva_23@sfuhs.org'
-
-    --   ELSE email
-    -- END AS email,
-    email,
+    CASE
+      WHEN full_name_c = 'Daniel Aguilar' THEN 'Test Student'
+      ELSE full_name_c
+    END AS full_name_c,
+    CASE
+      WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org' -- --   WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
+      -- --   WHEN full_name_c = 'Sonia Esteva' THEN'soniaesteva_23@sfuhs.org'
+      ELSE email
+    END AS email,
+    -- email,
     Most_Recent_GPA_Cumulative_c,
     most_recent_gpa_semester_c,
     total_bank_book_balance_contact_c,
@@ -105,7 +106,6 @@ EXCEPT
   U.name AS workshop_staff,
   U.email AS workshop_staff_email,
   GS.url as google_site_url
- 
 FROM
   gather_student_data GSD
   LEFT JOIN gather_workshop_data GWD ON GSD.Contact_Id = GWD.Student_c
