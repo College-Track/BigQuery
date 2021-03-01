@@ -162,6 +162,14 @@ SELECT
         group by app2.student_c
         ) AS  contact_id_applied_4_year,
         
+        (SELECT app2.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app.student_c=app2.student_c
+        AND admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+        group by app2.student_c
+        ) AS  contact_id_accepted,
+        
+    
         (SELECT app2.college_fit_type_applied_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE application_status_c = "Applied"
@@ -278,7 +286,7 @@ SELECT
     
     
     #accepted_data 
-    contact_id_accepted,
+    #contact_id_accepted,
     school_name_accepted,
     college_accepted_app_id,
     accepted,
