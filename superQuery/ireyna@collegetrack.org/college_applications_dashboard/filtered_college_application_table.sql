@@ -167,7 +167,7 @@ SELECT
         WHERE app.student_c=app2.student_c
         AND admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
         group by app2.student_c
-        ) AS  contact_id_accepted,
+        ) AS  contact_id_accepted_2,
         
     
         (SELECT app2.college_fit_type_applied_c
