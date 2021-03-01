@@ -185,13 +185,6 @@ SELECT
         AND acc2.college_accepted_app_id=app.id
         group by acc2.fit_type_accepted, acc2.college_accepted_app_id
         ) AS  fit_type_accepted_tight,
-        
-        (SELECT app2.student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
-        WHERE app.student_c=app2.student_c
-        AND app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
-        group by app2.student_c
-        ) AS  contact_id_accepted_2,
 
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
@@ -213,6 +206,14 @@ SELECT
         AND app2.admission_status_c = "Accepted and Enrolled"
         group by app2.student_c
         ) AS  contact_id_enrolled_4_year,
+        
+          (SELECT app2.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app.student_c=app2.student_c
+        AND app2.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+        AND app.id = app2.id
+        group by app2.student_c
+        ) AS  contact_id_accepted_2,
         
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
@@ -294,7 +295,6 @@ SELECT
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id  
-        
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.contact_id_accepted
 
@@ -313,7 +313,7 @@ SELECT
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
         ELSE college_name_on_app_for_case_statement 
-    END AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
+    END AS t, #Tigher College Name filter. Top filter on Admissions & Enrollment page
     
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
