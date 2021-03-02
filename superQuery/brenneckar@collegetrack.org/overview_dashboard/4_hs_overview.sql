@@ -27,7 +27,7 @@ WITH calculate_metrics AS(
     END AS met_college_app_goal,
     CASE
       WHEN valid_gpa_status = 'Current CT HS Student'
-      OR valid_gpa_status = 'Leave of Absence' THEN 1
+      OR valid_gpa_status = 'Leave of Absence'OR valid_gpa_status = 'Onboarding' THEN 1
       ELSE 0
     END AS count_gpa,
     CASE WHEN valid_gpa >= 3.25 THEN 1
