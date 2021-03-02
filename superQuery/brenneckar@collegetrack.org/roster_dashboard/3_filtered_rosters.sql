@@ -200,7 +200,7 @@ most_recent_complete_at_gpa AS (
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
-    GAS_Name LIKE '%Spring 2019-20%'
+    GAS_Name LIKE '%Fall 2020-21%'
 ),
 final_prep AS (
   SELECT
