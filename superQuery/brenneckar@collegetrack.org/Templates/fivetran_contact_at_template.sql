@@ -409,7 +409,47 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
   SELECT
     VSC.*,
     MRO.most_recent_outreach,
-    MRR.most_recent_reciprocal
+    CASE
+      WHEN MRO.most_recent_outreach IS NULL THEN "No Data"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        MRO.most_recent_outreach,
+        DAY
+      ) <= 30 THEN "Less than 30 Days"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        MRO.most_recent_outreach,
+        DAY
+      ) <= 60 THEN "31 - 60 Days"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        MRO.most_recent_outreach,
+        DAY
+      ) > 60 THEN "61+ Days"
+    END AS most_recent_outreach_bucket,
+    
+    
+    
+    MRR.most_recent_reciprocal,
+        CASE
+      WHEN MRR.most_recent_reciprocal IS NULL THEN "No Data"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        MRR.most_recent_reciprocal,
+        DAY
+      ) <= 30 THEN "Less than 30 Days"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        MRR.most_recent_reciprocal,
+        DAY
+      ) <= 60 THEN "31 - 60 Days"
+      WHEN DATE_DIFF(
+        CURRENT_DATE(),
+        MRR.most_recent_reciprocal,
+        DAY
+      ) > 60 THEN "61+ Days"
+    END AS most_recent_reciprocal_bucket,
+    
   FROM
     ValidStudentContact_new_fields VSC
     LEFT JOIN most_recent_outreach MRO ON MRO.who_id = VSC.Contact_Id
