@@ -13,7 +13,13 @@ WITH gather_all_communication_data AS (
   
   
   SELECT
-    who_id, MAX(date_of_contact_c)
+    who_id, (SELECT
+      MAX(date_of_contact_c) AS most_recent_outreach
+      FROM
+        gather_all_communication_data
+      GROUP BY
+        who_id
+    )
   FROM
     gather_all_communication_data
   GROUP BY
