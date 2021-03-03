@@ -60,7 +60,7 @@ WITH gather_data AS (
     LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_AT ON Prev_Prev_AT.id = Prev_AT.Previous_Academic_Semester_c
     LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_Prev_AT ON Prev_Prev_Prev_AT.id = Prev_Prev_AT.Previous_Academic_Semester_c
   WHERE
-    CAT.college_track_status_c IN ('11A', '12A')
+    CAT.college_track_status_c IN ('11A')
     AND CAT.student_audit_status_c IN ('Current CT HS Student', 'Leave of Absence', 'Onboarding', 'Prior to joining CT HS Program')
     AND CAT.term_c != 'Summer'
     AND CAT.GAS_End_Date <= CURRENT_DATE()
