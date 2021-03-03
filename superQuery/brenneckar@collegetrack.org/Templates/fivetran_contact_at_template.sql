@@ -15,7 +15,8 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
   WITH ValidStudentContact AS (
     SELECT
       C.Id AS Contact_Id,
-      C.GPA_Cumulative_c AS college_eligibility_gpa_11th_grade, -- want to rename to college_eligibility_gpa_11th_grade when ready
+      C.GPA_Cumulative_c AS college_eligibility_gpa_11th_grade,
+      -- want to rename to college_eligibility_gpa_11th_grade when ready
       C.*
     EXCEPT
       (
@@ -35,6 +36,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         Current_School_c,
         Current_School_Type_c,
         first_generation_fy_20_c,
+        credit_accumulation_pace_c,
         --   Community_Service_On_Track_c,
         most_recent_gpa_semester_c,
         Most_Recent_GPA_Cumulative_c,
@@ -237,6 +239,10 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         ELSE NULL
       END AS Most_Recent_GPA_Cumulative_c,
       C_AT.enrollment_status_c AS current_enrollment_status_c,
+      CASE
+        WHEN credit_accumulation_pace_c IS NULL THEN "No Data"
+        ELSE credit_accumulation_pace_c
+      END AS credit_accumulation_pace_c,
       -- Creating New Fields
       CASE
         WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN "4-Year"
@@ -319,6 +325,14 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         WHEN co_vitality_scorecard_color_most_recent_c = "Green" THEN 3
         ELSE 0
       END AS sort_covitality,
+      CASE
+        WHEN credit_accumulation_pace_c IS NULL THEN 0
+        WHEN credit_accumulation_pace_c = '4-Year Track' THEN 1
+        WHEN credit_accumulation_pace_c = '5-Year Track' THEN 2
+        WHEN credit_accumulation_pace_c = '6-Year Track' THEN 3
+        WHEN credit_accumulation_pace_c = '6+ Years' THEN 4
+        ELSE 0
+      END AS sort_credit_accumulation_pace_c
     FROM
       `data-warehouse-289815.salesforce.contact` C
       LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT ON C.record_type_id = RT.Id -- Left join from Contact on to Account for Site
@@ -328,7 +342,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
       LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` C_AT ON C_AT.id = C.current_academic_semester_c
       LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_AT ON Prev_AT.id = C_AT.Previous_Academic_Semester_c
       LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_AT ON Prev_Prev_AT.id = Prev_AT.Previous_Academic_Semester_c
-      LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_Prev_AT ON Prev_Prev_Prev_AT.id = Prev_Prev_AT.Previous_Academic_Semester_c    
+      LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_Prev_AT ON Prev_Prev_Prev_AT.id = Prev_Prev_AT.Previous_Academic_Semester_c
       LEFT JOIN `data-warehouse-289815.salesforce.account` A_school ON C_AT.School_c = A_school.Id
     WHERE
       -- Filter out test records from the Contact object
@@ -366,8 +380,10 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       A.record_type_id AS AT_RecordType_ID,
       A.Enrollment_Status_c AS AT_Enrollment_Status_c,
       A.Grade_c AS AT_Grade_c,
-      A.GPA_semester_c AS AT_Term_GPA, -- want to rename to AT_Term_GPA when ready
-      A.GPA_semester_cumulative_c AS AT_Cumulative_GPA, -- want to rename to AT_Cumulative_GPA when ready
+      A.GPA_semester_c AS AT_Term_GPA,
+      -- want to rename to AT_Term_GPA when ready
+      A.GPA_semester_cumulative_c AS AT_Cumulative_GPA,
+      -- want to rename to AT_Cumulative_GPA when ready
       A.*
     EXCEPT(
         Id,
@@ -413,12 +429,43 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       `data-warehouse-289815.UDF.determine_buckets`(A.GPA_semester_c,.25, 2.5, 3.75, "") AS AT_Term_GPA_bucket,
       `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_c,.25, 2.5, 3.75) AS sort_AT_Term_GPA_bucket,
       `data-warehouse-289815.UDF.determine_buckets`(A.GPA_semester_cumulative_c,.25, 2.5, 3.75, "") AS AT_Cumulative_GPA_bucket,
-      `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_cumulative_c,.25, 2.5, 3.75) AS sort_AT_Cumulative_GPA,      
+      `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_cumulative_c,.25, 2.5, 3.75) AS sort_AT_Cumulative_GPA,
       CASE
         WHEN CURRENT_DATE() >= GAS.start_date_c
         AND CURRENT_DATE() <= GAS.end_date_c THEN true
         ELSE false
-      END AS current_as_c
+      END AS current_as_c,
+      CASE
+        WHEN advising_rubric_financial_success_v_2_c = "Red" THEN 1
+        WHEN advising_rubric_financial_success_v_2_c = "Yellow" THEN 2
+        WHEN advising_rubric_financial_success_v_2_c = "Green" THEN 3
+        ELSE 4
+      END AS sort_Advising_Rubric_Financial_Success_sort,
+      CASE
+        WHEN advising_rubric_academic_readiness_v_2_c = "Red" THEN 1
+        WHEN advising_rubric_academic_readiness_v_2_c = "Yellow" THEN 2
+        WHEN advising_rubric_academic_readiness_v_2_c = "Green" THEN 3
+        ELSE 4
+      END AS sort_Advising_Rubric_Academic_Readiness_sort,
+      CASE
+        WHEN advising_rubric_career_readiness_v_2_c = "Red" THEN 1
+        WHEN advising_rubric_career_readiness_v_2_c = "Yellow" THEN 2
+        WHEN advising_rubric_career_readiness_v_2_c = "Green" THEN 3
+        ELSE 4
+      END AS sort_Advising_Rubric_Career_Readiness_sort,
+      CASE
+        WHEN advising_rubric_wellness_v_2_c = "Red" THEN 1
+        WHEN advising_rubric_wellness_v_2_c = "Yellow" THEN 2
+        WHEN advising_rubric_wellness_v_2_c = "Green" THEN 3
+        ELSE 4
+      END AS sort_Advising_Rubric_Wellness_sort,
+      CASE
+        WHEN credits_accumulated_most_recent_c IS NULL THEN "Frosh"
+        WHEN credits_accumulated_most_recent_c < 25 THEN "Frosh"
+        WHEN credits_accumulated_most_recent_c < 50 THEN "Sophomore"
+        WHEN credits_accumulated_most_recent_c < 75 THEN "Junior"
+        WHEN credits_accumulated_most_recent_c >= 75 THEN "Senior"
+      END AS college_class
     FROM
       `data-warehouse-289815.salesforce.academic_semester_c` A
       LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT ON A.record_type_id = RT.Id -- Left join from Contact on to Account for Site
