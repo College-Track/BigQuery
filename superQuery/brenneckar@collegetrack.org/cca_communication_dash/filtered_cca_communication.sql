@@ -23,10 +23,10 @@ WITH gather_data AS(
     region_short,
     region_abrev,
     school_type,
-    advising_rubric_academic_readiness_v_2_c AS Advising_Rubric_Academic_Readiness_c,
-    advising_rubric_career_readiness_v_2_c AS Advising_Rubric_Career_Readiness_c,
-    advising_rubric_financial_success_v_2_c AS Advising_Rubric_Financial_Success_c,
-    advising_rubric_wellness_v_2_c AS Advising_Rubric_Wellness_,
+    advising_rubric_academic_readiness_v_2_c,
+    advising_rubric_career_readiness_v_2_c,
+    advising_rubric_financial_success_v_2_c,
+    advising_rubric_wellness_v_2_c,
     CASE
       WHEN advising_rubric_financial_success_v_2_c = "Red" THEN 1
       WHEN advising_rubric_financial_success_v_2_c = "Yellow" THEN 2
