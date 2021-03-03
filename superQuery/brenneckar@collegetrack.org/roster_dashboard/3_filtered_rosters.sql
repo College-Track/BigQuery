@@ -46,49 +46,9 @@ WITH gather_data AS (
       WHEN ABS(Years_Since_HS_Grad_c) = 2 THEN 6 + (Year_Fraction_Since_HS_Grad_c /.33)
       WHEN ABS(Years_Since_HS_Grad_c) = 1 THEN 9 + (Year_Fraction_Since_HS_Grad_c /.33)
     END AS term_number,
-    CASE
-      WHEN (
-        advising_rubric_academic_readiness_v_2_c = "Red"
-        OR advising_rubric_career_readiness_v_2_c = 'Red'
-        OR advising_rubric_financial_success_v_2_c = "Red"
-        OR advising_rubric_wellness_v_2_c = "Red"
-      ) THEN "Red"
-      WHEN (
-        advising_rubric_academic_readiness_v_2_c = "Yellow"
-        OR advising_rubric_career_readiness_v_2_c = 'Yellow'
-        OR advising_rubric_financial_success_v_2_c = "Yellow"
-        OR advising_rubric_wellness_v_2_c = "Yellow"
-      ) THEN "Yellow"
-      WHEN (
-        advising_rubric_academic_readiness_v_2_c = "Green"
-        OR advising_rubric_career_readiness_v_2_c = 'Green'
-        OR advising_rubric_financial_success_v_2_c = "Green"
-        OR advising_rubric_wellness_v_2_c = "Green"
-      ) THEN "Green"
-      ELSE "No Data"
-    END AS Overall_Rubric_Color,
-    CASE
-      WHEN Credit_Accumulation_Pace_c IS NULL THEN "No Data"
-      ELSE Credit_Accumulation_Pace_c
-    END AS Credit_Accumulation_Pace_c,
-    CASE
-      WHEN Latest_Reciprocal_Communication_Date_c IS NULL THEN "No Data"
-      WHEN DATE_DIFF(
-        CURRENT_DATE(),
-        Latest_Reciprocal_Communication_Date_c,
-        DAY
-      ) <= 30 THEN "Less than 30 Days"
-      WHEN DATE_DIFF(
-        CURRENT_DATE(),
-        Latest_Reciprocal_Communication_Date_c,
-        DAY
-      ) <= 60 THEN "30 - 60 Days"
-      WHEN DATE_DIFF(
-        CURRENT_DATE(),
-        Latest_Reciprocal_Communication_Date_c,
-        DAY
-      ) > 60 THEN "60+ Days"
-    END AS last_contact_range,
+    Overall_Rubric_Color,
+    Credit_Accumulation_Pace_c,
+    most_recent_outreach_bucket AS last_contact_range,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
     LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` A_S ON A_S.Id = CAT.anticipated_date_of_graduation_4_year_c
