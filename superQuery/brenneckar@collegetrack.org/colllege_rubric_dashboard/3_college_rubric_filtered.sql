@@ -12,13 +12,8 @@ WITH contact_at AS (
     GAS_Name,
     school_type,
     Current_school_name,
-    CASE
-      WHEN Advising_Rubric_Credits_Accumlated_c IS NULL THEN "Frosh"
-      WHEN Advising_Rubric_Credits_Accumlated_c < 25 THEN "Frosh"
-      WHEN Advising_Rubric_Credits_Accumlated_c < 50 THEN "Sophomore"
-      WHEN Advising_Rubric_Credits_Accumlated_c < 75 THEN "Junior"
-      WHEN Advising_Rubric_Credits_Accumlated_c >= 75 THEN "Senior"
-    END AS college_class,
+    college_class,
+
     CASE
       WHEN Latest_Reciprocal_Communication_Date_c IS NULL THEN "No Data"
       WHEN DATE_DIFF(
@@ -71,27 +66,7 @@ WITH contact_at AS (
       WHEN Most_Recent_GPA_Cumulative_c >= 3.5 THEN "3.5+"
       ELSE "Missing"
     END AS Most_Recent_GPA_Cumulative_bucket,
-    CASE
-      WHEN (
-        advising_rubric_academic_readiness_v_2_c = "Red"
-        OR advising_rubric_career_readiness_v_2_c = 'Red'
-        OR advising_rubric_financial_success_v_2_c = "Red"
-        OR advising_rubric_wellness_v_2_c = "Red"
-      ) THEN "Red"
-      WHEN (
-        advising_rubric_academic_readiness_v_2_c = "Yellow"
-        OR advising_rubric_career_readiness_v_2_c = 'Yellow'
-        OR advising_rubric_financial_success_v_2_c = "Yellow"
-        OR advising_rubric_wellness_v_2_c = "Yellow"
-      ) THEN "Yellow"
-      WHEN (
-        advising_rubric_academic_readiness_v_2_c = "Green"
-        OR advising_rubric_career_readiness_v_2_c = 'Green'
-        OR advising_rubric_financial_success_v_2_c = "Green"
-        OR advising_rubric_wellness_v_2_c = "Green"
-      ) THEN "Green"
-      ELSE "No Data"
-    END AS Overall_Rubric_Color,
+    Overall_Rubric_Color,
     advising_rubric_academic_readiness_v_2_c AS Advising_Rubric_Academic_Readiness_c,
     Advising_Rubric_COVID_c,
     advising_rubric_career_readiness_v_2_c AS Advising_Rubric_Career_Readiness_c,
@@ -214,30 +189,10 @@ WITH contact_at AS (
     Online_Coursework_COVID_19_c,
     Wellness_COVID_19_c,
     -- Sorting Values
-    CASE
-      WHEN advising_rubric_financial_success_v_2_c = "Red" THEN 1
-      WHEN advising_rubric_financial_success_v_2_c = "Yellow" THEN 2
-      WHEN advising_rubric_financial_success_v_2_c = "Green" THEN 3
-      ELSE 4
-    END AS sort_Advising_Rubric_Financial_Success_sort,
-    CASE
-      WHEN advising_rubric_academic_readiness_v_2_c = "Red" THEN 1
-      WHEN advising_rubric_academic_readiness_v_2_c = "Yellow" THEN 2
-      WHEN advising_rubric_academic_readiness_v_2_c = "Green" THEN 3
-      ELSE 4
-    END AS sort_Advising_Rubric_Academic_Readiness_sort,
-    CASE
-      WHEN advising_rubric_career_readiness_v_2_c = "Red" THEN 1
-      WHEN advising_rubric_career_readiness_v_2_c = "Yellow" THEN 2
-      WHEN advising_rubric_career_readiness_v_2_c = "Green" THEN 3
-      ELSE 4
-    END AS sort_Advising_Rubric_Career_Readiness_sort,
-    CASE
-      WHEN advising_rubric_wellness_v_2_c = "Red" THEN 1
-      WHEN advising_rubric_wellness_v_2_c = "Yellow" THEN 2
-      WHEN advising_rubric_wellness_v_2_c = "Green" THEN 3
-      ELSE 4
-    END AS sort_Advising_Rubric_Wellness_sort,
+    sort_Advising_Rubric_Financial_Success_sort,
+    sort_Advising_Rubric_Academic_Readiness_sort,
+    sort_Advising_Rubric_Career_Readiness_sort,
+    sort_Advising_Rubric_Wellness_sort,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
