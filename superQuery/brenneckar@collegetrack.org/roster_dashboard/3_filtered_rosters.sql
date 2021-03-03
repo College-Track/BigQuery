@@ -39,6 +39,9 @@ WITH gather_data AS (
     sort_Most_Recent_GPA_Cumulative_bucket AS sort_most_recent_gpa_bucket,
     sort_attendance_bucket,
     sort_covitality,
+    Overall_Rubric_Color_sort,
+    sort_credit_accumulation_pace_c AS Credit_Accumulation_Pace_sort,
+    college_class,
     -- Create new fields
     CASE
       WHEN ABS(Years_Since_HS_Grad_c) = 4 THEN 0 + (Year_Fraction_Since_HS_Grad_c /.33)
@@ -113,30 +116,11 @@ most_recent_on_track AS (
 modify_data AS (
   SELECT
     GD.*,
-    CASE
-      WHEN Overall_Rubric_Color = "Red" THEN 1
-      WHEN Overall_Rubric_Color = "Yellow" THEN 2
-      WHEN Overall_Rubric_Color = "Green" THEN 3
-      ELSE 4
-    END AS Overall_Rubric_Color_sort,
-    CASE
-      WHEN Credit_Accumulation_Pace_c = "4-Year Track" THEN 1
-      WHEN Credit_Accumulation_Pace_c = "5-Year Track" THEN 2
-      WHEN Credit_Accumulation_Pace_c = "6-Year Track" THEN 3
-      WHEN Credit_Accumulation_Pace_c = "6+ Years" THEN 4
-      ELSE 5
-    END AS Credit_Accumulation_Pace_sort,
-    CASE
-      WHEN Credits_Accumulated_Most_Recent_c IS NULL THEN "Frosh (0 - 24% Credits)"
-      WHEN Credits_Accumulated_Most_Recent_c <.25 THEN "Frosh (0 - 24% Credits)"
-      WHEN Credits_Accumulated_Most_Recent_c <.5 THEN "Sophomore (25% - 49% Credits)"
-      WHEN Credits_Accumulated_Most_Recent_c <.75 THEN "Junior (50% - 74% Credits)"
-      WHEN Credits_Accumulated_Most_Recent_c >=.75 THEN "Senior (75% + Credits)"
-    END AS college_class,
+
     CASE
       WHEN last_contact_range = "Less than 30 Days" THEN 1
-      WHEN last_contact_range = "30 - 60 Days" THEN 2
-      WHEN last_contact_range = "60+ Days" THEN 3
+      WHEN last_contact_range = "31 - 60 Days" THEN 2
+      WHEN last_contact_range = "61+ Days" THEN 3
       ELSE 4
     END AS last_contact_range_sort,
     MROT.most_recent_on_track,
