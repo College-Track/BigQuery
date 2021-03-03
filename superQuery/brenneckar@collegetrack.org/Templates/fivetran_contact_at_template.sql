@@ -354,21 +354,66 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         OR RT.Name = 'Student: Applicant'
       )
       AND C.is_deleted = false
+  ),
+  ValidStudentContact_new_fields AS (
+    SELECT
+      *,
+      -- Creating New Fields that rely on the fields created in ValidStudentContact
+      `data-warehouse-289815.UDF.determine_buckets`(Most_Recent_GPA_Cumulative_c,.25, 2.5, 3.75, "") AS Most_Recent_GPA_Cumulative_bucket,
+      `data-warehouse-289815.UDF.sort_created_buckets`(Most_Recent_GPA_Cumulative_c,.25, 2.5, 3.75) AS sort_Most_Recent_GPA_Cumulative_bucket,
+      `data-warehouse-289815.UDF.determine_buckets`(most_recent_gpa_semester_c,.25, 2.5, 3.75, "") AS most_recent_gpa_semester_bucket,
+      `data-warehouse-289815.UDF.sort_created_buckets`(most_recent_gpa_semester_c,.25, 2.5, 3.75) AS sort_most_recent_gpa_semester_bucket,
+      CONCAT(
+        "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
+        Contact_Id,
+        "/view"
+      ) AS contact_url,
+    FROM
+      ValidStudentContact
+  ),
+  -- Gathering data that relies on other objects
+  -- Task Object
+  gather_all_communication_data AS (
+    SELECT
+      who_id,
+      reciprocal_communication_c,
+      CASE
+        WHEN activity_date = date_of_contact_c THEN date_of_contact_c
+        WHEN date_of_contact_c IS NULL
+        and activity_date IS NOT NULL THEN activity_date
+        ELSE date_of_contact_c
+      END AS date_of_contact_c,
+    FROM
+      `data-warehouse-289815.salesforce.task`
+  ),
+  most_recent_outreach AS (
+    SELECT
+      who_id,
+      MAX(date_of_contact_c) AS most_recent_outreach
+    FROM
+      gather_all_communication_data
+    GROUP BY
+      who_id
+  ),
+  most_recent_reciprocal AS (
+    SELECT
+      who_id,
+      MAX(date_of_contact_c) AS most_recent_reciprocal
+    FROM
+      gather_all_communication_data
+    WHERE
+      reciprocal_communication_c = True
+    GROUP BY
+      who_id
   )
   SELECT
-    *,
-    -- Creating New Fields that rely on the fields created in ValidStudentContact
-    `data-warehouse-289815.UDF.determine_buckets`(Most_Recent_GPA_Cumulative_c,.25, 2.5, 3.75, "") AS Most_Recent_GPA_Cumulative_bucket,
-    `data-warehouse-289815.UDF.sort_created_buckets`(Most_Recent_GPA_Cumulative_c,.25, 2.5, 3.75) AS sort_Most_Recent_GPA_Cumulative_bucket,
-    `data-warehouse-289815.UDF.determine_buckets`(most_recent_gpa_semester_c,.25, 2.5, 3.75, "") AS most_recent_gpa_semester_bucket,
-    `data-warehouse-289815.UDF.sort_created_buckets`(most_recent_gpa_semester_c,.25, 2.5, 3.75) AS sort_most_recent_gpa_semester_bucket,
-    CONCAT(
-      "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
-      Contact_Id,
-      "/view"
-    ) AS contact_url,
+    VSC.*,
+    MRO.most_recent_outreach,
+    MRR.most_recent_reciprocal
   FROM
-    ValidStudentContact
+    ValidStudentContact_new_fields VSC
+    LEFT JOIN most_recent_outreach MRO ON MRO.who_id = VSC.Contact_Id
+    LEFT JOIN most_recent_reciprocal MRR ON MRR.who_Id = VSC.Contact_Id
 );
 -- Script 2 Contact AT Template
 CREATE
@@ -465,7 +510,28 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         WHEN credits_accumulated_most_recent_c < 50 THEN "Sophomore"
         WHEN credits_accumulated_most_recent_c < 75 THEN "Junior"
         WHEN credits_accumulated_most_recent_c >= 75 THEN "Senior"
-      END AS college_class
+      END AS college_class,
+      CASE
+        WHEN (
+          advising_rubric_academic_readiness_v_2_c = "Red"
+          OR advising_rubric_career_readiness_v_2_c = 'Red'
+          OR advising_rubric_financial_success_v_2_c = "Red"
+          OR advising_rubric_wellness_v_2_c = "Red"
+        ) THEN "Red"
+        WHEN (
+          advising_rubric_academic_readiness_v_2_c = "Yellow"
+          OR advising_rubric_career_readiness_v_2_c = 'Yellow'
+          OR advising_rubric_financial_success_v_2_c = "Yellow"
+          OR advising_rubric_wellness_v_2_c = "Yellow"
+        ) THEN "Yellow"
+        WHEN (
+          advising_rubric_academic_readiness_v_2_c = "Green"
+          OR advising_rubric_career_readiness_v_2_c = 'Green'
+          OR advising_rubric_financial_success_v_2_c = "Green"
+          OR advising_rubric_wellness_v_2_c = "Green"
+        ) THEN "Green"
+        ELSE "No Data"
+      END AS Overall_Rubric_Color
     FROM
       `data-warehouse-289815.salesforce.academic_semester_c` A
       LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT ON A.record_type_id = RT.Id -- Left join from Contact on to Account for Site
@@ -491,7 +557,13 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       CASE
         WHEN gather_prev_at.previous_academic_semester_c = AT_Id THEN true
         ELSE false
-      END AS previous_as_c
+      END AS previous_as_c,
+      CASE
+        WHEN Clean_AT.Overall_Rubric_Color = "Red" THEN 1
+        WHEN Clean_AT.Overall_Rubric_Color = "Yellow" THEN 2
+        WHEN Clean_AT.Overall_Rubric_Color = "Green" THEN 3
+        ELSE 4
+      END AS Overall_Rubric_Color_sort,
     FROM
       `data-warehouse-289815.salesforce_clean.contact_template` C
       LEFT JOIN Clean_AT ON C.Contact_Id = Clean_AT.student_c
