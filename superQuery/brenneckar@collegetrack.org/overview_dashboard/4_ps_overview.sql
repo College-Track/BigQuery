@@ -15,7 +15,7 @@ WITH calculate_metrics AS(
     END AS met_enrollment_goal,
     CASE
       WHEN last_contact_range = "Less than 30 Days" THEN 1
-      WHEN last_contact_range = "30 - 60 Days" THEN 1
+    --   WHEN last_contact_range = "30 - 60 Days" THEN 1
       ELSE 0
     END AS met_contact_goal,
     CASE
