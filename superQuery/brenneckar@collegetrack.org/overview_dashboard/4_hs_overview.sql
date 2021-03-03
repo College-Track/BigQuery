@@ -26,10 +26,10 @@ WITH calculate_metrics AS(
       ELSE 0
     END AS met_college_app_goal,
     CASE
-      WHEN (valid_gpa_status IN ('Current CT HS Student','Leave of Absence', 'Onboarding') AND College_Track_Status_c IN ('11A', '12A')) THEN 1
+      WHEN (valid_gpa_status IN ('Current CT HS Student','Leave of Absence', 'Onboarding') AND College_Track_Status_c IN ('11A')) THEN 1
       ELSE 0
     END AS count_gpa,
-    CASE WHEN (valid_gpa_status IN ('Current CT HS Student','Leave of Absence', 'Onboarding') AND College_Track_Status_c IN ('11A', '12A')) AND valid_gpa >= 3.25 THEN 1
+    CASE WHEN (valid_gpa_status IN ('Current CT HS Student','Leave of Absence', 'Onboarding') AND College_Track_Status_c IN ('11A')) AND valid_gpa >= 3.25 THEN 1
     ELSE 0
     END AS met_gpa_goal_valid
     
