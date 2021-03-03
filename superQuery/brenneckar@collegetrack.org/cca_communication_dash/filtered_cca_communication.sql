@@ -12,10 +12,6 @@ WITH gather_data AS(
     grade_c,
     credit_accumulation_pace_c,
     sort_credit_accumulation_pace_c,
-    -- CASE
-    --   WHEN credit_accumulation_pace_c IS NULL THEN "No Data"
-    --   ELSE credit_accumulation_pace_c
-    -- END AS credit_accumulation_pace_c,
     high_school_graduating_class_c,
     credits_accumulated_most_recent_c,
     anticipated_date_of_graduation_ay_c,
@@ -29,44 +25,11 @@ WITH gather_data AS(
     advising_rubric_career_readiness_v_2_c AS Advising_Rubric_Career_Readiness_c,
     advising_rubric_financial_success_v_2_c AS Advising_Rubric_Financial_Success_c,
     advising_rubric_wellness_v_2_c AS Advising_Rubric_Wellness_,
-    
     sort_Advising_Rubric_Financial_Success_sort,
     sort_Advising_Rubric_Academic_Readiness_sort,
     sort_Advising_Rubric_Career_Readiness_sort,
     sort_Advising_Rubric_Wellness_sort,
     college_class
-    
-    -- CASE
-    --   WHEN advising_rubric_financial_success_v_2_c = "Red" THEN 1
-    --   WHEN advising_rubric_financial_success_v_2_c = "Yellow" THEN 2
-    --   WHEN advising_rubric_financial_success_v_2_c = "Green" THEN 3
-    --   ELSE 4
-    -- END AS sort_Advising_Rubric_Financial_Success_sort,
-    -- CASE
-    --   WHEN advising_rubric_academic_readiness_v_2_c = "Red" THEN 1
-    --   WHEN advising_rubric_academic_readiness_v_2_c = "Yellow" THEN 2
-    --   WHEN advising_rubric_academic_readiness_v_2_c = "Green" THEN 3
-    --   ELSE 4
-    -- END AS sort_Advising_Rubric_Academic_Readiness_sort,
-    -- CASE
-    --   WHEN advising_rubric_career_readiness_v_2_c = "Red" THEN 1
-    --   WHEN advising_rubric_career_readiness_v_2_c = "Yellow" THEN 2
-    --   WHEN advising_rubric_career_readiness_v_2_c = "Green" THEN 3
-    --   ELSE 4
-    -- END AS sort_Advising_Rubric_Career_Readiness_sort,
-    -- CASE
-    --   WHEN advising_rubric_wellness_v_2_c = "Red" THEN 1
-    --   WHEN advising_rubric_wellness_v_2_c = "Yellow" THEN 2
-    --   WHEN advising_rubric_wellness_v_2_c = "Green" THEN 3
-    --   ELSE 4
-    -- END AS sort_Advising_Rubric_Wellness_sort,
-    -- CASE
-    --   WHEN credits_accumulated_most_recent_c IS NULL THEN "Frosh"
-    --   WHEN credits_accumulated_most_recent_c < 25 THEN "Frosh"
-    --   WHEN credits_accumulated_most_recent_c < 50 THEN "Sophomore"
-    --   WHEN credits_accumulated_most_recent_c < 75 THEN "Junior"
-    --   WHEN credits_accumulated_most_recent_c >= 75 THEN "Senior"
-    -- END AS college_class,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
@@ -307,14 +270,7 @@ calc_metrics AS (
       WHEN days_between_most_recent_outreach > 60 THEN 3
       ELSE 0
     END AS sort_days_between_outreach_bucket,
-    -- CASE
-    --   WHEN credit_accumulation_pace_c IS NULL THEN 0
-    --   WHEN credit_accumulation_pace_c = '4-Year Track' THEN 1
-    --   WHEN credit_accumulation_pace_c = '5-Year Track' THEN 2
-    --   WHEN credit_accumulation_pace_c = '6-Year Track' THEN 3
-    --   WHEN credit_accumulation_pace_c = '6+ Years' THEN 4
-    --   ELSE 0
-    -- END AS sort_credit_accumulation_pace_c,
+
   FROM
     join_data
 ),
