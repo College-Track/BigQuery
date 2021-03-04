@@ -13,7 +13,7 @@ WHERE group_id IN (SELECT Id FROM gather_groups)
 
 SELECT GM.*,
 U.first_name,
-U.last_name
+U.last_name,
 U.user_role_id AS old_role
 GRI.user_role_id
 FROM gather_group_members GM
