@@ -74,7 +74,6 @@ EXCEPT(user_role_id),
     WHEN DNR.new_role IS NULL THEN U.user_role_id
     ELSE DNR.new_role
   END AS user_role_id,
-  DNR.new_role
 FROM
   union_data U
   LEFT JOIN determine_new_roles DNR ON DNR.id = U.Id
