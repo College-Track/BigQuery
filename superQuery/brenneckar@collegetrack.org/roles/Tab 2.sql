@@ -33,3 +33,4 @@ SELECT
 FROM
   `data-warehouse-289815.salesforce_clean.user_clean` U
   LEFT JOIN determine_new_roles DNR ON DNR.id = U.Id
+  WHERE DNR.new_role IS NOT NULL
