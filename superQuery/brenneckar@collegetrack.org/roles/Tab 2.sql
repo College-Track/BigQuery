@@ -12,6 +12,7 @@ WHERE group_id IN (SELECT Id FROM gather_groups)
 )
 
 SELECT GM.*,
-U.name
+U.first_name,
+U.last_name
 FROM gather_group_members GM
 LEFT JOIN `data-warehouse-289815.salesforce_clean.user_clean` U ON U.id = GM.user_or_group_id
