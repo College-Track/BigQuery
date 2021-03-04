@@ -28,7 +28,8 @@ SELECT
   CASE
     WHEN DNR.new_role IS NULL THEN U.user_role_id
     ELSE DNR.new_role
-  END AS user_role_id
+  END AS user_role_id,
+  DNR.new_role
 FROM
   `data-warehouse-289815.salesforce_clean.user_clean` U
   LEFT JOIN determine_new_roles DNR ON DNR.id = U.Id
