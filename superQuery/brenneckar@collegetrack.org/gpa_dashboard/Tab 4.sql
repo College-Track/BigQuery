@@ -1,4 +1,18 @@
-SELECT COUNT(contact_id), student_audit_status_c
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE site_short = 'Crenshaw'
-GROUP BY student_audit_status_c
+ SELECT
+  Master.*
+FROM
+  `data-studio-260217.gpa_dashboard.filtered_gpa_data` AS Master
+RIGHT JOIN (
+  SELECT
+    roles.site_short,
+    roles.role
+  FROM
+    `data-warehouse-289815.salesforce_clean.user_clean` AS Users
+  LEFT JOIN
+    `data-warehouse-289815.roles.role_table` AS Roles
+  ON
+    Roles.Role_Id=Users.user_role_id
+  WHERE
+    LOWER(users.Email)='jpivaral@collegetrack.org') AS Permissions
+ON
+  Master.site_short=Permissions.site_short
