@@ -1,3 +1,3 @@
-UPDATE `data-warehouse-289815.roles.role_table`
-SET Role_ID = '00E1M000001e0u3UAA'
-WHERE Role = 'Program - Crenshaw'
+SELECT *
+FROM `data-warehouse-289815.salesforce_clean.user_clean`
+WHERE email = 'jpivaral@collegetrack.org'
