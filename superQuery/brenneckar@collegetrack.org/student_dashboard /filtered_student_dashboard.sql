@@ -6,16 +6,16 @@ WITH gather_student_data AS (
     high_school_graduating_class_c,
     grade_c,
 
-    -- CASE
-    --   WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org' -- --   WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
-    --   -- --   WHEN full_name_c = 'Sonia Esteva' THEN'soniaesteva_23@sfuhs.org'
-    --   ELSE email
-    -- END AS
+    CASE
+      WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org' -- --   WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
+      -- --   WHEN full_name_c = 'Sonia Esteva' THEN'soniaesteva_23@sfuhs.org'
+      ELSE email
+    END AS
     email,
-    --     CASE
-    --   WHEN full_name_c = 'Daniel Aguilar' THEN 'Test Student'
-    --   ELSE full_name_c
-    -- END AS 
+        CASE
+      WHEN full_name_c = 'Daniel Aguilar' THEN 'Test Student'
+      ELSE full_name_c
+    END AS 
     full_name_c,
     -- email,
     Most_Recent_GPA_Cumulative_c,
