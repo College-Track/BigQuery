@@ -313,7 +313,7 @@ SELECT
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
         ELSE college_name_on_app_for_case_statement 
-    END AS t, #Tigher College Name filter. Top filter on Admissions & Enrollment page
+    END AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
     
     CASE 
         WHEN application_status = 'No College Application' THEN 'No College Application'
