@@ -61,7 +61,7 @@ bb_balance AS
 (
     SELECT
     student_c,
-   MAX(finance_bb_balance_total_c) AS Finance_BB_Balance,
+    MAX(finance_bb_balance_total_c) AS Finance_BB_Balance,
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE record_type_id = "01246000000ZNi1AAG"
@@ -78,7 +78,7 @@ student_bb_balance_list AS
     current_cc_advisor_2_c AS Current_CCA,
     high_school_graduating_class_c AS HS_Class,
     College_Track_Status_Name AS CT_Status,
-    (bb_balance.Finance_BB_Balance + bb_march_disburse_add.bb_add_to_balance - bb_march_earn_minus.bb_minus_from_balance) AS Finance_BB_Balance,
+    (bb_balance.Finance_BB_Balance + bb_march_disburse_add.bb_add_to_balance - bb_march_earn_minus.bb_minus_from_balance) AS adj_BB_balance
     
     FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
