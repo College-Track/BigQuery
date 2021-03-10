@@ -98,7 +98,7 @@ SELECT
     
     #account
     accnt.name AS high_school_name_filter,
-    accnt_2.name AS college_name_applied_wide, #Wide filtter, college name on Application filter. Applications page. 
+    #accnt_2.name AS college_name_applied_wide, #Wide filtter, college name on Application filter. Applications page. 
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
