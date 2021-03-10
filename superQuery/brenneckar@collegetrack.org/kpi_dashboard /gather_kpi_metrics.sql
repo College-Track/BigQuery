@@ -14,6 +14,7 @@ WITH gather_data AS (
     current_as_c = true
 )
 SELECT
+    "National" AS national,
   region_short,
   site_short,
   SUM(above_325_gpa) AS above_325_gpa,
