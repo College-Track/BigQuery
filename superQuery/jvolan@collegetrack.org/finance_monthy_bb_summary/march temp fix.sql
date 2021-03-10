@@ -94,7 +94,13 @@ student_bb_balance_list AS
 bb_raw AS
 (
     SELECT
-    student_bb_balance_list.*,
+    student_bb_balance_list.Contact_Id,
+    student_bb_balance_list.Full_Name_c,
+    student_bb_balance_list.Site,
+    student_bb_balance_list.Current_CCA,
+    student_bb_balance_list.HS_Class,
+    student_bb_balance_list.CT_Status,
+    (student_bb_balance_list.Finance_BB_Balance + student_bb_balance_list.bb_add_to_balance - student_bb_balance_list.bb_minus_from_balance) AS adj_bb_balance_march,
     bb_d_e_fy.bb_id,
     bb_d_e_fy.BB_Record_Type,
     bb_d_e_fy.amount_c,
