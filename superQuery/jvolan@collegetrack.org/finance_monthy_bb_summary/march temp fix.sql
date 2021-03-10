@@ -78,7 +78,9 @@ student_bb_balance_list AS
     current_cc_advisor_2_c AS Current_CCA,
     high_school_graduating_class_c AS HS_Class,
     College_Track_Status_Name AS CT_Status,
-    (bb_balance.Finance_BB_Balance + bb_march_disburse_add.bb_add_to_balance - bb_march_earn_minus.bb_minus_from_balance) AS adj_BB_balance
+    bb_balance.Finance_BB_Balance,
+    bb_march_disburse_add.bb_add_to_balance,
+    bb_march_earn_minus.bb_minus_from_balance,
     
     FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
@@ -87,7 +89,7 @@ student_bb_balance_list AS
     LEFT JOIN bb_march_earn_minus ON bb_march_earn_minus.student_c = Contact_Id
     WHERE College_Track_Status_c IN ('11A', '12A','15A', '16A')
     AND bb_balance.Finance_BB_Balance IS NOT NULL
-),
+    ),
 
 bb_raw AS
 (
