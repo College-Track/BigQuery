@@ -165,3 +165,4 @@ SELECT
   *
 FROM
   final_prep
+  WHERE Contact_Id != '0034600001TQqpgAAD'
