@@ -1,4 +1,4 @@
-SELECT COUNT(student_c)
+SELECT student__c, COUNT(student_c)
 FROM `data-warehouse-289815.salesforce.academic_semester_c`
 WHERE  current_as_c = true
 
