@@ -138,6 +138,6 @@ modify_data AS (
 )
 
 
-SELECT COUNT(Contact_Id)
+SELECT *
 FROM modify_data
 WHERE site_short = 'Oakland'
