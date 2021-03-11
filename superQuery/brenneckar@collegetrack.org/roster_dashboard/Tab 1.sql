@@ -1,4 +1,3 @@
-SELECT College_Track_Status_Name, COUNT(Contact_Id)
-FROM `data-studio-260217.rosters.filtered_roster`
-WHERE site_short = 'Ward 8'
-GROUP BY College_Track_Status_Name
+SELECT Count(Id)
+FROM ``data-warehouse-289815.salesforce_clean.contact_template`
+WHERE site_short = 'Oakland'
