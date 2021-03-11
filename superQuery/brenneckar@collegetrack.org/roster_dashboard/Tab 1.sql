@@ -118,12 +118,12 @@ modify_data AS (
   SELECT
     GD.*,
 
-    CASE
-      WHEN last_contact_range = "Less than 30 Days" THEN 1
-      WHEN last_contact_range = "31 - 60 Days" THEN 2
-      WHEN last_contact_range = "61+ Days" THEN 3
-      ELSE 4
-    END AS last_contact_range_sort,
+    -- CASE
+    --   WHEN last_contact_range = "Less than 30 Days" THEN 1
+    --   WHEN last_contact_range = "31 - 60 Days" THEN 2
+    --   WHEN last_contact_range = "61+ Days" THEN 3
+    --   ELSE 4
+    -- END AS last_contact_range_sort,
     -- MROT.most_recent_on_track,
     -- CASE
     --   WHEN Years_Since_HS_Grad_c >= 0 THEN "N/A"
@@ -134,7 +134,7 @@ modify_data AS (
     -- END AS community_service_bucket
   FROM
     gather_data GD
-    LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
+    -- LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
 )
 
 
