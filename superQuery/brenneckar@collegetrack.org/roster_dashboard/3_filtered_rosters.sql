@@ -162,7 +162,6 @@ final_prep AS (
     LEFT JOIN most_recent_complete_at_gpa MRCGPA ON modify_data.Contact_Id = MRCGPA.Contact_Id
 )
 SELECT
-  *
+  distinct *
 FROM
   final_prep
-  WHERE Contact_Id != '0034600001TQqpgAAD'
