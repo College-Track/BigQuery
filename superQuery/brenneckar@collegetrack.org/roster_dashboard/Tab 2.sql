@@ -1,4 +1,3 @@
-SELECT school_type, COUNT(*)
-FROM `data-warehouse-289815.salesforce_clean.contact_template`
-LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = Current_school_c
-GROUP BY school_type
+SELECT COUNT(Id)
+FROM `data-warehouse-289815.salesforce.contact`
+WHERE Id = '0034600001TQqpgAAD'
