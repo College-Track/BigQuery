@@ -140,4 +140,4 @@ modify_data AS (
 
 SELECT *
 FROM modify_data
-WHERE site_short = 'Oakland'
+WHERE site_short = 'Oakland' AND full_name_c = 'Leslie Saucedo'
