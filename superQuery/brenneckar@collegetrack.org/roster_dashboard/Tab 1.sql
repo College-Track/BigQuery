@@ -1,3 +1,3 @@
 SELECT Count(Id)
-FROM ``data-warehouse-289815.salesforce_clean.contact_template`
+FROM `data-warehouse-289815.salesforce_clean.contact_template`
 WHERE site_short = 'Oakland'
