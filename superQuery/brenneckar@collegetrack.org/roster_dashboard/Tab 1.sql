@@ -124,20 +124,20 @@ modify_data AS (
       WHEN last_contact_range = "61+ Days" THEN 3
       ELSE 4
     END AS last_contact_range_sort,
-    MROT.most_recent_on_track,
-    CASE
-      WHEN Years_Since_HS_Grad_c >= 0 THEN "N/A"
-      WHEN Community_Service_Hours_c >= (8.33 * term_number) THEN "On Track"
-      WHEN Community_Service_Hours_c >= ((8.33 * term_number) *.85) THEN "Near On Track"
-      WHEN Community_Service_Hours_c < ((8.33 * term_number) *.85) THEN "Off Track"
-      ELSE "No Data"
-    END AS community_service_bucket
+    -- MROT.most_recent_on_track,
+    -- CASE
+    --   WHEN Years_Since_HS_Grad_c >= 0 THEN "N/A"
+    --   WHEN Community_Service_Hours_c >= (8.33 * term_number) THEN "On Track"
+    --   WHEN Community_Service_Hours_c >= ((8.33 * term_number) *.85) THEN "Near On Track"
+    --   WHEN Community_Service_Hours_c < ((8.33 * term_number) *.85) THEN "Off Track"
+    --   ELSE "No Data"
+    -- END AS community_service_bucket
   FROM
     gather_data GD
     LEFT JOIN most_recent_on_track MROT ON MROT.Contact_Id = GD.Contact_ID
 )
 
 
-SELECT *
+SELECT COUNT(*)
 FROM modify_data
 WHERE site_short = 'Oakland' AND full_name_c = 'Leslie Saucedo'
