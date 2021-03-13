@@ -1,5 +1,4 @@
 SELECT
-  Contact_Id,
   Full_Name_c,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
   Advising_Rubric_Academic_Readiness_c,
@@ -19,7 +18,6 @@ FROM
   `data-studio-260217.college_rubric.filtered_college_rubric`
   
   GROUP BY
-  Contact_Id,
   Full_Name_c,
   HIGH_SCHOOL_GRADUATING_CLASS_c,
   Advising_Rubric_Academic_Readiness_c,
