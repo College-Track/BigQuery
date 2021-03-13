@@ -24,10 +24,10 @@ SELECT
 FROM
   `data-studio-260217.college_rubric.filtered_college_rubric` AS CAR
   LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` PAT
-  ON CAR.Contact_Id = PAT.student_c
-WHERE CAR.current_or_prev_at LIKE '%Current%'
+  ON CAR.Contact_Id = PAT.Contact_Id
+WHERE current_or_next_at_c = "Current"
 
-GROUP BY
+  GROUP BY
   CAR.Contact_Id,
   CAR.Full_Name_c,
   CAR.HIGH_SCHOOL_GRADUATING_CLASS_c,
