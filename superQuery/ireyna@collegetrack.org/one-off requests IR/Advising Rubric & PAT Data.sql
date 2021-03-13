@@ -23,7 +23,8 @@ FROM
   `data-studio-260217.college_rubric.filtered_college_rubric` AS CAR
   LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` PAT
   ON CAR.Contact_Id = PAT.Contact_Id
-  
+WHERE Current_AS_c = TRUE
+
   GROUP BY
   CAR.Contact_Id,
   CAR.Full_Name_c,
