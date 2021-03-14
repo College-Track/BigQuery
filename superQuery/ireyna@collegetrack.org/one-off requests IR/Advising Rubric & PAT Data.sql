@@ -1,7 +1,7 @@
 SELECT
   CAR.current_or_prev_at,
   PAT.current_as_c,
-  #PAT.current_academic_semester_c, 
+  PAT.current_academic_semester_c, 
   PAT.global_academic_semester_c ,
   CAR.Contact_Id AS Salesforce_ID,
   CAR.Full_Name_c AS Full_Name,
@@ -21,16 +21,15 @@ SELECT
   CAR.region_short AS Region,
   CAR.site_short AS Site,
   PAT.credit_accumulation_pace_c,
-  PAT.name
+  PAT.School_Name
   
 FROM
   `data-studio-260217.college_rubric.filtered_college_rubric` AS CAR
   LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` PAT
   ON CAR.Contact_Id = PAT.student_c
-WHERE CAR.current_or_prev_at = "Current AT"
+WHERE PAT.current_as_c=TRUE
 
 GROUP BY
-  PAT.name,
   PAT.current_as_c,
   CAR.current_or_prev_at,
   CAR.Contact_Id,
@@ -52,5 +51,5 @@ GROUP BY
   PAT.credit_accumulation_pace_c,
   PAT.School_Name,
   PAT.latest_reciprocal_communication_date_c,
-  #PAT.current_academic_semester_c, 
+  PAT.current_academic_semester_c, 
   PAT.global_academic_semester_c
