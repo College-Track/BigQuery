@@ -1,4 +1,5 @@
 SELECT
+  PAT.current_as_c,
   PAT.current_academic_semester_c, 
   PAT.global_academic_semester_c ,
   CAR.Contact_Id AS Salesforce_ID,
@@ -24,8 +25,8 @@ SELECT
 FROM
   `data-studio-260217.college_rubric.filtered_college_rubric` AS CAR
   LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` PAT
-  ON CAR.Contact_Id = PAT.Contact_Id
-WHERE current_or_prev_at = "Current AT"
+  ON CAR.Contact_Id = PAT.student_c
+WHERE PAT.current_as_c=TRUE
 
 GROUP BY
   CAR.Contact_Id,
