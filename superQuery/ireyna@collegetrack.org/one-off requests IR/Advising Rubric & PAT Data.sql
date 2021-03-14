@@ -1,5 +1,5 @@
 SELECT
-  REGEXP_EXTRACT('at_url', r'(?:^|/)Academic_Semester_c/([^/]+)') AS x,
+  REGEXP_EXTRACT('at_url', r'(?:^|/)Academic_Semester_c([^/]+)') AS x,
   CAR.current_or_prev_at,
   PAT.current_as_c,
   #PAT.current_academic_semester_c, 
