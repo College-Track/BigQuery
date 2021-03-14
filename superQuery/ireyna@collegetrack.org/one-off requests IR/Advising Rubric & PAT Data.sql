@@ -21,7 +21,7 @@ SELECT
   CAR.region_short AS Region,
   CAR.site_short AS Site,
   PAT.credit_accumulation_pace_c,
-  PAT.School_Name
+  PAT.name
   
 FROM
   `data-studio-260217.college_rubric.filtered_college_rubric` AS CAR
@@ -30,6 +30,7 @@ FROM
 WHERE CAR.current_or_prev_at = "Current AT"
 
 GROUP BY
+  PAT.name,
   PAT.current_as_c,
   CAR.current_or_prev_at,
   CAR.Contact_Id,
