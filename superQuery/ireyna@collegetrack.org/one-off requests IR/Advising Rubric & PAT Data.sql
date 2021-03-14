@@ -29,6 +29,7 @@ FROM
 WHERE PAT.current_as_c=TRUE
 
 GROUP BY
+  PAT.current_as_c,
   CAR.Contact_Id,
   CAR.Full_Name_c,
   CAR.HIGH_SCHOOL_GRADUATING_CLASS_c,
