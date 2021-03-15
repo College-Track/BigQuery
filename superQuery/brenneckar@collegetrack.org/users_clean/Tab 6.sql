@@ -1,7 +1,7 @@
 SELECT
   Master.*
 FROM
-  `data-studio-260217.student_dashboard.student_dashboard` AS Master
+  `data-studio-260217.college_rubric.filtered_college_rubric` AS Master
 RIGHT JOIN (
   SELECT
     roles.site_short,
