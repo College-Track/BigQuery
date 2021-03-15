@@ -12,3 +12,4 @@ FROM
 WHERE
   college_track_status_c IN ('18a', '11A', '12A', '13A')
   AND years_since_hs_grad_c <= 0
+  AND term_c != "Summer"
