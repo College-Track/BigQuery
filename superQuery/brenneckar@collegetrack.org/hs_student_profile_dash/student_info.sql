@@ -14,7 +14,14 @@ SELECT
   indicator_low_income_c,
   annual_household_income_c,
   Current_school_name,
-  dream_statement_filled_out_c
+  dream_statement_filled_out_c,
+  of_high_school_terms_on_intervention_c,
+  indicator_high_risk_for_dismissal_c,
+  student_has_iep_c,
+  Current_HS_CT_Coach_c,
+  community_service_form_link_c,
+  summer_experience_form_link_c,
+  current_academic_semester_c
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template`
 WHERE
