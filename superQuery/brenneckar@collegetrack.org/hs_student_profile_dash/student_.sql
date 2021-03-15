@@ -1,0 +1,7 @@
+SELECT Contact_Id, AT_Id, AT_Term_GPA,
+AT_Cumulative_GPA,
+GAS_Name
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE
+  college_track_status_c IN ('18a', '11A', '12A', '13A')
+  AND years_since_hs_grad_c <= 0
