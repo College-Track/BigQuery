@@ -1,3 +1,4 @@
+WITH gather_contact_data AS (
 SELECT
   Contact_Id,
   full_name_c,
@@ -30,9 +31,18 @@ SELECT
   ) AS current_at_url,
   co_vitality_scorecard_color_most_recent_c,
   starting_semester_c,
-  student_s_start_academic_year_c
+  student_s_start_academic_year_c,
+  total_bank_book_balance_contact_c,
+  college_applications_all_fit_types_c,
+  community_service_hours_c
+  
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template`
 WHERE
   college_track_status_c IN ('18a', '11A', '12A', '13A')
   AND years_since_hs_grad_c <= 0
+ )
+ 
+ SELECT 
+ *
+ FROM gather_contact_data
