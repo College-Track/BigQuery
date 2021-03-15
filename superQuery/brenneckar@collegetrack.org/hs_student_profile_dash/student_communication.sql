@@ -10,9 +10,26 @@ SELECT
   subject,
   description,
   reciprocal_communication_c,
-  type
+  type,
+  CT.most_recent_outreach,
+  CT.most_recent_reciprocal,
+  ABS(
+      DATE_DIFF(
+        CT.most_recent_reciprocal,
+        CURRENT_DATE,
+        DAY
+      )
+    ) AS days_between_most_recent_reciprocal,
+      ABS(
+      DATE_DIFF(
+        CT.most_recent_outreach,
+        CURRENT_DATE,
+        DAY
+      )
+    ) AS days_between_most_recent_outreach
 FROM
-  `data-warehouse-289815.salesforce.task`
+  `data-warehouse-289815.salesforce.task` T
+  LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CT ON CT.Contact_Id = T.who_id
 WHERE
   who_id IN (
     SELECT
@@ -20,3 +37,4 @@ WHERE
     FROM
       `data-warehouse-289815.salesforce_clean.contact_template`
   )
+  
