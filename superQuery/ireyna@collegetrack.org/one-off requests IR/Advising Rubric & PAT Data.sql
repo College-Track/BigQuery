@@ -28,6 +28,7 @@ FROM
   LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` PAT
   ON CAR.Contact_Id = PAT.student_c
 WHERE CAR.current_or_prev_at = "Current AT"
+AND CAR.current_or_prev_at = "true"
 
 GROUP BY
   REGEXP_EXTRACT(at_url, r'(?:^|/)Academic_Semester_c/([^/]+)'),
