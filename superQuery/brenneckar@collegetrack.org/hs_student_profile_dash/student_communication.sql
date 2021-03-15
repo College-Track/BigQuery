@@ -1,6 +1,6 @@
 SELECT
   id,
-  who_id,
+  who_id AS Contact_Id,
   CASE
     WHEN activity_date = date_of_contact_c THEN date_of_contact_c
     WHEN date_of_contact_c IS NULL
