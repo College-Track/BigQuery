@@ -3,7 +3,6 @@ SELECT
   CAR.current_or_prev_at,
   PAT.current_as_c,
   #PAT.current_academic_semester_c, 
-  PAT.global_academic_semester_c ,
   CAR.Contact_Id AS Salesforce_ID,
   CAR.Full_Name_c AS Full_Name,
   CAR.HIGH_SCHOOL_GRADUATING_CLASS_c AS High_School_Class,
@@ -55,6 +54,4 @@ GROUP BY
   PAT.Prev_AT_Term_GPA,
   PAT.credit_accumulation_pace_c,
   PAT.School_Name,
-  PAT.latest_reciprocal_communication_date_c,
-  #PAT.current_academic_semester_c, 
-  PAT.global_academic_semester_c
+  PAT.latest_reciprocal_communication_date_c
