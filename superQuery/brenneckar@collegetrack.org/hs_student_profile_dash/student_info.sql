@@ -6,14 +6,14 @@ SELECT
   email,
   phone,
   primary_contact_language_c,
-  primary_contact_name_mobile_formula_c,
+  primary_contact_c,
   Gender_c,
   Ethnic_background_c,
   first_generation_fy_20_c,
   birthdate,
   indicator_low_income_c,
   annual_household_income_c,
-  high_school_text_c,
+  Current_school_name,
   dream_statement_filled_out_c
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template`
