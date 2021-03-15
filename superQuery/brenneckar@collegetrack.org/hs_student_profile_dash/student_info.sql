@@ -1,5 +1,6 @@
 SELECT
   Contact_Id,
+  full_name_c,
   contact_url,
   high_school_graduating_class_c,
   site_short,
