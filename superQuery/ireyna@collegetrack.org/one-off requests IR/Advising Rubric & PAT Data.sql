@@ -29,6 +29,7 @@ FROM
   ON CAR.Contact_Id = PAT.student_c
 WHERE CAR.current_or_prev_at = "Current AT"
 AND PAT.current_as_c = TRUE
+AND CAR.region_short='Los Angeles'
 
 GROUP BY
   REGEXP_EXTRACT(at_url, r'(?:^|/)Academic_Semester_c/([^/]+)'),
