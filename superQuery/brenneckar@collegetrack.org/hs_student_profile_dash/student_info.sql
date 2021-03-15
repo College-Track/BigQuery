@@ -23,7 +23,8 @@ SELECT
   summer_experience_form_link_c,
   current_academic_semester_c
  co_vitality_scorecard_color_most_recent_c,
- starting_semester_c
+ starting_semester_c,
+ student_s_start_academic_year_c
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template`
 WHERE
