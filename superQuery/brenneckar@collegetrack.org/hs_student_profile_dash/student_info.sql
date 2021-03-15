@@ -25,6 +25,7 @@ SELECT
   community_service_form_link_c,
   summer_experience_form_link_c,
   current_academic_semester_c,
+  summer_experiences_previous_summer_c,
   CONCAT(
     "https://ctgraduates.lightning.force.com/",
     current_academic_semester_c
@@ -41,8 +42,37 @@ FROM
 WHERE
   college_track_status_c IN ('18a', '11A', '12A', '13A')
   AND years_since_hs_grad_c <= 0
- )
+ ),
+ 
+ count_college_aspirations AS (
+ SELECT student_c, Count(Id) as num_college_aspirations
+ FROM `data-warehouse-289815.salesforce.college_aspiration_c`
+ WHERE is_deleted = false
+ GROUP BY student_c
+ ), 
+ 
+ count_scholarship_applications AS (
+ SELECT student_c, COUNT(Id) as num_scholarship_applications
+ FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+ WHERE is_deleted = false
+ 
+ GROUP BY student_c
+ 
+ 
+ ),
+ 
+ 
+ join_data AS(
  
  SELECT 
- *
- FROM gather_contact_data
+ GCD.*,
+ CCA.num_college_aspirations,
+ CSA.num_scholarship_applications
+ FROM gather_contact_data GCD 
+ LEFT JOIN count_college_aspirations CCA ON CCA.student_c = GCD.Contact_Id
+ LEFT JOIN count_scholarship_applications CSA ON CSA.student_c = GCD.Contact_Id
+ )
+ 
+ 
+ SELECT *
+ FROM join_data
