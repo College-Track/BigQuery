@@ -13,6 +13,6 @@ RIGHT JOIN (
   ON
     Roles.Role_Id=Users.user_role_id
   WHERE
-    LOWER(Users.Email)='lizfuentes@collegetrack.org' ) AS Permissions
+    LOWER(Users.Email)='lfuentes@collegetrack.org' ) AS Permissions
 ON
   Master.site_short=Permissions.site_short
