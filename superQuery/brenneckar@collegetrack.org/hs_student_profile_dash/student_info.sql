@@ -1,5 +1,6 @@
 SELECT
   Contact_Id,
+  contact_url,
   high_school_graduating_class_c,
   site_short,
   College_Track_Status_Name,
@@ -21,10 +22,14 @@ SELECT
   Current_HS_CT_Coach_c,
   community_service_form_link_c,
   summer_experience_form_link_c,
-  current_academic_semester_c
- co_vitality_scorecard_color_most_recent_c,
- starting_semester_c,
- student_s_start_academic_year_c
+  current_academic_semester_c,
+  CONCAT(
+    "https://ctgraduates.lightning.force.com/",
+    current_academic_semester_c
+  ) AS current_at_url,
+  co_vitality_scorecard_color_most_recent_c,
+  starting_semester_c,
+  student_s_start_academic_year_c
 FROM
   `data-warehouse-289815.salesforce_clean.contact_template`
 WHERE
