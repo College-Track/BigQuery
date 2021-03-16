@@ -4,6 +4,7 @@ SELECT
   full_name_c,
   contact_url,
   high_school_graduating_class_c,
+  composite_readiness_most_recent_c,
   site_short,
   College_Track_Status_Name,
   email,
