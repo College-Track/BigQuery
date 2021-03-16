@@ -13,8 +13,13 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     GAS_Name LIKE "%Spring%"
-    AND student_audit_status_c IN ('Current CT HS Student', 'Active: Post-Secondary', "Leave of Absence")
-    AND start_date_c >='2016-01-01' AND end_date_c <= '2020-06-30'
+    AND student_audit_status_c IN (
+      'Current CT HS Student',
+      'Active: Post-Secondary',
+      "Leave of Absence"
+    )
+    AND start_date_c >= '2016-01-01'
+    AND end_date_c <= '2020-06-30'
 ),
 group_data AS (
   SELECT
@@ -30,10 +35,13 @@ group_data AS (
     region_short,
     site_short,
     AY_Name,
-    grade_c
-    -- student_audit_status_c
+    grade_c -- student_audit_status_c
 )
 SELECT
-*
+  grade_c,
+  AVG(student_count)
 FROM
   group_data
+GROUP BY
+  grade_c
+  ORDER BY grade_c
