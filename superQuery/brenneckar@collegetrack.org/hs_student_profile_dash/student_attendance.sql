@@ -8,6 +8,7 @@ WITH gather_attendance_data AS (
     SUM(Attendance_Denominator_c) AS Attendance_Denominator_c,
   FROM
     `data-warehouse-289815.salesforce_clean.class_template`
+    WHERE date_c <= CURRENT_DATE()
   GROUP BY
     Student_c,
     date_c,
