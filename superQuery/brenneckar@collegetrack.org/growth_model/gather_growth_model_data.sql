@@ -22,6 +22,7 @@ group_data AS (
     site_short,
     AY_Name,
     AT_Record_Type_Name,
+    student_audit_status_c,
     COUNT(Contact_Id) AS student_count
   FROM
     gather_data
@@ -29,11 +30,14 @@ group_data AS (
     region_short,
     site_short,
     AY_Name,
+    student_audit_status_c,
     AT_Record_Type_Name
 )
 SELECT
   AY_Name,
+  student_audit_status_c,
   SUM(student_count)
 FROM
   group_data
-  GROUP BY AY_Name
+  GROUP BY AY_Name,
+  student_audit_status_c
