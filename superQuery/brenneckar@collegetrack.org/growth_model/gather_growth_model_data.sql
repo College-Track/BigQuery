@@ -32,7 +32,7 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
     LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = CAT.site_c
   WHERE
-    ((GAS_Name LIKE "%Spring%" AND grade_c != '9th Grade') OR (GAS_Name LIKE "%Summer%" AND grade_c = '9th Grade'))
+    ((GAS_Name LIKE "%Spring%" AND grade_c != '9th Grade'))
     AND student_audit_status_c IN (
       'Current CT HS Student',
       'Active: Post-Secondary',
