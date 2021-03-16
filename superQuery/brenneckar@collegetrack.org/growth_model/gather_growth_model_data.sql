@@ -39,7 +39,7 @@ WITH gather_data AS (
       "Leave of Absence"
     )
     AND start_date_c >= '2016-01-01'
-    AND end_date_c <= '2020-06-30'
+    AND end_date_c <= '2020-07-01'
     and AT_Grade_c != '8th Grade'
 ),
 group_data AS (
