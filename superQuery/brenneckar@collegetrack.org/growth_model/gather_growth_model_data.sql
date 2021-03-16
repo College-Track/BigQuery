@@ -40,4 +40,4 @@ SELECT
 FROM
   group_data
   GROUP BY AY_Name,
-  student_audit_status_c
+--   student_audit_status_c
