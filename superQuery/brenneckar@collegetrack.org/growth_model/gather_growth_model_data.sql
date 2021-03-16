@@ -55,19 +55,16 @@ group_data AS (
     AT_Grade_c,
     grade_sort -- student_audit_status_c
 )
--- SELECT
---   AT_Grade_c,
---   grade_sort,
---   AVG(student_count)
--- FROM
---   group_data
--- GROUP BY
---   AT_Grade_c,
---   grade_sort
--- ORDER BY
---   grade_sort
+SELECT
+  AT_Grade_c,
+  grade_sort,
+  AVG(student_count)
+FROM
+  group_data
+GROUP BY
+  AT_Grade_c,
+  grade_sort
+ORDER BY
+  grade_sort
 
 
-SELECT AT_Grade_c, count(contact_id)
-FROM gather_data
-GROUP BY AT_Grade_c
