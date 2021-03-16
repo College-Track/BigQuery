@@ -30,7 +30,7 @@ group_data AS (
     site_short,
     AY_Name,
     AT_Record_Type_Name,
-    student_audit_status_c
+    
 )
 SELECT
   *
