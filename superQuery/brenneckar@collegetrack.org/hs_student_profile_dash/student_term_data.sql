@@ -8,7 +8,9 @@ SELECT
   GAS_Name,
   start_date_c,
   attendance_rate_c,
-  current_as_c
+  current_as_c,
+  attended_workshops_c,
+  enrolled_sessions_c
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE
