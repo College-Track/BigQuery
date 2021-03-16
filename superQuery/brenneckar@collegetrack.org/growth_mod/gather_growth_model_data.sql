@@ -32,6 +32,8 @@ group_data AS (
     AT_Record_Type_Name
 )
 SELECT
-  *
+  AY_Name
+  SUM(student_count)
 FROM
   group_data
+  GROUP BY AY_Name
