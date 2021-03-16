@@ -1,6 +1,6 @@
 WITH gather_attendance_data AS (
   SELECT
-    Student_c,
+    Student_c AS Contact_Id,
     date_c,
     workshop_display_name_c,
     academic_semester_c,
@@ -21,7 +21,7 @@ join_data AS (
     SLTT.current_as_c
   FROM
     gather_attendance_data GAD
-    LEFT JOIN `data-studio-260217.hs_student_profile_dashboard.student_term_table` SLTT ON SLTT.Contact_Id = GAD.Student_c
+    LEFT JOIN `data-studio-260217.hs_student_profile_dashboard.student_term_table` SLTT ON SLTT.Contact_Id = GAD.Contact_Id
     AND SLTT.AT_Id = GAD.academic_semester_c
 )
 SELECT
