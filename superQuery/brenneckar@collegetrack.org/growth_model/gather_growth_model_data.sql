@@ -32,7 +32,7 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
     LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = CAT.site_c
   WHERE
-    GAS_Name LIKE "%Spring%"
+    GAS_Name LIKE "%Summer%"
     AND student_audit_status_c IN (
       'Current CT HS Student',
       'Active: Post-Secondary',
@@ -81,14 +81,12 @@ calc_average_gap AS (
   ORDER BY
     grade_sort
 )
--- SELECT
---   AT_Grade_c,
---   AVG(percent_of_target) as percent_of_target
--- FROM
---   calc_average_gap
--- GROUP BY
---   AT_Grade_c,
---   grade_sort
---   ORDER BY grade_sort
-SELECT *
-FROM calc_average_gap
+SELECT
+  AT_Grade_c,
+  AVG(percent_of_target) as percent_of_target
+FROM
+  calc_average_gap
+GROUP BY
+  AT_Grade_c,
+  grade_sort
+  ORDER BY grade_sort
