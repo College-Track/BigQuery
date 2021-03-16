@@ -10,5 +10,6 @@ WHERE
     'Current CT HS Student',
     'Leave of Absence'
   )
+  AND A_T.is_deleted = false
 GROUP BY
   student_audit_status_c
