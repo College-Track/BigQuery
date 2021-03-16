@@ -39,5 +39,5 @@ SELECT
   SUM(student_count)
 FROM
   group_data
-  GROUP BY AY_Name,
+  GROUP BY AY_Name
 --   student_audit_status_c
