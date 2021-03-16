@@ -35,7 +35,7 @@ WITH gather_data AS (
     )
     AND start_date_c >= '2016-01-01'
     AND end_date_c <= '2020-06-30'
-    and grade_c = '9th Grade'
+    -- and grade_c = '9th Grade'
 ),
 group_data AS (
   SELECT
@@ -55,14 +55,19 @@ group_data AS (
     grade_c,
     grade_sort -- student_audit_status_c
 )
-SELECT
-  grade_c,
-  grade_sort,
-  AVG(student_count)
-FROM
-  group_data
-GROUP BY
-  grade_c,
-  grade_sort
-ORDER BY
-  grade_sort
+-- SELECT
+--   grade_c,
+--   grade_sort,
+--   AVG(student_count)
+-- FROM
+--   group_data
+-- GROUP BY
+--   grade_c,
+--   grade_sort
+-- ORDER BY
+--   grade_sort
+
+
+SELECT grade_c, count(contact_id)
+FROM gather_data
+GROUP BY grade_c
