@@ -29,8 +29,7 @@ group_data AS (
     region_short,
     site_short,
     AY_Name,
-    AT_Record_Type_Name,
-    
+    AT_Record_Type_Name
 )
 SELECT
   *
