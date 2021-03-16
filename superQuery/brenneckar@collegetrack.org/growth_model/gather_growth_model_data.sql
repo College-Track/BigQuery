@@ -21,8 +21,8 @@ group_data AS (
     region_short,
     site_short,
     AY_Name,
-    AT_Record_Type_Name,
-    student_audit_status_c,
+    grade_c,
+    -- student_audit_status_c,
     COUNT(Contact_Id) AS student_count
   FROM
     gather_data
@@ -30,8 +30,8 @@ group_data AS (
     region_short,
     site_short,
     AY_Name,
-    student_audit_status_c,
-    AT_Record_Type_Name
+    grade_c
+    -- student_audit_status_c
 )
 SELECT
 *
