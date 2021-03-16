@@ -13,7 +13,7 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     GAS_Name LIKE "%Spring%"
-    AND student_audit_status_c IN ("Leave of Absence")
+    AND student_audit_status_c IN ('Current CT HS Student', 'Active: Post-Secondary', "Leave of Absence")
     AND start_date_c >='2016-01-01' AND start_date_c <= '2020-01-01'
 ),
 group_data AS (
