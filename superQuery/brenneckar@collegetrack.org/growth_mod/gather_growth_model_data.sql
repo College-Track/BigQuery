@@ -18,16 +18,18 @@ group_data AS (
   SELECT
     region_short,
     site_short,
+    student_audit_status_c,
     AY_Name,
     AT_Record_Type_Name,
-    COUNT(Contact_Id)
+    COUNT(Contact_Id) AS student_count
   FROM
     gather_data
   GROUP BY
     region_short,
     site_short,
     AY_Name,
-    AT_Record_Type_Name
+    AT_Record_Type_Name,
+    student_audit_status_c
 )
 SELECT
   *
