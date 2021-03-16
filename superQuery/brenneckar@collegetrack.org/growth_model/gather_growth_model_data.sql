@@ -14,7 +14,7 @@ WITH gather_data AS (
   WHERE
     GAS_Name LIKE "%Spring 2019-20%"
     AND student_audit_status_c IN ('Current CT HS Student', 'Active: Post-Secondary', "Leave of Absence")
-    AND start_date_c >='2016-01-01' AND start_date_c <= '2020-01-01'
+    AND start_date_c >='2016-01-01' AND end_date_c <= '2020-06-30'
 ),
 group_data AS (
   SELECT
