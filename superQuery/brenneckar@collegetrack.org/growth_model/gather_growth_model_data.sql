@@ -34,10 +34,6 @@ group_data AS (
     AT_Record_Type_Name
 )
 SELECT
-  AY_Name,
---   student_audit_status_c,
-  SUM(student_count)
+*
 FROM
   group_data
-  GROUP BY AY_Name
---   student_audit_status_c
