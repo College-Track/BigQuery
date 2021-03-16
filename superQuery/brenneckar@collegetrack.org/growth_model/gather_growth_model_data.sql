@@ -35,6 +35,7 @@ WITH gather_data AS (
     )
     AND start_date_c >= '2016-01-01'
     AND end_date_c <= '2020-06-30'
+    and grade_c = '9th Grade'
 ),
 group_data AS (
   SELECT
