@@ -83,7 +83,7 @@ calc_average_gap AS (
 )
 SELECT
   AT_Grade_c,
-  AVG(percent_of_target)
+  AVG(percent_of_target) as percent_of_target
 FROM
   calc_average_gap
 GROUP BY
