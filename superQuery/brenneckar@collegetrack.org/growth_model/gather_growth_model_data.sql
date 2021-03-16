@@ -87,4 +87,7 @@ SELECT
 FROM
   calc_average_gap
 GROUP BY
-  AT_Grade_c
+  AT_Grade_c,
+  grade_sort
+  ORDER BY grade_sort
+  
