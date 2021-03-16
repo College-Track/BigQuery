@@ -54,6 +54,7 @@ group_data AS (
 )
 SELECT
   grade_c,
+  grade_sort,
   AVG(student_count)
 FROM
   group_data
