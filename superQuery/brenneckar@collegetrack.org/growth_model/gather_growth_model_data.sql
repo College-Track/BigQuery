@@ -35,7 +35,7 @@ group_data AS (
 )
 SELECT
   AY_Name,
-  student_audit_status_c,
+--   student_audit_status_c,
   SUM(student_count)
 FROM
   group_data
