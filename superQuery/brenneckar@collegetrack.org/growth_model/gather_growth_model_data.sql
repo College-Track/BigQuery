@@ -32,7 +32,13 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
     LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = CAT.site_c
   WHERE
-    (GAS_Name LIKE "%Spring%")
+    (
+      (GAS_Name LIKE "%Spring%")
+      OR (
+        GAS_Name LIKE "%Summer%"
+        AND AT_Grade_c = '9th Grade'
+      )
+    )
     AND student_audit_status_c IN (
       'Current CT HS Student',
       'Active: Post-Secondary',
@@ -47,6 +53,7 @@ group_data AS (
     region_short,
     site_short,
     AY_Name,
+    GAS_Name,
     AT_Grade_c,
     grade_sort,
     first_year_target,
@@ -60,9 +67,29 @@ group_data AS (
     region_short,
     site_short,
     AY_Name,
+    GAS_Name,
     AT_Grade_c,
     grade_sort,
     first_year_target -- student_audit_status_c
+),
+ninth_grade_adjustment AS (
+  SELECT
+    region_short,
+    site_short,
+    AT_Grade_c,
+    AY_Name,
+    grade_sort,
+    first_year_target,
+    AVG(student_count) AS student_count
+  FROM
+    group_data
+  GROUP BY
+    region_short,
+    site_short,
+    AT_Grade_c,
+    AY_Name,
+    grade_sort,
+    first_year_target
 ),
 
 calc_average_gap AS (
@@ -73,7 +100,7 @@ calc_average_gap AS (
     AVG(student_count) as avg_student_count,
     AVG(student_count) / first_year_target AS percent_of_target
   FROM
-    group_data
+    ninth_grade_adjustment
   GROUP BY
     AT_Grade_c,
     grade_sort,
@@ -89,4 +116,8 @@ FROM
 GROUP BY
   AT_Grade_c,
   grade_sort
-  ORDER BY grade_sort
+ORDER BY
+  grade_sort
+
+-- SELECT *
+-- FROM ninth_grade_adjustment
