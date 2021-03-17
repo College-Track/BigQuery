@@ -5,7 +5,8 @@ WITH gather_data AS (
     Contact_Id,
     AT_Id,
     student_audit_status_c,
-    GAS_Name,
+    SPLIT(GAS_Name, ' (')[OFFSET(0)] AS GAS_Name,
+    -- GAS_Name,
     AT_Record_Type_Name,
     AT_Grade_c,
     AY_Name,
@@ -120,4 +121,5 @@ calc_average_gap AS (
 --   grade_sort
 
 SELECT *
-FROM calc_average_gap
+FROM group_data
+ORDER BY site_short, grade_sort
