@@ -67,11 +67,11 @@ WITH numbers AS
 
 
 
-SELECT site, hs_class, student_count
+SELECT site, hs_class, student_count, fy_list
 FROM (
   SELECT site, hs_class, calc_student_count(start_count, FY, hs_class, 15) count_arrary,
   list_fy(FY, 15) fY_array
   FROM numbers
   
 ) LEFT JOIN UNNEST(count_arrary) student_count
--- ,  UNNEST(fY_array) fy_list
+LEFT JOIN UNNEST(fY_array) fy_list
