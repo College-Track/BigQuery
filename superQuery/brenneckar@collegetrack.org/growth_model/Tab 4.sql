@@ -74,16 +74,13 @@ return (list_fiscal_years(FY, years_ahead))
 
 WITH numbers AS
   (SELECT 'nola' as site, 100 AS start_count, 2021 as FY, 2024 AS hs_class)
---   UNION ALL 
---   SELECT 'co' as site, 100 AS start_count, 2021 as FY, 2024 AS hs_class)
 
 
 
-SELECT site, hs_class, student_count
+SELECT site, hs_class, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, SPLIT(student_count, ',')[OFFSET(1)] num_student
 FROM (
   SELECT site, hs_class, calc_student_count(start_count, FY, hs_class, 15) count_arrary
 --   list_fy(FY, 15) fY_array
   FROM numbers
   
 ), UNNEST(count_arrary) student_count
--- LEFT JOIN UNNEST(fY_array) fy_list
