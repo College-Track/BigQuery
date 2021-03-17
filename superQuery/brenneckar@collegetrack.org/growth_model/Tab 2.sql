@@ -1,5 +1,10 @@
-SELECT 
-Contact_Id,
-`data-warehouse-289815.UDF.determine_buckets`(gpa_hs_cumulative_c,0.5, 2.5,3.0,'gpa')
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+SELECT name, COUNT(*) c
+FROM (
+  SELECT fhoffa.x.nlp_compromise_people(title) names
+  FROM `fh-bigquery.reddit_posts.2019_02`
+  WHERE subreddit = 'movies'
+), UNNEST(names) name
+WHERE name LIKE '% %'
+GROUP BY 1
+ORDER BY 2 DESC
 LIMIT 10
