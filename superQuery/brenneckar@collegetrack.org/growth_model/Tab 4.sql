@@ -1,5 +1,5 @@
 CREATE TEMP FUNCTION calc_student_count(start_count FLOAT64, FY FLOAT64, HS_Class FLOAT64, years_ahead FLOAT64)
-RETURNS ARRAY <FLOAT64>
+RETURNS ARRAY <STRUCT>
 LANGUAGE js AS r"""
 function futureCalculations(start_count, FY, HS_Class, years_ahead) {
     var rates = [.5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5]
