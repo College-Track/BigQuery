@@ -7,5 +7,12 @@ LANGUAGE js AS r"""
 
 WITH numbers AS
   (SELECT 5 AS x, 5 as y)
-SELECT x, y, expand_array(x) as products
-FROM numbers;
+
+SELECT *
+FROM numbers
+-- SELECT name, COUNT(*) c
+-- FROM (
+--   SELECT fhoffa.x.nlp_compromise_people(title) names
+--   FROM `fh-bigquery.reddit_posts.2019_02`
+--   WHERE subreddit = 'movies'
+-- ), UNNEST(names) name
