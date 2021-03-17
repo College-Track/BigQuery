@@ -28,8 +28,8 @@ WITH gather_data AS (
     high_school_graduating_class_c
 ),
 create_new_hs_class AS (
-  SELECT DISTINCT 
-    GD.join_key,
+  SELECT
+    DISTINCT GD.join_key,
     region_short,
     site_short,
     "NA" AS AT_grade_c,
@@ -37,38 +37,49 @@ create_new_hs_class AS (
     first_year_target,
     0 AS fy20_student_count,
     (first_year_target * GMA.nine_grade) AS fy21_projection
-    
   FROM
-    gather_data GD 
+    gather_data GD
     LEFT JOIN `learning-agendas.growth_model.growth_model_assumptions` GMA ON GMA.join_key = GD.join_key
-    
 ),
 calc_projection AS (
   SELECT
     GD.*
   EXCEPT(join_key),
     CASE
-      WHEN AT_Grade_c = '9th Grade' THEN fy20_student_count * GMA.ten_grade
-      WHEN AT_Grade_c = '10th Grade' THEN fy20_student_count * GMA.eleven_grade
-      WHEN AT_Grade_c = '11th Grade' THEN fy20_student_count * GMA.twelve_grade
-      WHEN AT_Grade_c = '12th Grade' THEN fy20_student_count * GMA.year_1
-      WHEN AT_Grade_c = 'Year 1' THEN fy20_student_count * GMA.year_2
-      WHEN AT_Grade_c = 'Year 2' THEN fy20_student_count * GMA.year_3
-      WHEN AT_Grade_c = 'Year 3' THEN fy20_student_count * GMA.year_4
-      WHEN AT_Grade_c = 'Year 4' THEN fy20_student_count * GMA.year_5
-      WHEN AT_Grade_c = 'Year 5' THEN fy20_student_count * GMA.year_6
-      WHEN AT_Grade_c = 'Year 6' THEN fy20_student_count * GMA.year_7
-      WHEN AT_Grade_c = 'Year 7' THEN fy20_student_count * GMA.year_8
+      WHEN AT_Grade_c = '9th Grade' THEN fy20_student_count * (GMA.ten_grade / GMA.nine_grade)
+      WHEN AT_Grade_c = '10th Grade' THEN fy20_student_count * (GMA.eleven_grade / GMA.ten_grade)
+      WHEN AT_Grade_c = '11th Grade' THEN fy20_student_count * (GMA.twelve_grade / GMA.eleven_grade)
+      WHEN AT_Grade_c = '12th Grade' THEN fy20_student_count * (GMA.year_1 / GMA.twelve_grade)
+      WHEN AT_Grade_c = 'Year 1' THEN fy20_student_count * (GMA.year_2 / GMA.year_1)
+      WHEN AT_Grade_c = 'Year 2' THEN fy20_student_count * (GMA.year_3 / GMA.year_2)
+      WHEN AT_Grade_c = 'Year 3' THEN fy20_student_count * (GMA.year_4 / GMA.year_3)
+      WHEN AT_Grade_c = 'Year 4' THEN fy20_student_count * (GMA.year_5 / GMA.year_4)
+      WHEN AT_Grade_c = 'Year 5' THEN fy20_student_count * (GMA.year_6 / GMA.year_5)
+      WHEN AT_Grade_c = 'Year 6' THEN fy20_student_count * (GMA.year_7 / GMA.year_6)
+      WHEN AT_Grade_c = 'Year 7' THEN fy20_student_count * (GMA.year_8 / GMA.year_7)
       ELSE 0
     END AS fy21_projection
   FROM
     gather_data GD
     LEFT JOIN `learning-agendas.growth_model.growth_model_assumptions` GMA ON GMA.join_key = GD.join_key
-    UNION ALL (SELECT *EXCEPT(join_key) FROM create_new_hs_class)
-    
+  UNION ALL
+    (
+      SELECT
+        *
+      EXCEPT(join_key)
+      FROM
+        create_new_hs_class
+    )
 )
 SELECT
+--   site_short,
+--   AT_Grade_c,
   SUM(fy20_student_count),
   SUM(fy21_projection)
 FROM
   calc_projection
+--   WHERE site_short = 'New Orleans'
+-- GROUP BY
+  
+--   site_short,
+--   AT_Grade_c
