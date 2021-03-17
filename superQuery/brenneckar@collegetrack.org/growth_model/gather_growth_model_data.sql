@@ -108,18 +108,19 @@ calc_average_gap AS (
     first_year_target
   ORDER BY
     grade_sort
-)
--- SELECT
---   AT_Grade_c,
---   AVG(percent_of_target) as percent_of_target
--- FROM
---   calc_average_gap
--- GROUP BY
---   AT_Grade_c,
---   grade_sort
--- ORDER BY
---   grade_sort
+),
 
+calc_percent_of_target AS (SELECT
+  AT_Grade_c,
+  AVG(percent_of_target) as percent_of_target
+FROM
+  calc_average_gap
+GROUP BY
+  AT_Grade_c,
+  grade_sort
+ORDER BY
+  grade_sort
+)
 SELECT *
-FROM calc_average_gap
+FROM calc_percent_of_target
 -- ORDER BY site_short, grade_sort
