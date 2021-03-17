@@ -100,7 +100,7 @@ calc_average_gap AS (
     AVG(student_count) as avg_student_count,
     AVG(student_count) / first_year_target AS percent_of_target
   FROM
-    ninth_grade_adjustment
+    group_data
   GROUP BY
     AT_Grade_c,
     grade_sort,
@@ -120,4 +120,4 @@ ORDER BY
   grade_sort
 
 -- SELECT *
--- FROM ninth_grade_adjustment
+-- FROM calc_average_gap
