@@ -77,7 +77,7 @@ WITH numbers AS
 
 
 
-SELECT site, hs_class, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, SPLIT(student_count, ',')[OFFSET(1)] num_student
+SELECT site, hs_class, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
 FROM (
   SELECT site, hs_class, calc_student_count(start_count, FY, hs_class, 15) count_arrary
 --   list_fy(FY, 15) fY_array
