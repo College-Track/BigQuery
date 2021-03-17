@@ -26,7 +26,7 @@ WITH gather_data AS (
     site_short,
     AT_grade_c,
     high_school_graduating_class_c
-)
+), calc_projection AS (
 SELECT
   GD.*
 EXCEPT(join_key),
@@ -47,3 +47,9 @@ EXCEPT(join_key),
 FROM
   gather_data GD
   LEFT JOIN `learning-agendas.growth_model.growth_model_assumptions` GMA ON GMA.join_key = GD.join_key
+  )
+  
+  SELECT 
+  SUM(fy20_student_count),
+  SUM(fy21_projection)
+  FROM calc_projection
