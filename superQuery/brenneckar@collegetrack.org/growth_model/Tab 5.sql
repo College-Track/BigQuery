@@ -1,7 +1,7 @@
 CREATE
 OR REPLACE FUNCTION `learning-agendas.growth_model.calc_projected_student_count`(start_count FLOAT64, FY FLOAT64, HS_Class FLOAT64, years_ahead FLOAT64)
 RETURNS ARRAY <STRING>
-LANGUAGE js AS r"""
+LANGUAGE js AS """
 function futureCalculations(start_count, FY, HS_Class, years_ahead) {
     var rates = [.5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5]
     var start_year = FY - 2000
@@ -40,4 +40,4 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead) {
     return (new_count)
 }
 return (futureCalculations(start_count, FY, HS_Class, years_ahead))
-"""
+""";
