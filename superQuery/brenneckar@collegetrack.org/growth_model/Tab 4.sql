@@ -58,13 +58,13 @@ return (list_fiscal_years(FY, HS_Class))
 
 
 WITH numbers AS
-  (SELECT 100 AS start_count, 2021 as FY, 2024 AS hs_class)
+  (SELECT 'nola' as site, 100 AS start_count, 2021 as FY, 2024 AS hs_class)
 
 
 
-SELECT hs_class, student_count
+SELECT site, hs_class, student_count
 FROM (
-  SELECT hs_class, calc_student_count(start_count, FY, hs_class) count_arrary,
+  SELECT site, hs_class, calc_student_count(start_count, FY, hs_class) count_arrary,
   list_fy(FY, hs_class) fY_array
   FROM numbers
   
