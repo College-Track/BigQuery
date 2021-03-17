@@ -121,5 +121,5 @@ calc_average_gap AS (
 --   grade_sort
 
 SELECT *
-FROM group_data
-ORDER BY site_short, grade_sort
+FROM calc_average_gap
+-- ORDER BY site_short, grade_sort
