@@ -59,7 +59,7 @@ LANGUAGE js AS r"""
 
 
 WITH numbers AS
-  (SELECT 'nola' as site, 100 AS start_count, 2021 as FY, 2023 AS hs_class
+  (SELECT 'nola' as site, 100 AS start_count, 2021 as FY, 2024 AS hs_class
   UNION ALL 
   SELECT 'co' as site, 100 AS start_count, 2021 as FY, 2024 AS hs_class)
 
