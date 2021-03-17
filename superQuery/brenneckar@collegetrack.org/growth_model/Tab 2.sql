@@ -4,4 +4,3 @@ FROM (
   FROM `fh-bigquery.reddit_posts.2019_02`
   WHERE subreddit = 'movies'
 )
-LIMIT 10
