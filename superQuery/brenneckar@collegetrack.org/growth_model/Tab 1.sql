@@ -1,8 +1,9 @@
+WITH gather_data AS (
 SELECT
   region_short,
   site_short,
   AT_grade_c,
-  Contact_Id,
+  COUNT(Contact_Id),
   
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
@@ -13,3 +14,10 @@ WHERE
     'Active: Post-Secondary',
     "Leave of Absence"
   )
+  GROUP BY 
+    region_short,
+  site_short,
+  AT_grade_c
+  )
+SELECT *
+FROM gather_data
