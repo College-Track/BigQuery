@@ -34,10 +34,10 @@ WITH gather_data AS (
   WHERE
     (
       (GAS_Name LIKE "%Spring%")
-      OR (
-        GAS_Name LIKE "%Summer%"
-        AND AT_Grade_c = '9th Grade'
-      )
+    --   OR (
+    --     GAS_Name LIKE "%Summer%"
+    --     AND AT_Grade_c = '9th Grade'
+    --   )
     )
     AND student_audit_status_c IN (
       'Current CT HS Student',
