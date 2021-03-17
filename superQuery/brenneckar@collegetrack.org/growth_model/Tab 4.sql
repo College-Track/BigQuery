@@ -6,10 +6,11 @@ LANGUAGE js AS r"""
 
 
 WITH numbers AS
-  (SELECT 5 AS x, 5 as y)
+  (SELECT 5 AS x)
 
 SELECT *
 FROM numbers
+
 -- SELECT name, COUNT(*) c
 -- FROM (
 --   SELECT fhoffa.x.nlp_compromise_people(title) names
