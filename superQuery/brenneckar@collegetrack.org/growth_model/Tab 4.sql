@@ -67,7 +67,7 @@ WITH numbers AS
 
 
 
-SELECT site, hs_class, student_count, fy_list
+SELECT distinct site, hs_class, student_count, fy_list
 FROM (
   SELECT site, hs_class, calc_student_count(start_count, FY, hs_class, 15) count_arrary,
   list_fy(FY, 15) fY_array
