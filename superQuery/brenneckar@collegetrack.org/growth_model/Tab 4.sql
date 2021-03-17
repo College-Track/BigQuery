@@ -1,10 +1,9 @@
 WITH gather_data AS (
   SELECT
-    "join" AS join_key,
     region_short,
     site_short,
     AT_grade_c,
-    high_school_graduating_class_c,
+    CAST(high_school_graduating_class_c AS FLOAT64) AS high_school_graduating_class_c,
     CASE
       WHEN A.College_Track_High_School_Capacity_c = 287 THEN 75
       ELSE 60
@@ -37,14 +36,11 @@ WITH gather_data AS (
 
 
 
--- SELECT site, hs_class, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
--- FROM (
---   SELECT site, hs_class, `learning-agendas.growth_model.calc_projected_student_count`(start_count, FY, hs_class, 15) count_arrary
--- --   list_fy(FY, 15) fY_array
---   FROM numbers
+SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
+FROM (
+  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(fy20_student_count, 2021, high_school_graduating_class_c, 15) count_arrary
+  FROM gather_data
   
--- ), UNNEST(count_arrary) student_count
+), UNNEST(count_arrary) student_count
 
 
-SELECT *
-FROM gather_data
