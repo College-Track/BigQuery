@@ -120,7 +120,18 @@ calc_percent_of_target AS (
   ORDER BY
     grade_sort
 )
-SELECT
-  *
-FROM
-  calc_percent_of_target 
+-- SELECT
+--   *
+-- FROM
+--   calc_percent_of_target 
+
+
+select 
+MAX(IF(AT_Grade_c = "9th Grade", percent_of_target, NULL)) AS nine_grade
+-- ,MAX(IF(Key = “ age”, Value, NULL)) as age
+-- ,MAX(IF(Key = “ project”, Value, NULL)) as project
+-- ,MAX(IF(Key = “ company “, Value, NULL)) as company
+-- ,MAX(IF(Key = “ previouscompany”, Value, NULL)) as previouscompany
+-- ,MAX(IF(Key = “ hobby”, Value, NULL)) as hobby
+From calc_percent_of_target
+group by percent_of_target order by percent_of_target
