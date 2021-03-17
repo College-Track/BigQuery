@@ -32,6 +32,16 @@ SELECT
 EXCEPT(join_key),
   CASE
     WHEN AT_Grade_c = '9th Grade' THEN fy20_student_count * GMA.ten_grade
+    WHEN AT_Grade_c = '10th Grade' THEN fy20_student_count * GMA.eleven_grade
+    WHEN AT_Grade_c = '11th Grade' THEN fy20_student_count * GMA.twelve_grade
+    WHEN AT_Grade_c = '12th Grade' THEN fy20_student_count * GMA.year_1
+    WHEN AT_Grade_c = 'Year 1' THEN fy20_student_count * GMA.year_2
+    WHEN AT_Grade_c = 'Year 2' THEN fy20_student_count * GMA.year_3
+    WHEN AT_Grade_c = 'Year 3' THEN fy20_student_count * GMA.year_4
+    WHEN AT_Grade_c = 'Year 4' THEN fy20_student_count * GMA.year_5
+    WHEN AT_Grade_c = 'Year 5' THEN fy20_student_count * GMA.year_6
+    WHEN AT_Grade_c = 'Year 6' THEN fy20_student_count * GMA.year_7
+    WHEN AT_Grade_c = 'Year 7' THEN fy20_student_count * GMA.year_8
     ELSE 0
   END AS fy21_projection
 FROM
