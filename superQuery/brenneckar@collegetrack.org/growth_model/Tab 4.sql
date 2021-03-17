@@ -8,12 +8,11 @@ LANGUAGE js AS r"""
 WITH numbers AS
   (SELECT 5 AS x)
 
-SELECT *
-FROM numbers
 
--- SELECT name, COUNT(*) c
--- FROM (
---   SELECT fhoffa.x.nlp_compromise_people(title) names
---   FROM `fh-bigquery.reddit_posts.2019_02`
---   WHERE subreddit = 'movies'
--- ), UNNEST(names) name
+
+SELECT name,
+FROM (
+  SELECT expand_array(x) names
+  FROM numbers
+  
+), UNNEST(names) name
