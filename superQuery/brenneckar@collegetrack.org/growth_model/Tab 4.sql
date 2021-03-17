@@ -62,10 +62,11 @@ WITH numbers AS
 
 
 
-SELECT student_count, fy_list
+SELECT hs_class, student_count
 FROM (
-  SELECT calc_student_count(start_count, FY, hs_class) count_arrary,
+  SELECT hs_class, calc_student_count(start_count, FY, hs_class) count_arrary,
   list_fy(FY, hs_class) fY_array
   FROM numbers
   
-), UNNEST(count_arrary) student_count,  UNNEST(fY_array) fy_list
+), UNNEST(count_arrary) student_count
+-- ,  UNNEST(fY_array) fy_list
