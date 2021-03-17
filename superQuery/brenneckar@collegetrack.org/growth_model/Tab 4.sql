@@ -26,6 +26,7 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead) {
 
     return (final_array)
 }
+return (futureCalculations(start_count, FY, HS_Class, years_ahead))
 """;
 
 
@@ -50,6 +51,7 @@ LANGUAGE js AS r"""
 
     return (fy_list)
 }
+return (list_fiscal_years(FY, years_ahead))
 """;
 
 
