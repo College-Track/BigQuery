@@ -26,7 +26,7 @@ return (futureCalculations(start_count,FY, HS_Class))
 
 
 CREATE TEMP FUNCTION list_fy(FY FLOAT64, HS_Class FLOAT64)
-RETURNS ARRAY <FLOAT64>
+RETURNS ARRAY <STRING>
 LANGUAGE js AS r"""
   function list_fiscal_years(FY, HS_Class) {
     var num_iterations = 14 - (HS_Class - FY)
@@ -62,7 +62,7 @@ WITH numbers AS
 
 
 
-SELECT student_count,
+SELECT student_count, fy_list
 FROM (
   SELECT calc_student_count(start_count, FY, hs_class) count_arrary,
   list_fy(FY, hs_class) fY_array
