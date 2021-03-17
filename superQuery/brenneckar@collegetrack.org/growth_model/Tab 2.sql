@@ -1,3 +1,5 @@
-SELECT name,  College_Track_FY_HS_Planned_Enrollment_c, College_Track_High_School_Capacity_c,
-FROM `data-warehouse-289815.salesforce.account`
-WHERE College_Track_FY_HS_Planned_Enrollment_c IS NOT NULL
+SELECT 
+Contact_Id,
+`data-warehouse-289815.UDF.determine_buckets`(gpa_hs_cumulative_c,0.5, 2.5,3.0,'gpa')
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+LIMIT 10
