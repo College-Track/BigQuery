@@ -1,9 +1,11 @@
 WITH gather_data AS (
   SELECT
+    "join" AS join_key,
     region_short,
     site_short,
     AT_grade_c,
-    COUNT(Contact_Id) as student_count,
+    high_school_graduating_class_c,
+    COUNT(Contact_Id) as fy20_student_count,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
@@ -14,11 +16,14 @@ WITH gather_data AS (
       "Leave of Absence"
     )
   GROUP BY
+   
     region_short,
     site_short,
-    AT_grade_c
+    AT_grade_c,
+    high_school_graduating_class_c
 )
 SELECT
-  SUM(student_count)
+  *
 FROM
-  gather_data
+  gather_data GD
+  LEFT JOIN `learning-agendas.growth_model.growth_model_assumptions` GMA ON GMA.join_key = GD.join_key
