@@ -119,5 +119,5 @@ GROUP BY
 ORDER BY
   grade_sort
 
--- SELECT *
--- FROM calc_average_gap
+SELECT *
+FROM calc_average_gap
