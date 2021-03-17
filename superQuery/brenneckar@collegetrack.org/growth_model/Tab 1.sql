@@ -28,8 +28,8 @@ WITH gather_data AS (
     high_school_graduating_class_c
 ),
 create_new_hs_class AS (
-  SELECT
-    DISTINCT GD.join_key,
+  SELECT DISTINCT 
+    GD.join_key,
     region_short,
     site_short,
     "NA" AS AT_grade_c,
@@ -37,9 +37,11 @@ create_new_hs_class AS (
     first_year_target,
     0 AS fy20_student_count,
     (first_year_target * GMA.nine_grade) AS fy21_projection
+    
   FROM
-    gather_data GD
+    gather_data GD 
     LEFT JOIN `learning-agendas.growth_model.growth_model_assumptions` GMA ON GMA.join_key = GD.join_key
+    
 ),
 calc_projection AS (
   SELECT
@@ -62,24 +64,11 @@ calc_projection AS (
   FROM
     gather_data GD
     LEFT JOIN `learning-agendas.growth_model.growth_model_assumptions` GMA ON GMA.join_key = GD.join_key
-  UNION ALL
-    (
-      SELECT
-        *
-      EXCEPT(join_key)
-      FROM
-        create_new_hs_class
-    )
+    UNION ALL (SELECT *EXCEPT(join_key) FROM create_new_hs_class)
+    
 )
 SELECT
-  site_short,
-  AT_Grade_c,
   SUM(fy20_student_count),
   SUM(fy21_projection)
 FROM
   calc_projection
-  WHERE site_short = 'New Orleans'
-GROUP BY
-  
-  site_short,
-  AT_Grade_c
