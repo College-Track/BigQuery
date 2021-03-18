@@ -69,18 +69,18 @@ FROM (
 -- ),
 
 
-determine_ps_or_hs AS (
-SELECT *,
-CASE WHEN (high_school_graduating_class_c - 2000) >= CAST(REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+')AS FLOAT64) THEN "High School"
-ELSE "Post-Secondary"
-END AS student_type
-FROM calc_projections
+-- determine_ps_or_hs AS (
+-- SELECT *,
+-- CASE WHEN (high_school_graduating_class_c - 2000) >= CAST(REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+')AS FLOAT64) THEN "High School"
+-- ELSE "Post-Secondary"
+-- END AS student_type
+-- FROM calc_projections
 
-)
+-- )
 
 
 SELECT *
-FROM determine_ps_or_hs
+FROM calc_projections
 
 
 
