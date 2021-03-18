@@ -27,9 +27,9 @@ WITH gather_data AS (
     high_school_graduating_class_c
 ),
 prep_data_for_new_hs_class AS (
-SELECT region_short, site_short, (MAX(high_school_graduating_class_c) + 1)
+SELECT region_short, site_short, first_year_target, MAX(high_school_graduating_class_c) AS high_school_graduating_class_c
 FROM gather_data 
-GROUP BY region_short, site_short
+GROUP BY region_short, site_short, first_year_target
 ),
 
 
@@ -45,7 +45,7 @@ FROM (
 )
 
 SELECT *
-FROM calc_projections
+FROM prep_data_for_new_hs_class
 -- WHERE site_short = 'San Francisco'
 -- ORDER BY high_school_graduating_class_c
 
