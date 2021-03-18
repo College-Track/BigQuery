@@ -33,7 +33,14 @@ GROUP BY region_short, site_short, first_year_target
 ),
 
 
-
+new_hs_classes AS (
+SELECT region_short, site_short, first_year_target, hs_class
+FROM (
+SELECT region_short, site_short, first_year_target, GENERATE_ARRAY(high_school_graduating_class_c+1, high_school_graduating_class_c+10) AS hs_classes 
+FROM prep_data_for_new_hs_class
+)
+,UNNEST(hs_classes) hs_class
+),
 
 
 calc_projections AS (SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
@@ -45,7 +52,7 @@ FROM (
 )
 
 SELECT *
-FROM prep_data_for_new_hs_class
+FROM new_hs_classes
 -- WHERE site_short = 'San Francisco'
 -- ORDER BY high_school_graduating_class_c
 
