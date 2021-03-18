@@ -19,5 +19,5 @@ FROM calc_projections
 
 SELECT 
 * EXCEPT(num_student),
-IFNULL(num_student, 0) AS num_student
+IFNULL(num_student, 0) AS num_studentfdas
 FROM determine_ps_or_hs
