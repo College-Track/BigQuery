@@ -34,12 +34,12 @@ GROUP BY region_short, site_short, first_year_target
 
 
 new_hs_classes AS (
-SELECT region_short, site_short, first_year_target, hs_class
+SELECT region_short, site_short, first_year_target, high_school_graduating_class_c
 FROM (
-SELECT region_short, site_short, first_year_target, GENERATE_ARRAY(high_school_graduating_class_c+1, high_school_graduating_class_c+15) AS hs_classes 
+SELECT region_short, site_short, first_year_target, GENERATE_ARRAY(high_school_graduating_class_c+1, high_school_graduating_class_c+12) AS hs_classes 
 FROM prep_data_for_new_hs_class
 )
-,UNNEST(hs_classes) hs_class
+,UNNEST(hs_classes) high_school_graduating_class_c
 ),
 
 
@@ -49,11 +49,20 @@ FROM (
   FROM gather_data
   
 ), UNNEST(count_arrary) student_count
+),
+
+
+calc_projections_new_hs_class AS (SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
+FROM (
+  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(first_year_target, 2020, high_school_graduating_class_c, 15) count_arrary
+  FROM new_hs_classes
+  
+), UNNEST(count_arrary) student_count
 )
 
 SELECT *
-FROM new_hs_classes
-ORDER BY site_short, hs_class
+FROM calc_projections_new_hs_class
+-- ORDER BY site_short, hs_class
 -- WHERE site_short = 'San Francisco'
 -- ORDER BY high_school_graduating_class_c
 
