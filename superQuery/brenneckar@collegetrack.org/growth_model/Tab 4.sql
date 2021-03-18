@@ -25,21 +25,26 @@ WITH gather_data AS (
     site_short,
     AT_grade_c,
     high_school_graduating_class_c
-)
-
-
-
-
-
--- SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
--- FROM (
---   SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(fy20_student_count, 2021, high_school_graduating_class_c, 15) count_arrary
---   FROM gather_data
-  
--- ), UNNEST(count_arrary) student_count
-
-
+),
+prep_data_for_new_hs_class AS (
 SELECT region_short, site_short, (MAX(high_school_graduating_class_c) + 1)
 FROM gather_data 
 GROUP BY region_short, site_short
+),
+
+
+
+
+
+calc_projections AS (SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
+FROM (
+  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(fy20_student_count, 2021, high_school_graduating_class_c, 15) count_arrary
+  FROM gather_data
+  
+), UNNEST(count_arrary) student_count
+)
+
+SELECT *
+FROM calc_projections
+
 
