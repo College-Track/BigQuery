@@ -80,7 +80,7 @@ FROM calc_projections
 
 
 SELECT *
-FROM combined_classes
+FROM determine_ps_or_hs
 
 
 
