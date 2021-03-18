@@ -46,5 +46,7 @@ FROM (
 
 SELECT *
 FROM calc_projections
+WHERE site_short = 'San Francisco'
+ORDER BY high_school_graduating_class_c
 
 
