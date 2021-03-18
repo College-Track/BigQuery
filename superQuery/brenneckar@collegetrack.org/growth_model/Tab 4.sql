@@ -62,6 +62,7 @@ FROM (
 
 SELECT *
 FROM calc_projections_new_hs_class
+UNION ALL (SELECT * FROM calc_projections)
 -- ORDER BY site_short, hs_class
 -- WHERE site_short = 'San Francisco'
 -- ORDER BY high_school_graduating_class_c
