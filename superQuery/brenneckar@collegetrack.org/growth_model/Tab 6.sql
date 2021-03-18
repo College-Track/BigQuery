@@ -19,7 +19,5 @@ FROM calc_projections
 
 SELECT 
 * EXCEPT(num_student),
-CASE WHEN num_student IS NULL THEN "BLAH"
-ELSE CAST(num_student AS STRING)
-END AS num_student
+CAST(num_student AS INT64) AS num_student
 FROM determine_ps_or_hs
