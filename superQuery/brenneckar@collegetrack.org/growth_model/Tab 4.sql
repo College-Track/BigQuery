@@ -68,7 +68,7 @@ UNION ALL (SELECT * FROM calc_projections)
 
 determine_ps_or_hs AS (
 SELECT *,
-REGEXP_EXTRACT(fiscal_year,r'[0-9 ]') AS fy_year
+REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+') AS fy_year
 FROM combined_classes
 
 )
