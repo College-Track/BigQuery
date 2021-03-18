@@ -53,6 +53,7 @@ FROM (
 
 SELECT *
 FROM new_hs_classes
+ORDER BY site_short, hs_class
 -- WHERE site_short = 'San Francisco'
 -- ORDER BY high_school_graduating_class_c
 
