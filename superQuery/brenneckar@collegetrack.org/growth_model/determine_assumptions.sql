@@ -127,19 +127,20 @@ calc_percent_of_target AS (
 
 
 select 
-"join" AS join_key,
-MAX(IF(AT_Grade_c = "9th Grade", percent_of_target, NULL)) AS nine_grade,
-MAX(IF(AT_Grade_c = "10th Grade", percent_of_target, NULL)) AS ten_grade,
-MAX(IF(AT_Grade_c = "11th Grade", percent_of_target, NULL)) AS eleven_grade,
-MAX(IF(AT_Grade_c = "12th Grade", percent_of_target, NULL)) AS twelve_grade,
-MAX(IF(AT_Grade_c = "Year 1", percent_of_target, NULL)) AS year_1,
-MAX(IF(AT_Grade_c = "Year 2", percent_of_target, NULL)) AS year_2,
-MAX(IF(AT_Grade_c = "Year 3", percent_of_target, NULL)) AS year_3,
-MAX(IF(AT_Grade_c = "Year 4", percent_of_target, NULL)) AS year_4,
-MAX(IF(AT_Grade_c = "Year 5", percent_of_target, NULL)) AS year_5,
-MAX(IF(AT_Grade_c = "Year 6", percent_of_target, NULL)) AS year_6,
-MAX(IF(AT_Grade_c = "Year 7", percent_of_target, NULL)) AS year_7,
-MAX(IF(AT_Grade_c = "Year 8", percent_of_target, NULL)) AS year_8
+*
+-- "join" AS join_key,
+-- MAX(IF(AT_Grade_c = "9th Grade", percent_of_target, NULL)) AS nine_grade,
+-- MAX(IF(AT_Grade_c = "10th Grade", percent_of_target, NULL)) AS ten_grade,
+-- MAX(IF(AT_Grade_c = "11th Grade", percent_of_target, NULL)) AS eleven_grade,
+-- MAX(IF(AT_Grade_c = "12th Grade", percent_of_target, NULL)) AS twelve_grade,
+-- MAX(IF(AT_Grade_c = "Year 1", percent_of_target, NULL)) AS year_1,
+-- MAX(IF(AT_Grade_c = "Year 2", percent_of_target, NULL)) AS year_2,
+-- MAX(IF(AT_Grade_c = "Year 3", percent_of_target, NULL)) AS year_3,
+-- MAX(IF(AT_Grade_c = "Year 4", percent_of_target, NULL)) AS year_4,
+-- MAX(IF(AT_Grade_c = "Year 5", percent_of_target, NULL)) AS year_5,
+-- MAX(IF(AT_Grade_c = "Year 6", percent_of_target, NULL)) AS year_6,
+-- MAX(IF(AT_Grade_c = "Year 7", percent_of_target, NULL)) AS year_7,
+-- MAX(IF(AT_Grade_c = "Year 8", percent_of_target, NULL)) AS year_8
 
 From calc_percent_of_target
 -- group by percent_of_target order by percent_of_target
