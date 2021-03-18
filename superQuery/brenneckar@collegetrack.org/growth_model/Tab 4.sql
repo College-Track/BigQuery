@@ -38,7 +38,7 @@ GROUP BY region_short, site_short
 
 calc_projections AS (SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
 FROM (
-  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(fy20_student_count, 2021, high_school_graduating_class_c, 15) count_arrary
+  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(fy20_student_count, 2020, high_school_graduating_class_c, 15) count_arrary
   FROM gather_data
   
 ), UNNEST(count_arrary) student_count
