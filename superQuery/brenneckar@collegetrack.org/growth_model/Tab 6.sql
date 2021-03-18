@@ -20,6 +20,6 @@ FROM calc_projections
 SELECT 
 * EXCEPT(num_student),
 CASE WHEN num_student IS NULL THEN 0
-ELSE CAST(num_student AS INT64)
+ELSE CAST(num_student AS NUMERIC)
 END AS num_student
 FROM determine_ps_or_hs
