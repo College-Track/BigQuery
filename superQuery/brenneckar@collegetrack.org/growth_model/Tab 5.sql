@@ -24,8 +24,10 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead) {
             if (start_count_entered == false) {
                 new_count.push([_tmp_string, start_count])
                 start_count_entered = true
+                start_year += 1
+                _tmp_string = "FY" + start_year
             }
-            if (grade_index < 11) {
+            if ((grade_index < 11) && (start_count_entered == true)) {
 
                 _tmp_count = new_count[count_index][1] * rates[grade_index + 1]
             }
@@ -42,6 +44,5 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead) {
 
     return (new_count)
 }
-
 return (futureCalculations(start_count, FY, HS_Class, years_ahead))
 """
