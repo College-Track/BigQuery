@@ -22,7 +22,7 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead, rates) {
     while (start_year <= end_year) {
         _tmp_string = "FY" + start_year
         if ((start_year + 2000 + 3) < (HS_Class)) {
-            new_count.push([_tmp_string, NaN])
+            new_count.push([_tmp_string, 0])
         }
         else {
             if (start_count_entered == false) {
@@ -36,7 +36,7 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead, rates) {
                 _tmp_count = new_count[count_index][1] * rates[grade_index + 1]
             }
             else {
-                _tmp_count = NaN
+                _tmp_count = 0
             }
             var _tmp_array = [_tmp_string, _tmp_count]
             new_count.push(_tmp_array)
