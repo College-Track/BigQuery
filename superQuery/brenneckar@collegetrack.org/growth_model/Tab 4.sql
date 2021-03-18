@@ -68,7 +68,9 @@ UNION ALL (SELECT * FROM calc_projections)
 
 determine_ps_or_hs AS (
 SELECT *,
-REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+') AS fy_year
+CASE WHEN (high_school_graduating_class_c - 2000) >= CAST(REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+')AS FLOAT64) THEN "High School"
+ELSE "Post-Secondary"
+END AS student_type
 FROM combined_classes
 
 )
