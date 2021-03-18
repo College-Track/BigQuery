@@ -48,16 +48,16 @@ combined_classes AS (
 SELECT region_abrev, site_short, starting_count, high_school_graduating_class_c
 FROM gather_data
 UNION ALL (SELECT * FROM new_hs_classes)
-)
+),
 
 
--- calc_projections AS (SELECT region_abrev, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
--- FROM (
---   SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(starting_count, 2020, high_school_graduating_class_c, 15,[0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383]) count_arrary
---   FROM combined_classes
+calc_projections AS (SELECT region_abrev, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
+FROM (
+  SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(starting_count, 2020, high_school_graduating_class_c, 15,[0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383]) count_arrary
+  FROM combined_classes
   
--- ), UNNEST(count_arrary) student_count
--- )
+), UNNEST(count_arrary) student_count
+)
 
 
 -- calc_projections_new_hs_class AS (SELECT region_abrev, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
@@ -80,7 +80,7 @@ UNION ALL (SELECT * FROM new_hs_classes)
 
 
 SELECT *
-FROM combined_classes
+FROM calc_projections
 
 
 
