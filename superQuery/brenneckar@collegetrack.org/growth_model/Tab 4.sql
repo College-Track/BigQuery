@@ -59,13 +59,23 @@ FROM (
   FROM new_hs_classes
   
 ), UNNEST(count_arrary) student_count
-)
-
+),
+combined_classes AS (
 SELECT *
 FROM calc_projections_new_hs_class
 UNION ALL (SELECT * FROM calc_projections)
--- ORDER BY site_short, hs_class
--- WHERE site_short = 'San Francisco'
--- ORDER BY high_school_graduating_class_c
+),
+
+determine_ps_or_hs AS (
+SELECT *,
+REGEXP_EXTRACT(fiscal_year,r'[0-9 ]') AS fy_year
+FROM combined_classes
+
+)
+
+
+SELECT *
+FROM determine_ps_or_hs
+
 
 
