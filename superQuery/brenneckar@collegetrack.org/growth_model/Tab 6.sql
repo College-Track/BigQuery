@@ -17,5 +17,8 @@ FROM calc_projections
 )
 
 
-SELECT *
+SELECT * EXCEPT(num_student),
+CASE WHEN num_student IS NULL THEN 0
+ELSE num_student
+END AS num_student
 FROM determine_ps_or_hs
