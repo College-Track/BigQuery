@@ -39,7 +39,7 @@ WITH gather_data AS (
 -- ), UNNEST(count_arrary) student_count
 
 
-SELECT region_short, site_short, MAX(high_school_graduating_class_c)
+SELECT region_short, site_short, (MAX(high_school_graduating_class_c) + 1)
 FROM gather_data 
 GROUP BY region_short, site_short
 
