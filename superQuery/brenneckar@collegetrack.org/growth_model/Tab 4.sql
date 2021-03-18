@@ -12,6 +12,7 @@ WITH gather_data AS (
   FROM
     `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
     LEFT JOIN `data-warehouse-289815.salesforce.account` A ON A.Id = CAT.site_c
+    -- LEFT JOIN `learning-agendas.growth_model.growth_model_assumptions` GMA ON GMA.join_key = GD.join_key
   WHERE
     GAS_Name LIKE '%Spring 2019-20%'
     AND student_audit_status_c IN (
@@ -45,7 +46,7 @@ FROM prep_data_for_new_hs_class
 
 calc_projections AS (SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
 FROM (
-  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(fy20_student_count, 2020, high_school_graduating_class_c, 15) count_arrary
+  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(fy20_student_count, 2020, high_school_graduating_class_c, 15,[0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383]) count_arrary
   FROM gather_data
   
 ), UNNEST(count_arrary) student_count
@@ -54,7 +55,7 @@ FROM (
 
 calc_projections_new_hs_class AS (SELECT region_short, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
 FROM (
-  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(first_year_target, 2020, high_school_graduating_class_c, 15) count_arrary
+  SELECT region_short, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(first_year_target, 2020, high_school_graduating_class_c, 15, [0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383]) count_arrary
   FROM new_hs_classes
   
 ), UNNEST(count_arrary) student_count
