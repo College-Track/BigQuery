@@ -36,7 +36,7 @@ GROUP BY region_short, site_short, first_year_target
 new_hs_classes AS (
 SELECT region_short, site_short, first_year_target, hs_class
 FROM (
-SELECT region_short, site_short, first_year_target, GENERATE_ARRAY(high_school_graduating_class_c+1, high_school_graduating_class_c+10) AS hs_classes 
+SELECT region_short, site_short, first_year_target, GENERATE_ARRAY(high_school_graduating_class_c+1, high_school_graduating_class_c+15) AS hs_classes 
 FROM prep_data_for_new_hs_class
 )
 ,UNNEST(hs_classes) hs_class
