@@ -11,10 +11,10 @@ function calc_grad_projections(student_count, FY, HS_Class) {
     var alumni_count = []
 
     if (grade_index < 0) {
-        return;
+        return
     }
     else if (grade_index > 3) {
-        return;
+        return
     }
     else {
         _tmp_string = 'FY' + ((FY - 2000) + 1)
