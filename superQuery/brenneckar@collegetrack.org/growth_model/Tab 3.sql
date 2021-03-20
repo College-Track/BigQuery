@@ -3,7 +3,8 @@ WITH gather_data AS (
     region_abrev,
     site_short,
     Contact_Id,
-    hs_grad_year_c
+    hs_grad_year_c,
+    contact_4_year_degree_earned_at_lookup_c
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE college_track_status_c = '17A'
