@@ -17,6 +17,8 @@ FROM calc_projections
 )
 
 
+
+
 SELECT 
 * 
 FROM determine_ps_or_hs
