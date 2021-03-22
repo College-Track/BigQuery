@@ -70,11 +70,17 @@ FROM calc_graduates)
 -- SELECT *
 -- FROM combine_alumni
 
-SELECT
+, complete_alumni AS (SELECT
   region_abrev, site_short, high_school_graduating_class_c, fiscal_year, student_type, SUM(num_student)
 OVER
   (PARTITION BY  region_abrev, site_short, CAST(high_school_graduating_class_c AS STRING)
-  ORDER BY fiscal_year) AS running_sum
+  ORDER BY fiscal_year) AS num_student
 FROM combine_alumni
-WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
+-- WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
+-- ORDER BY fiscal_year
+)
+
+SELECT fiscal_year, SUM(num_student)
+FROM complete_alumni
+GROUP BY fiscal_year
 ORDER BY fiscal_year
