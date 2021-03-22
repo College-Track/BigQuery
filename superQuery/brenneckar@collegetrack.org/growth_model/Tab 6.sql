@@ -88,13 +88,13 @@ student_type)
   region_abrev, site_short, fiscal_year, SUM(num_student)
 OVER
   (PARTITION BY  region_abrev, site_short
-  ORDER BY fiscal_year) AS running_total
+  ORDER BY fiscal_year) AS num_student
 FROM combined_alumni
 -- WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
 -- ORDER BY fiscal_year
 )
 
-SELECT fiscal_year,  SUM(running_total)
+SELECT fiscal_year,  SUM(num_student)
 FROM complete_alumni
 -- WHERE fiscal_year IN ("FY20", "FY21") AND site_short = "Oakland"
 GROUP BY fiscal_year
