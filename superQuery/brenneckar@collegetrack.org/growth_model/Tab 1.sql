@@ -65,7 +65,8 @@ SELECT
   ROUND(four_year_rate,2),
   ROUND((five_year_rate - four_year_rate),2) AS year_5,
   ROUND((six_year_rate - five_year_rate),2) as year_6,
-  ROUND((grad_rate_overall - six_year_rate),2) as overall
+  ROUND((grad_rate_overall - six_year_rate),2) as overall,
+  ROUND((grad_rate_overall),2) as overall_rate
 FROM
   join_data
   ORDER by region_abrev
