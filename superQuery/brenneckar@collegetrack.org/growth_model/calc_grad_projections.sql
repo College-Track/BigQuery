@@ -56,5 +56,5 @@ function calc_grad_projections(student_count, FY, HS_Class, region, rates) {
     return (alumni_count)
 
 }
-calc_grad_projections(student_count, FY, HS_Class, region, rates)
+//calc_grad_projections(student_count, FY, HS_Class, region, rates)
 """
