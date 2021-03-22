@@ -49,7 +49,7 @@ function calc_grad_projections(student_count, FY, HS_Class, region, rates, impro
     }
 
     _tmp_string = "FY" + ((FY - 2000) + 1)
-    _tmp_count = estimated_year_1_enrollment * (grad_rates[grad_rate_index]* improve_grad_rate/5)
+    _tmp_count = estimated_year_1_enrollment * (grad_rates[grad_rate_index]+ improve_grad_rate/5)
 
     alumni_count.push([_tmp_string, _tmp_count, "Alumni"])
 
