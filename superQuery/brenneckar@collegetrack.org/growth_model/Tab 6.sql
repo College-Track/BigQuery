@@ -67,9 +67,10 @@ FROM calc_graduates)
 )
 
 
-SELECT *
+SELECT fiscal_year, SUM(num_student)
 FROM combined_alumni
 WHERE site_short = "Oakland" AND fiscal_year IN ('FY20', 'FY21')
+GROUP BY fiscal_year
 
 -- , complete_alumni AS (SELECT
 --   region_abrev, site_short, high_school_graduating_class_c, fiscal_year, student_type, SUM(num_student)
