@@ -17,5 +17,5 @@ WITH gather_data AS (
     C.high_school_graduating_class_c
 )
 
-SELECT *
+SELECT SUM(num_student)
 FROM gather_data
