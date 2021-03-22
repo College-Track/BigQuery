@@ -15,7 +15,7 @@ WITH gather_data AS (
     and indicator_completed_ct_hs_program_c = true
 )
 SELECT
---   region_short,
+  region_short,
 --   site_short,
   COUNT(Contact_Id) AS student_count,
   SUM(graduated_4_year_degree_4_years_c) AS graduated_4_year_degree_4_years_c,
@@ -24,6 +24,6 @@ SELECT
   SUM(graduated_4_year_degree_c) AS graduated_4_year_degree_c
 FROM
   gather_data
--- GROUP BY
---   region_short,
+GROUP BY
+  region_short,
 --   site_short
