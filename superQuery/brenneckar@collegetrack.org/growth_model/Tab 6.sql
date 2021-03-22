@@ -83,4 +83,4 @@ FROM combined_alumni
 SELECT fiscal_year,site_short,  SUM(running_total)
 FROM complete_alumni
 GROUP BY fiscal_year, site_short
-ORDER BY site_short, fiscal_year, 
+ORDER BY site_short, fiscal_year 
