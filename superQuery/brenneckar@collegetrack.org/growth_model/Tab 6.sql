@@ -94,7 +94,7 @@ FROM combined_alumni
 -- ORDER BY fiscal_year
 )
 
-SELECT fiscal_year,site_short,  SUM(running_total)
+SELECT fiscal_year,  SUM(running_total)
 FROM complete_alumni
 -- WHERE fiscal_year IN ("FY20", "FY21") AND site_short = "Oakland"
 GROUP BY fiscal_year
