@@ -28,7 +28,7 @@ FROM (
 
 
 SELECT *
-FROM determine_ps_or_hs
+FROM calc_graduates
 WHERE site_short = 'New Orleans' AND high_school_graduating_class_c = 2016 AND fiscal_year IN ('FY20', 'FY21')
 
 
