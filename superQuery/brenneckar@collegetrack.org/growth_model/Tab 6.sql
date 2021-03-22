@@ -49,20 +49,32 @@ combined_alumni AS (
 SELECT 
 region_abrev,
 site_short, 
-CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
+-- CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
 fiscal_year, 
 student_type, 
-num_student  
+SUM(num_student) as num_student  
 FROM prep_alumni 
+GROUP BY
+region_abrev,
+site_short, 
+-- CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
+fiscal_year, 
+student_type
 UNION ALL (
 SELECT 
 region_abrev,
 site_short, 
-CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
+-- CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
 fiscal_year, 
 student_type, 
-num_student  
-FROM calc_graduates)
+SUM(num_student) as num_student  
+FROM calc_graduates
+GROUP BY 
+region_abrev,
+site_short, 
+-- CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
+fiscal_year, 
+student_type)
 
 )
 
