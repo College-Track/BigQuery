@@ -68,7 +68,7 @@ FROM calc_graduates)
 
 
 SELECT *
-FROM combine_alumni
+FROM combined_alumni
 WHERE site_short = "Oakland" AND fiscal_year IN ('FY20', 'FY21')
 
 -- , complete_alumni AS (SELECT
