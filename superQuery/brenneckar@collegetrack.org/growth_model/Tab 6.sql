@@ -67,9 +67,9 @@ FROM calc_graduates)
 )
 
 
-SELECT fiscal_year, SUM(num_student)
+SELECT SUM(num_student)
 FROM combined_alumni
-WHERE site_short = "Oakland" AND fiscal_year IN ('FY20', 'FY21') AND high_school_graduating_class_c = 2014
+WHERE site_short = "Oakland" AND fiscal_year IN ('FY20', 'FY21')
 GROUP BY fiscal_year
 
 -- , complete_alumni AS (SELECT
@@ -82,8 +82,8 @@ GROUP BY fiscal_year
 -- -- ORDER BY fiscal_year
 -- )
 
--- SELECT fiscal_year,site_short, high_school_graduating_class_c,  SUM(running_total)
+-- SELECT fiscal_year,site_short,  SUM(running_total)
 -- FROM complete_alumni
--- WHERE fiscal_year IN ("FY20", "FY21") AND site_short = "Oakland"
--- GROUP BY fiscal_year, site_short, high_school_graduating_class_c
--- ORDER BY site_short, fiscal_year, high_school_graduating_class_c 
+-- WHERE fiscal_year IN ("FY20", "FY21")
+-- GROUP BY fiscal_year, site_short
+-- ORDER BY site_short, fiscal_year 
