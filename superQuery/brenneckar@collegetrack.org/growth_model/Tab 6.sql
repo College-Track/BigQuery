@@ -75,7 +75,7 @@ FROM calc_graduates)
 , complete_alumni AS (SELECT
   region_abrev, site_short, high_school_graduating_class_c, fiscal_year, student_type, SUM(num_student)
 OVER
-  (PARTITION BY  region_abrev, site_short, CAST(high_school_graduating_class_c AS STRING)
+  (PARTITION BY  region_abrev, site_short
   ORDER BY fiscal_year) AS running_total
 FROM combined_alumni
 -- WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
