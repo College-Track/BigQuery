@@ -28,7 +28,8 @@ FROM (
 
 
 SELECT *
-FROM calc_graduates
+FROM determine_ps_or_hs
+WHERE site_short = 'New Orleans' AND high_school_graduating_class_c = 2015
 
 
 
