@@ -16,7 +16,7 @@ WITH gather_data AS (
 )
 SELECT
   region_short,
---   site_short,
+  site_short,
   COUNT(Contact_Id) AS student_count,
   SUM(graduated_4_year_degree_4_years_c) AS graduated_4_year_degree_4_years_c,
   SUM(graduated_4_year_degree_5_years_c) AS graduated_4_year_degree_5_years_c,
@@ -25,5 +25,5 @@ SELECT
 FROM
   gather_data
 GROUP BY
-  region_short
---   site_short
+  region_short,
+  site_short
