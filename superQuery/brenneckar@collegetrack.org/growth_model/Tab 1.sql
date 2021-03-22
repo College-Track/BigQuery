@@ -61,9 +61,9 @@ join_data AS (
 )
 SELECT
   region_abrev,
-  four_year_rate,
-  (five_year_rate - four_year_rate) AS year_5,
-  (six_year_rate - five_year_rate) as year_6,
-  (grad_rate_overall - six_year_rate) as overall
+  ROUND(four_year_rate,2),
+  ROUND((five_year_rate - four_year_rate),2) AS year_5,
+  ROUND((six_year_rate - five_year_rate),2) as year_6,
+  ROUND((grad_rate_overall - six_year_rate),2) as overall
 FROM
   join_data
