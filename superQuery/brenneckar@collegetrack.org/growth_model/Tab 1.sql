@@ -11,7 +11,7 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_template` C
   WHERE
     years_since_hs_grad_c >= 6
-    AND years_since_hs_grad_c <= 10
+    AND years_since_hs_grad_c <= 8
     and indicator_completed_ct_hs_program_c = true
 ),
 prep_data AS (
