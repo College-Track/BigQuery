@@ -13,7 +13,8 @@ WITH gather_data AS (
   WHERE
     years_since_hs_grad_c >= 6
     and indicator_completed_ct_hs_program_c = true
-)
+),
+
 prep_data AS (SELECT
   region_abrev,
   COUNT(Contact_Id) AS student_count,
