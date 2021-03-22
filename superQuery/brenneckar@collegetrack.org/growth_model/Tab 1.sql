@@ -68,3 +68,4 @@ SELECT
   ROUND((grad_rate_overall - six_year_rate),2) as overall
 FROM
   join_data
+  ORDER by region_abrev
