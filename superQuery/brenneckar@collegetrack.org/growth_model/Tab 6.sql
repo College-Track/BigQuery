@@ -95,7 +95,7 @@ FROM combined_alumni
 )
 
 SELECT *
-FROM complete_alumni
+FROM determine_ps_or_hs
 -- WHERE fiscal_year IN ("FY20", "FY21") AND site_short = "Oakland"
 -- GROUP BY fiscal_year
 -- ORDER BY fiscal_year
