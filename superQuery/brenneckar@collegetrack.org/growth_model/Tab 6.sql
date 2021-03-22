@@ -60,4 +60,4 @@ OVER
   (PARTITION BY  region_abrev, site_short, CAST(high_school_graduating_class_c AS STRING)
   ORDER BY fiscal_year) AS running_sum
 FROM calc_graduates
-
+WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
