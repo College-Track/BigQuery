@@ -17,9 +17,9 @@ FROM calc_projections
 ),
 
 calc_graduates AS (
-(SELECT region_abrev, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student, SPLIT(student_count, ',')[OFFSET(2)] student_type,
+(SELECT region_abrev, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
 FROM (
-  SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_grad_projections`(num_student, (2000+CAST(REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+')AS INT64)), high_school_graduating_class_c) count_arrary
+  SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_grad_projections`(num_student, CAST(REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+')AS FLOAT64), high_school_graduating_class_c) count_arrary
   FROM determine_ps_or_hs
   
 ), UNNEST(count_arrary) student_count
@@ -29,7 +29,7 @@ FROM (
 
 SELECT *
 FROM calc_graduates
--- WHERE site_short = 'New Orleans' AND high_school_graduating_class_c = 2016 AND fiscal_year IN ('FY20', 'FY21', 'FY22')
+WHERE site_short = 'New Orleans' AND high_school_graduating_class_c = 2016 AND fiscal_year IN ('FY20', 'FY21')
 
 
 
