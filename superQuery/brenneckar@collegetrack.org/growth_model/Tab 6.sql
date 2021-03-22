@@ -48,11 +48,16 @@ prep_alumni AS (
 
 
 
-SELECT distinct fiscal_year
-FROM calc_graduates
-ORDER BY fiscal_year
+-- SELECT distinct fiscal_year
+-- FROM calc_graduates
+-- ORDER BY fiscal_year
 -- WHERE site_short = 'New Orleans' AND high_school_graduating_class_c = 2016 AND fiscal_year IN ('FY20', 'FY21', 'FY22')
 
 
-
+SELECT
+  region_abrev, site_short, high_school_graduating_class_c, fiscal_year, student_type, SUM(num_student)
+OVER
+  (PARTITION BY  region_abrev, site_short, CAST(high_school_graduating_class_c AS STRING)
+  ORDER BY fiscal_year) AS running_sum
+FROM calc_graduates
 
