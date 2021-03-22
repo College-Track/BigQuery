@@ -47,7 +47,7 @@ new_region_rate AS (
     SUM(graduated_4_year_degree_c) / SUM(student_count) AS grad_rate_overall
   FROM
     prep_data
-    WHERE region_abrev NOT IN ('NOLA', 'NOR CAL')
+    -- WHERE region_abrev NOT IN ('NOLA', 'NOR CAL')
 ),
 join_data AS (
   SELECT
