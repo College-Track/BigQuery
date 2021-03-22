@@ -94,8 +94,22 @@ FROM combined_alumni
 -- ORDER BY fiscal_year
 )
 
-SELECT *
+SELECT 
+region_abrev, 
+site_short, 
+high_school_graduating_class_c, 
+fiscal_year, 
+num_student, 
+student_type
 FROM determine_ps_or_hs
--- WHERE fiscal_year IN ("FY20", "FY21") AND site_short = "Oakland"
--- GROUP BY fiscal_year
--- ORDER BY fiscal_year
+UNION ALL (
+SELECT 
+region_abrev, 
+site_short, 
+high_school_graduating_class_c, 
+fiscal_year, 
+num_student, 
+student_type
+FROM 
+complete_alumni
+)
