@@ -25,5 +25,5 @@ SELECT
 FROM
   gather_data
 GROUP BY
-  region_short,
+  region_short
 --   site_short
