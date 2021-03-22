@@ -48,4 +48,5 @@ FROM prep_data
 )
 
 SELECT *
-FROM new_region_rate
+FROM new_region_rate UNION ALL 
+(SELECT * FROM region_rates)
