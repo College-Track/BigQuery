@@ -30,8 +30,8 @@ GROUP BY
 
 SELECT 
 region_abrev,
-student_count / graduated_4_year_degree_4_years_c AS four_year_rate,
-student_count / graduated_4_year_degree_5_years_c AS five_year_rate,
-student_count / graduated_4_year_degree_6_years_c AS six_year_rate,
-student_count / graduated_4_year_degree_c AS grad_rate_overall,
+graduated_4_year_degree_4_years_c / student_count AS four_year_rate,
+graduated_4_year_degree_5_years_c / student_count AS five_year_rate,
+graduated_4_year_degree_6_years_c / student_count AS six_year_rate,
+graduated_4_year_degree_c / student_count  AS grad_rate_overall,
 FROM prep_data
