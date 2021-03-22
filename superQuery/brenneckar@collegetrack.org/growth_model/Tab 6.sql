@@ -61,3 +61,4 @@ OVER
   ORDER BY fiscal_year) AS running_sum
 FROM calc_graduates
 WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
+ORDER BY fiscal_year
