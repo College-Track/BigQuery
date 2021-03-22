@@ -1,6 +1,6 @@
 WITH gather_data AS (
   SELECT
-    region_short,
+    region_abrev,
     site_short,
     Contact_Id,
     CAST(graduated_4_year_degree_4_years_c AS int64) AS graduated_4_year_degree_4_years_c,
@@ -14,9 +14,8 @@ WITH gather_data AS (
     years_since_hs_grad_c >= 6
     and indicator_completed_ct_hs_program_c = true
 )
-SELECT
-  region_short,
-  site_short,
+prep_data AS (SELECT
+  region_abrev,
   COUNT(Contact_Id) AS student_count,
   SUM(graduated_4_year_degree_4_years_c) AS graduated_4_year_degree_4_years_c,
   SUM(graduated_4_year_degree_5_years_c) AS graduated_4_year_degree_5_years_c,
@@ -25,5 +24,13 @@ SELECT
 FROM
   gather_data
 GROUP BY
-  region_short,
-  site_short
+  region_abrev
+)
+
+SELECT 
+region_abrev,
+student_count / graduated_4_year_degree_4_years_c AS four_year_rate,
+student_count / graduated_4_year_degree_5_years_c AS five_year_rate,
+student_count / graduated_4_year_degree_6_years_c AS six_year_rate,
+student_count / graduated_4_year_degree_c AS grad_rate_overall,
+FROM prep_data
