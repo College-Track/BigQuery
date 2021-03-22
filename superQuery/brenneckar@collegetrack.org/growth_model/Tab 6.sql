@@ -73,7 +73,7 @@ FROM calc_graduates)
 -- GROUP BY fiscal_year
 
 , complete_alumni AS (SELECT
-  region_abrev, site_short, fiscal_year, student_type, SUM(num_student)
+  region_abrev, site_short, fiscal_year, SUM(num_student)
 OVER
   (PARTITION BY  region_abrev, site_short
   ORDER BY fiscal_year) AS running_total
