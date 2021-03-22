@@ -29,7 +29,7 @@ FROM (
 
 SELECT *
 FROM calc_graduates
-WHERE site_short = 'New Orleans' AND high_school_graduating_class_c = 2016 AND fiscal_year IN ('FY20', 'FY21', 'FY22')
+-- WHERE site_short = 'New Orleans' AND high_school_graduating_class_c = 2016 AND fiscal_year IN ('FY20', 'FY21', 'FY22')
 
 
 
