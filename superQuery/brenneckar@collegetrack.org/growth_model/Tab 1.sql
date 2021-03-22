@@ -10,7 +10,7 @@ WITH gather_data AS (
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
   WHERE
-    years_since_hs_grad_c >= 4
+    years_since_hs_grad_c >= 6
     AND years_since_hs_grad_c <= 8
     and indicator_completed_ct_hs_program_c = true
 ),
@@ -36,6 +36,7 @@ region_rates AS (
     graduated_4_year_degree_c / student_count AS grad_rate_overall,
   FROM
     prep_data
+    WHERE region_abrev IN ('NOLA', 'NOR CAL')
 ),
 new_region_rate AS (
   SELECT
@@ -46,6 +47,7 @@ new_region_rate AS (
     SUM(graduated_4_year_degree_c) / SUM(student_count) AS grad_rate_overall
   FROM
     prep_data
+    WHERE region_abrev NOT IN ('NOLA', 'NOR CAL')
 ),
 join_data AS (
   SELECT
