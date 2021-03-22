@@ -82,5 +82,6 @@ FROM combined_alumni
 
 SELECT fiscal_year,site_short,  SUM(running_total)
 FROM complete_alumni
+WHERE fiscal_year IN ("FY20", "FY21")
 GROUP BY fiscal_year, site_short
 ORDER BY site_short, fiscal_year 
