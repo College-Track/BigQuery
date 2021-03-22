@@ -43,6 +43,27 @@ prep_alumni AS (
     C.region_abrev,
     C.site_short,
     C.high_school_graduating_class_c
+),
+
+combine_alumni AS (
+SELECT 
+region_abrev,
+site_short, 
+CAST(high_school_graduating_class_c AS INT64), 
+fiscal_year, 
+student_type, 
+num_student  
+FROM prep_alumni 
+UNION ALL (
+SELECT 
+region_abrev,
+site_short, 
+CAST(high_school_graduating_class_c AS INT64), 
+fiscal_year, 
+student_type, 
+num_student  
+FROM calc_graduates)
+
 )
 
 
