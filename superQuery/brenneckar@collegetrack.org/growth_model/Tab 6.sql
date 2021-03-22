@@ -92,9 +92,9 @@ OVER
 FROM combined_alumni
 -- WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
 -- ORDER BY fiscal_year
-)
+),
 
-SELECT 
+join_all_data AS (SELECT 
 region_abrev, 
 site_short, 
 high_school_graduating_class_c, 
@@ -113,3 +113,15 @@ student_type
 FROM 
 complete_alumni
 )
+)
+
+SELECT 
+region_abrev, 
+site_short, 
+CASE WHEN CAST(high_school_graduating_class_c AS STRING) IS NULL THEN "No HS Class - Alumni"
+ELSE CAST(high_school_graduating_class_c AS STRING)
+END AS high_school_graduating_class_c, 
+fiscal_year, 
+num_student, 
+student_type
+FROM join_all_data
