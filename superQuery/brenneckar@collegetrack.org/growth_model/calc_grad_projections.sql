@@ -4,11 +4,10 @@ student_count FLOAT64,
 FY FLOAT64, 
 HS_Class FLOAT64,
 region STRING, 
-rates ARRAY <FLOAT64>,
-improve_grad_rate FLOAT64)
+rates ARRAY <FLOAT64>)
 RETURNS ARRAY <STRING>
 LANGUAGE js AS r"""
-function calc_grad_projections(student_count, FY, HS_Class, region, rates, improve_grad_rate) {
+function calc_grad_projections(student_count, FY, HS_Class, region, rates) {
     var alumni_count = []
     var region_rates = {
         "NOR CAL": [0.31, 0.15, 0.05, 0.04, 0.04],
@@ -42,9 +41,9 @@ function calc_grad_projections(student_count, FY, HS_Class, region, rates, impro
         }
     }
     _tmp_string = "FY" + ((FY - 2000) + 1)
-    _tmp_count = estimated_year_1_enrollment * (grad_rates[grad_rate_index] + improve_grad_rate/5)
+    _tmp_count = estimated_year_1_enrollment * grad_rates[grad_rate_index]
     alumni_count.push([_tmp_string, _tmp_count, "Alumni"])
     return (alumni_count)
 }
-return (calc_grad_projections(student_count, FY, HS_Class, region, rates, improve_grad_rate))
+return (calc_grad_projections(student_count, FY, HS_Class, region, rates))
 """
