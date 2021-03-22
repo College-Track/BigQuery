@@ -10,7 +10,7 @@ WITH gather_data AS (
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
   WHERE
-    years_since_hs_grad_c >= 6
+    years_since_hs_grad_c >= 4
     AND years_since_hs_grad_c <= 8
     and indicator_completed_ct_hs_program_c = true
 ),
