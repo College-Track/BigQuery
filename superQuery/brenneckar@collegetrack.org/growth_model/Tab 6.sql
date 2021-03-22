@@ -80,7 +80,7 @@ FROM combined_alumni
 -- ORDER BY fiscal_year
 )
 
-SELECT fiscal_year, SUM(running_total)
+SELECT fiscal_year,site_short,  SUM(running_total)
 FROM complete_alumni
-GROUP BY fiscal_year
-ORDER BY fiscal_year
+GROUP BY fiscal_year, site_short
+ORDER BY site_short, fiscal_year, 
