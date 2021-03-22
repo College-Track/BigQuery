@@ -49,7 +49,7 @@ combine_alumni AS (
 SELECT 
 region_abrev,
 site_short, 
-CAST(high_school_graduating_class_c AS INT64), 
+CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
 fiscal_year, 
 student_type, 
 num_student  
@@ -58,15 +58,13 @@ UNION ALL (
 SELECT 
 region_abrev,
 site_short, 
-CAST(high_school_graduating_class_c AS INT64), 
+CAST(high_school_graduating_class_c AS INT64) AS high_school_graduating_class_c, 
 fiscal_year, 
 student_type, 
 num_student  
 FROM calc_graduates)
 
 )
-
-
 
 
 SELECT *
