@@ -67,7 +67,7 @@ region_abrev,
 ROUND(four_year_rate, 2) AS four_year_rate,
 ROUND(five_year_rate, 2) AS five_year_rate,
 ROUND(six_year_rate, 2) AS six_year_rate,
-ROUND(grad_rate_overall, 2) AS grad_rate_overall,
+ROUND(grad_rate_overall, 2)/2 AS grad_rate_overall,
 FROM
   join_data
   ORDER by region_abrev
