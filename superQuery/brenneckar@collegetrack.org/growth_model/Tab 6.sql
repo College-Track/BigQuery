@@ -85,7 +85,7 @@ student_type)
 -- GROUP BY fiscal_year
 
 , complete_alumni AS (SELECT
-  region_abrev, site_short, fiscal_year, SUM(num_student)
+  region_abrev, site_short, fiscal_year, NULL as high_school_graduating_class_c,  SUM(num_student)
 OVER
   (PARTITION BY  region_abrev, site_short
   ORDER BY fiscal_year) AS num_student
@@ -94,8 +94,8 @@ FROM combined_alumni
 -- ORDER BY fiscal_year
 )
 
-SELECT fiscal_year,  SUM(num_student)
+SELECT *
 FROM complete_alumni
 -- WHERE fiscal_year IN ("FY20", "FY21") AND site_short = "Oakland"
-GROUP BY fiscal_year
-ORDER BY fiscal_year
+-- GROUP BY fiscal_year
+-- ORDER BY fiscal_year
