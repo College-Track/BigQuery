@@ -8,6 +8,7 @@ rates ARRAY <FLOAT64>,
 improve_grad_rate FLOAT64)
 RETURNS ARRAY <STRING>
 LANGUAGE js AS r"""
+
 function calc_grad_projections(student_count, FY, HS_Class, region, rates, improve_grad_rate) {
     var alumni_count = []
     var region_rates = {
@@ -56,5 +57,5 @@ function calc_grad_projections(student_count, FY, HS_Class, region, rates, impro
     return (alumni_count)
 
 }
-return calc_grad_projections(student_count, FY, HS_Class, region, rates, improve_grad_rate)
+calc_grad_projections(student_count, FY, HS_Class, region, rates, improve_grad_rate)
 """
