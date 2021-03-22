@@ -67,23 +67,23 @@ FROM calc_graduates)
 )
 
 
-SELECT SUM(num_student)
-FROM combined_alumni
-WHERE site_short = "Oakland" AND fiscal_year IN ('FY20', 'FY21')
-GROUP BY fiscal_year
-
--- , complete_alumni AS (SELECT
---   region_abrev, site_short, high_school_graduating_class_c, fiscal_year, student_type, SUM(num_student)
--- OVER
---   (PARTITION BY  region_abrev, site_short, CAST(high_school_graduating_class_c AS STRING)
---   ORDER BY fiscal_year) AS running_total
+-- SELECT fiscal_year, SUM(num_student)
 -- FROM combined_alumni
--- -- WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
--- -- ORDER BY fiscal_year
--- )
+-- WHERE site_short = "Oakland" AND fiscal_year IN ('FY20', 'FY21') AND high_school_graduating_class_c = 2014
+-- GROUP BY fiscal_year
 
--- SELECT fiscal_year,site_short,  SUM(running_total)
--- FROM complete_alumni
--- WHERE fiscal_year IN ("FY20", "FY21")
--- GROUP BY fiscal_year, site_short
--- ORDER BY site_short, fiscal_year 
+, complete_alumni AS (SELECT
+  region_abrev, site_short, fiscal_year, student_type, SUM(num_student)
+OVER
+  (PARTITION BY  region_abrev, site_short
+  ORDER BY fiscal_year) AS running_total
+FROM combined_alumni
+-- WHERE site_short = 'Denver' AND high_school_graduating_class_c = 2023
+-- ORDER BY fiscal_year
+)
+
+SELECT fiscal_year,site_short,  SUM(running_total)
+FROM complete_alumni
+WHERE fiscal_year IN ("FY20", "FY21") AND site_short = "Oakland"
+GROUP BY fiscal_year, site_short 
+ORDER BY site_short, fiscal_year
