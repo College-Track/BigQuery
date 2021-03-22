@@ -38,15 +38,13 @@ FROM prep_data
 ),
 
 new_region_rate AS (
-SELECT
 "Other" AS region_abrev,
-SUM(graduated_4_year_degree_4_years_c) / SUM(student_count) AS four_year_rate,
-SUM(graduated_4_year_degree_5_years_c) / SUM(student_count) AS five_year_rate,
-SUM(graduated_4_year_degree_6_years_c) / SUM(student_count) AS six_year_rate,
-SUM(graduated_4_year_degree_c) / SUM(student_count)  AS grad_rate_overall
+graduated_4_year_degree_4_years_c / student_count AS four_year_rate,
+graduated_4_year_degree_5_years_c / student_count AS five_year_rate,
+graduated_4_year_degree_6_years_c / student_count AS six_year_rate,
+graduated_4_year_degree_c / student_count  AS grad_rate_overall,
 FROM prep_data
 )
 
 SELECT *
-FROM new_region_rate UNION ALL 
-(SELECT * FROM region_rates)
+FROM new_region_rate
