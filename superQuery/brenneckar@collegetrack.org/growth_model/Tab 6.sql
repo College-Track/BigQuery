@@ -19,7 +19,7 @@ FROM calc_projections
 calc_graduates AS (
 (SELECT region_abrev, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student, SPLIT(student_count, ',')[OFFSET(2)] student_type,
 FROM (
-  SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_grad_projections`(num_student, (2000+CAST(REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+')AS INT64)), high_school_graduating_class_c, region_abrev, [0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383], 0) count_arrary
+  SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_grad_projections`(num_student, (2000+CAST(REGEXP_EXTRACT(fiscal_year,r'[0-9 ]+')AS INT64)), high_school_graduating_class_c, region_abrev, [0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383]) count_arrary
   FROM determine_ps_or_hs
   
 ), UNNEST(count_arrary) student_count
