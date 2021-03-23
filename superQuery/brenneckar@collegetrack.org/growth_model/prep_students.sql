@@ -59,7 +59,7 @@ combined_classes AS (
 SELECT region_abrev, site_short, starting_count, high_school_graduating_class_c
 FROM gather_data
 UNION ALL (SELECT * FROM new_hs_classes)
-UNION ALL (SELECT * FROM news_site WHERE starting_count != 0)
+UNION ALL (SELECT * FROM news_site WHERE starting_count = 0)
 )
 
 
