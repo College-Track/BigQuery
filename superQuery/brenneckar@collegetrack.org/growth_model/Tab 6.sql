@@ -121,3 +121,4 @@ fiscal_year,
 num_student, 
 student_type
 FROM join_all_data
+WHERE fiscal_year != CONCAT("FY", CAST((@years_ahead + @FY - 2000) AS STRING))
