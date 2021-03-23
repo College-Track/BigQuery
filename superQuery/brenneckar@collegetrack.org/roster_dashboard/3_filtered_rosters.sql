@@ -28,6 +28,7 @@ WITH gather_data AS (
     Years_Since_HS_Grad_c,
     co_vitality_scorecard_color_most_recent_c,
     Most_Recent_GPA_Cumulative_c,
+    Most_recent_gpa_semester_c,
     attendance_bucket_current_at,
     Community_Service_Hours_c,
     Enrollment_Status_c,
@@ -42,6 +43,7 @@ WITH gather_data AS (
     Overall_Rubric_Color_sort,
     sort_credit_accumulation_pace_c AS Credit_Accumulation_Pace_sort,
     college_class,
+    
     -- Create new fields
     CASE
       WHEN ABS(Years_Since_HS_Grad_c) = 4 THEN 0 + (Year_Fraction_Since_HS_Grad_c /.33)
