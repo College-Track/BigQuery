@@ -44,9 +44,9 @@ FROM prep_data_for_new_hs_class
 ),
 
 news_site AS (
-SELECT region_abrev, site_short, first_year_target as starting_count, CAST(high_school_graduating_class_c AS STRING)
+SELECT region_abrev, site_short, first_year_target as starting_count, high_school_graduating_class_c
 FROM (
-SELECT @new_region_1 AS region_abrev, @new_site_1 AS site_short, @new_site_1_target AS first_year_target, GENERATE_ARRAY(@new_site_1_start_hs_class, @new_site_1_start_hs_class+12) AS hs_classes 
+SELECT "test_region" AS region_abrev, "test_site" AS site_short, 0 AS first_year_target, GENERATE_ARRAY(2024, 2024+12) AS hs_classes 
 
 )
 ,UNNEST(hs_classes) high_school_graduating_class_c
@@ -59,7 +59,7 @@ combined_classes AS (
 SELECT region_abrev, site_short, starting_count, high_school_graduating_class_c
 FROM gather_data
 UNION ALL (SELECT * FROM new_hs_classes)
-UNION ALL (SELECT * FROM news_site WHERE starting_count != 0)
+UNION ALL (SELECT * FROM news_site)
 )
 
 
