@@ -500,7 +500,10 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         Current_CCA_Viewing_c,
         current_as_c,
         previous_as_c,
-        Prev_Prev_As_c
+        Prev_Prev_As_c,
+        attendance_rate_c,
+        Attendance_Rate_excluding_make_ups_c,
+        Attendance_Rate_Previous_Term_c
       ),
       RT.Name AS AT_Record_Type_Name,
       A_School.Name AS School_Name,
@@ -510,6 +513,19 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       AY.Name AS AY_Name,
       AY.Start_Date_c as AY_Start_Date,
       AY.End_Date_c as AY_End_Date,
+      --   Recreating Forumula Fields
+      CASE 
+        WHEN enrolled_sessions_c = 0 THEN NULL
+        ELSE Attended_Workshops_c / Enrolled_Sessions_c
+      END AS attendance_rate_c,
+      CASE 
+        WHEN Enrolled_Workshops_excluding_make_ups_c = 0 THEN NULL
+        ELSE Attended_Workshops_excluding_make_ups_c / Enrolled_Workshops_excluding_make_ups_c
+      END AS Attendance_Rate_excluding_make_ups_c,
+      
+      
+    
+      
       --   Creating New Fields
       `data-warehouse-289815.UDF.determine_buckets`(A.GPA_semester_c,.25, 2.5, 3.75, "") AS AT_Term_GPA_bucket,
       `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_c,.25, 2.5, 3.75) AS sort_AT_Term_GPA_bucket,
@@ -598,6 +614,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         WHEN gather_prev_at.previous_academic_semester_c = AT_Id THEN true
         ELSE false
       END AS previous_as_c,
+      gather_prev_at.attendance_rate_c AS Attendance_Rate_Previous_Term_c,
       CASE
         WHEN Clean_AT.Overall_Rubric_Color = "Red" THEN 1
         WHEN Clean_AT.Overall_Rubric_Color = "Yellow" THEN 2
