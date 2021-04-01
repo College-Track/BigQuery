@@ -123,7 +123,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
       C_AT.Major_Other_c AS Current_Major_specific_c,
       C_AT.Major_c AS Current_Major_c,
       C_AT.CT_Coach_c AS Current_HS_CT_Coach_c,
-      C_AT.Attendance_Rate_c AS Attendance_Rate_Current_AS_c,
+      C_AT.Attendance_Rate_c / 100  AS Attendance_Rate_Current_AS_c,
       -- Previous AT
       Prev_AT.gpa_semester_c AS Prev_AT_Term_GPA,
       Prev_AT.GPA_semester_cumulative_c AS Prev_AT_Cum_GPA,
