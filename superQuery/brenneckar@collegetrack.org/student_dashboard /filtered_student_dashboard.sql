@@ -7,7 +7,7 @@ WITH gather_student_data AS (
     grade_c,
 
     CASE
-      WHEN full_name_c = 'Daniel Aguilar' THEN 'vshah@collegetrack.org' -- --   WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
+      WHEN full_name_c = 'Daniel Aguilar' THEN 'brenneckar@collegetrack.org' -- --   WHEN full_name_c = 'Daniela Manzanares' THEN 'danielamanzanares01@gmail.com'
       -- --   WHEN full_name_c = 'Sonia Esteva' THEN'soniaesteva_23@sfuhs.org'
       ELSE email
     END AS
@@ -22,7 +22,7 @@ WITH gather_student_data AS (
     most_recent_gpa_semester_c,
     total_bank_book_balance_contact_c,
     community_service_hours_c,
-    Attendance_Rate_Current_AS_c / 100 AS Attendance_Rate_Current_AS_c,
+    Attendance_Rate_Current_AS_c,
     Current_HS_CT_Coach_c,
     community_service_form_link_c,
     summer_experience_form_link_c,
