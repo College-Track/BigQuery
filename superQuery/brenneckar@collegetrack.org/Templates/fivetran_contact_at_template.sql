@@ -600,7 +600,8 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
   gather_prev_at AS (
     SELECT
       student_c,
-      previous_academic_semester_c
+      previous_academic_semester_c,
+      attendance_rate_c
     FROM
       Clean_AT
     WHERE
