@@ -44,9 +44,9 @@ FROM aa_attendance_prep
   
 SELECT
   site_short,
-  SUM(above_325_gpa) AS above_325_gpa,
-  SUM(composite_ready) AS composite_ready,
-  SUM(above_80_aa_attendance) AS above_80_aa_attendance
+  SUM(above_325_gpa) AS aa_above_325_gpa,
+  SUM(composite_ready) AS aa_composite_ready,
+  SUM(above_80_aa_attendance) AS aa_above_80_aa_attendance
 FROM
   gather_data GD
   LEFT JOIN aa_attendance_kpi AA ON GD.Contact_Id = AA.student_c
