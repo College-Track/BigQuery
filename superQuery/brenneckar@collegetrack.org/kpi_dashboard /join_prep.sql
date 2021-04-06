@@ -18,14 +18,14 @@ SELECT
   national,
   site_short,
   region_short,
-  MAX(
+  SUM(
     IF(
       Contact_Record_Type_Name = "Student: Post-Secondary",
       student_count,
       NULL
     )
   ) AS ps_student_count,
-  MAX(
+  SUM(
     IF(
       Contact_Record_Type_Name = "Student: High School",
       student_count,
