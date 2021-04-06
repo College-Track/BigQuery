@@ -7,7 +7,7 @@ WITH gather_data AS (
       ELSE 0
     END AS above_325_gpa,
         CASE
-      WHEN composite_readiness_most_recent_c = '1. Ready' THEN 1
+      WHEN composite_readiness_most_recent_c = '1. Ready'  AND grade_c = '12th Grade' THEN 1
       ELSE 0
     END AS composite_ready
     
