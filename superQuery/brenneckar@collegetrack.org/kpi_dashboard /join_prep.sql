@@ -1,4 +1,4 @@
-gahter_data AS (SELECT "national" AS national,
+WITH gahter_data AS (SELECT "national" AS national,
 site_short,
 region_short,
 Contact_Record_Type_Name,
