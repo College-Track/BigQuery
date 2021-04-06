@@ -4,6 +4,7 @@ WITH gather_data AS (
     site_short,
     region_short,
     Contact_Record_Type_Name,
+    grade_c,
     indicator_completed_ct_hs_program_c,
     college_track_status_c,
     COUNT(Contact_Id) AS student_count
@@ -16,6 +17,7 @@ WITH gather_data AS (
     site_short,
     region_short,
     Contact_Record_Type_Name,
+    grade_c,
     indicator_completed_ct_hs_program_c,
     college_track_status_c
 )
@@ -37,6 +39,13 @@ SELECT
       NULL
     )
   ) AS hs_student_count,
+    SUM(
+    IF(
+      grade_c = "12th Grade",
+      student_count,
+      NULL
+    )
+  ) AS hs_senior_student_count,
     SUM(
     IF(
       indicator_completed_ct_hs_program_c = true,
