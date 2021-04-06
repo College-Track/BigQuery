@@ -2,7 +2,7 @@ WITH gather_data AS (
   SELECT
     "National" AS national,
     site_short,
-    region_short,
+    region_abrev,
     Contact_Record_Type_Name,
     grade_c,
     indicator_completed_ct_hs_program_c,
@@ -15,7 +15,7 @@ WITH gather_data AS (
     AND indicator_years_since_hs_graduation_c <= 6
   GROUP BY
     site_short,
-    region_short,
+    region_abrev,
     Contact_Record_Type_Name,
     grade_c,
     indicator_completed_ct_hs_program_c,
@@ -24,7 +24,7 @@ WITH gather_data AS (
 SELECT
   national,
   site_short,
-  region_short,
+  region_abrev,
   SUM(
     IF(
       (Contact_Record_Type_Name = "Student: Post-Secondary") AND (college_track_status_c = '15A'),
@@ -58,4 +58,4 @@ FROM
 GROUP BY
   national,
   site_short,
-  region_short
+  region_abrev
