@@ -57,6 +57,8 @@ SELECT
     Current_school_name,
     Current_HS_CT_Coach_c,
     Gender_c,
+    email,
+    mobile_phone,
     CASE
         WHEN Ethnic_background_c = "Decline to State" THEN "Missing"
         Else Ethnic_background_c
