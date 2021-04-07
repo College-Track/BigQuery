@@ -89,7 +89,7 @@ SELECT
     GAS_Name,
     AY_Name,
     AT_Grade_c,
-    (attendance_rate_c/100) AS attendance_rate_c,
+    attendance_rate_c,
     enrolled_sessions_c,
     attended_workshops_c,
     attendance_rate_previous_term_c,
