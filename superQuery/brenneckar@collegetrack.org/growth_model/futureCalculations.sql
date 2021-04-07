@@ -18,6 +18,15 @@ function determine_grade_index(FY, HS_Class) {
 }
 
 function futureCalculations(start_count, FY, HS_Class, years_ahead, rates) {
+    var new_rates = []
+    rates.forEach(function (rate, index) {
+        if (index == 0) {
+            new_rates.push(rates[0])
+        }
+        else {
+            new_rates.push(rate / rates[index - 1])
+        }
+    })
     var start_year = FY
     var end_year = start_year + years_ahead
     var count_index = 0
@@ -37,7 +46,7 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead, rates) {
                     new_count.push([_tmp_string, start_count])
                 }
                 else {
-                    _tmp_count = start_count * rates[grade_index]
+                    _tmp_count = start_count * new_rates[grade_index]
                     new_count.push([_tmp_string, _tmp_count])
                 }
                 start_count_entered = true
@@ -46,7 +55,7 @@ function futureCalculations(start_count, FY, HS_Class, years_ahead, rates) {
             }
             if ((grade_index < 11) && (start_count_entered == true)) {
 
-                _tmp_count = new_count[count_index][1] * rates[grade_index + 1]
+                _tmp_count = new_count[count_index][1] * new_rates[grade_index + 1]
             }
             else {
                 _tmp_count = 0
