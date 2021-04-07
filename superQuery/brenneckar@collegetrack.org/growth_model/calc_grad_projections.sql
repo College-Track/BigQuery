@@ -10,15 +10,15 @@ RETURNS ARRAY <STRING>
 LANGUAGE js AS r"""
 
 function calc_grad_projections(student_count, FY, HS_Class, region, rates, improve_grad_rate) {
-    var new_rates = []
-    rates.forEach(function (rate, index) {
-        if (index == 0) {
-            new_rates.push(rates[0])
-        }
-        else {
-            new_rates.push(rate / rates[index - 1])
-        }
-    })
+    var new_rates = rates
+    // rates.forEach(function (rate, index) {
+    //     if (index == 0) {
+    //         new_rates.push(rates[0])
+    //     }
+    //     else {
+    //         new_rates.push(rate / rates[index - 1])
+    //     }
+    // })
     var alumni_count = []
     var region_rates = {
         "NOR CAL": [0.31, 0.15, 0.05, 0.04, 0.04],
@@ -64,6 +64,5 @@ function calc_grad_projections(student_count, FY, HS_Class, region, rates, impro
     return (alumni_count)
 
 }
-
 return (calc_grad_projections(student_count, FY, HS_Class, region, rates, improve_grad_rate))
 """;
