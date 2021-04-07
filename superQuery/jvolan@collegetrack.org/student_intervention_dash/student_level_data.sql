@@ -159,7 +159,7 @@ student_data_with_activities AS
         END AS reciprocal_y_n,
     FROM student_data_at
     LEFT JOIN recent_logged_activites_users ON recent_logged_activites_users.WhoId = Contact_Id
-    AND intervention_at = 1
+    WHERE intervention_at = 1
     ),
     
 student_data_with_activities_enrollments AS
