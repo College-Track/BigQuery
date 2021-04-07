@@ -19,7 +19,7 @@ WITH recent_logged_activities AS
 recent_logged_activites_users AS
 (
 SELECT  
-    x_18_digit_user_id_c,
+    id,
     CONCAT(first_name," ",last_name) AS assigned_to_name,
     recent_logged_activities.WhoId,
     recent_logged_activities.Related_to,
@@ -31,7 +31,7 @@ SELECT
     recent_logged_activities.assigned_to,
     recent_logged_activities.PTE_staff,
     FROM `data-warehouse-289815.salesforce_clean.user_clean`
-    LEFT JOIN recent_logged_activities ON recent_logged_activities.assigned_to = x_18_digit_user_id_c
+    LEFT JOIN recent_logged_activities ON recent_logged_activities.assigned_to = id
 ),
 
 workshop_enrollments AS
