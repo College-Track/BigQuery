@@ -18,15 +18,15 @@ function determine_grade_index(FY, HS_Class) {
 }
 
 function futureCalculations(start_count, FY, HS_Class, years_ahead, rates) {
-    var new_rates = []
-    rates.forEach(function (rate, index) {
-        if (index == 0) {
-            new_rates.push(rates[0])
-        }
-        else {
-            new_rates.push(rate / rates[index - 1])
-        }
-    })
+    var new_rates = rates
+    // rates.forEach(function (rate, index) {
+    //     if (index == 0) {
+    //         new_rates.push(rates[0])
+    //     }
+    //     else {
+    //         new_rates.push(rate / rates[index - 1])
+    //     }
+    // })
     var start_year = FY
     var end_year = start_year + years_ahead
     var count_index = 0
