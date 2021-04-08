@@ -1,3 +1,3 @@
-SELECT Contact_Id, most_recent_outreach, most_recent_reciprocal, latest_reciprocal_communication_date_c
-FROM `data-warehouse-289815.salesforce_clean.contact_template`
+SELECT Contact_Id, attendance_rate_c, Attendance_Rate_Previous_Term_c
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 LIMIT 1000
