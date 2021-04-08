@@ -601,7 +601,6 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
     SELECT
       student_c,
       previous_academic_semester_c,
-      attendance_rate_c
     FROM
       Clean_AT
     WHERE
@@ -615,7 +614,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         WHEN gather_prev_at.previous_academic_semester_c = AT_Id THEN true
         ELSE false
       END AS previous_as_c,
-      gather_prev_at.attendance_rate_c AS Attendance_Rate_Previous_Term_c,
+      
       CASE
         WHEN Clean_AT.Overall_Rubric_Color = "Red" THEN 1
         WHEN Clean_AT.Overall_Rubric_Color = "Yellow" THEN 2
@@ -630,7 +629,9 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
   gather_prev_prev_at AS (
     SELECT
       Contact_Id,
-      previous_academic_semester_c
+      previous_academic_semester_c,
+      attendance_rate_c
+
     FROM
       prep_data
     WHERE
@@ -639,6 +640,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
   determine_prev_prev_at AS (
     SELECT
       prep_data.*,
+      gather_prev_prev_at.attendance_rate_c AS Attendance_Rate_Previous_Term_c,
       -- gather_prev_prev_at.previous_academic_semester_c,
       CASE
         WHEN gather_prev_prev_at.previous_academic_semester_c = prep_data.AT_Id THEN true
