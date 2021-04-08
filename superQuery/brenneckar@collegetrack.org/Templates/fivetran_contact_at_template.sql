@@ -640,7 +640,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
   determine_prev_prev_at AS (
     SELECT
       prep_data.*,
-      gather_prev_prev_at.attendance_rate_c AS Attendance_Rate_Previous_Term_c,
+      gather_prev_prev_at.attendance_rate_c AS tmp_Attendance_Rate_Previous_Term_c,
       -- gather_prev_prev_at.previous_academic_semester_c,
       CASE
         WHEN gather_prev_prev_at.previous_academic_semester_c = prep_data.AT_Id THEN true
@@ -649,9 +649,22 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
     FROM
       prep_data
       LEFT JOIN gather_prev_prev_at ON gather_prev_prev_at.Contact_Id = prep_data.Contact_Id
+  ),
+  
+  
+  attendance_rate_prev_prev_at AS (
+  SELECT Contact_Id, 
+  attendance_rate_c
+  FROM determine_prev_prev_at
+  WHERE prev_prev_as_c = true
+  
   )
   SELECT
-    *
+    *,
+    CASE WHEN term_c = 'Fall' THEN ARPPA.attendance_rate_c
+    ELSE DPPA.tmp_Attendance_Rate_Previous_Term_c
+    END AS Attendance_Rate_Previous_Term_c
   FROM
-    determine_prev_prev_at
+    determine_prev_prev_at DPPA
+    LEFT JOIN attendance_rate_prev_prev_at ARPPA ON ARPPA.Contact_Id = DPPA.Contact_Id
 )
