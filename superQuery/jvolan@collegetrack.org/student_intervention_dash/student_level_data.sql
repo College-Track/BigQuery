@@ -84,6 +84,7 @@ SELECT
     primary_contact_email_c,
     primary_contact_mobile_c,
     primary_home_language_c,
+    primary_contact_c,
     
     --current AT attendance & gpa data
     AT_Id,
