@@ -640,7 +640,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
   ),
   determine_previous_attendance_rate AS (
     SELECT
-      AT_Id,
+      DPPA.AT_Id,
       CASE WHEN DPPA.term_c = 'Fall' THEN Prev_Prev_DPPA.attendance_rate_c
       ELSE Prev_DPPA.attendance_rate_c
       END AS Attendance_Rate_Previous_Term_c
