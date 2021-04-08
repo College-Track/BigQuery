@@ -2,6 +2,7 @@ SELECT
     AT_Id,
     AT_Name,
     Student_c,
+    name,
     GAS_Name,
     AY_Name,
     AT_Grade_c,
