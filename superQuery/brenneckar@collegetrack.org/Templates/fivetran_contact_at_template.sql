@@ -660,7 +660,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
   
   )
   SELECT
-    *,
+   DPPA.*,
     CASE WHEN term_c = 'Fall' THEN ARPPA.attendance_rate_c
     ELSE DPPA.tmp_Attendance_Rate_Previous_Term_c
     END AS Attendance_Rate_Previous_Term_c
