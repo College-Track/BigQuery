@@ -629,7 +629,6 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
   determine_prev_prev_at AS (
     SELECT
       prep_data.*,
-      gather_prev_prev_at.attendance_rate_c AS tmp_Attendance_Rate_Previous_Term_c,
       -- gather_prev_prev_at.previous_academic_semester_c,
       CASE
         WHEN gather_prev_prev_at.previous_academic_semester_c = prep_data.AT_Id THEN true
