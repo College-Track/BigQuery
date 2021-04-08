@@ -655,5 +655,5 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
     DPAR.Attendance_Rate_Previous_Term_c
   FROM
     determine_prev_prev_at DPPA
-    LEFT JOIN determine_previous_attendance_rate DPAR ON DPPA.AT_Id = DPAR_AT_Id
+    LEFT JOIN determine_previous_attendance_rate DPAR ON DPPA.AT_Id = DPAR.AT_Id
     )
