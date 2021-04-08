@@ -123,7 +123,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
       C_AT.Major_Other_c AS Current_Major_specific_c,
       C_AT.Major_c AS Current_Major_c,
       C_AT.CT_Coach_c AS Current_HS_CT_Coach_c,
-      C_AT.Attendance_Rate_c / 100  AS Attendance_Rate_Current_AS_c,
+      C_AT.Attendance_Rate_c / 100 AS Attendance_Rate_Current_AS_c,
       -- Previous AT
       Prev_AT.gpa_semester_c AS Prev_AT_Term_GPA,
       Prev_AT.GPA_semester_cumulative_c AS Prev_AT_Cum_GPA,
@@ -427,11 +427,8 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         DAY
       ) > 60 THEN "61+ Days"
     END AS most_recent_outreach_bucket,
-    
-    
-    
     MRR.most_recent_reciprocal,
-        CASE
+    CASE
       WHEN MRR.most_recent_reciprocal IS NULL THEN "No Data"
       WHEN DATE_DIFF(
         CURRENT_DATE(),
@@ -449,7 +446,6 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         DAY
       ) > 60 THEN "61+ Days"
     END AS most_recent_reciprocal_bucket,
-    
   FROM
     ValidStudentContact_new_fields VSC
     LEFT JOIN most_recent_outreach MRO ON MRO.who_id = VSC.Contact_Id
@@ -514,18 +510,14 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       AY.Start_Date_c as AY_Start_Date,
       AY.End_Date_c as AY_End_Date,
       --   Recreating Forumula Fields
-      CASE 
+      CASE
         WHEN enrolled_sessions_c = 0 THEN NULL
         ELSE Attended_Workshops_c / Enrolled_Sessions_c
       END AS attendance_rate_c,
-      CASE 
+      CASE
         WHEN Enrolled_Workshops_excluding_make_ups_c = 0 THEN NULL
         ELSE Attended_Workshops_excluding_make_ups_c / Enrolled_Workshops_excluding_make_ups_c
       END AS Attendance_Rate_excluding_make_ups_c,
-      
-      
-    
-      
       --   Creating New Fields
       `data-warehouse-289815.UDF.determine_buckets`(A.GPA_semester_c,.25, 2.5, 3.75, "") AS AT_Term_GPA_bucket,
       `data-warehouse-289815.UDF.sort_created_buckets`(A.GPA_semester_c,.25, 2.5, 3.75) AS sort_AT_Term_GPA_bucket,
@@ -614,7 +606,6 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         WHEN gather_prev_at.previous_academic_semester_c = AT_Id THEN true
         ELSE false
       END AS previous_as_c,
-      
       CASE
         WHEN Clean_AT.Overall_Rubric_Color = "Red" THEN 1
         WHEN Clean_AT.Overall_Rubric_Color = "Yellow" THEN 2
@@ -630,8 +621,6 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
     SELECT
       Contact_Id,
       previous_academic_semester_c,
-      attendance_rate_c
-
     FROM
       prep_data
     WHERE
@@ -650,21 +639,22 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       prep_data
       LEFT JOIN gather_prev_prev_at ON gather_prev_prev_at.Contact_Id = prep_data.Contact_Id
   ),
-  
-  
-  attendance_rate_prev_prev_at AS (
-  SELECT Contact_Id, 
-  attendance_rate_c
-  FROM determine_prev_prev_at
-  WHERE prev_prev_as_c = true
-  
+  determine_previous_attendance_rate AS (
+    SELECT
+      AT_Id,
+      CASE WHEN DPPA.term_c = 'Fall' THEN Prev_Prev_DPPA.attendance_rate_c
+      ELSE Prev_DPPA.attendance_rate_c
+      END AS Attendance_Rate_Previous_Term_c
+    FROM
+      determine_prev_prev_at DPPA
+      LEFT JOIN determine_prev_prev_at Prev_DPPA ON DPPA.previous_academic_semester_c = Prev_DPPA.AT_Id
+      LEFT JOIN determine_prev_prev_at Prev_Prev_DPPA ON Prev_DPPA.previous_academic_semester_c = Prev_Prev_DPPA.AT_Id
   )
+  
   SELECT
-   DPPA.*,
-    CASE WHEN term_c = 'Fall' THEN ARPPA.attendance_rate_c
-    ELSE DPPA.tmp_Attendance_Rate_Previous_Term_c
-    END AS Attendance_Rate_Previous_Term_c
+    DPPA.*,
+    DPAR.Attendance_Rate_Previous_Term_c
   FROM
     determine_prev_prev_at DPPA
-    LEFT JOIN attendance_rate_prev_prev_at ARPPA ON ARPPA.Contact_Id = DPPA.Contact_Id
-)
+    LEFT JOIN determine_previous_attendance_rate DPAR ON DPPA.AT_Id = DPAR_AT_Id
+    )
