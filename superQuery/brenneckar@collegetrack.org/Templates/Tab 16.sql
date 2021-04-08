@@ -3,5 +3,5 @@ FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE 
 -- Attendance_Rate_Previous_Term_c IS NOT NULL AND attendance_rate_c IS NOT NULL
 -- AND 
-AT_Id ='a1a46000000mDASAA2'
+AT_Id ='a1a46000000mDAJAA2'
 LIMIT 1000
