@@ -1,6 +1,7 @@
 SELECT
     AT_Id,
     AT_Name,
+    attendance_rate_c,
     Attendance_Rate_Previous_Term_c,
    
     
