@@ -2,20 +2,19 @@ WITH gather_hs_data AS (
   SELECT
     Contact_Id,
     site_short,
-    Prev_AT_Cum_GPA,
-    grade_c,
+
     CASE
-      WHEN grade_c = 'Senior'
+      WHEN grade_c = '12th Grade'
       AND Prev_AT_Cum_GPA >= 3.25 THEN 1
       ELSE 0
     END AS above_325_gpa,
     CASE
-      WHEN grade_c = ' Freshman'
+      WHEN grade_c = ' 9th Grade'
       AND Gender_c = 'Male' THEN 1
       ELSE 0
     END as male_student,
     CASE
-      WHEN (grade_c = 'Freshman'
+      WHEN (grade_c = '9th Grade'
       AND indicator_low_income_c = 'Yes'
       AND first_generation_fy_20_c = 'Yes') THEN 1
       ELSE 0
