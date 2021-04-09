@@ -13,9 +13,9 @@ WITH gather_hs_data AS (
       ELSE 0
     END as male_student,
     CASE
-      WHEN grade_c = 'Freshman'
-      AND (indicator_low_income_c = 'Yes')
-      AND (first_generation_fy_20_c = 'Yes') THEN 1
+      WHEN (grade_c = 'Freshman'
+      AND indicator_low_income_c = 'Yes'
+      AND first_generation_fy_20_c = 'Yes') THEN 1
       ELSE 0
     END AS first_gen_and_male,
   FROM
