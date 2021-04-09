@@ -25,7 +25,7 @@ WITH gather_hs_data AS (
 )
 SELECT 
 *
-FROM gather_data
+FROM gather_hs_data
 -- SELECT
 --   site_short,
 --   SUM(above_325_gpa) AS SD_senior_above_325,
