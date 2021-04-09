@@ -12,6 +12,7 @@ join_team_kpis AS (
   FROM
     join_prep JP
     LEFT JOIN `data-studio-260217.kpi_dashboard.academic_affairs` AA ON AA.site_short = JP.site_short
+    LEFT JOIN `data-studio-260217.kpi_dashboard.site_directors` SD ON SD.site_short = JP.site_short
 )
 SELECT
   *
