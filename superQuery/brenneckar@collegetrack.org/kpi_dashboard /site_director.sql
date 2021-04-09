@@ -24,15 +24,15 @@ WITH gather_hs_data AS (
   WHERE
     college_track_status_c = '11A'
 )
-SELECT 
-*
-FROM gather_hs_data
--- SELECT
---   site_short,
---   SUM(above_325_gpa) AS SD_senior_above_325,
---   SUM(male_student) AS SD_ninth_grade_male,
---   SUM(first_gen_and_male) AS SD_ninth_grade_first_gen_male
--- FROM
---   gather_hs_data
--- GROUP BY
---   site_short
+-- SELECT 
+-- *
+-- FROM gather_hs_data
+SELECT
+  site_short,
+  SUM(above_325_gpa) AS SD_senior_above_325,
+  SUM(male_student) AS SD_ninth_grade_male,
+  SUM(first_gen_and_male) AS SD_ninth_grade_first_gen_male
+FROM
+  gather_hs_data
+GROUP BY
+  site_short
