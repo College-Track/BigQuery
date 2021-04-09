@@ -1,5 +1,5 @@
 SELECT
-  distinct site_short
+  distinct Master.site_short
 FROM
   `data-studio-260217.rosters.filtered_roster` AS Master
 RIGHT JOIN (
