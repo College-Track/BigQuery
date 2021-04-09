@@ -8,7 +8,8 @@ join_team_kpis AS (
   SELECT
     JP.*,
     AA.*
-  EXCEPT(site_short)
+  EXCEPT(site_short),
+  SD.* EXCEPT(site_short)
   FROM
     join_prep JP
     LEFT JOIN `data-studio-260217.kpi_dashboard.academic_affairs` AA ON AA.site_short = JP.site_short
