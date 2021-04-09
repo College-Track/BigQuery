@@ -46,6 +46,13 @@ SELECT
       NULL
     )
   ) AS hs_senior_student_count,
+      SUM(
+    IF(
+      grade_c = "9th Grade",
+      student_count,
+      NULL
+    )
+  ) AS hs_ninth_grade_student_count,
     SUM(
     IF(
       indicator_completed_ct_hs_program_c = true,
