@@ -9,7 +9,7 @@ WITH gather_hs_data AS (
       ELSE 0
     END AS above_325_gpa,
     CASE
-      WHEN grade_c = ' 9th Grade'
+      WHEN grade_c = '9th Grade'
       AND Gender_c = 'Male' THEN 1
       ELSE 0
     END as male_student,
