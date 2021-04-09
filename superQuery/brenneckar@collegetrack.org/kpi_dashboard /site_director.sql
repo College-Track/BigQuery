@@ -18,7 +18,7 @@ WITH gather_hs_data AS (
       AND indicator_low_income_c = 'Yes'
       AND first_generation_fy_20_c = 'Yes') THEN 1
       ELSE 0
-    END AS first_gen_and_male,
+    END AS first_gen_and_low_income,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
@@ -31,7 +31,7 @@ SELECT
   site_short,
   SUM(above_325_gpa) AS SD_senior_above_325,
   SUM(male_student) AS SD_ninth_grade_male,
-  SUM(first_gen_and_male) AS SD_ninth_grade_first_gen_male
+  SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income
 FROM
   gather_hs_data
 GROUP BY
