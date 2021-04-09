@@ -3,6 +3,7 @@ WITH gather_hs_data AS (
     Contact_Id,
     site_short,
     Prev_AT_Cum_GPA,
+    grade_c,
     CASE
       WHEN grade_c = 'Senior'
       AND Prev_AT_Cum_GPA >= 3.25 THEN 1
