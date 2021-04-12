@@ -52,31 +52,31 @@ WITH gather_data AS (
 SELECT
   *,
   CASE
-    WHEN answer = "Strongly Agree" THEN 0
-    WHEN answer = 'Agree' THEN 1
-    WHEN answer = 'Neutral' THEN 2
-    WHEN answer = 'Disagree' THEN 3
-    WHEN answer = 'Strongly Disagree' THEN 4
-    WHEN answer = "Very Safe" THEN 5
-    WHEN answer = 'Somewhat Safe' THEN 6
-    WHEN answer = 'Somewhat Unsafe' THEN 7
-    WHEN answer = 'Very Unsafe' THEN 8
-    WHEN answer = 'Prefer not to answer' THEN 9
-    WHEN answer = "Extremely helpful" THEN 10
-    WHEN answer = 'Very helpful' THEN 11
-    WHEN answer = 'Somewhat helpful' THEN 12
-    WHEN answer = 'A little helpful' THEN 13
-    WHEN answer = 'Not at all helpful' THEN 14
-    WHEN answer = "I haven't used this resource at CT" THEN 15
-    WHEN answer = "Extremely Excited" THEN 16
-    WHEN answer = 'Quite Excited' THEN 17
-    WHEN answer = 'Somewhat Excited' THEN 18
-    WHEN answer = 'Slightly Excited' THEN 19
-    WHEN answer = 'Not at all Excited' THEN 20
-    WHEN answer = "Almost Always" THEN 21
-    WHEN answer = 'Often' THEN 22
-    WHEN answer = 'Sometimes' THEN 23
-    WHEN answer = 'Not very often' THEN 24
+    WHEN answer = "Strongly Agree" THEN 1
+    WHEN answer = 'Agree' THEN 2
+    WHEN answer = 'Neutral' THEN 3
+    WHEN answer = 'Disagree' THEN 4
+    WHEN answer = 'Strongly Disagree' THEN 5
+    WHEN answer = "Very Safe" THEN 6
+    WHEN answer = 'Somewhat Safe' THEN 7
+    WHEN answer = 'Somewhat Unsafe' THEN 8
+    WHEN answer = 'Very Unsafe' THEN 9
+    WHEN answer = 'Prefer not to answer' THEN 10
+    WHEN answer = "Extremely helpful" THEN 11
+    WHEN answer = 'Very helpful' THEN 12
+    WHEN answer = 'Somewhat helpful' THEN 13
+    WHEN answer = 'A little helpful' THEN 14
+    WHEN answer = 'Not at all helpful' THEN 15
+    WHEN answer = "I haven't used this resource at CT" THEN 16
+    WHEN answer = "Extremely Excited" THEN 17
+    WHEN answer = 'Quite Excited' THEN 18
+    WHEN answer = 'Somewhat Excited' THEN 19
+    WHEN answer = 'Slightly Excited' THEN 20
+    WHEN answer = 'Not at all Excited' THEN 21
+    WHEN answer = "Almost Always" THEN 22
+    WHEN answer = 'Often' THEN 23
+    WHEN answer = 'Sometimes' THEN 24
+    WHEN answer = 'Not very often' THEN 25
     ELSE NULL
   END AS sort_column,
 FROM
