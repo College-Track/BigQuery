@@ -19,6 +19,7 @@ WITH gather_data AS (
   FROM
     `data-studio-260217.surveys.fy21_hs_survey` HSS
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CAT ON CAT.Contact_Id = HSS.contact_id
+    WHERE HSS.contact_id IS NOT NULL
 
 )
 SELECT
