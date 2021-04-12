@@ -14,9 +14,15 @@ WITH gather_data AS (
     what_would_make_you_more_likely_to_recommend_college_track_to_another_stude,
     is_there_anything_youd_like_to_share_with_us_that_wasnt_asked_in_this_surve,
     CASE
-      WHEN how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '10 - extremely likely'
-      OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '9' THEN "Promoter"
-      ELSE "Detractor"
+      WHEN (
+        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '10 - extremely likely'
+        OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '9'
+      ) THEN "Promoters"
+      WHEN (
+        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '8'
+        OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '7'
+      ) THEN "Passives"
+      ELSE "Detractors"
     END AS NPS_Score
   FROM
     `data-studio-260217.surveys.fy21_hs_survey` HSS
@@ -26,6 +32,6 @@ WITH gather_data AS (
     AND site_short IS NOT NULL
 )
 SELECT
-  *
+  NPS_Score
 FROM
   gather_data
