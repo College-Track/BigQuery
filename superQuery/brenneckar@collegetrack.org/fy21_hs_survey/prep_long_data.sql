@@ -41,7 +41,7 @@ WITH gather_data AS (
     HSSL.sub_section,
     C.site_short,
     C.Most_Recent_GPA_Cumulative_bucket,
-    C.high_school_graduating_class_c
+    C.high_school_graduating_class_c,
     0 as sort_column
   FROM
     `data-studio-260217.surveys.fy21_hs_survey_long` HSSL
