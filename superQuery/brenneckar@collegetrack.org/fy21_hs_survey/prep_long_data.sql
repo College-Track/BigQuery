@@ -3,12 +3,40 @@ WITH gather_data AS (
     HSSL.contact_Id,
     HSSL.question,
     CASE
-      WHEN (HSSL.question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
-      AND HSSL.answer = '90%') THEN "Correct"
-      WHEN (HSSL.question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
-      AND HSSL.answer != '90%') THEN "Incorrect"
-    
-
+      WHEN (
+        HSSL.question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
+        AND HSSL.answer = '90%'
+      ) THEN "Correct"
+      WHEN (
+        HSSL.question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
+        AND HSSL.answer != '90%'
+      ) THEN "Incorrect"
+      WHEN (
+        HSSL.question = '5.3 If you complete 100 total community service hours during High School, how much Bank Book money will you get?'
+        AND HSSL.answer = '$1,600'
+      ) THEN "Correct"
+      WHEN (
+        HSSL.question = '5.3 If you complete 100 total community service hours during High School, how much Bank Book money will you get?'
+        AND HSSL.answer != '$1,600'
+      ) THEN "Incorrect"
+      WHEN (
+        HSSL.question = '5.4 At the end of the semester, what GPA level do you need in order to get $400 for Bank Book?'
+        AND HSSL.answer = '3.0'
+      ) THEN "Correct"
+      WHEN (
+        HSSL.question = '5.4 At the end of the semester, what GPA level do you need in order to get $400 for Bank Book?'
+        AND HSSL.answer != '3.0'
+      ) THEN "Incorrect"
+      
+      WHEN (
+        HSSL.question = '5.5 If your GPA is below 3.0, how much do you have to raise your GPA in order to get $200 for Bank Book?'
+        AND HSSL.answer = 'Raise GPA by .5 points'
+      ) THEN "Correct"
+      WHEN (
+        HSSL.question = '5.5 If your GPA is below 3.0, how much do you have to raise your GPA in order to get $200 for Bank Book?'
+        AND HSSL.answer != 'Raise GPA by .5 points'
+      ) THEN "Incorrect"
+      
       ELSE HSSL.answer
     END AS answer,
     HSSL.section,
