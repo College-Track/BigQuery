@@ -32,6 +32,12 @@ WITH gather_data AS (
     AND site_short IS NOT NULL
 )
 SELECT
-  *
+  *,
+  CASE WHEN NPS_Score = 'Promoters' THEN 1
+  ELSE 0
+  END AS promoters,
+  CASE WHEN NPS_Score = 'Detractors' THEN 1
+  ELSE 0
+  END AS detractors,
 FROM
   gather_data
