@@ -41,8 +41,7 @@ WITH gather_data AS (
     HSSL.sub_section,
     C.site_short,
     C.Most_Recent_GPA_Cumulative_bucket,
-    C.high_school_graduating_class_c,
-    0 as sort_column
+    C.high_school_graduating_class_c
   FROM
     `data-studio-260217.surveys.fy21_hs_survey_long` HSSL
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON C.Contact_Id = HSSL.contact_id
@@ -58,39 +57,27 @@ SELECT
     WHEN answer = 'Neutral' THEN 2
     WHEN answer = 'Disagree' THEN 3
     WHEN answer = 'Strongly Disagree' THEN 4
-    ELSE sort_column
+    WHEN answer = "Very Safe" THEN 5
+    WHEN answer = 'Somewhat Safe' THEN 6
+    WHEN answer = 'Somewhat Unsafe' THEN 7
+    WHEN answer = 'Very Unsafe' THEN 8
+    WHEN answer = 'Prefer not to answer' THEN 9
+    WHEN answer = "Extremely helpful" THEN 10
+    WHEN answer = 'Very helpful' THEN 11
+    WHEN answer = 'Somewhat helpful' THEN 12
+    WHEN answer = 'A little helpful' THEN 13
+    WHEN answer = 'Not at all helpful' THEN 14
+    WHEN answer = "I haven't used this resource at CT" THEN 15
+    WHEN answer = "Extremely Excited" THEN 16
+    WHEN answer = 'Quite Excited' THEN 17
+    WHEN answer = 'Somewhat Excited' THEN 18
+    WHEN answer = 'Slightly Excited' THEN 19
+    WHEN answer = 'Not at all Excited' THEN 20
+    WHEN answer = "Almost Always" THEN 21
+    WHEN answer = 'Often' THEN 22
+    WHEN answer = 'Sometimes' THEN 23
+    WHEN answer = 'Not very often' THEN 24
+    ELSE NULL
   END AS sort_column,
-  CASE
-    WHEN answer = "Very Safe" THEN 0
-    WHEN answer = 'Somewhat Safe' THEN 1
-    WHEN answer = 'Somewhat Unsafe' THEN 2
-    WHEN answer = 'Very Unsafe' THEN 3
-    WHEN answer = 'Prefer not to answer' THEN 4
-    ELSE sort_column
-  END AS sort_column,
-  CASE
-    WHEN answer = "Extremely helpful" THEN 0
-    WHEN answer = 'Very helpful' THEN 1
-    WHEN answer = 'Somewhat helpful' THEN 2
-    WHEN answer = 'A little helpful' THEN 3
-    WHEN answer = 'Not at all helpful' THEN 4
-    WHEN answer = "I haven't used this resource at CT" THEN 5
-    ELSE sort_column
-  END AS sort_column,  
-  CASE
-    WHEN answer = "Extremely Excited" THEN 0
-    WHEN answer = 'Quite Excited' THEN 1
-    WHEN answer = 'Somewhat Excited' THEN 2
-    WHEN answer = 'Slightly Excited' THEN 3
-    WHEN answer = 'Not at all Excited' THEN 4
-    ELSE sort_column
-  END AS sort_column,    
-  CASE
-    WHEN answer = "Almost Always" THEN 0
-    WHEN answer = 'Often' THEN 1
-    WHEN answer = 'Sometimes' THEN 2
-    WHEN answer = 'Not very often' THEN 3
-    ELSE sort_column
-  END AS sort_column,   
 FROM
   gather_data
