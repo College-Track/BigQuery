@@ -3,8 +3,12 @@ WITH gather_data AS (
     HSSL.contact_Id,
     HSSL.question,
     CASE
-      WHEN HSSL.question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
-      AND HSSL.answer = '80%' THEN "Correct"
+      WHEN (HSSL.question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
+      AND HSSL.answer = '90%') THEN "Correct"
+      WHEN (HSSL.question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
+      AND HSSL.answer != '90%') THEN "Incorrect"
+    
+
       ELSE HSSL.answer
     END AS answer,
     HSSL.section,
@@ -23,4 +27,5 @@ SELECT
   *
 FROM
   gather_data
-  WHERE question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
+WHERE
+  question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
