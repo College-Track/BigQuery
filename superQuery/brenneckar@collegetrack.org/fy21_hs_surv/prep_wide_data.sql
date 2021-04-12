@@ -1,6 +1,6 @@
 WITH gather_data AS (
 SELECT *
-FROM `data-warehouse-289815.surveys.fy21_hs_survey`
+FROM `data-studio-260217.surveys.fy21_hs_survey`
 LIMIT 10
 )
 
