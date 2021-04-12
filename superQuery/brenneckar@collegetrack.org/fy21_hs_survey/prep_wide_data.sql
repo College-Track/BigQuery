@@ -32,6 +32,6 @@ WITH gather_data AS (
     AND site_short IS NOT NULL
 )
 SELECT
-  NPS_Score
+  *
 FROM
   gather_data
