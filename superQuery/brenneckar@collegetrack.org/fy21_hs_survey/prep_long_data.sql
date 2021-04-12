@@ -56,4 +56,4 @@ SELECT
 FROM
   gather_data
 WHERE
-  question = '5.2 At the end of the semester, what attendance % do you need in order to get $100 for Bank Book?'
+  question = '5.5 If your GPA is below 3.0, how much do you have to raise your GPA in order to get $200 for Bank Book?'
