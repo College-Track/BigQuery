@@ -24,18 +24,36 @@ WITH gather_hs_data AS (
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
     college_track_status_c = '11A'
+),
+
+gather_ay_attendance AS (
+SELECT 
+Contact_Id,
+SUM(attended_workshops_c) AS attended_workshops_c,
+SUM(enrolled_sessions_c) AS enrolled_sessions_c
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+WHERE AY_Name = "AY 2020-21"
+GROUP BY Contact_Id
+),
+
+join_data AS (
+SELECT GHSD.*,
+CASE WHEN enrolled_sessions_c = 0 THEN NULL
+WHEN (attended_workshops_c/enrolled_sessions_c) > 0.8 THEN 1
+ELSE 0
+END AS above_80_attendance
+FROM gather_hs_data GHSD
+LEFT JOIN gather_ay_attendance GAA ON GAA.Contact_Id = GHSD.Contact_Id 
 )
--- SELECT 
--- *
--- FROM gather_hs_data
 SELECT
   site_short,
   SUM(above_325_gpa) AS SD_senior_above_325,
   SUM(male_student) AS SD_ninth_grade_male,
   SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income,
+  SUM(above_80_attendance) AS above_80_attendance,
   MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS hs_budget_capacity
 FROM
-  gather_hs_data GSD
+  join_data GSD
   LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = GSD.site_c
   
 GROUP BY
