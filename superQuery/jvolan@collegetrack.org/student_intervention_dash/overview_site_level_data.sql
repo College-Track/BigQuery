@@ -9,7 +9,10 @@ SELECT
     College_Track_Status_Name AS CT_Status,
     Current_school_name,
     Current_HS_CT_Coach_c,
-    Gender_c,
+    CASE
+        WHEN Gender_c = "Decline to State" THEN "Other"
+        ELSE Gender_c
+    END AS Gender_c, 
     CASE
         WHEN Ethnic_background_c = "Decline to State" THEN "Missing"
         Else Ethnic_background_c
