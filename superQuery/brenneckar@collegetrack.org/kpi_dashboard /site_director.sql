@@ -50,7 +50,7 @@ SELECT
   SUM(above_325_gpa) AS SD_senior_above_325,
   SUM(male_student) AS SD_ninth_grade_male,
   SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income,
-  SUM(above_80_attendance) AS above_80_attendance,
+  SUM(above_80_attendance) AS SD_above_80_attendance,
   MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS hs_budget_capacity
 FROM
   join_data GSD
