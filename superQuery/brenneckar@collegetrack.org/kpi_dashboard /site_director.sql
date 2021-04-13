@@ -59,7 +59,7 @@ gather_ay_attendance AS (
   GROUP BY
     Contact_Id
 ),
-join_data AS (
+join_hs_data AS (
   SELECT
     GHSD.*,
     CASE
@@ -70,19 +70,35 @@ join_data AS (
   FROM
     gather_hs_data GHSD
     LEFT JOIN gather_ay_attendance GAA ON GAA.Contact_Id = GHSD.Contact_Id
+),
+prep_hs_metrics AS (
+  SELECT
+    GSD.site_short,
+    SUM(above_325_gpa) AS SD_senior_above_325,
+    SUM(male_student) AS SD_ninth_grade_male,
+    SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income,
+    SUM(above_80_attendance) AS SD_above_80_attendance,
+    SUM(summer_experience) AS SD_summer_experience,
+    MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS hs_budget_capacity,
+  FROM
+    join_hs_data GSD
+    LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = GSD.site_c
+  GROUP BY
+    site_short
+),
+prep_ps_metrics AS (
+  SELECT
+    site_short,
+    SUM(on_track) AS SD_on_track
+  FROM
+    gather_ps_data
+  GROUP BY
+    site_short
 )
 SELECT
-  GSD.site_short,
-  SUM(above_325_gpa) AS SD_senior_above_325,
-  SUM(male_student) AS SD_ninth_grade_male,
-  SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income,
-  SUM(above_80_attendance) AS SD_above_80_attendance,
-  SUM(summer_experience) AS SD_summer_experience,
-  MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS hs_budget_capacity,
-  SUM(on_track) AS SD_on_track
+  HS_Data.*,
+  PS_Data.*
+EXCEPT(site_short)
 FROM
-  join_data GSD
-  LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = GSD.site_c
-  LEFT JOIN gather_ps_data GPSD ON GPSD.site_short = GSD.site_short
-GROUP BY
-  site_short
+  join_hs_data HS_Data
+  LEFT JOIN prep_ps_metrics PS_Data ON PS_Data.site_short = HS_Data.site_short
