@@ -50,7 +50,9 @@ WITH gather_data AS (
     AND site_short IS NOT NULL
 )
 SELECT
-  *,
+  *
+EXCEPT
+  (answer),
   CASE
     WHEN answer = "Strongly Agree" THEN 1
     WHEN answer = 'Agree' THEN 2
@@ -79,5 +81,11 @@ SELECT
     WHEN answer = 'Not very often' THEN 25
     ELSE NULL
   END AS sort_column,
+  CASE
+    WHEN answer = 'Extremely Helpful' THEN 'Extremely helpful'
+    WHEN answer = 'Very Helpful' THEN 'Very helpful'
+    WHEN answer = 'Somewhat Helpful' THEN 'Somewhat helpful'
+    ELSE answer
+  END AS answer
 FROM
   gather_data
