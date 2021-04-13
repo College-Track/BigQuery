@@ -20,6 +20,9 @@ WITH gather_hs_data AS (
       AND first_generation_fy_20_c = 'Yes') THEN 1
       ELSE 0
     END AS first_gen_and_low_income,
+    CASE WHEN summer_experiences_previous_summer_c > 0 THEN 1
+    ELSE 0
+    END AS summer_experience
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
@@ -51,6 +54,7 @@ SELECT
   SUM(male_student) AS SD_ninth_grade_male,
   SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income,
   SUM(above_80_attendance) AS SD_above_80_attendance,
+  SUM(summer_experience) AS SD_summer_experience,
   MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS hs_budget_capacity
 FROM
   join_data GSD
