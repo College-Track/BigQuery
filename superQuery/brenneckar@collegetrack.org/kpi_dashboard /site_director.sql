@@ -100,5 +100,5 @@ SELECT
   PS_Data.*
 EXCEPT(site_short)
 FROM
-  join_hs_data HS_Data
+  prep_hs_metrics HS_Data
   LEFT JOIN prep_ps_metrics PS_Data ON PS_Data.site_short = HS_Data.site_short
