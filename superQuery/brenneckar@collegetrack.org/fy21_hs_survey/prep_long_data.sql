@@ -13,12 +13,12 @@ WITH gather_data AS (
       ) THEN "Incorrect"
       WHEN (
         HSSL.question = '5.3 If you complete 100 total community service hours during High School, how much Bank Book money will you get?'
-        AND HSSL.answer = '$1,600'
-      ) THEN "Correct"
-    --   WHEN (
-    --     HSSL.question = '5.3 If you complete 100 total community service hours during High School, how much Bank Book money will you get?'
-    --     AND HSSL.answer != '$1,600'
-    --   ) THEN "Incorrect"
+        AND HSSL.answer != '$1,600'
+      ) THEN "Corrent"
+      WHEN (
+        HSSL.question = '5.3 If you complete 100 total community service hours during High School, how much Bank Book money will you get?'
+        AND HSSL.answer != '$1,600'
+      ) THEN "Incorrect"
       WHEN (
         HSSL.question = '5.4 At the end of the semester, what GPA level do you need in order to get $400 for Bank Book?'
         AND HSSL.answer = '3.0'
