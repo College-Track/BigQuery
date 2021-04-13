@@ -17,7 +17,7 @@ WITH gather_data AS (
       ) THEN "Correct"
       WHEN (
         HSSL.question = '5.3 If you complete 100 total community service hours during High School, how much Bank Book money will you get?'
-        AND HSSL.answer NOT LIKE  '%$1,600%''
+        AND HSSL.answer NOT LIKE  '%$1,600%'
       ) THEN "Incorrect"
       WHEN (
         HSSL.question = '5.4 At the end of the semester, what GPA level do you need in order to get $400 for Bank Book?'
