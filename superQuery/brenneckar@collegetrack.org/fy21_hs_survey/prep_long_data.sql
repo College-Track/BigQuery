@@ -85,6 +85,7 @@ EXCEPT
     WHEN answer = 'Extremely Helpful' THEN 'Extremely helpful'
     WHEN answer = 'Very Helpful' THEN 'Very helpful'
     WHEN answer = 'Somewhat Helpful' THEN 'Somewhat helpful'
+    WHEN answer = 'Yes, I have taken part in Math Blast or summer math specific programming at CT' THEN 'Yes, I have taken part in math specific programming or workshops at CT'
     ELSE answer
   END AS answer
 FROM
