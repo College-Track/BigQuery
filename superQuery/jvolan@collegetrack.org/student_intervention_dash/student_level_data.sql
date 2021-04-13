@@ -40,7 +40,8 @@ SELECT
     max(date_c) AS most_recent_attended_workshop,
     academic_semester_c,
     FROM `data-warehouse-289815.salesforce_clean.class_template`
-    WHERE Attendance_c IN ('Attended','Attended - Virtual','Tardy','Make Up','Drop-in')
+    WHERE Attendance_c LIKE '%Attended%'
+    OR Attendance_c IN ('Tardy','Make Up','Drop-in')
     GROUP BY academic_semester_c
     
 ),    
