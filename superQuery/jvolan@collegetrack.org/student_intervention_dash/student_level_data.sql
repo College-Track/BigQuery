@@ -34,6 +34,16 @@ SELECT
     LEFT JOIN recent_logged_activities ON recent_logged_activities.assigned_to = id
 ),
 
+most_recent_attended_workshop AS    
+(
+SELECT
+    max(date_c) AS most_recent_attended_workshop,
+    academic_semester_c,
+    FROM `data-warehouse-289815.salesforce_clean.class_template`
+    WHERE Attendance_c IN ('Enrolled','Tardy','Make Up','Drop-in')
+    GROUP BY academic_semester_c
+    
+),    
 workshop_enrollments AS
 (
 SELECT
@@ -173,8 +183,11 @@ student_data_with_activities_enrollments AS
     SELECT
     student_data_with_activities.*,
     workshop_enrollments.workshops_enrolled,
+    most_recent_attended_workshop.most_recent_attended_workshop,
+    
     FROM student_data_with_activities
     LEFT JOIN workshop_enrollments ON workshop_enrollments.academic_semester_c = AT_Id
+    LEFT JOIN most_recent_attended_workshop ON most_recent_attended_workshop.academic_semester_c = AT_Id
     )
     
     SELECT
