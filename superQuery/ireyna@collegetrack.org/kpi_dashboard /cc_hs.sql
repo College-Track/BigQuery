@@ -10,13 +10,19 @@ WITH gather_data AS (
         ELSE 0
     END AS hs_EFC_10th,
     
-    (SELECT subq.student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq
-        #WHERE subq.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
-        WHERE subq.College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
-        AND Contact_Id=subq.student_c
-        group by subq.student_c
+    (SELECT student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS college_app_subq1
+        WHERE College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
+        AND Contact_Id=student_c
+        group by student_c
         ) AS  applied_best_good_situational,
+        
+        (SELECT student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS college_app_subq2
+        WHERE admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+        AND Contact_Id=student_c
+        group by student_c
+        ) AS  accepted_best_good_situational,
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS Contact   
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CollegeApp 
@@ -26,7 +32,8 @@ AND college_track_status_c = '11A'
 )
   SELECT
     site_short,
-    COUNT(DISTINCT applied_best_good_situational) AS cc_hs_best_good_situational,
+    COUNT(DISTINCT applied_best_good_situational) AS cc_hs__applied_best_good_situational,
+    COUNT(DISTINCT accepted_best_good_situational) AS cc_hs_accepted_best_good_situational,
     SUM(hs_EFC_10th) AS cc_hs_EFC_10th
   FROM
     gather_data
