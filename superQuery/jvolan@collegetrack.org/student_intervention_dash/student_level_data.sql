@@ -61,6 +61,7 @@ SELECT
     Contact_Id,
     Full_Name_c,
     site_abrev AS Site,
+    site_short,
     region_abrev AS region,
     high_school_graduating_class_c AS HS_Class,
     College_Track_Status_Name AS CT_Status,
