@@ -1,5 +1,4 @@
-WITH gather_data AS (
-  SELECT
+SELECT
     Contact_Id,
     site_short,
     grade_c,
@@ -23,15 +22,3 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
         
 WHERE grade_c = '12th Grade'
 AND college_track_status_c = '11A'
-)
-  SELECT
-    site_short,
-    COUNT(DISTINCT applied_best_good_situational) AS cc_hs_best_good_situational,
-    SUM(hs_EFC_10th) AS cc_hs_EFC_10th
-  FROM
-    gather_data
-  GROUP BY
-    site_short
-
-
-
