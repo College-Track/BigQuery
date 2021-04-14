@@ -502,7 +502,13 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         Attendance_Rate_Previous_Term_c
       ),
       RT.Name AS AT_Record_Type_Name,
-      A_School.Name AS School_Name,
+      A_School.Name AS AT_School_Name,
+            CASE
+        WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN "4-Year"
+        WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly associate's-degree granting" THEN "2-Year"
+        WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly certificate-degree granting" THEN "Certificate-Degree Granting"
+        ELSE "Unknown"
+      END AS AT_school_type,
       GAS.Name AS GAS_Name,
       GAS.Start_Date_c AS GAS_Start_Date,
       GAS.End_Date_c AS GAS_End_Date,
