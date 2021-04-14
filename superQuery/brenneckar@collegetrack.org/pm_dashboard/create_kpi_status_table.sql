@@ -10,7 +10,8 @@ WITH gather_data AS (
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
     --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
-    END AS target
+    END AS target,
+    site_kpi
   FROM
     `data-studio-260217.performance_mgt.role_kpi_selection` KPI_Selection
     LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')
