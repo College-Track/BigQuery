@@ -1,4 +1,4 @@
-SELECT 
+WITH gather_data AS SELECT 
     site_short,
     COUNT(Contact_Id) as student_count
 FROM `data-warehouse-289815.salesforce_clean.contact_template`
@@ -10,3 +10,7 @@ Contact_Id NOT IN (
     WHERE created_date >= '2021-02-17' AND Name = 'Started/Restarted CT HS Program'
     )
     GROUP BY site_short
+)
+
+SELECT SUM(student_count)
+FROM gather_data
