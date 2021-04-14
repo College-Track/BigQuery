@@ -34,12 +34,18 @@ gather_completed_survey_data AS (
     site_short,
     high_school_graduating_class_c,
     Most_Recent_GPA_Cumulative_bucket
+),
+join_data AS (
+  SELECT
+    GD.*,
+    gather_completed_survey_data.completed_survey_count
+  FROM
+    gather_data GD
+    LEFT JOIN gather_completed_survey_data ON gather_completed_survey_data.site_short = GD.site_short
+    AND gather_completed_survey_data.high_school_graduating_class_c = GD.high_school_graduating_class_c
+    AND gather_completed_survey_data.Most_Recent_GPA_Cumulative_bucket = GD.Most_Recent_GPA_Cumulative_bucket
 )
 SELECT
-  GD.*,
-  gather_completed_survey_data.completed_survey_count
+  SUM(completed_survey_count)
 FROM
-  gather_data GD
-  LEFT JOIN gather_completed_survey_data ON gather_completed_survey_data.site_short = GD.site_short
-  AND gather_completed_survey_data.high_school_graduating_class_c = GD.high_school_graduating_class_c
-  AND gather_completed_survey_data.Most_Recent_GPA_Cumulative_bucket = GD.Most_Recent_GPA_Cumulative_bucket
+  join_data
