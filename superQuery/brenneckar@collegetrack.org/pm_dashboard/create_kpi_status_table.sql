@@ -7,7 +7,8 @@ WITH gather_data AS (
     END AS target_submitted,
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
-      WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_ --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
+      WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
+    --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
     END AS target,
     CASE
@@ -24,5 +25,5 @@ SELECT
   *
 FROM
   gather_data
-WHERE
-  target_submitted = true
+-- WHERE
+--   target_submitted = true
