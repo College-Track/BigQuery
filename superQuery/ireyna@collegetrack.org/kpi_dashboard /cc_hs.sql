@@ -4,8 +4,9 @@ WITH gather_data AS (
     site_short,
     grade_c,
     FA_Req_Expected_Financial_Contribution_c,
+    fa_req_efc_source_c,
     CASE
-        WHEN FA_Req_Expected_Financial_Contribution_c IS NOT NULL THEN 1
+        WHEN (FA_Req_Expected_Financial_Contribution_c IS NOT NULL) AND (fa_req_efc_source_c = 'FAFSA4caster') THEN 1
         ELSE 0
     END AS hs_EFC_10th,
     (SELECT subq.student_c
@@ -19,9 +20,9 @@ WITH gather_data AS (
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS Contact   
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CollegeApp 
         ON Contact.contact_id = CollegeApp.student_c 
-  WHERE
-    grade_c = '12th Grade'
-    AND college_track_status_c = '11A'
+        
+WHERE grade_c = '12th Grade'
+AND college_track_status_c = '11A'
 )
   SELECT
     site_short,
