@@ -16,4 +16,4 @@ SELECT
 FROM
   gather_data
 WHERE
-  kpi = "'-Strategy Team satisfaction: % of strategy team members that agree or strongly agree that the connection between annual planning & budgeting is an effective process and tool for setting annual priorities (in service of improved outcomes across the org).'"
+  kpi LIKE '%-Strategy Team satisfaction: %%'
