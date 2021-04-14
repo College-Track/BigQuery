@@ -1,5 +1,4 @@
-WITH gather_data AS (
-  SELECT
+ SELECT
     Contact_Id,
     site_short,
     grade_c,
@@ -31,16 +30,3 @@ WITH gather_data AS (
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS Contact   
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CollegeApp 
         ON Contact.contact_id = CollegeApp.student_c 
-
-)
-  SELECT
-    site_short,
-    COUNT(DISTINCT applied_best_good_situational) AS cc_hs_best_good_situational,
-    SUM(hs_EFC_10th) AS cc_hs_EFC_10th
-  FROM
-    gather_data
-  GROUP BY
-    site_short
-
-
-
