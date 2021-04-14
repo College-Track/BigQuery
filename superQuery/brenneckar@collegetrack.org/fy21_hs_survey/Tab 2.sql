@@ -1,4 +1,4 @@
-WITH gather_data AS SELECT 
+WITH gather_data AS( SELECT 
     site_short,
     COUNT(Contact_Id) as student_count
 FROM `data-warehouse-289815.salesforce_clean.contact_template`
