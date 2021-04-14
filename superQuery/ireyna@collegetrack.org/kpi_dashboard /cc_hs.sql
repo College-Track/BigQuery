@@ -70,12 +70,12 @@ prep_twelfth_grade_metrics AS(
         END AS cc_hs_accepted_best_good_situational
     
     FROM gather_data_twelfth_grade
-    GROUP BY site_short
+    GROUP BY site_short,applied_best_good_situational,accepted_best_good_situational
 )
 
   SELECT
     tenth_grade_data.*,
-    twelfth_grade_data.* EXCEPT(site_short,applied_best_good_situational,accepted_best_good_situational),
+    twelfth_grade_data.* EXCEPT(site_short),
     SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
     SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational, #12th grade
     cc_hs_EFC_tenth_grade #10th grade
