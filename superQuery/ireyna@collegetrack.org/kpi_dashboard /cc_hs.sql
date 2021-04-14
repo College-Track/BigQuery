@@ -1,7 +1,7 @@
-  SELECT
+SELECT
     Contact_Id,
     site_short,
-    grace_c,
+    grade_c,
     estimated_family_contribution_c,
     CASE
         WHEN estimated_family_contribution_c IS NOT NULL THEN 1
