@@ -66,9 +66,10 @@ prep_metrics AS(
     FULL JOIN gather_data_twelfth_grade AS cc_hs_10th
     ON cc_hs_12th.site_short = cc_hs_10th.site_short
     
-    GROUP BY cc_hs_12th.site_short,applied_best_good_situational,
+    GROUP BY cc_hs_12th.site_short,applied_best_good_situational,cc_hs_accepted_best_good_situational
+    
         
-),
+)
     
   SELECT
     site_short,
@@ -79,7 +80,8 @@ prep_metrics AS(
      prep_metrics
     
   GROUP BY
-    site_short
+    site_short,
+    cc_hs_EFC_tenth_grade 
 
 
 
