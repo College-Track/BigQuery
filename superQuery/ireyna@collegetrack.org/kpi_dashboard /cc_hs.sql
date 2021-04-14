@@ -78,7 +78,7 @@ prep_twelfth_grade_metrics AS(
     twelfth_grade_data.* EXCEPT(site_short),
     SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
     SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational, #12th grade
-    cc_hs_EFC_tenth_grade #10th grade
+    
     
   FROM
      prep_tenth_grade_metrics as tenth_grade_data
