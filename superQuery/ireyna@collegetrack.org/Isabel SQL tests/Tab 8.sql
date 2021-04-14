@@ -1,4 +1,3 @@
-WITH gather_data_tenth_grade AS (
   SELECT
     Contact_Id,
     site_short,
@@ -14,9 +13,3 @@ WITH gather_data_tenth_grade AS (
     WHERE  college_track_status_c = '11A'
     AND grade_c = '10th Grade'
 )
-  SELECT
-        SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade,
-        site_short
-       
-    FROM gather_data_tenth_grade 
-    GROUP BY site_short
