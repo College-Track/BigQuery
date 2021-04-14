@@ -10,7 +10,7 @@ WITH gather_data AS (
     END AS cc_hs_EFC_10th,
     (SELECT subq.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq
-        WHERE subq.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
+        #WHERE subq.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
         AND subq.College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
         AND Contact_Id=subq.student_c
         group by subq.student_c
