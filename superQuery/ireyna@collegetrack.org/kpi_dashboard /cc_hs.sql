@@ -3,7 +3,7 @@
     Contact_Id,
     site_short,
     estimated_family_contribution_c,
-    (SELECT subq.student_c
+    (SELECT subq.student_c AS 1
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq
         WHERE subq.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
         AND subq.College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
