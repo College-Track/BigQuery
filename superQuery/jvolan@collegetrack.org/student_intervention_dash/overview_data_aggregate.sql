@@ -6,6 +6,7 @@ SELECT
     GAS_Name,
     site_abrev AS Site,
     site_short,
+    site_sort,
     region_abrev AS region,
     CASE
         WHEN Gender_c IN ("Decline to State","Other") THEN "Decline to State/Other"
@@ -50,6 +51,7 @@ SELECT
     GAS_Name,
     Site,
     site_short,
+    site_sort,
     region,
     grade,
     Gender_c,
@@ -67,6 +69,7 @@ SELECT
     GAS_Name,
     Site,
     site_short,
+    site_sort,
     region,
     grade,
     Gender_c,
