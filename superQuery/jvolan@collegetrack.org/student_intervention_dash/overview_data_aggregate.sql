@@ -46,6 +46,16 @@ SELECT
     )
     
     SELECT 
+    Site,
+    site_short,
+    region,
+    grade,
+    Gender_c,
+    Ethnic_background_c,
+    intervention_AT,
+    indicator_high_risk_dismissal,
+    intervention_AT_bucket,
+    attendance_bucket_current_at,
     COUNT(Contact_Id) AS student_count,
     sum(intervention_AT) AS intervention_AT_count,
     sum(indicator_high_risk_dismissal) AS high_risk_count,
