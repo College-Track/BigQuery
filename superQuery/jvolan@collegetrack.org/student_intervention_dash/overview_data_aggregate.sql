@@ -3,6 +3,7 @@ With site_data AS
 SELECT
 --basic contact info & demos
     Contact_Id,
+    global_academic_semester_c,
     site_abrev AS Site,
     site_short,
     region_abrev AS region,
@@ -46,6 +47,7 @@ SELECT
     )
     
     SELECT 
+    global_academic_semester_c,
     Site,
     site_short,
     region,
@@ -62,6 +64,7 @@ SELECT
     
     FROM site_data
     GROUP BY
+    global_academic_semester_c,
     Site,
     site_short,
     region,
