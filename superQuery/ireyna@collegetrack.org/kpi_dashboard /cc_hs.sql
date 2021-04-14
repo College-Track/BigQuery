@@ -44,9 +44,9 @@ gather_data_twelfth_grade AS (
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE  college_track_status_c = '11A'
     AND grade_c = '12th Grade'
-)#,
+),
 
-#gather_metrics AS(
+gather_metrics AS(
 
     SELECT
         hs_EFC_10th,
