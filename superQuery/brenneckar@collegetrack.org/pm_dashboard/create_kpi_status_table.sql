@@ -24,5 +24,5 @@ SELECT
   *
 FROM
   gather_data
-WHERE
-  target_submitted = true
+-- WHERE
+--   target_submitted = true
