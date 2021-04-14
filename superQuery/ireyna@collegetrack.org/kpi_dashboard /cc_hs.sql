@@ -1,3 +1,4 @@
+
 CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
 OPTIONS
     (
@@ -39,7 +40,7 @@ AND college_track_status_c = '11A'
 )
   SELECT
     site_short,
-    COUNT(DISTINCT applied_best_good_situational) AS cc_hs__applied_best_good_situational, #12th grade
+    COUNT(DISTINCT applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
     COUNT(DISTINCT accepted_best_good_situational) AS cc_hs_accepted_best_good_situational, #12th grade
     SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade #10th grade
   FROM
