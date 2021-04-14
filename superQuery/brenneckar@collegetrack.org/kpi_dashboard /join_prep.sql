@@ -26,6 +26,7 @@ WITH gather_data AS (
 SELECT
   national,
   site_short,
+  site_sort,
   region_abrev,
   SUM(
     IF(
@@ -74,4 +75,5 @@ FROM
 GROUP BY
   national,
   site_short,
+  site_sort,
   region_abrev
