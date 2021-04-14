@@ -29,9 +29,7 @@ WITH gather_data AS (
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS Contact   
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CollegeApp 
         ON Contact.contact_id = CollegeApp.student_c 
-        
-WHERE grade_c = '12th Grade'
-AND college_track_status_c = '11A'
+
 )
   SELECT
     site_short,
