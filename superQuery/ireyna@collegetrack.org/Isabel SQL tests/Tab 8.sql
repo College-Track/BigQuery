@@ -1,4 +1,4 @@
-  SELECT
+SELECT
     Contact_Id,
     site_short,
     grade_c,
@@ -12,4 +12,3 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE  college_track_status_c = '11A'
     AND grade_c = '10th Grade'
-)
