@@ -21,3 +21,14 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
   WHERE
     grade_c = '12th Grade'
     AND college_track_status_c = '11A'
+)
+#,prep_metrics_id_count AS (
+  SELECT
+    contact_id,
+    COUNT(DISTINCT applied_best_good_situational) AS cc_hs_best_good_situational,
+    cc_hs_EFC_10th
+  FROM
+    gather_data
+  GROUP BY
+    contact_id,
+    cc_hs_EFC_10th
