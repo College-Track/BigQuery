@@ -1,19 +1,19 @@
 WITH recent_logged_activities AS
 (
     SELECT
-    WhoId,
-    WhatId AS Related_to,
-    ActivityDate AS Date,
+    Who_Id,
+    What_Id AS Related_to,
+    Activity_Date AS Date,
     Subject,
     Description,
-    X18_Digit_Activity_ID__c,
-    Reciprocal_Communication__c,
-    OwnerId AS assigned_to,
-    PTE_Staff_Name_Optional__c AS PTE_staff,
+    Id AS activity_id,
+    reciprocal_communication_c,
+    Owner_Id AS assigned_to,
+    pte_staff_name_optional_c AS PTE_staff,
 
-    FROM `data-warehouse-289815.salesforce_raw.Task`
+    FROM `data-warehouse-289815.salesforce.task`
     WHERE NOT (Subject LIKE '%List Email%')
-    AND CreatedDate BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 12 MONTH) AND CURRENT_DATE()
+    AND DATE(created_date) BETWEEN DATE_SUB(CURRENT_DATE(),INTERVAL 12 MONTH) AND CURRENT_DATE()
 ),
 
 recent_logged_activites_users AS
@@ -21,13 +21,13 @@ recent_logged_activites_users AS
 SELECT  
     id,
     CONCAT(first_name," ",last_name) AS assigned_to_name,
-    recent_logged_activities.WhoId,
+    recent_logged_activities.Who_Id,
     recent_logged_activities.Related_to,
     recent_logged_activities.Date,
     recent_logged_activities.Subject,
     recent_logged_activities.Description,
-    recent_logged_activities.X18_Digit_Activity_ID__c,
-    recent_logged_activities.Reciprocal_Communication__c,
+    recent_logged_activities.activity_id,
+    recent_logged_activities.reciprocal_communication_c,
     recent_logged_activities.assigned_to,
     recent_logged_activities.PTE_staff,
     FROM `data-warehouse-289815.salesforce_clean.user_clean`
@@ -158,24 +158,24 @@ student_data_with_activities AS
 (    
     SELECT
     student_data_at.*,
-    recent_logged_activites_users.WhoId,
+    recent_logged_activites_users.Who_Id,
     recent_logged_activites_users.Related_to,
     recent_logged_activites_users.Date,
     recent_logged_activites_users.Subject,
     recent_logged_activites_users.Description,
-    recent_logged_activites_users.X18_Digit_Activity_ID__c,
+    recent_logged_activites_users.activity_id,
     recent_logged_activites_users.assigned_to_name,
     recent_logged_activites_users.PTE_staff,
     CASE
-        WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 1
+        WHEN recent_logged_activites_users.reciprocal_communication_c = TRUE Then 1
         ELSE 0
         END AS indicator_reciprocal,
     CASE
-        WHEN recent_logged_activites_users.Reciprocal_Communication__c = TRUE Then 'Yes'
+        WHEN recent_logged_activites_users.reciprocal_communication_c = TRUE Then 'Yes'
         ELSE 'No'
         END AS reciprocal_y_n,
     FROM student_data_at
-    LEFT JOIN recent_logged_activites_users ON recent_logged_activites_users.WhoId = Contact_Id
+    LEFT JOIN recent_logged_activites_users ON recent_logged_activites_users.Who_Id = Contact_Id
     WHERE intervention_at = 1
     ),
     
