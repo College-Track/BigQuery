@@ -1,6 +1,3 @@
-
-
-
 SELECT
 submission_id,
 enter_the_target_non_numeric_, 
