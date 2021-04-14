@@ -1,4 +1,4 @@
-ELECT
+SELECT
     Contact_Id,
     site_short,
     grade_c,
