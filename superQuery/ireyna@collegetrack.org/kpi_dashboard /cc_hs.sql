@@ -26,8 +26,8 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
   SELECT
     contact_id,
     COUNT(DISTINCT applied_best_good_situational) AS cc_hs_best_good_situational,
-    SUM(cc_hs_EFC_10th)
+    cc_hs_EFC_10th
   FROM
     gather_data
   GROUP BY
-    contact_id
+    contact_id,
