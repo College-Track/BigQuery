@@ -1,0 +1,67 @@
+With site_data AS
+(
+SELECT
+--basic contact info & demos
+    Contact_Id,
+    site_abrev AS Site,
+    site_short,
+    region_abrev AS region,
+    CASE
+        WHEN Gender_c IN ("Decline to State","Other") THEN "Decline to State/Other"
+        ELSE Gender_c
+    END AS Gender_c, 
+    CASE
+        WHEN Ethnic_background_c = "Decline to State" THEN "Missing"
+        Else Ethnic_background_c
+    END AS Ethnic_background_c,
+    CASE
+        WHEN indicator_high_risk_for_dismissal_c = TRUE THEN 1
+        ELSE 0
+        END AS indicator_high_risk_dismissal,
+    
+    --current AT attendance & gpa data
+    CASE
+        WHEN AT_Grade_c = '12th Grade' Then '12th'
+        WHEN AT_Grade_c = '11th Grade' Then '11th'
+        WHEN AT_Grade_c = '10th Grade' Then '10th'
+        WHEN AT_Grade_c = '9th Grade' Then '9th'
+        ELSE 'na'
+    END AS grade,    
+    CASE
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = TRUE THEN "GPA & Attendance"
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = FALSE THEN "GPA Only"
+        WHEN indicator_prev_gpa_below_2_75_c = FALSE AND indicator_sem_attendance_below_65_c = TRUE THEN "Attendance Only"
+        ELSE "None"
+    END AS intervention_AT_bucket,
+    CASE
+        WHEN indicator_student_on_intervention_c = TRUE THEN 1
+        Else 0
+    End AS intervention_AT,
+    attendance_bucket_current_at,
+    sort_attendance_bucket,
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE current_as_c = TRUE
+    AND college_track_status_c IN ("11A", "12A")
+    )
+    
+    SELECT 
+    COUNT(Contact_Id),
+    sum(intervention_AT),
+    sum(indicator_high_risk_dismissal)
+    
+    FROM site_data
+    GROUP BY
+    Site,
+    site_short,
+    region,
+    grade,
+    Gender_c,
+    Ethnic_background_c,
+    intervention_AT,
+    indicator_high_risk_dismissal,
+    intervention_AT_bucket,
+    attendance_bucket_current_at
+    
+    
+    
