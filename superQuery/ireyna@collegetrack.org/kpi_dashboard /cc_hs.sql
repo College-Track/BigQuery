@@ -69,6 +69,7 @@ prep_twelfth_grade_metrics AS(
         END AS cc_hs_accepted_best_good_situational
     
     FROM gather_data_twelfth_grade
+    GROUP BY site_short,applied_best_good_situational,accepted_best_good_situational
 ),
 
 agg_twelfth_grade_metrics AS (
