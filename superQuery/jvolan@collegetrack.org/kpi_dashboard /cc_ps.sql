@@ -3,6 +3,7 @@
     Contact_Id,
     site_short,
     high_school_graduating_class_c,
+    indicator_completed_ct_hs_program_c,
     current_school_name,
     current_school_type_c_degree,
     current_enrollment_status_c,
