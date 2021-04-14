@@ -1,3 +1,11 @@
+/*
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
+OPTIONS
+    (
+    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
+    )
+AS
+*/
 WITH gather_data_tenth_grade AS (
   SELECT
     Contact_Id,
@@ -57,3 +65,19 @@ gather_data_twelfth_grade AS (
     FROM gather_data_tenth_grade AS cc_hs_12th
     FULL JOIN gather_data_twelfth_grade AS cc_hs_10th
     ON cc_hs_12th.site_short = cc_hs_10th.site_short
+        
+)
+    
+  SELECT
+    site_short,
+    SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
+    SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational, #12th grade
+    SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade #10th grade
+  FROM
+    gather_metrics
+    
+  GROUP BY
+    site_short
+
+
+
