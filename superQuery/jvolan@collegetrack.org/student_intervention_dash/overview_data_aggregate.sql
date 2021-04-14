@@ -46,9 +46,9 @@ SELECT
     )
     
     SELECT 
-    COUNT(Contact_Id),
-    sum(intervention_AT),
-    sum(indicator_high_risk_dismissal)
+    COUNT(Contact_Id) AS student_count,
+    sum(intervention_AT) AS intervention_AT_count,
+    sum(indicator_high_risk_dismissal) AS high_risk_count,
     
     FROM site_data
     GROUP BY
