@@ -7,7 +7,7 @@ WITH gather_data AS (
     CASE
         WHEN FA_Req_Expected_Financial_Contribution_c IS NOT NULL THEN 1
         ELSE 0
-    END AS cc_hs_EFC_10th,
+    END AS hs_EFC_10th,
     (SELECT subq.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq
         #WHERE subq.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
@@ -23,12 +23,16 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
     grade_c = '12th Grade'
     AND college_track_status_c = '11A'
 )
-#,prep_metrics_id_count AS (
   SELECT
     contact_id,
-    COUNT(DISTINCT applied_best_good_situational) AS cc_hs_best_good_situational,
-    SUM(cc_hs_EFC_10th) AS cc_hs_EFC_10th
+    site_short,
+    COUNT(DISTINCT applied_best_good_situational) AS count_cc_hs_best_good_situational,
+    SUM(hs_EFC_10th) AS sum_hs_EFC_10th
   FROM
     gather_data
   GROUP BY
-    contact_id
+    contact_id,
+    site_short
+
+
+
