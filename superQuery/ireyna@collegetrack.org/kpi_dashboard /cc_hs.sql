@@ -24,7 +24,6 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
     AND college_track_status_c = '11A'
 )
   SELECT
-    contact_id,
     site_short,
     COUNT(DISTINCT applied_best_good_situational) AS count_cc_hs_best_good_situational,
     SUM(hs_EFC_10th) AS sum_hs_EFC_10th
