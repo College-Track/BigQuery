@@ -1,4 +1,5 @@
-SELECT
+WITH gather_data AS (
+  SELECT
     Contact_Id,
     site_short,
     grade_c,
