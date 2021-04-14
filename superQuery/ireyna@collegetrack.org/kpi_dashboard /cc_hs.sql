@@ -1,11 +1,11 @@
-SELECT
+ SELECT
     Contact_Id,
     site_short,
     grade_c,
-    estimated_family_contribution_c,
+    FA_Req_Expected_Financial_Contribution_c,
     CASE
-        WHEN estimated_family_contribution_c IS NOT NULL THEN 1
-        ELSE estimated_family_contribution_c
+        WHEN FA_Req_Expected_Financial_Contribution_c IS NOT NULL THEN 1
+        ELSE FA_Req_Expected_Financial_Contribution_c
     END AS cc_hs_EFC_10th,
     (SELECT subq.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq
