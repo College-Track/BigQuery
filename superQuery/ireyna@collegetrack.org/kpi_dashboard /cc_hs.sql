@@ -17,8 +17,6 @@ WITH gather_data AS (
         #WHERE subq.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
         WHERE College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
         AND Contact_Id=student_c
-        AND grade_c = '12th Grade'
-        AND college_track_status_c = '11A'
         group by subquery_collegeapp.student_c
         ) AS applied_best_good_situational,
         
