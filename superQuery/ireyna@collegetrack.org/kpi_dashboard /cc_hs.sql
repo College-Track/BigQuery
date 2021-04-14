@@ -1,10 +1,10 @@
- SELECT
+SELECT
     Contact_Id,
     site_short,
     grade_c,
     FA_Req_Expected_Financial_Contribution_c,
     CASE
-        WHEN FA_Req_Expected_Financial_Contribution_c IS NOT NULL THEN 1
+        WHEN FA_Req_Expected_Financial_Contribution_c <> 0 THEN 1
         ELSE FA_Req_Expected_Financial_Contribution_c
     END AS cc_hs_EFC_10th,
     (SELECT subq.student_c
