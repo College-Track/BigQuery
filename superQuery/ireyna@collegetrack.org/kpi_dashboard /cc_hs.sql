@@ -68,7 +68,7 @@ prep_metrics AS(
     
     GROUP BY cc_hs_12th.site_short,applied_best_good_situational,
         
-)
+),
     
   SELECT
     site_short,
