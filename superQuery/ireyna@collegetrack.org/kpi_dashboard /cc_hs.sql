@@ -10,15 +10,13 @@ WITH gather_data AS (
         ELSE 0
     END AS hs_EFC_10th,
     
-    (SELECT student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subquery_collegeapp
-        LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template`AS subquery_contact
-            ON subquery_contact.contact_id = subquery_collegeapp.student_c 
+    (SELECT subq.student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq
         #WHERE subq.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
-        WHERE College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
-        AND Contact_Id=student_c
-        group by subquery_collegeapp.student_c
-        ) AS applied_best_good_situational,
+        WHERE subq.College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
+        AND Contact_Id=subq.student_c
+        group by subq.student_c
+        ) AS  applied_best_good_situational,
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS Contact   
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CollegeApp 
