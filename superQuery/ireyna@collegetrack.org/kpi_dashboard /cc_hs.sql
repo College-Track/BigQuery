@@ -10,9 +10,11 @@ WITH gather_data AS (
         ELSE 0
         END AS hs_EFC_10th,
     (SELECT contact_id,
-        FROM `data-warehouse-289815.salesforce_clean.contact_template`
+        FROM `data-warehouse-289815.salesforce_clean.contact_template` AS subq
         WHERE grade_c = '10th Grade'
         AND college_track_status_c = '11A'
+        AND subq.contact_id = contact_id
+        group by subq.contact_id
         ) AS count_10th_efc,
     (SELECT student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subquery_collegeapp
