@@ -31,5 +31,4 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS 
   FROM
     gather_data
   GROUP BY
-    contact_id,
-    cc_hs_EFC_10th
+    contact_id
