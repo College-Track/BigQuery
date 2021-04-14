@@ -46,12 +46,19 @@ gather_data_twelfth_grade AS (
     AND grade_c = '12th Grade'
 ),
 
-prep_metrics AS(
+prep_tenth_grade_metrics AS(
 
     SELECT
         SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade,
-        cc_hs_12th.site_short,
-        
+        site_short
+       
+    FROM gather_data_tenth_grade 
+    GROUP BY site_short
+),
+
+prep_twelfth_grade_metrics AS(
+    SELECT  
+        site_short,
         CASE 
             WHEN applied_best_good_situational IS NOT NULL THEN 1
             ELSE 0
@@ -62,26 +69,26 @@ prep_metrics AS(
             ELSE 0
         END AS cc_hs_accepted_best_good_situational
     
-    FROM gather_data_tenth_grade AS cc_hs_12th
-    FULL JOIN gather_data_twelfth_grade AS cc_hs_10th
-    ON cc_hs_12th.site_short = cc_hs_10th.site_short
-    
-    GROUP BY cc_hs_12th.site_short,applied_best_good_situational,cc_hs_accepted_best_good_situational
-    
-        
+    FROM gather_data_twelfth_grade
+    GROUP BY site_short
 )
-    
+
   SELECT
-    site_short,
+    tenth_grade_data.*,
+    twelfth_grade_data.* EXCEPT(site_short,applied_best_good_situational,accepted_best_good_situational),
     SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
     SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational, #12th grade
     cc_hs_EFC_tenth_grade #10th grade
-  FROM
-     prep_metrics
     
-  GROUP BY
+  FROM
+     prep_tenth_grade_metrics as tenth_grade_data
+     LEFT JOIN prep_twelfth_grade_metrics as twelfth_grade_data
+     ON tenth_grade_data.site_short = twelfth_grade_data.site_short
+
+GROUP BY
     site_short,
-    cc_hs_EFC_tenth_grade 
+    cc_hs_EFC_tenth_grade
+    
 
 
 
