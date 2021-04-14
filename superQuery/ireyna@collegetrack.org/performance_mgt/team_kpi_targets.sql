@@ -1,5 +1,5 @@
 select 
-submission_id,,
+submission_id,
 enter_the_target_non_numeric_ AS KPI__target_str,
 enter_the_target_numeric_ AS KPI__target_num,
 enter_the_target_percent_ AS KPI__target_perc
