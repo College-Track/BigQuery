@@ -1,4 +1,22 @@
- SELECT 
+WITH gather_data_tenth_grade AS (
+  SELECT
+    Contact_Id,
+    site_short,
+    grade_c,
+    FA_Req_Expected_Financial_Contribution_c,
+    fa_req_efc_source_c,
+    CASE
+        WHEN (FA_Req_Expected_Financial_Contribution_c IS NOT NULL) AND (fa_req_efc_source_c = 'FAFSA4caster') THEN 1
+        ELSE 0
+    END AS hs_EFC_10th
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE  college_track_status_c = '11A'
+    AND grade_c = '10th Grade'
+),
+
+gather_data_twelfth_grade AS (
+    SELECT 
         contact_id,
         site_short,
         (SELECT student_c
@@ -18,3 +36,24 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE  college_track_status_c = '11A'
     AND grade_c = '12th Grade'
+)#,
+
+#gather_metrics AS(
+
+    SELECT
+        hs_EFC_10th,
+        cc_hs_12th.site_short,
+        
+        CASE 
+            WHEN applied_best_good_situational IS NOT NULL THEN 1
+            ELSE 0
+        END AS cc_hs_applied_best_good_situational,
+        
+        CASE 
+            WHEN accepted_best_good_situational IS NOT NULL THEN 1
+            ELSE 0
+        END AS cc_hs_accepted_best_good_situational
+    
+    FROM gather_data_tenth_grade AS cc_hs_12th
+    FULL JOIN gather_data_twelfth_grade AS cc_hs_10th
+    ON cc_hs_12th.site_short = cc_hs_10th.site_short
