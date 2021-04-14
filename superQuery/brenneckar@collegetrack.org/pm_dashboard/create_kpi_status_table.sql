@@ -5,6 +5,12 @@ WITH gather_data AS (
       WHEN KPI_Target.select_role IS NOT NULL THEN true
       ELSE false
     END AS target_submitted,
+    CASE 
+    WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
+    WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
+    ELSE NULL
+    END AS target
+    
 
 
   FROM
