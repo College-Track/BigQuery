@@ -70,8 +70,8 @@ gather_metrics AS(
     
   SELECT
     site_short,
-    SUM(DISTINCT cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
-    SUM(DISTINCT cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational, #12th grade
+    SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
+    SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational, #12th grade
     SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade #10th grade
   FROM
     gather_metrics
