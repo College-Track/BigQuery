@@ -19,8 +19,6 @@
 ),
 */
 
-WITH get_on_track_data AS
-(
 
     SELECT 
     Contact_Id,
@@ -35,8 +33,8 @@ WITH get_on_track_data AS
     AND cumulative_credits_awarded_max_calc_c >0
     AND previous_as_c = true
     OR prev_prev_as_c = true
-),
 
+/*
  
 on_track AS
 
@@ -46,3 +44,6 @@ on_track AS
     
     FROM get_on_track_data
     GROUP BY
+    
+    
+    */
