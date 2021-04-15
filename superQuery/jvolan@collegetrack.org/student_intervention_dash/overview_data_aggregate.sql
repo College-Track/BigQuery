@@ -60,6 +60,7 @@ SELECT
     indicator_high_risk_dismissal,
     intervention_AT_bucket,
     attendance_bucket_current_at,
+    sort_attendance_bucket,
     COUNT(Contact_Id) AS student_count,
     sum(intervention_AT) AS intervention_AT_count,
     sum(indicator_high_risk_dismissal) AS high_risk_count,
@@ -77,7 +78,8 @@ SELECT
     intervention_AT,
     indicator_high_risk_dismissal,
     intervention_AT_bucket,
-    attendance_bucket_current_at
+    attendance_bucket_current_at,
+    sort_attendance_bucket
     
     
     
