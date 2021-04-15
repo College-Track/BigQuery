@@ -3,7 +3,6 @@ WITH get_fafsa_data AS
     SELECT 
     Contact_Id,
     site_short,
-    region_short,
     CASE
         WHEN fa_req_fafsa_c = 'Submitted' then 1
         Else 0  
@@ -17,9 +16,10 @@ WITH get_fafsa_data AS
 
     SELECT
     SUM(indicator_fafsa_complete) AS cc_ps_fafsa_complete,
+    site_short,
     
     FROM get_fafsa_data
-    Group BY site_short, region_short
+    Group BY site_short
     
 /*WITH get_contact_data AS
 (
