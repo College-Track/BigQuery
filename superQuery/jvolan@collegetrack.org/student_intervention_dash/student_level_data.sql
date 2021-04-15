@@ -77,8 +77,16 @@ SELECT
         WHEN Ethnic_background_c = "Decline to State" THEN "Missing"
         Else Ethnic_background_c
     END AS Ethnic_background_c,
-    english_language_learner_c_c AS ELL,
-    student_has_iep_c AS IEP,
+    CASE
+        WHEN english_language_learner_c_c = true THEN "Yes"
+        WHEN english_language_learner_c_c = false THEN "No"
+        ELSE "" 
+        END AS ELL,
+    CASE
+        WHEN studenthasaniep_c = true THEN "Yes"
+        WHEN studenthasaniep_c = false THEN "No"
+        Else ""
+    END AS IEP,
     first_generation_c,
     indicator_low_income_c,
     co_vitality_scorecard_color_most_recent_c,
