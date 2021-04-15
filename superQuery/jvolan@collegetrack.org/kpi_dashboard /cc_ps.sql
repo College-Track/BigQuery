@@ -23,11 +23,14 @@ get_on_track AS
 */
     SELECT 
     Contact_Id,
-    on_track_c,
-    graduated_or_on_track_bucket_at_c,
-    indicator_graduated_or_on_track_at_c
+    indicator_graduated_or_on_track_at_c,
+    end_date_c
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE cumulative_credits_awarded_max_calc_c >0
+    WHERE indicator_completed_ct_hs_program_c = true
+    AND record_type_id = '01246000000RNnHAAW'
+    AND cumulative_credits_awarded_max_calc_c >0
     AND previous_as_c = true
     OR prev_prev_as_c = true
+    GROUP BY Contact_Id, indicator_graduated_or_on_track_at_c, end_date_c
+    ORDER BY end_date_c DESC Limit 1
