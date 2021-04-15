@@ -1,3 +1,25 @@
+WITH get_fafsa_data AS    
+(
+    SELECT 
+    Contact_Id,
+    site_short,
+    region_short,
+    CASE
+        WHEN fa_req_fafsa_c = 'Submitted' then 1
+        Else 0  
+    End AS indicator_fafsa_complete
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE college_track_status_c IN ('11A','12A')
+    AND grade_c = "12th Grade"
+)
+
+
+    SELECT 
+    SUM(indicator_fafsa_complete) AS cc_ps_fafsa_complete
+    FROM get_fafsa_data
+    Group BY site_short, region_short
+    
 /*WITH get_contact_data AS
 (
     SELECT
@@ -19,11 +41,11 @@
 ),
 */
 
-
+/*
     SELECT 
     Contact_Id,
     indicator_graduated_or_on_track_at_c,
-    end_date_c, 
+    max(end_date_c), 
     site_short,
     region
     
