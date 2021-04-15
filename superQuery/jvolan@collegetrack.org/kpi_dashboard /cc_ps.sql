@@ -17,14 +17,17 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE indicator_completed_ct_hs_program_c = true
 ),
-
-get_on_track AS
-(
 */
+
+WITH get_on_track_data AS
+(
+
     SELECT 
     Contact_Id,
     indicator_graduated_or_on_track_at_c,
-    end_date_c
+    end_date_c, 
+    site_short,
+    region
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE indicator_completed_ct_hs_program_c = true
@@ -32,5 +35,14 @@ get_on_track AS
     AND cumulative_credits_awarded_max_calc_c >0
     AND previous_as_c = true
     OR prev_prev_as_c = true
-    GROUP BY Contact_Id, indicator_graduated_or_on_track_at_c, end_date_c
-    ORDER BY end_date_c DESC Limit 1
+),
+
+ 
+on_track AS
+
+    SELECT
+    contact_Id,
+    Max(indicator_graduated_or_on_track_at_c)
+    
+    FROM get_on_track_data
+    GROUP BY
