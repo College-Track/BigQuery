@@ -1,4 +1,4 @@
-With site_data AS
+With overview_data AS
 (
 SELECT
 --basic contact info & demos
@@ -65,7 +65,7 @@ SELECT
     sum(intervention_AT) AS intervention_AT_count,
     sum(indicator_high_risk_dismissal) AS high_risk_count,
     
-    FROM site_data
+    FROM overview_data
     GROUP BY
     GAS_Name,
     Site,
