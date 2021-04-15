@@ -33,7 +33,7 @@ WITH gather_data AS (
     Community_Service_Hours_c,
     Enrollment_Status_c,
     Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
-    School_Name,
+    Current_school_name,
     Most_Recent_GPA_Cumulative_bucket,
     A_S.Name AS anticipated_date_of_graduation_4_year,
     -- Sorting fields
