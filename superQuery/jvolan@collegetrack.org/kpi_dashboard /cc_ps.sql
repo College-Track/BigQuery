@@ -15,8 +15,11 @@ WITH get_fafsa_data AS
 )
 
 
-    SELECT 
-    SUM(indicator_fafsa_complete) AS cc_ps_fafsa_complete
+    SELECT
+    SUM(indicator_fafsa_complete) AS cc_ps_fafsa_complete,
+    site_short,
+    region_short
+    
     FROM get_fafsa_data
     Group BY site_short, region_short
     
