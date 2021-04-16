@@ -65,7 +65,7 @@ get_2_yr_transfer_data AS
 SELECT 
 contact_Id,
     Current_school_name,
-    Current_School_Type_c_degree,
+    school_type,
     current_enrollment_status_c,
     college_first_enrolled_school_c,
     college_first_enrolled_school_type_c,
