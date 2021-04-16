@@ -1,4 +1,4 @@
-WITH get_fafsa_data AS    
+/*WITH get_fafsa_data AS    
 (
     SELECT 
     Contact_Id,
@@ -24,6 +24,7 @@ kpi_fafsa_complete AS
 
 get_projected_6_year_grad_data AS
 (
+*/
     SELECT
     Contact_Id,
     site_short,
@@ -37,12 +38,14 @@ get_projected_6_year_grad_data AS
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE years_since_hs_grad_c BETWEEN 5 AND 6
-)
 
+/*
     SELECT
     count(Contact_Id) AS cc_ps_6_year_grad_num,
     SUM(projected_6_year_grad) AS cc_ps_6_year_grad_denom,
     site_short
     FROM get_projected_6_year_grad_data
     GROUP BY site_short
+    
+*/
 
