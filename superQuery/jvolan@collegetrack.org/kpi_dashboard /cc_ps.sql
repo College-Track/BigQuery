@@ -30,7 +30,8 @@ get_projected_6_year_grad_data AS
     site_short,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    WHERE indicator_years_since_hs_graduation_c BETWEEN 5 AND 6
+    WHERE indicator_years_since_hs_graduation_c <6
+    AND indicator_years_since_hs_graduation_c > 5
     GROUP BY site_short
 
 /*
