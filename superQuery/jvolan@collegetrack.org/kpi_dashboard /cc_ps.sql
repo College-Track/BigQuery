@@ -1,4 +1,4 @@
-WITH get_fafsa_data AS    
+/*WITH get_fafsa_data AS    
 (
     SELECT 
     site_short AS fafsa_site,
@@ -56,8 +56,31 @@ kpi_projected_6_year_grad AS
     
     FROM get_projected_6_year_grad_data
     GROUP BY site_short
-)
+),
 
+get_2_yr_transfer_data AS
+(
+*/
+    SELECT  
+    contact_Id,
+    Current_school_name,
+    Current_School_Type_c_degree,
+    current_enrollment_status_c,
+    college_first_enrolled_school_c,
+    college_first_enrolled_school_type_c,
+    CASE
+        WHEN
+        (Current_School_Type_c_degree = '4-Year'
+        AND current_enrollment_status_c IN ('Full-time','Part-time')) THEN 1
+        ELSE 0
+        END AS current_enrolled_4_year
+        
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")
+
+
+        
+/*
     SELECT
     site_short,
     cc_ps_6_year_grad_num,
@@ -68,3 +91,4 @@ kpi_projected_6_year_grad AS
     
     FROM kpi_projected_6_year_grad
     LEFT JOIN kpi_fafsa_complete ON kpi_fafsa_complete.fafsa_site = site_short
+*/
