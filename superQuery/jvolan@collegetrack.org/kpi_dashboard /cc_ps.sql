@@ -1,4 +1,4 @@
-/*WITH get_fafsa_data AS    
+WITH get_fafsa_data AS    
 (
     SELECT 
     site_short AS fafsa_site,
@@ -60,10 +60,9 @@ kpi_projected_6_year_grad AS
 
 get_2_yr_transfer_data AS
 (
-*/
-
     SELECT 
     contact_Id,
+    site_short,
     CASE    
         WHEN
         school_type = '4-Year'
@@ -80,6 +79,15 @@ get_2_yr_transfer_data AS
     WHERE indicator_completed_ct_hs_program_c = true
     AND grade_c = 'Year 2'
     AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")
+)
+
+    SELECT  
+    site_short,
+    count(contact_Id) AS cc_ps_2_yr_transfer_denom,
+    sum(currently_enrolled_4_year) AS cc_ps_2_yr_transfer_num,
+    
+    FROM get_2_yr_transfer_data
+    GROUP BY site_short
 
         
 /*
