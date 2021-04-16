@@ -26,16 +26,9 @@ get_projected_6_year_grad_data AS
 (
 */
     SELECT
-    Contact_Id,
+    count(Contact_Id),
     site_short,
-    CASE
-      WHEN (
-        Credit_Accumulation_Pace_c != "6+ Years"
-        AND Current_Enrollment_Status_c = "Full-time"
-      ) THEN 1
-      ELSE 0
-    END AS projected_6_year_grad
-    
+
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE years_since_hs_grad_c BETWEEN 5 AND 6
     GROUP BY site_short
