@@ -94,15 +94,16 @@ kpi_2_yr_transfer AS
         
     SELECT
     site_short,
-    kpi_projected_6_year_grad.cc_ps_6_year_grad_num,
-    kpi_projected_6_year_grad.cc_ps_6_year_grad_denom,
-    kpi_projected_6_year_grad.projected_6_year_grad,
-    kpi_projected_6_year_grad.alumni_already,
-    kpi_fafsa_complete.cc_ps_fafsa_complete,
-    kpi_2_yr_transfer.cc_ps_2_yr_transfer_num,
-    kpi_2_yr_transfer.cc_ps_2_yr_transfer_denom
+    max(kpi_projected_6_year_grad.cc_ps_6_year_grad_num),
+    max(kpi_projected_6_year_grad.cc_ps_6_year_grad_denom),
+    max(kpi_projected_6_year_grad.projected_6_year_grad),
+    max(kpi_projected_6_year_grad.alumni_already),
+    max(kpi_fafsa_complete.cc_ps_fafsa_complete),
+    max(kpi_2_yr_transfer.cc_ps_2_yr_transfer_num),
+    max(kpi_2_yr_transfer.cc_ps_2_yr_transfer_denom),
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN kpi_projected_6_year_grad ON kpi_projected_6_year_grad.site_6_yr_grad = site_short
     LEFT JOIN kpi_fafsa_complete ON kpi_fafsa_complete.fafsa_site = site_short
     LEFT JOIN kpi_2_yr_transfer ON kpi_2_yr_transfer.site_2_yr = site_short
+    GROUP BY site_short
