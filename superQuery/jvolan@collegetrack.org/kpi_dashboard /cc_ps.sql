@@ -72,6 +72,8 @@ contact_Id,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE Current_School_Type_c_degree IS NOT NULL
+    AND Current_School_Type_c_degree NOT LIKE "Not Classified"
+    AND college_track_status_c = '15A'
 
 /*
     SELECT  
