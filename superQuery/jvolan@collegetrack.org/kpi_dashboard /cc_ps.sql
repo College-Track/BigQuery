@@ -59,6 +59,8 @@ kpi_projected_6_year_grad AS
 )
 
     SELECT
-    *
+    *,
+    kpi_fafsa_complete.cc_ps_fafsa_complete,
+    
     FROM kpi_projected_6_year_grad
     LEFT JOIN kpi_fafsa_complete ON kpi_fafsa_complete.fafsa_site = site_short
