@@ -62,7 +62,7 @@ get_2_yr_transfer_data AS
 (
     SELECT 
     contact_Id,
-    site_short,
+    site_short AS site_2_yr,
     CASE    
         WHEN
         school_type = '4-Year'
@@ -82,12 +82,12 @@ get_2_yr_transfer_data AS
 )
 
     SELECT  
-    site_short,
-    count(contact_Id) AS cc_ps_2_yr_transfer_denom,
+    site_2_yr,
     sum(currently_enrolled_4_year) AS cc_ps_2_yr_transfer_num,
-    
+    count(contact_Id) AS cc_ps_2_yr_transfer_denom,
+
     FROM get_2_yr_transfer_data
-    GROUP BY site_short
+    GROUP BY site_2_yr
 
         
 /*
