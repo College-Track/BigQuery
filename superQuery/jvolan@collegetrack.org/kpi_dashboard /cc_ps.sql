@@ -28,13 +28,17 @@ get_projected_6_year_grad_data AS
     Contact_Id,
     site_short,
     CASE
-      WHEN (
+      WHEN
         (Credit_Accumulation_Pace_c != "6+ Years"
         AND Current_Enrollment_Status_c = "Full-time"
-        AND college_track_status_c = '15A')
-        OR  college_track_status_c = '17A') THEN 1
+        AND college_track_status_c = '15A') THEN 1
         ELSE 0
-    END AS projected_6_year_grad
+    END AS projected_6_year_grad,
+    CASE
+        WHEN college_track_status_c = '17A' THEN 1
+        ELSE 0
+    END AS alumni_already
+        
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE grade_c = 'Year 6'
@@ -44,7 +48,8 @@ get_projected_6_year_grad_data AS
 
     SELECT
     count(Contact_Id) AS cc_ps_6_year_grad_num,
-    SUM(projected_6_year_grad) AS cc_ps_6_year_grad_denom,
+    SUM(projected_6_year_grad) AS projected_6_year_grad,
+    SUM(alumni_already) AS ct_alumni,
     site_short
     FROM get_projected_6_year_grad_data
     GROUP BY site_short
