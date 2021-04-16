@@ -62,37 +62,24 @@ get_2_yr_transfer_data AS
 (
 */
 
-SELECT 
-contact_Id,
-    Current_school_name,
-    school_type,
-    current_enrollment_status_c,
-    college_first_enrolled_school_c,
-    college_first_enrolled_school_type_c,
-
-    FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    WHERE Current_School_Type_c_degree IS NOT NULL
-    AND Current_School_Type_c_degree NOT LIKE "Not Classified"
-    AND college_track_status_c = '15A'
-
-/*
-    SELECT  
+    SELECT 
     contact_Id,
+    CASE    
+        WHEN
+        school_type = '4-Year'
+        AND current_enrollment_status_c IN ("Full-time","Part-time") THEN 1
+        ELSE 0
+        END AS currently_enrolled_4_year,
     Current_school_name,
     Current_School_Type_c_degree,
     current_enrollment_status_c,
     college_first_enrolled_school_c,
     college_first_enrolled_school_type_c,
-    CASE
-        WHEN
-        (Current_School_Type_c_degree = '4-Year'
-        AND current_enrollment_status_c IN ('Full-time','Part-time')) THEN 1
-        ELSE 0
-        END AS current_enrolled_4_year
-        
+
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    WHERE college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")
-*/
+    WHERE indicator_completed_ct_hs_program_c = true
+    AND grade_c = 'Year 2'
+    AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")
 
         
 /*
