@@ -61,6 +61,19 @@ kpi_projected_6_year_grad AS
 get_2_yr_transfer_data AS
 (
 */
+
+SELECT 
+contact_Id,
+    Current_school_name,
+    Current_School_Type_c_degree,
+    current_enrollment_status_c,
+    college_first_enrolled_school_c,
+    college_first_enrolled_school_type_c,
+
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE Current_School_Type_c_degree IS NOT NULL
+
+/*
     SELECT  
     contact_Id,
     Current_school_name,
@@ -77,7 +90,7 @@ get_2_yr_transfer_data AS
         
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")
-
+*/
 
         
 /*
