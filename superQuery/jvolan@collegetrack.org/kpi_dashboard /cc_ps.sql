@@ -59,6 +59,7 @@ kpi_projected_6_year_grad AS
 )
 
     SELECT
+    site_short,
     cc_ps_6_year_grad_num,
     cc_ps_6_year_grad_denom,
     projected_6_year_grad,
