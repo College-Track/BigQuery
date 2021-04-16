@@ -59,7 +59,10 @@ kpi_projected_6_year_grad AS
 )
 
     SELECT
-    *,
+    cc_ps_6_year_grad_num,
+    cc_ps_6_year_grad_denom,
+    projected_6_year_grad,
+    alumni_already,
     kpi_fafsa_complete.cc_ps_fafsa_complete,
     
     FROM kpi_projected_6_year_grad
