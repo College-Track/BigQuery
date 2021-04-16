@@ -48,8 +48,8 @@ get_projected_6_year_grad_data AS
 
     SELECT
     site_short,
-    count(Contact_Id) AS cc_ps_6_year_grad_denom,
     SUM(projected_6_year_grad) + SUM(alumni_already) AS cc_ps_6_year_grad_num,
+    count(Contact_Id) AS cc_ps_6_year_grad_denom,
     SUM(projected_6_year_grad) AS projected_6_year_grad,
     SUM(alumni_already) AS alumni_already
     
