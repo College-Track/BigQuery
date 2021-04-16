@@ -79,8 +79,10 @@ get_2_yr_transfer_data AS
     WHERE indicator_completed_ct_hs_program_c = true
     AND grade_c = 'Year 2'
     AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")
-)
+),
 
+kpi_2_yr_transfer AS
+(
     SELECT  
     site_2_yr,
     sum(currently_enrolled_4_year) AS cc_ps_2_yr_transfer_num,
@@ -88,9 +90,8 @@ get_2_yr_transfer_data AS
 
     FROM get_2_yr_transfer_data
     GROUP BY site_2_yr
-
+)
         
-/*
     SELECT
     site_short,
     cc_ps_6_year_grad_num,
@@ -98,7 +99,9 @@ get_2_yr_transfer_data AS
     projected_6_year_grad,
     alumni_already,
     kpi_fafsa_complete.cc_ps_fafsa_complete,
+    kpi_2_yr_transfer.cc_ps_2_yr_transfer_num,
+    kpi_2_yr_transfer.cc_ps_2_yr_transfer_denom
     
     FROM kpi_projected_6_year_grad
     LEFT JOIN kpi_fafsa_complete ON kpi_fafsa_complete.fafsa_site = site_short
-*/
+    LEFT JOIN kpi_2_yr_transfer ON kpi_2_yr_transfer.site_2_yr = site_short
