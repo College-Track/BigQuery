@@ -30,7 +30,8 @@ get_projected_6_year_grad_data AS
     CASE
       WHEN (
         (Credit_Accumulation_Pace_c != "6+ Years"
-        AND Current_Enrollment_Status_c = "Full-time")
+        AND Current_Enrollment_Status_c = "Full-time"
+        AND college_track_status_c = '15A')
         OR  college_track_status_c = '17A') THEN 1
         ELSE 0
     END AS projected_6_year_grad
