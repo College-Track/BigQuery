@@ -40,9 +40,9 @@ get_projected_6_year_grad_data AS
 )
 
     SELECT
-    SUM(projected_6_year_grad) AS cc_ps_6_year_grad,
+    count(Contact_Id) AS cc_ps_6_year_grad_num,
+    SUM(projected_6_year_grad) AS cc_ps_6_year_grad_denom,
     site_short
-    
     FROM get_projected_6_year_grad_data
     GROUP BY site_short
 
