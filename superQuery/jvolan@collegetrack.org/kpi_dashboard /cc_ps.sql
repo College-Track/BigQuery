@@ -31,6 +31,7 @@ get_projected_6_year_grad_data AS
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE grade_c = 'Year 6'
+    AND indicator_completed_ct_hs_program_c = true
     GROUP BY site_short
 
 /*
