@@ -24,15 +24,9 @@ WITH GATHER AS
    
         SELECT
         site_short,
-        CASE 
-            WHEN SUM(student_has_aspirations) >= 6 THEN 1
-            ELSE 0
-            END AS cc_hs_aspirations_count,
-        
-        CASE 
-            WHEN SUM(aspirations_affordable) >= 3 THEN 1
-            ELSE 0
-            END AS cc_hs_aspirations_affordable_count
+        SUM(student_has_aspirations) ,
+         SUM(aspirations_affordable) 
+           
         
     FROM gather
     group by site_short
