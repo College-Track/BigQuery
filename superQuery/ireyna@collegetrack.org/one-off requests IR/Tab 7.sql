@@ -22,7 +22,7 @@ WITH GATHER AS
     AND c.grade_c = '11th Grade'
    
    ),
- prep AS(
+ #prep AS(
    
         SELECT
     g.site_short,
@@ -40,12 +40,3 @@ WITH GATHER AS
     join gather as subq1 ON g.contact_id=subq1.contact_id
     
     group by g.site_short,g.contact_id
-)
-
-SELECT 
-site_short,
-sum(total_aspirations),
-sum(total_affordable)
-
-FROM prep 
-GROUP BY site_short
