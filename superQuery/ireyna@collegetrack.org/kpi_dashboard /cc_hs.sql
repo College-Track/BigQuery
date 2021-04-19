@@ -1,21 +1,51 @@
-gather_attendance_data AS (
 
-    SELECT student_c, SUM(Attendance_Numerator_excluding_make_up_c) AS attendance_numerator, SUM(Attendance_Denominator_c) AS attendance_denominator
-    #SUM(Attendance_Numerator_excluding_make_up_c) / SUM(Attendance_Denominator_c) AS attendance_rate
-    FROM `data-warehouse-289815.salesforce_clean.class_template` 
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
+OPTIONS
+    (
+    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
+    )
+AS
+
+WITH gather_data_tenth_grade AS (
+  SELECT
+    Contact_Id,
+    site_short,
+    grade_c,
+    FA_Req_Expected_Financial_Contribution_c,
+    fa_req_efc_source_c,
+    CASE
+        WHEN (FA_Req_Expected_Financial_Contribution_c IS NOT NULL) AND (fa_req_efc_source_c = 'FAFSA4caster') THEN 1
+        ELSE 0
+    END AS hs_EFC_10th
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE  college_track_status_c = '11A'
+    AND grade_c = '10th Grade'
+),
+
+gather_attendance_data AS (
+    SELECT c.student_c, 
+    
+    CASE
+      WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
+      ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
+    END AS attendance_rate
+    
+    FROM `data-warehouse-289815.salesforce_clean.class_template` AS c
+        LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT 
+        ON CAT.global_academic_semester_c = c.global_academic_semester_c
+        
     WHERE Department_c = "College Completion"
     AND Cancelled_c = FALSE
-    AND global_academic_semester_c IN ('a3646000000dMXnAAM','a3646000000dMXoAAM','a3646000000dMXpAAM') #Fall 2020-21, Spring 2020-21, Summer 2020-21
-    GROUP BY student_c
+    AND CAT.AY_Name = 'AY 2020-21'
+    
+    GROUP BY c.student_c
     ),
         
 gather_data_twelfth_grade AS (
     SELECT 
         contact_id,
-        
-        #attendance data
-        attendance_numerator,
-        attendance_denominator,
+        attendance_rate,
         
         (SELECT student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq1
@@ -58,3 +88,62 @@ gather_data_twelfth_grade AS (
     
     WHERE  college_track_status_c = '11A'
     AND grade_c = '12th Grade'
+),
+
+prep_tenth_grade_metrics AS(
+    SELECT
+        SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade,
+        site_short AS site
+       
+    FROM gather_data_tenth_grade 
+    GROUP BY site_short
+),
+
+prep_twelfth_grade_metrics AS(
+    SELECT  
+        site_short,
+        
+        CASE 
+            WHEN attendance_rate >= 0.8 THEN 1
+            ELSE 0
+            END AS cc_hs_above_80_cc_attendance,
+        
+        CASE 
+            WHEN accepted_enrolled_affordable IS NOT NULL THEN 1
+            WHEN applied_accepted_affordable IS NOT NULL THEN 1
+            ELSE 0
+            END AS cc_hs_accepted_affordable,
+        
+        CASE 
+            WHEN applied_best_good_situational IS NOT NULL THEN 1
+            ELSE 0
+            END AS cc_hs_applied_best_good_situational,
+        
+        CASE 
+            WHEN accepted_enrolled_best_good_situational IS NOT NULL THEN 1
+            WHEN applied_accepted_best_good_situational IS NOT NULL THEN 1
+            ELSE 0
+            END AS cc_hs_accepted_best_good_situational
+    
+    FROM gather_data_twelfth_grade
+)
+
+  SELECT
+    site, #from prep_tenth_grade_metrics table
+    cc_hs_EFC_tenth_grade, #10th grade
+    SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,#12th grade 
+    SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
+    SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
+    SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational #12th grade
+    
+  FROM
+     prep_tenth_grade_metrics AS tenth_grade_data
+     LEFT JOIN prep_twelfth_grade_metrics AS twelfth_grade_data
+     ON tenth_grade_data.site = twelfth_grade_data.site_short
+    
+GROUP BY site,cc_hs_EFC_tenth_grade
+
+
+
+
+
