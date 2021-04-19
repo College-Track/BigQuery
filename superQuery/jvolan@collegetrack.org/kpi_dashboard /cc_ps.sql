@@ -86,8 +86,10 @@ WITH get_contact_data AS
     (college_track_status_c IN ('11A','12A')
     AND grade_c = "12th Grade")
     OR indicator_completed_ct_hs_program_c = true
-)
+),
 
+cc_ps_kpis AS
+(
     SELECT
     site_short,
     sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
@@ -102,7 +104,12 @@ WITH get_contact_data AS
     
     FROM get_contact_data
     GROUP BY site_short
+)
 
+    SELECT
+    *
+    FROM 
+    cc_ps_kpis
     
 
 /*
