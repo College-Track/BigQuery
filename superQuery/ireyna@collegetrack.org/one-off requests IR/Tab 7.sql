@@ -3,6 +3,7 @@ WITH GATHER AS
     SELECT 
     student_c,
     fit_type_current_c,
+    id,
         
         CASE 
             WHEN a.id IS NOT NULL THEN 1
@@ -26,9 +27,9 @@ WITH GATHER AS
    SELECT 
     student_c,
     aspirations_affordable,
-    student_has_aspirations
+    student_has_aspirations,id
     
     FROM gather
     
     group by student_c,aspirations_affordable,
-    student_has_aspirations
+    student_has_aspirations,id
