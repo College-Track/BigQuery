@@ -1,6 +1,6 @@
 SELECT 
         contact_id,
-        site_short,
+        site_short,a.id,
         
         CASE 
             WHEN a.id IS NOT NULL THEN 1
