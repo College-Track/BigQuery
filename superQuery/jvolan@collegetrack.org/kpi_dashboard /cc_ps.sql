@@ -88,7 +88,7 @@ WITH get_contact_data AS
     OR indicator_completed_ct_hs_program_c = true
 ),
 
-cc_ps_kpis AS
+cc_ps AS
 (
     SELECT
     site_short,
@@ -109,7 +109,7 @@ cc_ps_kpis AS
     SELECT
     *
     FROM 
-    cc_ps_kpis
+    cc_ps
     
 
 /*
