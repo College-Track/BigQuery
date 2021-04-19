@@ -1,3 +1,11 @@
+
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
+OPTIONS
+    (
+    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
+    )
+AS
+
 WITH gather_data_tenth_grade AS (
   SELECT
     Contact_Id,
@@ -105,14 +113,14 @@ gather_data_twelfth_grade AS (
 ),
 
 #Prepping metrics
-prep_tenth_grade_metrics AS(
+/*prep_tenth_grade_metrics AS(
     SELECT
         SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade,
         site_short AS site
        
     FROM gather_data_tenth_grade 
     GROUP BY site_short
-),
+),*/
 
 prep_eleventh_grade_metrics AS (
     SELECT
@@ -164,8 +172,8 @@ prep_twelfth_grade_metrics AS(
 )
 
   SELECT
-    site, 
-    cc_hs_EFC_tenth_grade, #10th grade
+    tenth_grade_data.site_short, 
+    SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade, #10th grade
     SUM(cc_hs_aspirations) AS cc_hs_aspirations, #11th grade
     SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,#12th grade 
     SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
@@ -173,17 +181,12 @@ prep_twelfth_grade_metrics AS(
     SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational #12th grade
     
   FROM
-        prep_tenth_grade_metrics AS tenth_grade_data
+        gather_data_tenth_grade AS tenth_grade_data
      
         LEFT JOIN prep_eleventh_grade_metrics AS eleventh_grade_data
-        ON tenth_grade_data.site = eleventh_grade_data.site_short
+        ON tenth_grade_data.site_short = eleventh_grade_data.site_short
         
         LEFT JOIN prep_twelfth_grade_metrics AS twelfth_grade_data
-        ON tenth_grade_data.site = twelfth_grade_data.site_short
+        ON tenth_grade_data.site_short = twelfth_grade_data.site_short
     
-GROUP BY site,cc_hs_EFC_tenth_grade
-
-
-
-
-
+GROUP BY tenth_grade_data.site_short
