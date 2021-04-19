@@ -1,6 +1,4 @@
-WITH GATHER AS 
-(SELECT 
-        student_c,
+ student_c,
         fit_type_current_c,
         
         CASE 
@@ -20,14 +18,3 @@ WITH GATHER AS
     
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
-   )
-   
-   SELECT 
-    student_c,
-    aspirations_affordable,
-    student_has_aspirations
-    
-    FROM gather
-    
-    group by student_c,aspirations_affordable,
-    student_has_aspirations
