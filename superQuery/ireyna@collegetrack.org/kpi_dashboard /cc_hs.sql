@@ -135,6 +135,7 @@ gather_data_twelfth_grade AS (
 prep_eleventh_grade_metrics AS (
  SELECT
     site_short,
+    contact_id,
     CASE 
         WHEN student_has_aspirations >= 6 AND aspirations_affordable >= 3 THEN 1
         ELSE 0
@@ -194,8 +195,3 @@ prep_twelfth_grade_metrics AS(
             ON GD.site_short = twelfth_grade_data.site_short
     
 GROUP BY gd.site_short
-
-
-
-
-
