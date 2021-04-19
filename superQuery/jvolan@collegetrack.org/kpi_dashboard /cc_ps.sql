@@ -21,18 +21,17 @@ WITH get_contact_data AS
     -- 6 year projected numerator, done as still PS & alumni already so we can further split out numerator if needed)
     CASE
       WHEN
-        (Credit_Accumulation_Pace_c != "6+ Years"
+        (grade_c = 'Year 6'
+        AND indicator_completed_ct_hs_program_c = true
+        AND
+        ((Credit_Accumulation_Pace_c != "6+ Years"
         AND Current_Enrollment_Status_c = "Full-time"
-        AND college_track_status_c = '15A'
-        AND grade_c = 'Year 6'
-        AND indicator_completed_ct_hs_program_c = true) THEN 1
+        AND college_track_status_c = '15A')
+        OR
+        college_track_status_c = '17A')) THEN 1
         ELSE 0
-    END AS projected_6_year_grad_num,
-    CASE
-        WHEN college_track_status_c = '17A' THEN 1
-        ELSE 0
-    END AS alumni_already_num,
-    
+        END AS cc_ps_projected_grad_num,
+
     --6 year projected grad denominator
     CASE
         WHEN
@@ -93,9 +92,7 @@ cc_ps AS
     SELECT
     site_short,
     sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
-    sum(projected_6_year_grad_num) AS projected_6_year_grad_num,
-    sum(alumni_already_num) AS alumni_already_num,
-    (sum(projected_6_year_grad_num) + sum(alumni_already_num)) AS cc_ps_projected_6_year_grad_num,
+    sum(cc_ps_projected_grad_num) AS cc_ps_projected_grad_num,
     sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom,
     sum(x_2_yr_transfer_num) AS cc_ps_2_yr_transfer_num,
     sum(x_2_yr_transfer_denom) AS cc_ps_2_yr_transfer_denom,
