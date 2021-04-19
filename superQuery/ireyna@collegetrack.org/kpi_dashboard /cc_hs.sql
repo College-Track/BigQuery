@@ -1,6 +1,7 @@
-SELECT 
+ SELECT 
         contact_id,
-        fit_type_current_c, 
+        fit_type_current_c,
+        a.id AS aspiration_id,
     
         (SELECT student_c
         FROM `data-warehouse-289815.salesforce.college_aspiration_c` AS subq1
