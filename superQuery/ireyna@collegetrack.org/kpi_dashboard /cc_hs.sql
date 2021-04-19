@@ -45,17 +45,7 @@ gather_data_eleventh_grade AS (
     
 ),
 
-prep_aspiration_kpi AS (
- SELECT
-    site_short,
-    CASE 
-        WHEN student_has_aspirations >= 6 AND aspirations_affordable >= 3 THEN 1
-        ELSE 0
-        END AS cc_hs_aspirations
-        
-    FROM gather_data_eleventh_grade 
-       
-),
+
 
 gather_attendance_data AS (
     SELECT 
@@ -135,14 +125,24 @@ gather_data_twelfth_grade AS (
     GROUP BY site_short
 ),*/
 
-prep_eleventh_grade_metrics AS (
+/*prep_eleventh_grade_metrics AS (
     SELECT 
         site_short,
         SUM(cc_hs_aspirations) AS cc_hs_aspirations
     FROM prep_aspiration_kpi
     GROUP BY site_short
+),*/
+prep_eleventh_grade_metrics AS (
+ SELECT
+    site_short,
+    CASE 
+        WHEN student_has_aspirations >= 6 AND aspirations_affordable >= 3 THEN 1
+        ELSE 0
+        END AS cc_hs_aspirations
+        
+    FROM gather_data_eleventh_grade 
+       
 ),
-
 prep_twelfth_grade_metrics AS(
     SELECT  
         site_short,
