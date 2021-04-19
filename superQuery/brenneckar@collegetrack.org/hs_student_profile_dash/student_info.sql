@@ -38,11 +38,9 @@ WITH gather_contact_data AS (
     total_bank_book_balance_contact_c,
     college_applications_all_fit_types_c,
     community_service_hours_c,
-    CONCAT(
-      'https://datastudio.google.com/u/0/reporting/c45028c2-c11c-4c75-8818-b023d7a8e570/page/PkIoB?params=%7B%22df51%22:%22include%25EE%2580%25800%25EE%2580%2580IN%25EE%2580%2580',
-      contact_id,
-      '%22%7D'
-    ) AS student_dashboard_preview
+    student_dashboard_preview
+
+    
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
