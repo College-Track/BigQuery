@@ -368,6 +368,16 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         Contact_Id,
         "/view"
       ) AS contact_url,
+          CONCAT(
+      'https://datastudio.google.com/u/0/reporting/c45028c2-c11c-4c75-8818-b023d7a8e570/page/PkIoB?params=%7B%22df51%22:%22include%25EE%2580%25800%25EE%2580%2580IN%25EE%2580%2580',
+      contact_id,
+      '%22%7D'
+    ) AS student_dashboard_preview,
+        CONCAT(
+      "https://datastudio.google.com/u/0/reporting/75c5576b-bbeb-474b-be6a-e8a2111744e6/page/XrI7B?params=%7B%22df148%22:%22include%25EE%2580%25800%25EE%2580%2580IN%25EE%2580%2580",               
+      contact_id,
+      '%22%7D'
+    ) AS hs_student_profile
     FROM
       ValidStudentContact
   ),
