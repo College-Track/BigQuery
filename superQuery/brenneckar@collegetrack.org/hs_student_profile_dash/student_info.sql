@@ -29,10 +29,6 @@ WITH gather_contact_data AS (
     C.summer_experience_form_link_c,
     C.current_academic_semester_c,
     C.summer_experiences_previous_summer_c,
-    CONCAT(
-      "https://ctgraduates.lightning.force.com/",
-      C.current_academic_semester_c
-    ) AS current_at_url,
     C.co_vitality_scorecard_color_most_recent_c,
     C.starting_semester_c,
     C.student_s_start_academic_year_c,
