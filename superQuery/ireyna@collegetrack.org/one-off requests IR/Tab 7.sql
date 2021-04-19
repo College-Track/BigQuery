@@ -51,7 +51,8 @@ WITH GATHER AS
 SELECT 
 site_short,
 sum(total_aspirations),
-sum(total_affordable)
+sum(total_affordable),
+sum(metric_met)
 
 FROM prep 
 GROUP BY site_short
