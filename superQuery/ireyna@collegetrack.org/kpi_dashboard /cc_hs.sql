@@ -1,6 +1,8 @@
 WITH gather_data_tenth_grade AS (
   SELECT
     site_short,
+    contact_id,
+    
     CASE
         WHEN (FA_Req_Expected_Financial_Contribution_c IS NOT NULL) AND (fa_req_efc_source_c = 'FAFSA4caster') THEN 1
         ELSE 0
@@ -35,12 +37,13 @@ gather_data_eleventh_grade AS (
 ),
 
 gather_attendance_data AS (
-    SELECT c.student_c, 
+    SELECT 
+        c.student_c, 
     
-    CASE
-      WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
-      ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
-    END AS attendance_rate
+        CASE
+            WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
+            ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
+            END AS attendance_rate
     
     FROM `data-warehouse-289815.salesforce_clean.class_template` AS c
         LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT 
@@ -121,14 +124,13 @@ prep_eleventh_grade_metrics AS (
             ELSE 0
             END AS sum
         FROM gather_data_eleventh_grade as subq1
-        WHERE g.contact_id=subq1.contact_id
-        GROUP BY subq1.contact_id) AS cc_hs_aspirations
+        ) AS cc_hs_aspirations
         
     FROM gather_data_eleventh_grade as g
         JOIN gather_data_eleventh_grade as subq1 
         ON g.contact_id=subq1.contact_id
         
-    GROUP BY g.site_short,g.contact_id
+    GROUP BY g.site_short
 ),
 
 prep_twelfth_grade_metrics AS(
