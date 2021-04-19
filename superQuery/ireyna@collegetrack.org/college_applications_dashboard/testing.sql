@@ -305,6 +305,9 @@ SELECT
     accepted,
     fit_type_accepted,
     
+    #not_accepted_data
+    contact_id_not_accepted
+    
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id  
@@ -373,7 +376,7 @@ SELECT
     END AS accepted_or_not_filter,
     
     CASE 
-        WHEN contact_id NOT IN (contact_id_accepted) THEN 1
+        WHEN contact_id_not_accepted IS NOT NULL THEN 1
     END AS accepted_nowhere_filter,
     
     CASE 
