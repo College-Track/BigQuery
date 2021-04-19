@@ -42,7 +42,6 @@ gather_data_eleventh_grade AS (
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
     
-    GROUP BY contact_id, a.id,fit_type_current_c
 ),
 
 gather_attendance_data AS (
@@ -188,3 +187,8 @@ prep_twelfth_grade_metrics AS(
             ON GD.site_short = twelfth_grade_data.site_short
     
 GROUP BY gd.site_short
+
+
+
+
+
