@@ -31,4 +31,4 @@ WITH GATHER AS
         
     FROM gather
     
-   
+   group by site_short
