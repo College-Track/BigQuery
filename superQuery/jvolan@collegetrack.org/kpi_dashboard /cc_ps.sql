@@ -78,7 +78,9 @@ WITH get_contact_data AS
     sum(projected_6_year_grad_num) AS projected_6_year_grad_num,
     sum(alumni_already_num) AS alumni_already_num,
     (sum(projected_6_year_grad_num) + sum(alumni_already_num)) AS cc_ps_projected_6_year_grad_num,
-    sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom
+    sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom,
+    sum(x_2_yr_transfer_num) AS cc_ps_2_yr_transfer_num,
+    sum(x_2_yr_transfer_denom) AS cc_ps_2_yr_transfer_denom
     
     FROM get_contact_data
     GROUP BY contact_site
