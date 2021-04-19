@@ -21,8 +21,8 @@ WITH GATHER AS
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
    
-   ),
- #prep AS(
+   )
+ #,prep AS(
    
         SELECT
     g.site_short,
@@ -40,3 +40,4 @@ WITH GATHER AS
     join gather as subq1 ON g.contact_id=subq1.contact_id
     
     group by g.site_short,g.contact_id
+)
