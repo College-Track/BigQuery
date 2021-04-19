@@ -12,7 +12,7 @@ WITH gather_contact_data AS (
     C.phone,
     C.primary_contact_language_c,
     PC.full_name_c AS primary_contact_name,
-    EC.full_name_c AS emergency_contact_name,
+    -- EC.full_name_c AS emergency_contact_name,
     C.Gender_c,
     C.Ethnic_background_c,
     C.first_generation_fy_20_c,
@@ -46,12 +46,12 @@ WITH gather_contact_data AS (
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce.contact` PC ON PC.Id = C.primary_contact_c
-    LEFT JOIN `data-warehouse-289815.salesforce.npe_4_relationship_c` R ON R.npe_4_contact_c = C.Contact_Id
-    LEFT JOIN `data-warehouse-289815.salesforce.contact` EC ON EC.Id = R.npe_4_related_contact_c
+    -- LEFT JOIN `data-warehouse-289815.salesforce.npe_4_relationship_c` R ON R.npe_4_contact_c = C.Contact_Id
+    -- LEFT JOIN `data-warehouse-289815.salesforce.contact` EC ON EC.Id = R.npe_4_related_contact_c
   WHERE
     C.college_track_status_c IN ('18a', '11A', '12A', '13A')
     AND C.years_since_hs_grad_c <= 0
-    AND R.emergency_contact_c = true
+    -- AND R.emergency_contact_c = true
 ),
 count_college_aspirations AS (
   SELECT
