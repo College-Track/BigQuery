@@ -116,16 +116,22 @@ prep_tenth_grade_metrics AS(
 
 prep_eleventh_grade_metrics AS (
     SELECT
-        site_short,
-        contact_id,
-        
+        g.site_short,
+       
+       (SELECT 
         CASE 
             WHEN SUM(student_has_aspirations) >= 6 AND SUM(aspirations_affordable) >= 3 THEN 1
             ELSE 0
             END AS cc_hs_aspirations
+        FROM gather_data_eleventh_grade as subq1
+        WHERE g.contact_id=subq1.contact_id
+        GROUP BY subq1.contact_id) AS cc_hs_aspirations
         
-    FROM gather_data_eleventh_grade
-    GROUP BY site_short, contact_id
+    FROM gather_data_eleventh_grade as g
+        JOIN gather_data_eleventh_grade as subq1 
+        ON g.contact_id=subq1.contact_id
+        
+    GROUP BY g.site_short,g.contact_id
 ),
 
 prep_twelfth_grade_metrics AS(
