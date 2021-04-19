@@ -1,7 +1,7 @@
 WITH GATHER AS 
 (
     SELECT 
-    student_c,
+    Contact_Id,
     fit_type_current_c,
     id,
         
@@ -25,11 +25,11 @@ WITH GATHER AS
    )
    
    SELECT 
-    student_c,
+    contact_id,
     aspirations_affordable,
     student_has_aspirations,id
     
     FROM gather
     
-    group by student_c,aspirations_affordable,
+    group by contact_id,aspirations_affordable,
     student_has_aspirations,id
