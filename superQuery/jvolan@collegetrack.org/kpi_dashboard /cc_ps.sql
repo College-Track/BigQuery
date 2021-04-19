@@ -21,14 +21,14 @@ WITH get_contact_data AS
     -- 6 year projected numerator, done as still PS & alumni already so we can further split out numerator if needed)
     CASE
       WHEN
-        (grade_c = 'Year 6'
+        grade_c = 'Year 6'
         AND indicator_completed_ct_hs_program_c = true
         AND
         ((Credit_Accumulation_Pace_c != "6+ Years"
         AND Current_Enrollment_Status_c = "Full-time"
         AND college_track_status_c = '15A')
         OR
-        college_track_status_c = '17A')) THEN 1
+        college_track_status_c = '17A') THEN 1
         ELSE 0
         END AS cc_ps_projected_grad_num,
 
