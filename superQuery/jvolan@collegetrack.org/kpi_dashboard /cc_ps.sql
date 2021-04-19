@@ -44,6 +44,7 @@ WITH get_contact_data AS
     CASE    
         WHEN
         (indicator_completed_ct_hs_program_c = true
+        AND college_track_status_c = '15A'
         AND grade_c = 'Year 2'
         AND school_type = '4-Year'
         AND current_enrollment_status_c IN ("Full-time","Part-time")
@@ -79,6 +80,15 @@ WITH get_contact_data AS
         academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
         ELSE 0
     END AS cc_ps_grad_internship_denom,
+    
+    --most recent CGPA
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND college_track_status_c = '15A'
+        AND Most_Recent_GPA_Cumulative_c >= 2.5) THEN 1
+        ELSE 0
+    END AS cc_ps_gpa_2_5_num,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE 
