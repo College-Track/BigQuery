@@ -1,4 +1,7 @@
- SELECT 
+WITH GATHER AS 
+(
+     
+    SELECT 
         contact_id,
         site_short,
         
@@ -17,3 +20,21 @@
     
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
+   )
+   
+        SELECT
+        site_short,
+        CASE 
+            WHEN SUM(student_has_aspirations) >= 6 THEN 1
+            ELSE 0
+            END AS cc_hs_aspirations_count,
+        
+        CASE 
+            WHEN SUM(aspirations_affordable) >= 3 THEN 1
+            ELSE 0
+            END AS cc_hs_aspirations_affordable_count
+        
+    FROM gather
+    group by site_short
+    
+   
