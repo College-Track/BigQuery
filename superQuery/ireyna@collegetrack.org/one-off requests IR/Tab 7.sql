@@ -1,4 +1,5 @@
- student_c,
+SELECT 
+        student_c,
         fit_type_current_c,
         
         CASE 
