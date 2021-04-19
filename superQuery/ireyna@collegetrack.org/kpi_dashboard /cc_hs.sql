@@ -1,11 +1,3 @@
-
-CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
-OPTIONS
-    (
-    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
-    )
-AS
-
 WITH gather_data_tenth_grade AS (
   SELECT
     Contact_Id,
