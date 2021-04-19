@@ -23,7 +23,7 @@ WITH GATHER AS
     AND c.grade_c = '11th Grade'
    
    )
- #,prep AS(
+ ,prep AS(
    
         SELECT
     g.site_short,
