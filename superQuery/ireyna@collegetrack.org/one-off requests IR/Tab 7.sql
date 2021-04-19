@@ -1,6 +1,8 @@
-SELECT 
-        student_c,
-        fit_type_current_c,
+WITH GATHER AS 
+(
+    SELECT 
+    student_c,
+    fit_type_current_c,
         
         CASE 
             WHEN a.id IS NOT NULL THEN 1
@@ -14,8 +16,19 @@ SELECT
         group by student_c
         ) AS aspirations_affordable,
     
-    FROM `data-warehouse-289815.salesforce.college_aspiration_c` a 
-        LEFT JOIN`data-warehouse-289815.salesforce_clean.contact_template` c ON c.contact_id=a.student_c
+    FROM `data-warehouse-289815.salesforce_clean.contact_template` c
+        LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id=a.student_c
     
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
+   )
+   
+   SELECT 
+    student_c,
+    aspirations_affordable,
+    student_has_aspirations
+    
+    FROM gather
+    
+    group by student_c,aspirations_affordable,
+    student_has_aspirations
