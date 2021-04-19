@@ -20,15 +20,15 @@ WITH GATHER AS
     
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
+    
    )
    
         SELECT
         site_short,
-        SUM(student_has_aspirations) ,
-         SUM(aspirations_affordable) 
+        (SELECT SUM(student_has_aspirations) FROM gather group by contact_id) AS total_aspirations ,
+        (SELECT SUM(aspirations_affordable) FROM gather group by contact_id) AS total_affordable
            
         
     FROM gather
-    group by site_short
     
    
