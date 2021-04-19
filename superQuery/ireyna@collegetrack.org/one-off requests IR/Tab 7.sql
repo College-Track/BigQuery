@@ -27,10 +27,11 @@ WITH GATHER AS
     g.contact_id,
         (SELECT SUM(student_has_aspirations) 
         FROM gather AS subq1 
+        WHERE g.contact_id=subq1.contact_id
         group by subq1.contact_id) AS total_aspirations ,
        # (SELECT SUM(aspirations_affordable) FROM gather AS subq2 where contact_id=subq2.contact_id group by contact_id) AS total_affordable
            
-        
+        group by g.contact_id
     FROM gather as g
     join gather as subq1 ON g.contact_id=subq1.contact_id
     
