@@ -2,7 +2,7 @@ WITH get_contact_data AS
 (
     SELECT
     contact_Id,
-    site_short AS contact_site,
+    site_short,
     
     --12th grade fasfa complete numerator
     CASE
@@ -58,32 +58,50 @@ WITH get_contact_data AS
         AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")) THEN 1
         ELSE 0
         END AS x_2_yr_transfer_denom,
+        
+    --% of grads who did internship num & denom
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND 
+        ps_internships_c > 0
+        AND
+        (anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+        OR
+        academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
+        ELSE 0
+    END AS cc_ps_grad_internship_num,
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND 
+        (anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+        OR
+        academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
+        ELSE 0
+    END AS cc_ps_grad_internship_denom,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE 
     (college_track_status_c IN ('11A','12A')
     AND grade_c = "12th Grade")
-    OR
-    (grade_c = 'Year 6'
-    AND indicator_completed_ct_hs_program_c = true)
-    OR
-    (indicator_completed_ct_hs_program_c = true
-    AND grade_c = 'Year 2'
-    AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting"))
+    OR indicator_completed_ct_hs_program_c = true
 )
 
     SELECT
-    contact_site,
+    site_short,
     sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
     sum(projected_6_year_grad_num) AS projected_6_year_grad_num,
     sum(alumni_already_num) AS alumni_already_num,
     (sum(projected_6_year_grad_num) + sum(alumni_already_num)) AS cc_ps_projected_6_year_grad_num,
     sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom,
     sum(x_2_yr_transfer_num) AS cc_ps_2_yr_transfer_num,
-    sum(x_2_yr_transfer_denom) AS cc_ps_2_yr_transfer_denom
+    sum(x_2_yr_transfer_denom) AS cc_ps_2_yr_transfer_denom,
+    sum(cc_ps_grad_internship_num) AS cc_ps_grad_internship_num,
+    sum(cc_ps_grad_internship_denom) AS cc_ps_grad_internship_denom,
     
     FROM get_contact_data
-    GROUP BY contact_site
+    GROUP BY site_short
 
     
 
