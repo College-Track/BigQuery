@@ -377,7 +377,12 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
       "https://datastudio.google.com/u/0/reporting/75c5576b-bbeb-474b-be6a-e8a2111744e6/page/XrI7B?params=%7B%22df148%22:%22include%25EE%2580%25800%25EE%2580%2580IN%25EE%2580%2580",               
       contact_id,
       '%22%7D'
-    ) AS hs_student_profile
+    ) AS hs_student_profile,
+        CONCAT(
+        "https://ctgraduates.lightning.force.com/lightning/r/Contact/",
+        current_academic_semester_c,
+        "/view"
+      ) AS current_at_url,
     FROM
       ValidStudentContact
   ),
