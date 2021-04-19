@@ -36,7 +36,8 @@ WITH gather_contact_data AS (
     C.college_applications_all_fit_types_c,
     C.community_service_hours_c,
     C.student_dashboard_preview,
-    C.current_at_url
+    C.current_at_url,
+    C.FA_Req_FAFSA_c
 
 
     
