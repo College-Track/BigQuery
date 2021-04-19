@@ -108,6 +108,7 @@ cc_ps AS
     sum(x_2_yr_transfer_denom) AS cc_ps_2_yr_transfer_denom,
     sum(cc_ps_grad_internship_num) AS cc_ps_grad_internship_num,
     sum(cc_ps_grad_internship_denom) AS cc_ps_grad_internship_denom,
+    sum(cc_ps_gpa_2_5_num) AS cc_ps_gpa_2_5_num,
     
     FROM get_contact_data
     GROUP BY site_short
