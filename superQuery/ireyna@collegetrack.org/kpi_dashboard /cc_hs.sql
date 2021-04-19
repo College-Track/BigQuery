@@ -1,11 +1,3 @@
-
-CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
-OPTIONS
-    (
-    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
-    )
-AS
-
 WITH gather_data_tenth_grade AS (
   SELECT
     Contact_Id,
@@ -130,7 +122,7 @@ prep_eleventh_grade_metrics AS (
         CASE 
             WHEN SUM(student_has_aspirations) >= 6 AND SUM(aspirations_affordable) >= 3 THEN 1
             ELSE 0
-            END AS cc_hs_aspirations
+            END AS sum
         FROM gather_data_eleventh_grade as subq1
         WHERE g.contact_id=subq1.contact_id
         GROUP BY subq1.contact_id) AS cc_hs_aspirations
