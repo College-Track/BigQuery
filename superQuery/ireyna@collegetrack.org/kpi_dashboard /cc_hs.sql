@@ -25,6 +25,7 @@ gather_data_tenth_grade AS (
 gather_data_eleventh_grade AS (
     SELECT 
         contact_id,
+        site_short,
         
         CASE 
             WHEN a.id IS NOT NULL THEN 1
@@ -42,6 +43,18 @@ gather_data_eleventh_grade AS (
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
     
+),
+
+prep_aspiration_kpi AS (
+ SELECT
+    site_short,
+    CASE 
+        WHEN student_has_aspirations >= 6 AND aspirations_affordable >= 3 THEN 1
+        ELSE 0
+        END AS cc_hs_aspirations
+        
+    FROM gather_data_eleventh_grade 
+       
 ),
 
 gather_attendance_data AS (
@@ -123,17 +136,11 @@ gather_data_twelfth_grade AS (
 ),*/
 
 prep_eleventh_grade_metrics AS (
-    SELECT
-        contact_id,
-        
-        CASE 
-            WHEN SUM(student_has_aspirations) >= 6 AND SUM(aspirations_affordable) >= 3 THEN 1
-            ELSE 0
-            END AS cc_hs_aspirations
-        
-    FROM gather_data_eleventh_grade 
-        
-    GROUP BY contact_id
+    SELECT 
+        site_short,
+        SUM(cc_hs_aspirations) AS cc_hs_aspirations
+    FROM prep_aspiration_kpi
+    GROUP BY site_short
 ),
 
 prep_twelfth_grade_metrics AS(
@@ -181,7 +188,7 @@ prep_twelfth_grade_metrics AS(
             ON GD.site_short = tenth_grade_data.site_short
      
         LEFT JOIN prep_eleventh_grade_metrics AS eleventh_grade_data
-            ON GD.contact_id = eleventh_grade_data.contact_id
+            ON GD.site_short = eleventh_grade_data.site_short
         
         LEFT JOIN prep_twelfth_grade_metrics AS twelfth_grade_data
             ON GD.site_short = twelfth_grade_data.site_short
