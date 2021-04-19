@@ -26,10 +26,14 @@ WITH GATHER AS
    
    SELECT 
     contact_id,
-    aspirations_affordable,
-    student_has_aspirations,id
+    CASE 
+        WHEN aspirations_affordable IS NOT NULL THEN 1
+        ELSE 0
+        END AS cc_hs_six_aspirations,
+    SUM(student_has_aspirations)
     
     FROM gather
     
-    group by contact_id,aspirations_affordable,
-    student_has_aspirations,id
+    GROUP BY 
+    contact_id,aspirations_affordable
+   
