@@ -25,8 +25,8 @@ WITH GATHER AS
    
         SELECT
         site_short,
-        (SELECT SUM(student_has_aspirations) FROM gather ) AS total_aspirations ,
-        (SELECT SUM(aspirations_affordable) FROM gather ) AS total_affordable
+        (SELECT SUM(student_has_aspirations) FROM gather group by contact_id) AS total_aspirations ,
+        (SELECT SUM(aspirations_affordable) FROM gather group by contact_id) AS total_affordable
            
         
     FROM gather
