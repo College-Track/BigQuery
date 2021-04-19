@@ -22,8 +22,7 @@ WITH GATHER AS
     AND c.grade_c = '11th Grade'
    )
    
-  SELECT
-        site_short,
+        SELECT *,
         
         CASE 
             WHEN SUM(student_has_aspirations) >= 6 THEN 1
@@ -36,5 +35,6 @@ WITH GATHER AS
             END AS cc_hs_aspirations_affordable_count
         
     FROM gather
-    GROUP BY site_short
+    GROUP BY contact_id, site_short, student_has_aspirations,aspirations_affordable
+    
    
