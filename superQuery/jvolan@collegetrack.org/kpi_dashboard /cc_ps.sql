@@ -39,7 +39,25 @@ WITH get_contact_data AS
         (grade_c = 'Year 6'
         AND indicator_completed_ct_hs_program_c = true) THEN 1
         ELSE 0
-        END AS cc_ps_projected_grad_denom
+    END AS cc_ps_projected_grad_denom,
+    
+    --2-year transfer num & denom
+    CASE    
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND grade_c = 'Year 2'
+        AND school_type = '4-Year'
+        AND current_enrollment_status_c IN ("Full-time","Part-time")
+        AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")) THEN 1
+        ELSE 0
+        END AS x_2_yr_transfer_num,
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND grade_c = 'Year 2'
+        AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")) THEN 1
+        ELSE 0
+        END AS x_2_yr_transfer_denom,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE 
@@ -48,6 +66,10 @@ WITH get_contact_data AS
     OR
     (grade_c = 'Year 6'
     AND indicator_completed_ct_hs_program_c = true)
+    OR
+    (indicator_completed_ct_hs_program_c = true
+    AND grade_c = 'Year 2'
+    AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting"))
 )
 
     SELECT
