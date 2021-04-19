@@ -1,3 +1,52 @@
+
+    SELECT
+    contact_Id,
+    site_short AS contact_site,
+    CASE
+        WHEN 
+        (fa_req_fafsa_c = 'Submitted' 
+        AND 
+        college_track_status_c IN ('11A','12A')
+        AND
+        (grade_c = '12th Grade' 
+        OR
+        indicator_years_since_hs_graduation_c = 0)) 
+        THEN 1
+        Else 0  
+    End AS indicator_fafsa_complete,
+    
+    CASE
+      WHEN
+        (Credit_Accumulation_Pace_c != "6+ Years"
+        AND Current_Enrollment_Status_c = "Full-time"
+        AND college_track_status_c = '15A'
+        AND grade_c = 'Year 6'
+        AND indicator_completed_ct_hs_program_c = true) THEN 1
+        ELSE 0
+    END AS projected_6_year_grad_num,
+    CASE
+        WHEN college_track_status_c = '17A' THEN 1
+        ELSE 0
+    END AS alumni_already_num,
+    CASE
+        WHEN
+        (grade_c = 'Year 6'
+        AND indicator_completed_ct_hs_program_c = true) THEN 1
+        ELSE 0
+        END AS cc_ps_projected_grad_denom
+        
+
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE 
+    (college_track_status_c IN ('11A','12A')
+    AND grade_c = "12th Grade")
+    OR
+    (grade_c = 'Year 6'
+    AND indicator_completed_ct_hs_program_c = true)
+    
+    
+
+/*
 WITH get_fafsa_data AS    
 (
     SELECT 
@@ -94,7 +143,6 @@ kpi_2_yr_transfer AS
         
     SELECT
     site_short,
-    site_sort,
     max(kpi_projected_6_year_grad.cc_ps_6_year_grad_num) AS cc_ps_6_year_grad_num,
     max(kpi_projected_6_year_grad.cc_ps_6_year_grad_denom) AS cc_ps_6_year_grad_denom,
     max(kpi_fafsa_complete.cc_ps_fafsa_complete) AS cc_ps_fafsa_complete,
@@ -105,4 +153,5 @@ kpi_2_yr_transfer AS
     LEFT JOIN kpi_projected_6_year_grad ON kpi_projected_6_year_grad.site_6_yr_grad = site_short
     LEFT JOIN kpi_fafsa_complete ON kpi_fafsa_complete.fafsa_site = site_short
     LEFT JOIN kpi_2_yr_transfer ON kpi_2_yr_transfer.site_2_yr = site_short
-    GROUP BY site_short, site_sort
+    GROUP BY site_short
+*/
