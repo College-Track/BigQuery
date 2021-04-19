@@ -1,5 +1,3 @@
-AS
-
 WITH gather_data_tenth_grade AS (
   SELECT
     Contact_Id,
