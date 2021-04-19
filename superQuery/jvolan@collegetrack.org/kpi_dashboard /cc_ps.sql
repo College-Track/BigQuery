@@ -1,7 +1,10 @@
-
+WITH get_contact_data AS
+(
     SELECT
     contact_Id,
     site_short AS contact_site,
+    
+    --12th grade fasfa complete numerator
     CASE
         WHEN 
         (fa_req_fafsa_c = 'Submitted' 
@@ -15,6 +18,7 @@
         Else 0  
     End AS indicator_fafsa_complete,
     
+    -- 6 year projected numerator, done as still PS & alumni already so we can further split out numerator if needed)
     CASE
       WHEN
         (Credit_Accumulation_Pace_c != "6+ Years"
@@ -28,13 +32,14 @@
         WHEN college_track_status_c = '17A' THEN 1
         ELSE 0
     END AS alumni_already_num,
+    
+    --6 year projected grad denominator
     CASE
         WHEN
         (grade_c = 'Year 6'
         AND indicator_completed_ct_hs_program_c = true) THEN 1
         ELSE 0
         END AS cc_ps_projected_grad_denom
-        
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE 
@@ -43,7 +48,19 @@
     OR
     (grade_c = 'Year 6'
     AND indicator_completed_ct_hs_program_c = true)
+)
+
+    SELECT
+    contact_site,
+    sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
+    sum(projected_6_year_grad_num) AS projected_6_year_grad_num,
+    sum(alumni_already_num) AS alumni_already_num,
+    (sum(projected_6_year_grad_num) + sum(alumni_already_num)) AS cc_ps_projected_6_year_grad_num,
+    sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom
     
+    FROM get_contact_data
+    GROUP BY contact_site
+
     
 
 /*
