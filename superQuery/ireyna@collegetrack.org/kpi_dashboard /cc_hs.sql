@@ -1,4 +1,4 @@
- SELECT 
+SELECT 
         contact_id,
         fit_type_current_c, 
     
@@ -14,4 +14,3 @@
     
     WHERE college_track_status_c = '11A'
     AND c.grade_c = '11th Grade'
-    AND fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable")
