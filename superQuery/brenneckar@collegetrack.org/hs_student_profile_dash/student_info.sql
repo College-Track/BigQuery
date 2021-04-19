@@ -72,6 +72,7 @@ count_scholarship_applications AS (
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
   WHERE
     is_deleted = false
+    AND scholarship_application_record_type_name != 'Bank Book'
   GROUP BY
     student_c
 ),
