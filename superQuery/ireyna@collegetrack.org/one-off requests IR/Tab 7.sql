@@ -26,12 +26,12 @@ WITH GATHER AS
    
         SELECT
     g.site_short,
-        (SELECT SUM(student_has_aspirations) 
+        (SELECT CASE WHEN SUM(student_has_aspirations) >= 6 THEN 1 ELSE 0 END AS sum_asp
         FROM gather AS subq1 
         WHERE g.contact_id=subq1.contact_id
         group by subq1.contact_id) AS total_aspirations ,
         
-        (SELECT SUM(aspirations_affordable) 
+        (SELECT CASE WHEN SUM(aspirations_affordable) >=3 THEN 1 ELSE 0 END AS sum_aff
         FROM gather AS subq1 
         WHERE g.contact_id=subq1.contact_id
         group by subq1.contact_id) AS total_affordable 
@@ -44,8 +44,8 @@ WITH GATHER AS
 
 SELECT 
 site_short,
-CASE WHEN total_aspirations >= 6 THEN 1 ELSE 0 END AS aspirations_6,
-CASE WHEN total_affordable >= 3 THEN 1 ELSE 0 END AS affordable_3
+sum(total_aspirations),
+sum(total_affordable)
 
 FROM prep 
-GROUP BY site_short,total_aspirations,total_affordable
+GROUP BY site_short
