@@ -117,6 +117,7 @@ prep_tenth_grade_metrics AS(
 prep_eleventh_grade_metrics AS (
     SELECT
         site_short,
+        contact_id,
         
         CASE 
             WHEN SUM(student_has_aspirations) >= 6 AND SUM(aspirations_affordable) >= 3 THEN 1
@@ -124,7 +125,7 @@ prep_eleventh_grade_metrics AS (
             END AS cc_hs_aspirations
         
     FROM gather_data_eleventh_grade
-    GROUP BY site_short
+    GROUP BY site_short, contact_id
 ),
 
 prep_twelfth_grade_metrics AS(
@@ -175,4 +176,8 @@ prep_twelfth_grade_metrics AS(
         ON tenth_grade_data.site = twelfth_grade_data.site_short
     
 GROUP BY site,cc_hs_EFC_tenth_grade
+
+
+
+
 
