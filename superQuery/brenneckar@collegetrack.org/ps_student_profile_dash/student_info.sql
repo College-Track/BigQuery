@@ -44,11 +44,27 @@ WITH gather_contact_data AS (
     C.college_track_status_c IN ('15A')
     AND C.indicator_completed_ct_hs_program_c = true -- AND R.emergency_contact_c = true
 ),
+count_scholarship_applications AS (
+  SELECT
+    student_c,
+    COUNT(Id) as num_scholarship_applications,
+    SUM(amount_awarded_c) AS sum_scholarship_applications
+  FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+  WHERE
+    is_deleted = false
+    AND scholarship_application_record_type_name != 'Bank Book'
+  GROUP BY
+    student_c
+),
 join_data AS(
   SELECT
     GCD.*,
+    CSA.num_scholarship_applications,
+    CSA.sum_scholarship_applications
   FROM
     gather_contact_data GCD
+    LEFT JOIN count_scholarship_applications CSA ON CSA.student_c = GCD.Contact_Id
 )
 SELECT
   *
