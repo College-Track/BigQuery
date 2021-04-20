@@ -1,4 +1,4 @@
-/*WITH get_contact_data AS
+WITH get_contact_data AS
 (
     SELECT
     contact_Id,
@@ -95,12 +95,13 @@
     (college_track_status_c IN ('11A','12A')
     AND grade_c = "12th Grade")
     OR indicator_completed_ct_hs_program_c = true
-),*/
+),
 
+/*
 WITH persist_at_reporting_group AS
 (
     SELECT
-    Contact_Id AS reporting_group,
+    count(Contact_Id) AS reporting_group,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE
@@ -108,6 +109,7 @@ WITH persist_at_reporting_group AS
         AND AY_Name = 'AY 2020-21'
         AND term_c = 'Fall'
         AND AT_school_type IN ('2-year', '4-year'))
+    GROUP BY contact_Id
 )
 
     SELECT
@@ -123,8 +125,8 @@ WITH persist_at_reporting_group AS
     AND term_c != 'Summer'
     GROUP BY Contact_Id
     
+    */
     
-/*
 cc_ps AS
 (
     SELECT
@@ -147,8 +149,8 @@ cc_ps AS
     FROM 
     cc_ps
     
-*/
 
+--original starting queries for ref only, combined above
 /*
 WITH get_fafsa_data AS    
 (
