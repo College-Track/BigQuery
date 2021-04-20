@@ -1,14 +1,13 @@
 SELECT 
-        contact_id,
-        type_c,
-        semester_c,
-        AY_name
-        
-        
-    FROM `data-warehouse-289815.salesforce.student_life_activity_c` AS sl
-        LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS c ON c.at_id = sl.semester_c
-        
-    WHERE sl.record_type_id = '01246000000ZNi8AAG' #Summer Experience
-    AND AY_name = 'AY 2020-21'
-    AND experience_meaningful_c = True
-    AND status_c = 'Approved'
+        c.student_c, 
+        CASE
+            WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
+            ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
+            END AS attendance_rate
+    FROM `data-warehouse-289815.salesforce_clean.class_template` AS c
+        LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT 
+        ON CAT.global_academic_semester_c = c.global_academic_semester_c
+    WHERE Department_c = "Student Life"
+    AND Cancelled_c = FALSE
+    AND CAT.AY_Name = 'AY 2020-21'
+    GROUP BY c.student_c
