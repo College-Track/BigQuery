@@ -16,8 +16,8 @@ SELECT
   CASE WHEN start_date_c < '2020-09-01' THEN false
   ELSE true
   END AS keep_rubric_data,
-  current_as_c
- 
+  college_class
+
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE
