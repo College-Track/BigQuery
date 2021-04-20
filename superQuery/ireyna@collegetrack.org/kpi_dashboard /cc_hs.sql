@@ -145,14 +145,13 @@ gather_data_twelfth_grade AS (
 
 gather_eleventh_grade_metrics AS (
  SELECT
-    contact_id,
     site_short,
     CASE 
-        WHEN (SUM(student_has_aspirations) >= 6 AND SUM(aspirations_affordable) >= 3) THEN 1
+        WHEN (SUM(g.student_has_aspirations) >= 6 AND SUM(g.aspirations_affordable) >= 3) THEN 1
         ELSE 0
         END AS cc_hs_aspirations
-    FROM gather_data
-    GROUP BY contact_id,site_short,student_has_aspirations,aspirations_affordable
+    FROM gather_data as g
+    GROUP BY contact_id,site_short
 ),
 
 gather_twelfth_grade_metrics AS(
@@ -217,3 +216,31 @@ SELECT
         LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short
         LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
   group by site_short, cc_hs_EFC_tenth_grade,cc_hs_aspirations,cc_hs_above_80_cc_attendance,cc_hs_accepted_affordable,cc_hs_applied_best_good_situational,cc_hs_accepted_best_good_situational 
+
+
+  /*SELECT
+    gd.site_short, 
+    SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade, #10th grade
+    SUM(cc_hs_aspirations) AS cc_hs_aspirations, #11th grade
+    SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,#12th grade 
+    SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
+    SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
+    SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational #12th grade
+    
+  FROM
+        gather_data AS gd
+        
+        LEFT JOIN gather_data_tenth_grade AS tenth_grade_data
+            ON GD.site_short = tenth_grade_data.site_short
+     
+        LEFT JOIN prep_eleventh_grade_metrics AS eleventh_grade_data
+            ON GD.site_short = eleventh_grade_data.site_short
+        
+        LEFT JOIN prep_twelfth_grade_metrics AS twelfth_grade_data
+            ON GD.site_short = twelfth_grade_data.site_short
+    
+GROUP BY gd.site_short*/
+
+
+
+
