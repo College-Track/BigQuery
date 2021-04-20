@@ -1,7 +1,8 @@
 SELECT 
         contact_id,
         type_c,
-        semester_c
+        semester_c,
+        AY_name
         
         
     FROM `data-warehouse-289815.salesforce.student_life_activity_c` AS sl
