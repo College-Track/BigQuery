@@ -34,13 +34,13 @@ WITH gather_contact_data AS (
     C.most_recent_reciprocal,
     C.PS_Internships_c,
     C.Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
-    -- ADG.GAS_Name AS anticipated_date_of_graduation_4_year_c
+    ADG.GAS_Name AS anticipated_date_of_graduation_4_year_c
     
 
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce.contact` PC ON PC.Id = C.primary_contact_c -- LEFT JOIN `data-warehouse-289815.salesforce.npe_4_relationship_c` R ON R.npe_4_contact_c = C.Contact_Id
-    JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` ADG ON  C.anticipated_date_of_graduation_4_year_c = ADG.global_academic_semester_c
+    -- LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` ADG ON  C.anticipated_date_of_graduation_4_year_c = ADG.global_academic_semester_c
     -- LEFT JOIN `data-warehouse-289815.salesforce.contact` EC ON EC.Id = R.npe_4_related_contact_c
   WHERE
     C.college_track_status_c IN ('15A', '16A')
