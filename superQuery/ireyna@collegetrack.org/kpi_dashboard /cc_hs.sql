@@ -122,6 +122,7 @@ gather_data_twelfth_grade AS (
         LEFT JOIN gather_attendance_data ON contact_id=student_c
     WHERE  college_track_status_c = '11A'
     AND grade_c = '12th Grade'
+    GROUP BY site_short, contact_id, attendance_rate
 ),
 
 #Prepping metrics
@@ -221,26 +222,3 @@ SELECT
   /*SELECT
     gd.site_short, 
     SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade, #10th grade
-    SUM(cc_hs_aspirations) AS cc_hs_aspirations, #11th grade
-    SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,#12th grade 
-    SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
-    SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational, #12th grade
-    SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational #12th grade
-    
-  FROM
-        gather_data AS gd
-        
-        LEFT JOIN gather_data_tenth_grade AS tenth_grade_data
-            ON GD.site_short = tenth_grade_data.site_short
-     
-        LEFT JOIN prep_eleventh_grade_metrics AS eleventh_grade_data
-            ON GD.site_short = eleventh_grade_data.site_short
-        
-        LEFT JOIN prep_twelfth_grade_metrics AS twelfth_grade_data
-            ON GD.site_short = twelfth_grade_data.site_short
-    
-GROUP BY gd.site_short*/
-
-
-
-
