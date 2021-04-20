@@ -1,4 +1,4 @@
-WITH get_contact_data AS
+/*WITH get_contact_data AS
 (
     SELECT
     contact_Id,
@@ -95,8 +95,27 @@ WITH get_contact_data AS
     (college_track_status_c IN ('11A','12A')
     AND grade_c = "12th Grade")
     OR indicator_completed_ct_hs_program_c = true
-),
+),*/
 
+
+    SELECT
+    Contact_Id,
+    count(AT_id) AS persist_denom,
+    sum(indicator_persisted_at_c) AS persist_num,
+    
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE
+    (AT_Enrollment_Status_c IN ('Full-time','Part-time')
+        AND AY_Name = 'AY 2020-21'
+        AND term_c = 'Fall'
+        AND AT_school_type IN ('2-year', '4-year'))
+    AND AY_Name = 'AY 2020-21'
+    AND term_c != 'Summer'
+    GROUP BY Contact_Id
+
+    
+/*
 cc_ps AS
 (
     SELECT
@@ -119,6 +138,7 @@ cc_ps AS
     FROM 
     cc_ps
     
+*/
 
 /*
 WITH get_fafsa_data AS    
