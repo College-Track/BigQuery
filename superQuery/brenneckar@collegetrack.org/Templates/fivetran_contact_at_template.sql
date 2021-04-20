@@ -383,6 +383,14 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         current_academic_semester_c,
         "/view"
       ) AS current_at_url,
+      
+              CONCAT(
+      "https://datastudio.google.com/u/0/reporting/0289cb81-ed13-4633-8913-2def7f926019/page/XrI7B?params=%7B%22df148%22:%22include%25EE%2580%25800%25EE%2580%2580IN%25EE%2580%2580",               
+      contact_id,
+      '%22%7D'
+    ) AS ps_student_profile,
+      
+    
     FROM
       ValidStudentContact
   ),
