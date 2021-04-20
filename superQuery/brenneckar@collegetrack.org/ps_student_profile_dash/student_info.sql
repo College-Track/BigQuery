@@ -32,6 +32,9 @@ WITH gather_contact_data AS (
     C.total_bb_earnings_as_of_hs_grad_contact_c,
     C.bb_disbursements_total_c,
     C.total_bank_book_balance_contact_c,
+    C.most_recent_outreach,
+    C.most_recent_reciprocal,
+    C.PS_Internships_c
     
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
