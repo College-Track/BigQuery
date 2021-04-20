@@ -34,7 +34,7 @@ WITH gather_contact_data AS (
     C.most_recent_reciprocal,
     C.PS_Internships_c,
     C.Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
-    ADG.GAS_Name AS anticipated_date_of_graduation_4_year_c
+    -- ADG.GAS_Name AS anticipated_date_of_graduation_4_year_c
     
 
   FROM
