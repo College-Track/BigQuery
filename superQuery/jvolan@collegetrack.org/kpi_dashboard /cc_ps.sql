@@ -114,7 +114,7 @@ WITH persist_at_reporting_group AS
     contact_id,
     count(AT_id) AS persist_denom,
     sum(indicator_persisted_at_c) AS persist_num,
-    max(persist_at_reporting_group.reporting_group)
+    max(persist_at_reporting_group.reporting_group) AS in_reporting_group,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN persist_at_reporting_group ON persist_at_reporting_group.reporting_group = contact_id
