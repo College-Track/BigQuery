@@ -16,7 +16,7 @@ WITH gather_contact_data AS (
     C.first_generation_fy_20_c,
     C.birthdate,
     C.indicator_low_income_c,
-    C.annual_household_income_c,
+    -- C.annual_household_income_c,
     C.Current_school_name,
     C.current_academic_semester_c,
     C.summer_experiences_previous_summer_c,
@@ -36,7 +36,7 @@ WITH gather_contact_data AS (
     -- LEFT JOIN `data-warehouse-289815.salesforce.npe_4_relationship_c` R ON R.npe_4_contact_c = C.Contact_Id
     -- LEFT JOIN `data-warehouse-289815.salesforce.contact` EC ON EC.Id = R.npe_4_related_contact_c
   WHERE
-    C.college_track_status_c IN ('15A', '16A')
+    C.college_track_status_c IN ('15A')
     AND C.indicator_completed_ct_hs_program_c = true
     -- AND R.emergency_contact_c = true
 ),
