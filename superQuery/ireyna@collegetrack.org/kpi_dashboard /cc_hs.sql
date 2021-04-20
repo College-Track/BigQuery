@@ -192,10 +192,9 @@ prep_tenth_grade_metrics AS (
 prep_eleventh_grade_metrics AS (
     SELECT 
         site_short,
-        contact_id,
         SUM(cc_hs_aspirations) AS cc_hs_aspirations
     FROM gather_eleventh_grade_metrics
-    GROUP BY site_short, contact_id
+    GROUP BY site_short
 ),
 
 prep_twelfth_grade_metrics AS (
@@ -211,7 +210,7 @@ prep_twelfth_grade_metrics AS (
 SELECT 
     gd.site_short,
     kpi_10th.* EXCEPT(site_short),
-    kpi_11th.* EXCEPT(site_short,contact_id),
+    kpi_11th.* EXCEPT(site_short),
     kpi_12th.* EXCEPT(site_short)
     FROM gather_data as gd
         LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short
