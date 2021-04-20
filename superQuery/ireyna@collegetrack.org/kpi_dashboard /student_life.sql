@@ -1,0 +1,13 @@
+ SELECT 
+        contact_id,
+        type_c,
+        semester_c
+        
+        
+    FROM `data-warehouse-289815.salesforce.student_life_activity_c` AS SL
+        LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS C ON SL.student_c = C.contact_id
+        
+    WHERE record_type_id = '01246000000ZNi8AAG' #Summer Experience
+    AND AY_Name = 'AY 2020-21'
+    AND experience_meaningful_c = True
+    AND status_c = 'Approved'
