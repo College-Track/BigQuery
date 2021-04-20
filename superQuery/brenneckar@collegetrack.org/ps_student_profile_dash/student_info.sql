@@ -18,7 +18,6 @@ WITH gather_contact_data AS (
     C.indicator_low_income_c,
     -- C.annual_household_income_c,
     C.Current_school_name,
-    C.total_bank_book_balance_contact_c,
     C.community_service_hours_c,
     C.current_at_url,
     C.FA_Req_FAFSA_c,
