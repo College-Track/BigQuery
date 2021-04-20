@@ -52,7 +52,6 @@ gather_mse_data AS ( #current AY
 gather_attendance_data AS (
      SELECT 
         c.student_c, 
-        cat.site_short,
         CASE
             WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
             ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
@@ -63,19 +62,19 @@ gather_attendance_data AS (
     WHERE Department_c = "Student Life"
     AND Cancelled_c = FALSE
     AND CAT.AY_Name = 'AY 2020-21'
-    GROUP BY c.student_c,site_short
+    GROUP BY c.student_c
 
 ),
 
 prep_attendance_kpi AS (
     SELECT 
-        student_c,
         site_short,
         CASE 
             WHEN sl_attendance_rate >= 0.8 THEN 1
             ELSE 0
             END AS sl_above_80_attendance,
-    FROM gather_attendance_data
+    FROM gather_contact_data as gd
+    LEFT JOIN gather_attendance_data AS attendance ON gd.contact_id = attendance.student_c
 ),
 
 aggregate_attendance_kpi AS (
