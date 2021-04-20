@@ -43,7 +43,7 @@ WITH gather_contact_data AS (
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` ADG ON ADG.global_academic_semester_c = C.anticipated_date_of_graduation_4_year_c
     -- LEFT JOIN `data-warehouse-289815.salesforce.contact` EC ON EC.Id = R.npe_4_related_contact_c
   WHERE
-    C.college_track_status_c IN ('15A')
+    C.college_track_status_c IN ('15A', '16A')
     AND C.indicator_completed_ct_hs_program_c = true -- AND R.emergency_contact_c = true
 ),
 count_scholarship_applications AS (
