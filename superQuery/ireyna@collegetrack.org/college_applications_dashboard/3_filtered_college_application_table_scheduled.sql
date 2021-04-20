@@ -1,14 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-/*
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-*/
-
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -141,6 +130,11 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
 WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted and Deferred")
 ),
 
+no_acceptance_data AS(
+    SELECT student_c AS contact_id_not_accepted
+    FROM filtered_data
+    WHERE NOT EXISTS (SELECT contact_id_accepted FROM acceptance_data WHERE filtered_data.student_c = acceptance_data.contact_id_accepted)
+),
 
 college_application_data AS #combine acceptance and admission data to college application data
 (
@@ -214,12 +208,6 @@ SELECT
         AND app.id = app2.id
         group by app2.student_c
         ) AS  contact_id_accepted,
-        
-        (SELECT app2.student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
-        WHERE app2.student_c NOT IN (SELECT contact_id_accepted FROM acceptance_data)
-        ) AS  contact_id_no_acceptance,
-        
         
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
@@ -306,11 +294,16 @@ SELECT
     accepted,
     fit_type_accepted,
     
+    #not_accepted_data
+    contact_id_not_accepted
+    
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
         ON app.College_University_c = accnt.id  
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.contact_id_accepted
+LEFT JOIN no_acceptance_data 
+    ON app.student_c = no_acceptance_data.contact_id_not_accepted
 
 )
 
@@ -364,15 +357,16 @@ SELECT
         WHEN application_status <> "Applied" THEN 6
     END AS sort_helper_app_by_fit_type,
     
-    CASE 
+    /*CASE 
         WHEN contact_id_accepted IS NOT NULL THEN 'Accepted'
         WHEN contact_id_accepted_4_year IS NOT NULL THEN 'Accepted, 4-Year'
         WHEN contact_id_accepted_affordable_option IS NOT NULL THEN 'Accepted, Affordable Option'
         WHEN contact_id_accepted IS NULL THEN 'Not Accepted Anywhere'
     END AS accepted_or_not_filter,
-    
+    */
+    contact_id_not_accepted || contact_id_accepted || contact_id_accepted_affordable_option || contact_id_accepted_4_year AS test,
     CASE 
-        WHEN contact_id NOT IN (contact_id_accepted) THEN 1
+        WHEN contact_id_not_accepted IS NOT NULL THEN 1
     END AS accepted_nowhere_filter,
     
     CASE 
