@@ -216,9 +216,3 @@ SELECT
         LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short
         LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short
         LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
-  
-
-
-  /*SELECT
-    gd.site_short, 
-    SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade, #10th grade
