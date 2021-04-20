@@ -1,11 +1,3 @@
-
-CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
-OPTIONS
-    (
-    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
-    )
-AS
-
 WITH gather_data AS (
     SELECT
         contact_id,
@@ -33,7 +25,7 @@ WITH gather_data AS (
     WHERE college_track_status_c = '11A'
 ),
 
-gather_attendance_data AS (
+gather_attendance_data AS ( #for 12th grade KPI: 80% CC attendance
     SELECT 
         c.student_c, 
         CASE
@@ -96,7 +88,7 @@ gather_data_twelfth_grade AS (
     AND grade_c = '12th Grade'
 ),
 
-gather_eleventh_grade_metrics AS (
+gather_eleventh_grade_metrics AS ( #11th grade College Aspirations KPI
  SELECT
     site_short,
     CASE 
@@ -134,7 +126,7 @@ gather_twelfth_grade_metrics AS(
 
 #prep KPIs for aggregation
 
-prep_tenth_grade_metrics AS (
+prep_tenth_grade_metrics AS ( #10th Grade EFC KPI
     SELECT 
         site_short,
         SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade
@@ -142,7 +134,7 @@ prep_tenth_grade_metrics AS (
     GROUP BY site_short
 ),
 
-prep_eleventh_grade_metrics AS (
+prep_eleventh_grade_metrics AS ( #11th grade College Aspirations KPI
     SELECT 
         site_short,
         SUM(cc_hs_aspirations) AS cc_hs_aspirations
@@ -160,6 +152,8 @@ prep_twelfth_grade_metrics AS (
     FROM gather_twelfth_grade_metrics
     GROUP BY site_short
 )
+
+#final kpi join
 SELECT 
     gd.site_short,
     kpi_10th.* EXCEPT(site_short),
@@ -177,7 +171,3 @@ GROUP BY
     cc_hs_accepted_affordable,
     cc_hs_applied_best_good_situational,
     cc_hs_accepted_best_good_situational 
-
-
-
-
