@@ -37,10 +37,8 @@ WITH GATHER AS
         WHERE g.contact_id=subq1.contact_id
         group by subq1.contact_id) AS total_affordable ,
         
-        (SELECT CASE WHEN SUM(student_has_aspirations) >= 6 AND SUM(aspirations_affordable) >=3 THEN 1 ELSE 0 END AS sum
-        FROM gather AS subq1 
-        WHERE g.contact_id=subq1.contact_id
-        group by subq1.contact_id) AS metric_met
+        CASE WHEN (SUM(g.student_has_aspirations) >= 6 AND SUM(g.aspirations_affordable) >=3) THEN 1 ELSE 0 END AS metric_met
+
         
     FROM gather as g
     join gather as subq1 ON g.contact_id=subq1.contact_id
