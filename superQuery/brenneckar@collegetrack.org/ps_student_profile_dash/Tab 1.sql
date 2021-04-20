@@ -12,6 +12,7 @@ SELECT
   attended_workshops_c,
   enrolled_sessions_c,
   Credits_Accumulated_c/100 AS Credits_Accumulated_c,
+  Overall_Rubric_Color
  
 FROM
   `data-warehouse-289815.salesforce_clean.contact_at_template`
