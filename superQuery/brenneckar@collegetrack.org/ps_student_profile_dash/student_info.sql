@@ -48,14 +48,17 @@ count_scholarship_applications AS (
   SELECT
     student_c,
     COUNT(Id) as num_scholarship_applications,
-    SUM(amount_awarded_c) AS sum_scholarship_applications
+    CASE WHEN status_c = 'Won' THEN SUM(amount_awarded_c)
+    ELSE NULL 
+    END AS sum_scholarship_applications
   FROM
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
   WHERE
     is_deleted = false
     AND scholarship_application_record_type_name != 'Bank Book'
   GROUP BY
-    student_c
+    student_c,
+    status_c
 ),
 join_data AS(
   SELECT
