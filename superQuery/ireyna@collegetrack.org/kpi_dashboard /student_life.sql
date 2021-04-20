@@ -1,11 +1,9 @@
-/*CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.student_life` 
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.student_life` 
 OPTIONS
     (
     description= "Aggregating Student Life KPI metrics for the Data Studio KPI dashboard"
     )
 AS
-
-*/
 
 WITH gather_contact_data AS(
     SELECT
@@ -49,7 +47,7 @@ gather_mse_data AS ( #current AY
     AND status_c = 'Approved'
 ),
 
-gather_attendance_data AS (
+gather_attendance_data AS ( #group attendance data by student first, aggregate at site level in prep_attendance_kpi
      SELECT 
         c.student_c, 
         CASE
