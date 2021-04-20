@@ -178,7 +178,7 @@ gather_twelfth_grade_metrics AS(
             END AS cc_hs_accepted_best_good_situational
     
     FROM gather_data_twelfth_grade
-    GROUP BY site_short,attendance_rate,accepted_enrolled_affordable,applied_accepted_affordable,applied_best_good_situational,accepted_enrolled_best_good_situational,applied_accepted_best_good_situational
+    #GROUP BY site_short,attendance_rate,accepted_enrolled_affordable,applied_accepted_affordable,applied_best_good_situational,accepted_enrolled_best_good_situational,applied_accepted_best_good_situational
 ),
 
 prep_tenth_grade_metrics AS (
@@ -192,9 +192,10 @@ prep_tenth_grade_metrics AS (
 prep_eleventh_grade_metrics AS (
     SELECT 
         site_short,
+        contact_id,
         SUM(cc_hs_aspirations) AS cc_hs_aspirations
     FROM gather_eleventh_grade_metrics
-    GROUP BY site_short
+    GROUP BY site_short, contact_id
 ),
 
 prep_twelfth_grade_metrics AS (
@@ -216,3 +217,4 @@ SELECT
         LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short
         LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short
         LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
+  
