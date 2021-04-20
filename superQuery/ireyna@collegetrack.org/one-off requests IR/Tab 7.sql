@@ -33,9 +33,8 @@ WITH GATHER AS
 
         
     FROM gather as g
-    join gather as subq1 ON g.contact_id=subq1.contact_id
     
-    group by g.site_short,g.contact_id
+    group by g.site_short
 )
 
 SELECT 
