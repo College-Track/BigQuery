@@ -40,7 +40,7 @@ WITH gather_contact_data AS (
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce.contact` PC ON PC.Id = C.primary_contact_c -- LEFT JOIN `data-warehouse-289815.salesforce.npe_4_relationship_c` R ON R.npe_4_contact_c = C.Contact_Id
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` ADG ON ADG.AT_Id = C.anticipated_date_of_graduation_4_year_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` ADG ON ADG.global_academic_semester_c = C.anticipated_date_of_graduation_4_year_c
     -- LEFT JOIN `data-warehouse-289815.salesforce.contact` EC ON EC.Id = R.npe_4_related_contact_c
   WHERE
     C.college_track_status_c IN ('15A')
