@@ -48,26 +48,40 @@ count_scholarship_applications AS (
   SELECT
     student_c,
     COUNT(Id) as num_scholarship_applications,
-    CASE WHEN status_c = 'Won' THEN SUM(amount_awarded_c)
-    ELSE NULL 
-    END AS sum_scholarship_applications
   FROM
     `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
   WHERE
     is_deleted = false
     AND scholarship_application_record_type_name != 'Bank Book'
   GROUP BY
-    student_c,
-    status_c
+    student_c
 ),
+
+sum_scholarship_applications AS (
+  SELECT
+    student_c,
+    SUM(amount_awarded_c) AS sum_scholarship_applications
+
+  FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+  WHERE
+    is_deleted = false
+    AND scholarship_application_record_type_name != 'Bank Book'
+    AND status_c = 'Won'
+  GROUP BY
+    student_c
+),
+
 join_data AS(
   SELECT
     GCD.*,
     CSA.num_scholarship_applications,
-    CSA.sum_scholarship_applications
+    SSA.sum_scholarship_applications
   FROM
     gather_contact_data GCD
     LEFT JOIN count_scholarship_applications CSA ON CSA.student_c = GCD.Contact_Id
+        LEFT JOIN sum_scholarship_applications SSA ON SSA.student_c = GCD.Contact_Id
+
 )
 SELECT
   *
