@@ -144,13 +144,14 @@ gather_data_twelfth_grade AS (
 
 gather_eleventh_grade_metrics AS (
  SELECT
-    site_short,
     contact_id,
+    site_short,
     CASE 
-        WHEN student_has_aspirations >= 6 AND aspirations_affordable >= 3 THEN 1
+        WHEN (SUM(student_has_aspirations) >= 6 AND SUM(aspirations_affordable) >= 3) THEN 1
         ELSE 0
         END AS cc_hs_aspirations
     FROM gather_data
+    GROUP BY contact_id,site_short,student_has_aspirations,aspirations_affordable
 ),
 
 gather_twelfth_grade_metrics AS(
