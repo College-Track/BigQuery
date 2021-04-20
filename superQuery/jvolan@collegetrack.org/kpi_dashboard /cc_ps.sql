@@ -97,12 +97,10 @@
     OR indicator_completed_ct_hs_program_c = true
 ),*/
 
-
+WITH persist_at_reporting_group AS
+(
     SELECT
-    Contact_Id,
-    count(AT_id) AS persist_denom,
-    sum(indicator_persisted_at_c) AS persist_num,
-    
+    Contact_Id AS reporting_group,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE
@@ -110,10 +108,21 @@
         AND AY_Name = 'AY 2020-21'
         AND term_c = 'Fall'
         AND AT_school_type IN ('2-year', '4-year'))
-    AND AY_Name = 'AY 2020-21'
+)
+
+    SELECT
+    contact_id,
+    count(AT_id) AS persist_denom,
+    sum(indicator_persisted_at_c) AS persist_num,
+    max(persist_at_reporting_group.reporting_group)
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    LEFT JOIN persist_at_reporting_group ON persist_at_reporting_group.reporting_group = contact_id
+
+    WHERE AY_Name = 'AY 2020-21'
     AND term_c != 'Summer'
     GROUP BY Contact_Id
-
+    
     
 /*
 cc_ps AS
