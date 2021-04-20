@@ -79,7 +79,7 @@ prep_attendance_kpi AS (
 aggregate_attendance_kpi AS (
     SELECT 
         student_c,
-        SUM(sl_above_80_attendance)
+        SUM(sl_above_80_attendance) AS sl_above_80_attendance
     FROM prep_attendance_kpi
     GROUP BY student_c
 ),
@@ -104,9 +104,14 @@ aggregate_mse_kpis AS (
 
 SELECT 
     site_short,
-    attendance_kpi.*,
-    mse_kpi.*
-    
+    attendance_kpi.* EXCEPT (student_c),
+    mse_kpi.* EXCEPT (contact_id)
     FROM aggregate_dream_kpi AS d 
         LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.contact_id=student_c
         LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.contact_id=mse_kpi.contact_id
+    GROUP BY
+        site_short,
+        total_mse_competitive,
+        total_mse_internship,
+        total_dreams,
+        sl_above_80_attendance
