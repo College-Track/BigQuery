@@ -52,6 +52,7 @@ gather_mse_data AS ( #current AY
 gather_attendance_data AS (
      SELECT 
         c.student_c, 
+        cat.site_short,
         CASE
             WHEN SUM(Attendance_Denominator_c) = 0 THEN NULL
             ELSE SUM(Attendance_Numerator_c) / SUM(Attendance_Denominator_c)
@@ -62,13 +63,14 @@ gather_attendance_data AS (
     WHERE Department_c = "Student Life"
     AND Cancelled_c = FALSE
     AND CAT.AY_Name = 'AY 2020-21'
-    GROUP BY c.student_c
+    GROUP BY c.student_c,site_short
 
 ),
 
 prep_attendance_kpi AS (
     SELECT 
         student_c,
+        site_short,
         CASE 
             WHEN sl_attendance_rate >= 0.8 THEN 1
             ELSE 0
@@ -78,37 +80,36 @@ prep_attendance_kpi AS (
 
 aggregate_attendance_kpi AS (
     SELECT 
-        student_c,
+        site_short,
         SUM(sl_above_80_attendance) AS sl_above_80_attendance
     FROM prep_attendance_kpi
-    GROUP BY student_c
+    GROUP BY site_short
 ),
 
 aggregate_dream_kpi AS (
     SELECT 
-        contact_id,
         site_short,
         SUM(dream_declared) as total_dreams
     FROM gather_contact_data
-    GROUP BY contact_id, site_short
+    GROUP BY site_short
 ),
 
 aggregate_mse_kpis AS (
     SELECT 
-        contact_id,
+        site_short,
         SUM(mse_competitive) AS total_mse_competitive,
         SUM(mse_internship) AS total_mse_internship
     FROM gather_mse_data
-    GROUP BY contact_id
+    GROUP BY site_short
 )
 
 SELECT 
-    site_short,
-    attendance_kpi.* EXCEPT (student_c),
-    mse_kpi.* EXCEPT (contact_id)
+    d.site_short,
+    attendance_kpi.* EXCEPT (site_short),
+    mse_kpi.* EXCEPT (site_short)
     FROM aggregate_dream_kpi AS d 
-        LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.contact_id=student_c
-        LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.contact_id=mse_kpi.contact_id
+        LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.site_short=attendance_kpi.site_short
+        LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.site_short=mse_kpi.site_short
     GROUP BY
         site_short,
         total_mse_competitive,
