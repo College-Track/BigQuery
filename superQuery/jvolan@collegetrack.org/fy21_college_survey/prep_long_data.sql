@@ -1,19 +1,7 @@
-WITH gather_data AS
+WITH gather_filter_data AS
 (
-    SELECT
-    Contact_Id AS PSSL_contact_id,
-    question,
-    answer,
-    section,
-    sub_section,
-    
-    FROM `data-studio-260217.surveys.fy21_ps_survey_long`
-),
-
-pssl_with_filters AS
-(   
     SELECT  
-    contact_id,
+    contact_id AS filter_contact_id,
     College_Track_Status_Name,
     region_short,
     site_short,
@@ -27,16 +15,28 @@ pssl_with_filters AS
     Current_Major_c,
     credit_accumulation_pace_c,
     Most_Recent_GPA_Cumulative_bucket,
-    gather_data.*
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    LEFT JOIN gather_data ON gather_data.PSSL_contact_id = Contact_Id
     WHERE college_track_status_c IN ('15A','16A','17A')
+),
+
+pssl_with_filter_data AS
+(
+    SELECT
+    gather_filter_data.* except(filter_contact_id),
+    Contact_Id,
+    question,
+    answer,
+    section,
+    sub_section,
+    
+    FROM `data-studio-260217.surveys.fy21_ps_survey_long`
+    LEFT JOIN gather_filter_data ON gather_filter_data.filter_contact_id = Contact_Id
 )
 
     SELECT
     *
-    FROM pssl_with_filters
+    FROM pssl_with_filter_data
 /*
 WITH gather_data AS (
   SELECT
