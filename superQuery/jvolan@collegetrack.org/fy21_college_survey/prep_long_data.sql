@@ -1,4 +1,4 @@
-WITH comms_freq AS
+WITH comms_nps_data AS
 (
 
     SELECT
@@ -21,23 +21,37 @@ WITH comms_freq AS
         WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Every week') THEN 5
         ELSE NULL
     END) AS future_comms_frequency,
+    max(CASE
+        WHEN (question = 'How likely are you to recommend College Track to a student who wants to graduate college?'
+        AND(answer = '10 - extremely likely'
+        OR answer = '9')) THEN 3
+        WHEN (question = 'How likely are you to recommend College Track to a student who wants to graduate college?'
+        AND(answer = '8'
+        OR answer = '7')) THEN 2
+        ELSE 1
+    END) AS NPS_bucket_num
     
     FROM `data-studio-260217.surveys.fy21_ps_survey_long`
     GROUP BY Contact_Id
 ),
 
-comms_bucket AS
+comms_nps_bucket AS
 (
     SELECT   
     comms_contact_id,
     CASE
-        WHEN comms_freq.current_comms_frequency = comms_freq.future_comms_frequency THEN 'Communication satisfactory'
-        WHEN comms_freq.current_comms_frequency > comms_freq.future_comms_frequency THEN 'Less communication desired'
-        WHEN comms_freq.current_comms_frequency < comms_freq.future_comms_frequency THEN 'More communication desired'
+        WHEN current_comms_frequency = future_comms_frequency THEN 'Communication satisfactory'
+        WHEN current_comms_frequency > future_comms_frequency THEN 'Less communication desired'
+        WHEN current_comms_frequency < future_comms_frequency THEN 'More communication desired'
         ELSE 'Could not predict future communication needs'
     END AS comms_bucket,
+    CASE    
+        WHEN NPS_bucket_num = 3 THEN 'Promoter'
+        WHEN NPS_bucket_num = 2 THEN 'Passive'
+        ELSE 'Detractor'
+    END AS NPS_bucket
     
-    FROM comms_freq
+    FROM comms_nps_data
 ),
 
 gather_filter_data AS
@@ -58,10 +72,12 @@ gather_filter_data AS
     school_type,
     Current_Major_c,
     credit_accumulation_pace_c,
-    comms_bucket.comms_bucket
+    comms_nps_bucket.comms_bucket,
+    comms_nps_bucket.nps_bucket
+
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    LEFT JOIN comms_bucket ON comms_bucket.comms_contact_id = contact_id
+    LEFT JOIN comms_nps_bucket ON comms_nps_bucket.comms_contact_id = contact_id
     WHERE college_track_status_c IN ('15A','16A','17A')
 ),
 
@@ -74,10 +90,13 @@ pssl_with_filter_data AS
     sub_section,
     question,
     CASE
-        WHEN
+    -- clean NPS
+    WHEN
         (question = 'How likely are you to recommend College Track to a student who wants to graduate college?'
         AND answer = '10 - extremely likely') THEN '10'
-        Else answer
+
+    
+    Else answer
     END AS answer,
     gather_filter_data.* except(filter_contact_id),
 
