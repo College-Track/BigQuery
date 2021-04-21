@@ -1,4 +1,4 @@
-WITH gather_data AS
+WITH gather_filter_data AS
 (   
     SELECT  
     contact_id,
@@ -8,15 +8,21 @@ WITH gather_data AS
     high_school_graduating_class_c,
     Ethnic_background_c,
     Gender_c,
-    current_cc_advisor_2_c
+    current_cc_advisor_2_c, 
+    readiness_composite_off_c,
+    college_eligibility_gpa_11th_grade,
+    school_type,
+    Current_Major_c,
+    credit_accumulation_pace_c,
+    Most_Recent_GPA_Cumulative_bucket,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    WHERE college_track_status_c = '15A'
+    WHERE college_track_status_c IN ('15A','16A','17A')
 )
 
     SELECT
     *
-    FROM gather_data
+    FROM gather_filter_data
 
     
     
