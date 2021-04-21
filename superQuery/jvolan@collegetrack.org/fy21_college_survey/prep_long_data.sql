@@ -102,7 +102,7 @@ gather_filter_data AS
 pssl_with_filter_data AS
 (
     SELECT
-    Contact_Id,
+    Contact_Id AS test,
     section,
     sub_section,
     question,
