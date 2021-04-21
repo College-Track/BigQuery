@@ -7,8 +7,8 @@ GROUP BY CT.site_short
 )
 
 SELECT GD.site_short,
-MAX(GD.completion_count) AS completion_count,
-SUM(SC.student_count) AS student_denominator
+MAX(GD.completion_count) AS om_hs_completion_count,
+SUM(SC.student_count) AS om_hs_survey_denominator
 from gather_data GD
 LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_completion` SC ON SC.site_short = GD.site_short
 GROUP BY GD.site_short
