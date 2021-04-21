@@ -23,13 +23,13 @@ WITH gather_filter_data AS
 pssl_with_filter_data AS
 (
     SELECT
-    gather_filter_data.* except(filter_contact_id),
     Contact_Id,
-    question,
-    answer,
     section,
     sub_section,
-    
+    question,
+    answer,
+    gather_filter_data.* except(filter_contact_id),
+
     FROM `data-studio-260217.surveys.fy21_ps_survey_long`
     LEFT JOIN gather_filter_data ON gather_filter_data.filter_contact_id = Contact_Id
 )
