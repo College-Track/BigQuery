@@ -94,8 +94,12 @@ pssl_with_filter_data AS
     WHEN
         (question = 'How likely are you to recommend College Track to a student who wants to graduate college?'
         AND answer = '10 - extremely likely') THEN '10'
-
-    
+    --clean export typos
+    WHEN answer = 'ExtremelyInterested' THEN 'Extremely Interested'
+    WHEN answer = 'VeryInterested' THEN 'Very Interested'
+    WHEN answer = 'ModeratelyInterested' THEN 'Moderately Interested'
+    WHEN answer = 'SlightlyInterested' THEN 'Slightly Interested'
+    WHEN answer = 'NotInterested' THEN 'Not Interested'
     Else answer
     END AS answer,
     gather_filter_data.* except(filter_contact_id),
