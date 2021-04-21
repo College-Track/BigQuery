@@ -61,8 +61,8 @@ bucket_calc AS
         ELSE 'Detractor'
     END AS NPS_bucket,
     CASE
-        WHEN (covid_college_num = 3 AND covid_living_num = 3) THEN 'In-Person'
-        WHEN (covid_college_num = 1 AND covid_living_num = 1) THEN 'Remote Only'
+        WHEN (covid_college_num = 3 AND covid_living_num = 3) THEN 'In person only'
+        WHEN (covid_college_num = 1 AND covid_living_num = 1) THEN 'Remote only'
         ELSE "Mix of remote & in-person"
     END AS covid_bucket
     
