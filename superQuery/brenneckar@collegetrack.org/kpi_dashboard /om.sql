@@ -15,10 +15,10 @@ WITH gather_data AS (
 SELECT
   GD.site_short,
   COUNT(GD.contact_Id) AS om_hs_completion_count,
-  SUM(SC.student_count) AS om_hs_survey_denominator,
+--   SUM(SC.student_count) AS om_hs_survey_denominator,
   SUM(agree_site_is_run_effectively) AS OM_agree_site_is_run_effectively
 from
   gather_data GD
-  LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_completion` SC ON SC.site_short = GD.site_short
+--   LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_completion` SC ON SC.site_short = GD.site_short
 GROUP BY
   GD.site_short
