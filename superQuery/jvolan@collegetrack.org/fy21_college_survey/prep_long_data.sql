@@ -10,11 +10,12 @@ WITH gather_filter_data AS
     Gender_c,
     current_cc_advisor_2_c, 
     readiness_composite_off_c,
-    college_eligibility_gpa_11th_grade,
+    `data-warehouse-289815.UDF.determine_buckets` (college_eligibility_gpa_11th_grade,.25,2.5,3.75,"") AS college_elig_gpa_bucket,
+    `data-warehouse-289815.UDF.sort_created_buckets`(college_eligibility_gpa_11th_grade,.25,2.5,3.75) AS college_elig_gpa_sort,
+    Most_Recent_GPA_Cumulative_bucket,
     school_type,
     Current_Major_c,
     credit_accumulation_pace_c,
-    Most_Recent_GPA_Cumulative_bucket,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE college_track_status_c IN ('15A','16A','17A')
