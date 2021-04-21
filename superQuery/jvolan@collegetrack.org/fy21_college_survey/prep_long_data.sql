@@ -1,4 +1,45 @@
-WITH gather_filter_data AS
+WITH comms_freq AS
+(
+
+    SELECT
+    Contact_Id AS comms_contact_id,
+    CASE    
+        WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'I have not had any interaction with my advisor to date /Not sure who my advisor is') THEN 0
+        WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'About once a year') THEN 1
+        WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'Once every other month') THEN 2
+        WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'Once a month') THEN 3
+        WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'Twice a month') THEN 4
+        WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'Every week') THEN 5
+        ELSE NULL
+    END AS current_comms_frequency,
+    CASE
+        WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'I do not wish to be contacted by an advisor') THEN 0
+        WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'About once a year') THEN 1
+        WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Once every other month') THEN 2
+        WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Once a month') THEN 3
+        WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Twice a month') THEN 4
+        WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Every week') THEN 5
+        ELSE NULL
+    END AS future_comms_frequency,
+    
+    FROM `data-studio-260217.surveys.fy21_ps_survey_long`
+),
+
+comms_bucket AS
+(
+    SELECT   
+    comms_contact_id,
+    CASE
+        WHEN comms_freq.current_comms_frequency = comms_freq.future_comms_frequency THEN 'Communication satisfactory'
+        WHEN comms_freq.current_comms_frequency > comms_freq.future_comms_frequency THEN 'Less communication desired'
+        WHEN comms_freq.current_comms_frequency < comms_freq.future_comms_frequency THEN 'More communication desired'
+        ELSE ""
+    END AS comms_bucket,
+    
+    FROM comms_freq
+),
+
+gather_filter_data AS
 (
     SELECT  
     contact_id AS filter_contact_id,
@@ -16,11 +57,14 @@ WITH gather_filter_data AS
     school_type,
     Current_Major_c,
     credit_accumulation_pace_c,
+    comms_bucket.comms_bucket
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    LEFT JOIN comms_bucket ON comms_bucket.comms_contact_id = contact_id
     WHERE college_track_status_c IN ('15A','16A','17A')
 ),
 
+    
 pssl_with_filter_data AS
 (
     SELECT
@@ -34,6 +78,7 @@ pssl_with_filter_data AS
         AND answer = '10 - extremely likely') THEN '10'
         Else answer
     END AS answer_clean,
+    
     gather_filter_data.* except(filter_contact_id),
 
     FROM `data-studio-260217.surveys.fy21_ps_survey_long`
@@ -43,6 +88,9 @@ pssl_with_filter_data AS
     SELECT
     *
     FROM pssl_with_filter_data
+    
+
+
 /*
 WITH gather_data AS (
   SELECT
