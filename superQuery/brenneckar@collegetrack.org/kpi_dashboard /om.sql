@@ -23,7 +23,7 @@ GROUP BY site_short
 SELECT
   GSD.site_short,
   COUNT(GSD.contact_Id) AS om_hs_completion_count,
-  SUM(SC.student_count) AS om_hs_survey_denominator,
+  MAX(SC.student_count) AS om_hs_survey_denominator,
   SUM(GSD.agree_site_is_run_effectively) AS OM_agree_site_is_run_effectively
 from
   gather_survey_data GSD
