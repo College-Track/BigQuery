@@ -1,6 +1,8 @@
 WITH gather_data AS
 (   
     SELECT  
+    contact_id,
+    college_track_status_c,
     region_short,
     site_short,
     high_school_graduating_class_c,
@@ -9,6 +11,7 @@ WITH gather_data AS
     current_cc_advisor_2_c
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE college_track_status_c = '15A'
 )
 
     SELECT
