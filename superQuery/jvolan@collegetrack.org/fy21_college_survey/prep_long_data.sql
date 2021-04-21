@@ -1,8 +1,8 @@
-WITH comms_nps_data AS
+WITH bucket_data AS
 (
 
     SELECT
-    Contact_Id AS comms_contact_id,
+    Contact_Id AS bucket_contact_id,
     max(CASE    
         WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'I have not had any interaction with my advisor to date /Not sure who my advisor is') THEN 0
         WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'About once a year') THEN 1
@@ -29,16 +29,26 @@ WITH comms_nps_data AS
         AND(answer = '8'
         OR answer = '7')) THEN 2
         ELSE 1
-    END) AS NPS_bucket_num
+    END) AS NPS_bucket_num,
+    max(CASE
+        WHEN (question = 'What format best describes your college experience during this current school year?Help note: classes, office hours, study groups, tutoring, participation in clubs or campus groups, etc.' AND answer = 'In person only - All my classes & college activities have been in person and on my college campus') THEN 3
+        WHEN (question = 'What format best describes your college experience during this current school year?Help note: classes, office hours, study groups, tutoring, participation in clubs or campus groups, etc.' AND answer = 'Mixed - For part of this year my college classes & related activities have been in person on my college campus but other times they were remote/online only (ie zoom, online learning, recorded lessons, virtual study groups, etc.)') THEN 2
+        ELSE 1
+    END) AS covid_college_num,
+    max(CASE
+        WHEN (question = 'Which choice best represents your living situation during this current school year?' AND (answer = 'Living in on-campus housing on college campus'OR answer = 'Living off-campus housing next to or near college campus')) THEN 3
+        WHEN (question = 'Which choice best represents your living situation during this current school year?' AND (answer = "Mixed - part of the year living on or near campus AND part of the year remote (at home, parent's house, relatives, etc.)" OR answer = 'Other')) THEN 2
+        ELSE 1
+    END) AS covid_living_num,
     
     FROM `data-studio-260217.surveys.fy21_ps_survey_long`
     GROUP BY Contact_Id
 ),
 
-comms_nps_bucket AS
+bucket_calc AS
 (
     SELECT   
-    comms_contact_id,
+    bucket_contact_id,
     CASE
         WHEN current_comms_frequency = future_comms_frequency THEN 'Communication satisfactory'
         WHEN current_comms_frequency > future_comms_frequency THEN 'Less communication desired'
@@ -49,9 +59,14 @@ comms_nps_bucket AS
         WHEN NPS_bucket_num = 3 THEN 'Promoter'
         WHEN NPS_bucket_num = 2 THEN 'Passive'
         ELSE 'Detractor'
-    END AS NPS_bucket
+    END AS NPS_bucket,
+    CASE
+        WHEN (covid_college_num = 3 AND covid_living_num = 3) THEN 'In-Person'
+        WHEN (covid_college_num = 1 AND covid_living_num = 1) THEN 'Remote Only'
+        ELSE "Mix of remote & in-person"
+    END AS covid_bucket
     
-    FROM comms_nps_data
+    FROM bucket_data
 ),
 
 gather_filter_data AS
@@ -72,12 +87,14 @@ gather_filter_data AS
     school_type,
     Current_Major_c,
     credit_accumulation_pace_c,
-    comms_nps_bucket.comms_bucket,
-    comms_nps_bucket.nps_bucket
+    bucket_calc.comms_bucket,
+    bucket_calc.nps_bucket,
+    bucket_calc.covid_bucket,
+
 
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    LEFT JOIN comms_nps_bucket ON comms_nps_bucket.comms_contact_id = contact_id
+    LEFT JOIN bucket_calc ON bucket_calc.bucket_contact_id = contact_id
     WHERE college_track_status_c IN ('15A','16A','17A')
 ),
 
