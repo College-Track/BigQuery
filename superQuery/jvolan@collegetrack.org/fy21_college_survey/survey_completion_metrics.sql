@@ -2,7 +2,7 @@ WITH gather_data AS
 (   
     SELECT  
     contact_id,
-    college_track_status_c,
+    College_Track_Status_Name,
     region_short,
     site_short,
     high_school_graduating_class_c,
