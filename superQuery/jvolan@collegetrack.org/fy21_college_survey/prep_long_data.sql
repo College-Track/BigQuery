@@ -3,7 +3,7 @@ WITH comms_freq AS
 
     SELECT
     Contact_Id AS comms_contact_id,
-    CASE    
+    max(CASE    
         WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'I have not had any interaction with my advisor to date /Not sure who my advisor is') THEN 0
         WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'About once a year') THEN 1
         WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'Once every other month') THEN 2
@@ -11,8 +11,8 @@ WITH comms_freq AS
         WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'Twice a month') THEN 4
         WHEN (question = 'How often are you in touch with your College Track advisor?' AND answer = 'Every week') THEN 5
         ELSE NULL
-    END AS current_comms_frequency,
-    CASE
+    END) AS current_comms_frequency,
+    max(CASE
         WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'I do not wish to be contacted by an advisor') THEN 0
         WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'About once a year') THEN 1
         WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Once every other month') THEN 2
@@ -20,9 +20,10 @@ WITH comms_freq AS
         WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Twice a month') THEN 4
         WHEN (question = 'Ideally, during the next term, how often would you find it useful to be in touch with your College Track advisor?' AND answer = 'Every week') THEN 5
         ELSE NULL
-    END AS future_comms_frequency,
+    END) AS future_comms_frequency,
     
     FROM `data-studio-260217.surveys.fy21_ps_survey_long`
+    GROUP BY Contact_Id
 ),
 
 comms_bucket AS
