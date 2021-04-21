@@ -34,7 +34,7 @@ comms_bucket AS
         WHEN comms_freq.current_comms_frequency = comms_freq.future_comms_frequency THEN 'Communication satisfactory'
         WHEN comms_freq.current_comms_frequency > comms_freq.future_comms_frequency THEN 'Less communication desired'
         WHEN comms_freq.current_comms_frequency < comms_freq.future_comms_frequency THEN 'More communication desired'
-        ELSE ""
+        ELSE 'Could not predict future communication needs'
     END AS comms_bucket,
     
     FROM comms_freq
