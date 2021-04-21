@@ -10,7 +10,7 @@ WITH gather_filter_data AS
     Gender_c,
     current_cc_advisor_2_c, 
     readiness_composite_off_c,
-    `data-warehouse-289815.UDF.determine_buckets` (college_eligibility_gpa_11th_grade,.25,2.5,3.75,"testing") AS college_eligibility_gpa_bucket,
+    `data-warehouse-289815.UDF.determine_buckets` (college_eligibility_gpa_11th_grade,.25,2.5,3.75," %") AS college_eligibility_gpa_bucket,
     Most_Recent_GPA_Cumulative_bucket,
     school_type,
     Current_Major_c,
