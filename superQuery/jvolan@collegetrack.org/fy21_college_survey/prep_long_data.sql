@@ -78,8 +78,7 @@ pssl_with_filter_data AS
         (question = 'How likely are you to recommend College Track to a student who wants to graduate college?'
         AND answer = '10 - extremely likely') THEN '10'
         Else answer
-    END AS answer_clean,
-    
+    END AS answer,
     gather_filter_data.* except(filter_contact_id),
 
     FROM `data-studio-260217.surveys.fy21_ps_survey_long`
