@@ -117,6 +117,8 @@ pssl_with_filter_data AS
     WHEN answer = 'ModeratelyInterested' THEN 'Moderately Interested'
     WHEN answer = 'SlightlyInterested' THEN 'Slightly Interested'
     WHEN answer = 'NotInterested' THEN 'Not Interested'
+    WHEN answer = 'StronglyDisagree' THEN 'Strongly Disagree'
+    WHEN answer = 'StronglyAgree' THEN 'Strongly Agree'
     Else answer
     END AS answer,
     gather_filter_data.* except(filter_contact_id),
