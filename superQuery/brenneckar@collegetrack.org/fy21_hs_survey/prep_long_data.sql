@@ -48,9 +48,27 @@ WITH gather_data AS (
   WHERE
     HSSL.Contact_Id IS NOT NULL
     AND site_short IS NOT NULL
-)
+),
+
+ student_prior_215 AS(
+  SELECT
+    contact_id
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_template`
+  WHERE
+    College_Track_Status_c IN ('11A', '12A', '18a')
+    AND Contact_Id NOT IN (
+      SELECT
+        Contact_c
+      FROM
+        `data-warehouse-289815.salesforce.contact_pipeline_history_c`
+      WHERE
+        created_date >= '2021-02-17T22:00:00.000Z'
+        AND Name = 'Started/Restarted CT HS Program'
+    )
+    )
 SELECT
-  *
+  GD.*
 EXCEPT
   (answer),
   CASE
@@ -87,6 +105,10 @@ EXCEPT
     WHEN answer = 'Somewhat Helpful' THEN 'Somewhat helpful'
     WHEN answer = 'Yes, I have taken part in Math Blast or summer math specific programming at CT' THEN 'Yes, I have taken part in math specific programming or workshops at CT'
     ELSE answer
-  END AS answer
+  END AS answer,
+  CASE WHEN SP.Contact_Id IS NOT NULL THEN "Joined Prior to 2/15"
+  ELSE NULL
+  END AS joined_prior 
 FROM
-  gather_data
+  gather_data GD
+  LEFT JOIN student_prior_215 SP ON SP.contact_id = GD.Contact_Id
