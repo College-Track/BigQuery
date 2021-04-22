@@ -1,10 +1,3 @@
-CREATE OR REPLACE TABLE `data-studio-260217.surveys.fy21_ps_survey_wide_prepped`
-OPTIONS
-    (
-    description= "fy21 ps survey wide prepped"
-    )
-AS
-
 WITH bucket_data AS
 (
 
