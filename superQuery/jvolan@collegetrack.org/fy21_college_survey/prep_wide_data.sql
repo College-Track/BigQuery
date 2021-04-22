@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `data-studio-260217.surveys.fy21_ps_survey_wide_prepped`
+OPTIONS
+    (
+    description= "fy21 ps survey wide prepped"
+    )
+AS
+
 WITH bucket_data AS
 (
 
@@ -103,8 +110,6 @@ gather_filter_data AS
         ELSE 0
     END AS detractors_count,
     bucket_calc.covid_bucket,
-    bucket_calc.nps_promoter_count,
-    bucket_calc.nps_detractor_count,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN bucket_calc ON bucket_calc.bucket_contact_id = contact_id
@@ -114,7 +119,6 @@ gather_filter_data AS
 
     SELECT
     *,
-    gather_filter_data.* except (filter_contact_id)
-    
+
     FROM `data-studio-260217.surveys.fy21_ps_survey`
     LEFT JOIN gather_filter_data ON gather_filter_data.filter_contact_id = contact_id
