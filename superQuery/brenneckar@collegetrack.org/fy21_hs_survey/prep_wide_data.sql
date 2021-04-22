@@ -57,8 +57,8 @@ SELECT
   CASE WHEN NPS_Score = 'Detractors' THEN 1
   ELSE 0
   END AS detractors,
-  CASE WHEN SP.Contact_Id IS NOT NULL THEN "Joined Prior to 2/15"
-  ELSE NULL
+    CASE WHEN SP.Contact_Id IS NOT NULL THEN "Joined Prior to 2/15 ; All Students"
+  ELSE "All Students"
   END AS joined_prior 
 FROM
   gather_data GD
