@@ -5,6 +5,12 @@ OPTIONS
     )
 AS
 
+SELECT
+    *,
+
+    FROM `data-studio-260217.surveys.fy21_ps_survey`
+    LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.filter_contact_id = contact_id
+
 /*WITH bucket_data AS
 (
 
@@ -118,8 +124,4 @@ gather_filter_data AS
 )
 */
 
-    SELECT
-    *,
-
-    FROM `data-studio-260217.surveys.fy21_ps_survey`
-    LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.filter_contact_id = contact_id
+    
