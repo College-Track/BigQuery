@@ -50,7 +50,7 @@ student_prior_215 AS(
     )
     )
 SELECT
-  *,
+  GD.*,
   CASE WHEN NPS_Score = 'Promoters' THEN 1
   ELSE 0
   END AS promoters,
