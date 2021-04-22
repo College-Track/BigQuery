@@ -1,3 +1,11 @@
+
+CREATE OR REPLACE TABLE `data-studio-260217.surveys.fy21_ps_survey_long_prepped`
+OPTIONS
+    (
+    description= "fy21 ps survey long prepped"
+    )
+AS
+
 WITH bucket_data AS
 (
 
@@ -102,7 +110,7 @@ gather_filter_data AS
 pssl_with_filter_data AS
 (
     SELECT
-    Contact_Id AS test,
+    Contact_Id,
     section,
     sub_section,
     question,
