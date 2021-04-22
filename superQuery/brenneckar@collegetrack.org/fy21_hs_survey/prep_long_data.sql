@@ -106,8 +106,8 @@ EXCEPT
     WHEN answer = 'Yes, I have taken part in Math Blast or summer math specific programming at CT' THEN 'Yes, I have taken part in math specific programming or workshops at CT'
     ELSE answer
   END AS answer,
-  CASE WHEN SP.Contact_Id IS NOT NULL THEN "Joined Prior to 2/15"
-  ELSE NULL
+  CASE WHEN SP.Contact_Id IS NOT NULL THEN "Joined Prior to 2/15 ; All Students"
+  ELSE "All Students"
   END AS joined_prior 
 FROM
   gather_data GD
