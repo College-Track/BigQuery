@@ -1,4 +1,11 @@
-WITH bucket_data AS
+CREATE OR REPLACE TABLE `data-studio-260217.surveys.fy21_ps_survey_wide_prepped`
+OPTIONS
+    (
+    description= "fy21 ps survey wide prepped"
+    )
+AS
+
+/*WITH bucket_data AS
 (
 
     SELECT
@@ -109,9 +116,10 @@ gather_filter_data AS
     WHERE college_track_status_c IN ('15A','16A','17A')
     
 )
+*/
 
     SELECT
     *,
 
     FROM `data-studio-260217.surveys.fy21_ps_survey`
-    LEFT JOIN gather_filter_data ON gather_filter_data.filter_contact_id = contact_id
+    LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.filter_contact_id = contact_id
