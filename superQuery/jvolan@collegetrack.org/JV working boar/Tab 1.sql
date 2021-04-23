@@ -7,6 +7,5 @@ SELECT
     who_id,
     
     FROM `data-warehouse-289815.salesforce.task`
-    WHERE who_id IS NULL
-    AND (what_id LIKE '%(Semester)%'
-    OR what_id LIKE '%(Quarter)%')
+    WHERE what_id LIKE '%(Semester)%'
+    OR what_id LIKE '%(Quarter)%'
