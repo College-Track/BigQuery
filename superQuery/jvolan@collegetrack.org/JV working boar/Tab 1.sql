@@ -1,4 +1,14 @@
-WITH get_tasks_missing_student AS
+WITH get_AT_data AS
+(
+    SELECT
+    AT_Id,
+    student_c,
+
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE college_track_status_c = '15A'
+),
+
+get_tasks_missing_student AS
 (
     SELECT
     id AS task_id,
@@ -13,20 +23,11 @@ WITH get_tasks_missing_student AS
     WHERE who_id IS NULL
     AND (what_id LIKE '%(Semester)%'
     OR what_id LIKE '%(Quarter)%')
-),
-
-AT_match AS
-(
-    SELECT
-    AT_Id,
-    student_c,
-    get_tasks_missing_student.*,
-    
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    LEFT JOIN get_tasks_missing_student ON what_id = AT_Id
-    
 )
 
     SELECT
-    *
-    FROM AT_match
+    *,
+    get_AT_data.student_c
+    
+    FROM get_tasks_missing_student
+    LEFT JOIN get_AT_data ON get_AT_data.AT_Id = what_id
