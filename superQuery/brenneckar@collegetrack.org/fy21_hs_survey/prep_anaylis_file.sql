@@ -13,12 +13,21 @@ WITH gather_data AS (
     `data-studio-260217.surveys.determine_positive_answers`(i_make_it_a_priority_to_attend_my_ct_sessions_workshops) AS i_make_it_a_priority_to_attend_my_ct_sessions_workshops,
     `data-studio-260217.surveys.determine_positive_answers`(my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site) AS my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site,
     
+    `data-studio-260217.surveys.determine_positive_answers`(inside_your_college_track_center) AS inside_your_college_track_center,
+    `data-studio-260217.surveys.determine_positive_answers`(in_the_area_outside_your_center) AS in_the_area_outside_your_center,
+    `data-studio-260217.surveys.determine_positive_answers`(i_believe_earning_a_college_degree_will_help_me_achieve_my_dreams_and_improv) AS i_believe_earning_a_college_degree_will_help_me_achieve_my_dreams_and_improv,
+    `data-studio-260217.surveys.determine_positive_answers`(college_track_keeps_my_parents_informed_about_my_progress_to_college) AS college_track_keeps_my_parents_informed_about_my_progress_to_college,
+    `data-studio-260217.surveys.determine_positive_answers`(check_ins_with_ct_staff_academic_coaches_success_coaches_etc) AS check_ins_with_ct_staff_academic_coaches_success_coaches_etc,
+    `data-studio-260217.surveys.determine_positive_answers`(credit_recovery_courses_opportunities) AS credit_recovery_courses_opportunities,
+    `data-studio-260217.surveys.determine_positive_answers`(academic_resources_e_g_textbooks_computers) AS academic_resources_e_g_textbooks_computers,
+    `data-studio-260217.surveys.determine_positive_answers`(academic_advising_e_g_study_habits_learning_about_college_eligible_vs_competitiv) AS academic_advising_e_g_study_habits_learning_about_college_eligible_vs_competitiv,
+    `data-studio-260217.surveys.determine_positive_answers`(ct_helps_me_better_understand_what_im_learning_in_my_high_school_classes) AS ct_helps_me_better_understand_what_im_learning_in_my_high_school_classes,
+    `data-studio-260217.surveys.determine_positive_answers`(cts_support_has_increased_my_confidence_when_taking_practice_official_college_en) AS cts_support_has_increased_my_confidence_when_taking_practice_official_college_en,
+    `data-studio-260217.surveys.determine_positive_answers`(ct_helps_me_better_understand_that_i_am_in_control_of_my_academic_performance) AS ct_helps_me_better_understand_that_i_am_in_control_of_my_academic_performance,
     
     
     
-    
-    `data-studio-260217.surveys.determine_positive_answers`(academic_resources_e_g_textbooks_computers) AS  academic_resources_e_g_textbooks_computers,
-    
+
   FROM
     `data-studio-260217.surveys.fy21_hs_survey` HSS
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CAT ON CAT.Contact_Id = HSS.contact_id
