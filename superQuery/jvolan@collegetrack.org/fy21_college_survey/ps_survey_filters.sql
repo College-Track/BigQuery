@@ -1,10 +1,3 @@
-CREATE OR REPLACE TABLE `data-studio-260217.surveys.fy21_ps_survey_filters_clean`
-OPTIONS
-    (
-    description= "fy21 ps survey filters with contact ID for use in other tables"
-    )
-AS
-
 WITH bucket_data AS
 (
 
@@ -115,4 +108,3 @@ bucket_calc AS
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN bucket_calc ON bucket_calc.bucket_contact_id = contact_id
     WHERE college_track_status_c IN ('15A','16A','17A')
-    
