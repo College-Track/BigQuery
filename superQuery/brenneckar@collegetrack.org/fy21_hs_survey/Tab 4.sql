@@ -2,7 +2,6 @@ CREATE
 OR REPLACE FUNCTION `data-studio-260217.surveys.determine_positive_answers`(
   answer STRING
 ) RETURNS INT64 LANGUAGE js AS """
-function determine_positive_answers(answer){    
     var positive_answers = [
         "Strongly Agree",
         'Agree',
@@ -22,8 +21,7 @@ function determine_positive_answers(answer){
     else{
         return (0)
     }    
-}
-determine_positive_answers(answer)
+
 ;
     
 """;
