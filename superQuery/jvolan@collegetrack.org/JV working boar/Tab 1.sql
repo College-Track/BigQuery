@@ -10,6 +10,8 @@ WITH get_tasks_missing_student AS
     
     
     FROM `data-warehouse-289815.salesforce.task`
+    WHERE what_id IS NOT NULL
+    AND who_id IS NULL
 ),
 
 AT_match AS
