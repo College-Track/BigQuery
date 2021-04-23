@@ -2,7 +2,7 @@ WITH gather_data AS (
   SELECT
     HSS.contact_id,
     CAT.site_short,
-    CAT.Most_Recent_GPA_Cumulative_bucket,
+    CAT.Most_Recent_GPA_Cumulative_c,
     CAT.high_school_graduating_class_c,
     CAT.Gender_c,
     CAT.Ethnic_background_c,
@@ -79,8 +79,7 @@ WITH gather_data AS (
     `data-studio-260217.surveys.determine_positive_answers`(i_understand_my_options_when_it_comes_to_paying_for_college) AS i_understand_my_options_when_it_comes_to_paying_for_college,
     `data-studio-260217.surveys.determine_positive_answers`(i_understand_where_to_find_and_how_to_apply_for_scholarships_to_help_pay_for_col) AS i_understand_where_to_find_and_how_to_apply_for_scholarships_to_help_pay_for_col,
     `data-studio-260217.surveys.determine_positive_answers`(how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get) AS nps_score
-    
-    
+
 
   FROM
     `data-studio-260217.surveys.fy21_hs_survey` HSS
