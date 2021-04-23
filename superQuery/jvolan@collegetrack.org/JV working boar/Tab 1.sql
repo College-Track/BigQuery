@@ -21,9 +21,9 @@ get_tasks_missing_student AS
     who_id AS name,
     get_AT_data.AT_Id,
     get_AT_data.AT_Name,
+    get_AT_data.full_name_c,
     get_AT_data.contact_id,
-    get_AT_data.full_name_c
-    
+
     FROM `data-warehouse-289815.salesforce.task`
     LEFT JOIN get_AT_data ON get_AT_data.AT_Id = what_id
 )
