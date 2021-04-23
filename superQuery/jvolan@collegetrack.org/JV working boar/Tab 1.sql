@@ -24,7 +24,8 @@ get_tasks_missing_student AS
     get_AT_data.AT_Name,
     get_AT_data.full_name_c,
     get_AT_data.contact_id,
-    get_AT_data.College_Track_Status_Name
+    get_AT_data.College_Track_Status_Name,
+    is_deleted
 
 
     FROM `data-warehouse-289815.salesforce.task`
