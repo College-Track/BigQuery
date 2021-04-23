@@ -20,9 +20,10 @@ OR REPLACE FUNCTION `data-studio-260217.surveys.determine_positive_answers`(
         return (1)
         }
         
-    else{
-        return (0)
+    else if (answer == null{
+        return (null)
     }    
+    else{return 0}
 
 ;
     
