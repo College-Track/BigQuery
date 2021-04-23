@@ -30,6 +30,7 @@ get_tasks_missing_student AS
 
     FROM `data-warehouse-289815.salesforce.task`
     LEFT JOIN get_AT_data ON get_AT_data.AT_Id = what_id
+    WHERE is_deleted = false
 )
 
     SELECT
