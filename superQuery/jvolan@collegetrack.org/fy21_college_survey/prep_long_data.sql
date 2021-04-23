@@ -22,6 +22,7 @@ WITH pssl_with_filter_data AS
         WHEN question = "My college is culturally competentHelp Note: I felt that the adults on campus helping me with academics, financial, and career counseling understood my values." THEN "My college is culturally competent"
         WHEN question = "My parent(s) were involved and supportive during my transition to collegeHelp Note: If your main caregiver/guardian(s) was another adult (Grandparent(s), Aunt/Uncle, Legal Guardian, etc.), please answer this question with them in mind." THEN "My parent(s) were involved and supportive during my transition to college"
         WHEN question = "I knew who to contact at College Track to get advice or helpHelp Note: For example help accessing your bank book money or talking about your experiences as a new college student." THEN "I knew who to contact at College Track to get advice or help"
+        WHEN question = "I understood what academic supports would be available to me on campus (or online on college website if remote) Help note: tutoring, writing center, math help, study groups, office hours, etc." THEN "I understood what academic supports would be available to me on campus (or online on college website if remote)"
         ELSE question
     END AS question,
     CASE
