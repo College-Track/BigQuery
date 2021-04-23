@@ -89,3 +89,4 @@ WITH pssl_with_filter_data AS
     `data-studio-260217.surveys.determine_positive_answers` (answer) AS positive_answer
 
     FROM pssl_with_filter_data
+    WHERE sort_column IS NOT NULL
