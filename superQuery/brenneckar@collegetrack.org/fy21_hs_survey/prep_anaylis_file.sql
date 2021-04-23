@@ -5,7 +5,7 @@ WITH gather_data AS (
     CAT.Most_Recent_GPA_Cumulative_bucket,
     CAT.high_school_graduating_class_c,
     academic_resources_e_g_textbooks_computers,
-    `data-studio-260217.surveys.determine_positive_answers`(academic_resources_e_g_textbooks_computers) AS  academic_resources_e_g_textbooks_computers,
+    `data-studio-260217.surveys.determine_positive_answers`(academic_resources_e_g_textbooks_computers) AS  academic_resources_e_g_textbooks_computers_positive,
     CASE
       WHEN (
         how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '10 - extremely likely'
