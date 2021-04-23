@@ -4,6 +4,8 @@ WITH gather_data AS (
     CAT.site_short,
     CAT.Most_Recent_GPA_Cumulative_bucket,
     CAT.high_school_graduating_class_c,
+            CAT.Ethnic_background_c,
+    CAT.Gender_c
     the_most_valuable_part_of_college_track_for_me_is,
     the_main_reason_i_am_excited_to_keep_coming_to_college_track_is,
     a_service_resource_that_college_track_provides_that_i_wish_i_received_more_o,
