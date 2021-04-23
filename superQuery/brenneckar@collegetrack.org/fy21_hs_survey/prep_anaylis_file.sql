@@ -4,6 +4,9 @@ WITH gather_data AS (
     CAT.site_short,
     CAT.Most_Recent_GPA_Cumulative_bucket,
     CAT.high_school_graduating_class_c,
+    CAT.Gender_c,
+    CAT.Ethnic_background_c,
+    CAT.Attendance_Rate_Current_AS_c,
     -- Likert Awners,
      `data-studio-260217.surveys.determine_positive_answers`(ct_provides_a_supportive_learning_environment_for_me) AS ct_provides_a_supportive_learning_environment_for_me,
     `data-studio-260217.surveys.determine_positive_answers`(when_im_at_ct_i_feel_like_i_belong) AS when_im_at_ct_i_feel_like_i_belong,
@@ -12,7 +15,6 @@ WITH gather_data AS (
     `data-studio-260217.surveys.determine_positive_answers`(ct_provides_me_enough_opportunities_to_form_meaningful_relationships_with_staff) AS ct_provides_me_enough_opportunities_to_form_meaningful_relationships_with_staff,
     `data-studio-260217.surveys.determine_positive_answers`(i_make_it_a_priority_to_attend_my_ct_sessions_workshops) AS i_make_it_a_priority_to_attend_my_ct_sessions_workshops,
     `data-studio-260217.surveys.determine_positive_answers`(my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site) AS my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site,
-    
     `data-studio-260217.surveys.determine_positive_answers`(inside_your_college_track_center) AS inside_your_college_track_center,
     `data-studio-260217.surveys.determine_positive_answers`(in_the_area_outside_your_center) AS in_the_area_outside_your_center,
     `data-studio-260217.surveys.determine_positive_answers`(i_believe_earning_a_college_degree_will_help_me_achieve_my_dreams_and_improv) AS i_believe_earning_a_college_degree_will_help_me_achieve_my_dreams_and_improv,
