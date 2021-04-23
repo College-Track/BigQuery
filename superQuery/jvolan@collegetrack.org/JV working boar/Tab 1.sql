@@ -8,4 +8,3 @@ SELECT
     
     FROM `data-warehouse-289815.salesforce.task`
     WHERE what_id LIKE '%(Semester)%'
-    OR what_id LIKE '%(Quarter)%'
