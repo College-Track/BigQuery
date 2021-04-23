@@ -4,7 +4,8 @@ WITH get_AT_data AS
     AT_Id,
     AT_Name,
     full_name_c,
-    student_c AS contact_id
+    student_c AS contact_id,
+    College_Track_Status_Name
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE college_track_status_c = '15A'
@@ -23,6 +24,8 @@ get_tasks_missing_student AS
     get_AT_data.AT_Name,
     get_AT_data.full_name_c,
     get_AT_data.contact_id,
+    get_AT_data.College_Track_Status_Name
+
 
     FROM `data-warehouse-289815.salesforce.task`
     LEFT JOIN get_AT_data ON get_AT_data.AT_Id = what_id
