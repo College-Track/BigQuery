@@ -31,7 +31,7 @@ gather_completed_survey_data AS (
     site_short,
     high_school_graduating_class_c,
     Most_Recent_GPA_Cumulative_bucket,
-        Ethnic_background_c,
+    Ethnic_background_c,
     Gender_c,
     count(contact_Id) as completed_survey_count
   FROM
