@@ -45,6 +45,7 @@ WITH bucket_data AS
         WHEN which_choice_best_represents_your_living_situation_during_th = "Mixed - part of the year living on or near campus AND part of the year remote (at home, parent's house, relatives, etc.)" THEN 2
         ELSE 1
     END AS covid_living_num,
+    we_do_our_best_to_ensure_that_there_is_always_someone_there_ AS cca_count_to_date
     
     FROM `data-studio-260217.surveys.fy21_ps_survey`
 ),
@@ -76,7 +77,8 @@ bucket_calc AS
         WHEN (covid_college_num = 3 AND covid_living_num = 3) THEN 'In person only'
         WHEN (covid_college_num = 1 AND covid_living_num = 1) THEN 'Remote only'
         ELSE "Mix of remote & in-person"
-    END AS covid_bucket
+    END AS covid_bucket,
+    bucket_data.cca_count_to_date
     
     FROM bucket_data
 )
@@ -108,6 +110,7 @@ bucket_calc AS
         ELSE 0
     END AS detractors_count,
     bucket_calc.covid_bucket,
+    bucket_calc.cca_count_to_date,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN bucket_calc ON bucket_calc.bucket_contact_id = contact_id
