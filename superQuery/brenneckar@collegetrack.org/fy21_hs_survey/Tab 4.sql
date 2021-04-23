@@ -12,7 +12,9 @@ OR REPLACE FUNCTION `data-studio-260217.surveys.determine_positive_answers`(
         'Quite Excited',
         "Almost Always", 
         "Extremely Helpful",
-        'Very Helpful'
+        'Very Helpful',
+        '10 - extremely likely',
+        '9'
     ]
         if (positive_answers.includes(answer)){
         return (1)
