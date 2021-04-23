@@ -103,7 +103,7 @@ WITH pssl_with_filter_data AS
     `data-studio-260217.surveys.determine_positive_answers` (answer) AS positive_answer
 
     FROM pssl_with_filter_data
-    WHERE Contact_Id IS NOT NULL
+    WHERE site_short IS NOT NULL
 
 /*
 WITH bucket_data AS
