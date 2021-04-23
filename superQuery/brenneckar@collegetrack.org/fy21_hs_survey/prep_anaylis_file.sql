@@ -78,7 +78,11 @@ WITH gather_data AS (
     `data-studio-260217.surveys.determine_positive_answers`(i_understand_what_a_local_affordable_college_is) AS i_understand_what_a_local_affordable_college_is,
     `data-studio-260217.surveys.determine_positive_answers`(i_understand_my_options_when_it_comes_to_paying_for_college) AS i_understand_my_options_when_it_comes_to_paying_for_college,
     `data-studio-260217.surveys.determine_positive_answers`(i_understand_where_to_find_and_how_to_apply_for_scholarships_to_help_pay_for_col) AS i_understand_where_to_find_and_how_to_apply_for_scholarships_to_help_pay_for_col,
-    `data-studio-260217.surveys.determine_positive_answers`(how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get) AS nps_score
+    `data-studio-260217.surveys.determine_positive_answers`(how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get) AS nps_positive,
+    CASE WHEN how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get NOT IN ('10 - extremely likely', '9', '8', '7') THEN 1
+    ELSE 0
+    END AS nsp_detractor
+    
 
 
   FROM
