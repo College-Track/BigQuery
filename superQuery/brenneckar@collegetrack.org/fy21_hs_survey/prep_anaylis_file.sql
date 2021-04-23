@@ -81,7 +81,7 @@ WITH gather_data AS (
     `data-studio-260217.surveys.determine_positive_answers`(how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get) AS nps_positive,
     CASE WHEN how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get NOT IN ('10 - extremely likely', '9', '8', '7') THEN 1
     ELSE 0
-    END AS nsp_detractor
+    END AS nps_detractor
     
 
 
