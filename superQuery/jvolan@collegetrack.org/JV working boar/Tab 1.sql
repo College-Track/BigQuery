@@ -10,8 +10,9 @@ WITH get_tasks_missing_student AS
     
     
     FROM `data-warehouse-289815.salesforce.task`
-    WHERE what_id IS NOT NULL
-    AND who_id IS NULL
+    WHERE who_id IS NULL
+    AND (what_id LIKE '%(Semester)%'
+    OR what_id LIKE '%(Quarter)%')
 ),
 
 AT_match AS
