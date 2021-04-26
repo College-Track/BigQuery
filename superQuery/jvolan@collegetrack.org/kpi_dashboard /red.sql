@@ -6,7 +6,8 @@ WITH gather_data AS
     CASE
       WHEN (Prev_AT_Cum_GPA >= 3.25
       AND composite_readiness_most_recent_c = '1. Ready'
-      AND college_track_status_c ='11A') THEN 1
+      AND college_track_status_c ='11A'
+      AND grade_c = '12th Grade') THEN 1
       ELSE 0
     END AS gpa_3_25__test_ready,
     
