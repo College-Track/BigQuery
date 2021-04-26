@@ -18,7 +18,7 @@ WITH gather_data AS
     AND college_track_status_c IN ('11A')
 )
     SELECT
-    max(gather_data.gpa_3_25__test_ready)
+    SUM(gather_data.gpa_3_25__test_ready) AS red_gpa_3_25_test_ready
     
     FROM gather_data
     GROUP BY site_short
