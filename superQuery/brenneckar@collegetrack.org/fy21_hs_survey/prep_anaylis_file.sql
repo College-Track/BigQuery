@@ -3,10 +3,22 @@ WITH gather_data AS (
     HSS.contact_id,
     CAT.site_short,
     CAT.Most_Recent_GPA_Cumulative_c,
+    CAT.Most_Recent_GPA_Cumulative_bucket,
     CAT.high_school_graduating_class_c,
     CAT.Gender_c,
     CAT.Ethnic_background_c,
     CAT.Attendance_Rate_Current_AS_c,
+        CASE
+      WHEN (
+        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '10 - extremely likely'
+        OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '9'
+      ) THEN "Promoters"
+      WHEN (
+        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '8'
+        OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '7'
+      ) THEN "Passives"
+      ELSE "Detractors"
+    END AS NPS_Score,
     -- Likert Awners,
      `data-studio-260217.surveys.determine_positive_answers`(ct_provides_a_supportive_learning_environment_for_me) AS ct_provides_a_supportive_learning_environment_for_me,
     `data-studio-260217.surveys.determine_positive_answers`(when_im_at_ct_i_feel_like_i_belong) AS when_im_at_ct_i_feel_like_i_belong,
