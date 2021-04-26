@@ -108,7 +108,9 @@ EXCEPT
   END AS answer,
   CASE WHEN SP.Contact_Id IS NOT NULL THEN "Joined Prior to 2/15 ; All Students"
   ELSE "All Students"
-  END AS joined_prior 
+  END AS joined_prior,
+  HSWP.NPS_Score
 FROM
   gather_data GD
   LEFT JOIN student_prior_215 SP ON SP.contact_id = GD.Contact_Id
+  LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_wide_prepped` HSWP ON HSWP.contact_id = GD.Contact_id
