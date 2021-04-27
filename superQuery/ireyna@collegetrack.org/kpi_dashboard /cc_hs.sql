@@ -1,25 +1,69 @@
-WITH gather_data AS (
+
+/*CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
+OPTIONS
+    (
+    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
+    )
+AS*/
+
+WITH gather_data AS ( #active CT students; 10th grade EFC; 11th grade college aspirations
     SELECT
         contact_id,
         site_short,
+        
+         --10th Grade EFC num and demom
+        /*CASE
+            WHEN (c.grade_c = "10th Grade" 
+            AND FA_Req_Expected_Financial_Contribution_c IS NOT NULL 
+            AND fa_req_efc_source_c = 'FAFSA4caster' THEN 1
+            ELSE 0
+            END AS hs_EFC_10th,*/
         CASE
             WHEN (c.grade_c = "10th Grade" 
-            AND (FA_Req_Expected_Financial_Contribution_c IS NOT NULL) 
-            AND (fa_req_efc_source_c = 'FAFSA4caster')) THEN 1
+            AND FA_Req_Expected_Financial_Contribution_c IS NOT NULL 
+            AND fa_req_efc_source_c = 'FAFSA4caster') THEN 1
             ELSE 0
-            END AS hs_EFC_10th,
-        
+            END AS hs_EFC_10th_num,
+            
+        CASE
+            WHEN (c.grade_c = "10th Grade" 
+            AND college_track_status_c = '11A') THEN 1
+            ELSE 0
+            END AS hs_EFC_10th_denom,
+            
+     --11th Grade Aspirations num and demom
         CASE 
             WHEN (c.grade_c = '11th Grade'
+            AND college_track_status_c = '11A'
             AND a.id IS NOT NULL) THEN 1
             ELSE 0
-            END AS student_has_aspirations,
+            END AS aspirations_any_num,
         
         CASE
             WHEN (c.grade_c = '11th Grade' 
             AND fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable")) THEN 1
             ELSE 0
+            END AS aspirations_affordable_num,
+            
+        CASE 
+            WHEN (c.grade_c = '11th Grade'
+            AND college_track_status_c = '11A') THEN 1
+            ELSE 0
+            END AS aspirations_denom
+        /*
+        CASE 
+            WHEN (c.grade_c = '11th Grade'
+            AND a.id IS NOT NULL) THEN 1
+            ELSE 0
+            END AS student_has_aspirations,
+            
+        CASE
+            WHEN (c.grade_c = '11th Grade' 
+            AND fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable")) THEN 1
+            ELSE 0
             END AS aspirations_affordable
+        */
+            
     FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c
     LEFT JOIN`data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id=a.student_c
     WHERE college_track_status_c = '11A'
@@ -92,7 +136,7 @@ gather_eleventh_grade_metrics AS ( #11th grade College Aspirations KPI
  SELECT
     site_short,
     CASE 
-        WHEN (SUM(g.student_has_aspirations) >= 6 AND SUM(g.aspirations_affordable) >= 3) THEN 1
+        WHEN (SUM(g.aspirations_any_num) >= 6 AND SUM(g.aspirations_affordable_num) >= 3) THEN 1
         ELSE 0
         END AS cc_hs_aspirations
     FROM gather_data as g
@@ -129,7 +173,7 @@ gather_twelfth_grade_metrics AS(
 prep_tenth_grade_metrics AS ( #10th Grade EFC KPI
     SELECT 
         site_short,
-        SUM(hs_EFC_10th) AS cc_hs_EFC_tenth_grade
+        SUM(hs_EFC_10th_num) AS cc_hs_EFC_tenth_grade
     FROM gather_data  
     GROUP BY site_short
 ),
@@ -171,3 +215,7 @@ GROUP BY
     cc_hs_accepted_affordable,
     cc_hs_applied_best_good_situational,
     cc_hs_accepted_best_good_situational 
+
+
+
+
