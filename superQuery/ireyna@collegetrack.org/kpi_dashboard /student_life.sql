@@ -1,3 +1,11 @@
+/*CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.student_life` 
+OPTIONS
+    (
+    description= "Aggregating Student Life KPI metrics for the Data Studio KPI dashboard"
+    )
+AS
+*/
+
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -139,3 +147,5 @@ SELECT
         sl_mse_internship_current_AY,
         sl_dreams_declared,
         sl_above_80_attendance
+        
+        
