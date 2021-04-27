@@ -1,14 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-/*
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-*/
-
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
 (
@@ -202,7 +191,7 @@ SELECT
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
-        AND app2.admission_status_c = "Accepted and Enrolled"
+        AND app2.admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
         group by app2.student_c
         ) AS  contact_id_enrolled_4_year,
         
@@ -243,13 +232,6 @@ SELECT
         WHERE app2.admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
         group by app2.student_c
         ) AS  contact_id_enrolled,
-        
-        (SELECT app2.student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
-        WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
-        AND app2.admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
-        group by app2.student_c
-        ) AS  contact_id_enrolled_4_year,
         
     app.Type_of_School_c as school_type_applied,
     accnt.name AS college_name_on_app_for_case_statement,
@@ -441,90 +423,3 @@ SELECT
 FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
     ON filtered_data.contact_id = college_application_data.contact_id_app_table
-
-/*
-GROUP BY  
-    student_c,
-    application_status,
-    full_name_c,
-    contact_id, #use in "Application Status" chart as Metric
-    hs_ct_coach,
-    --((COUNT(DISTINCT CA.student_c))/(COUNT(DISTINCT C.contact_id))) AS percent_of_students, #percent of seniors with college application
-    high_school_graduating_class_c,
-    npsp_primary_affiliation_c, 
-    College_Track_Status_Name,
-    college_eligibility_gpa_11th_grade,  #College Elig GPA (11th CGPA)
-    cgpa_11th_grade_bucket,
-    grade_c, 
-    Gender_c ,
-    Ethnic_background_c ,
-    indicator_low_income_c,
-    first_generation_fy_20_c, 
-    act_highest_composite_official_c,
-    act_math_highest_official_c, 
-    sat_highest_total_single_sitting_c,
-    sat_math_highest_official_c,
-    TOPS_eligibility, 
-    site_short,
-    sort_helper_site,
-    National,
-    region_short,
-    readiness_english_official_c,
-    readiness_composite_off_c,
-    readiness_math_official_c,
-    fa_req_expected_financial_contribution_c, 
-    EFC_indicator,
-    Pell_indicator,
-    fa_req_fafsa_c,
-    FAFSA_status,
-    high_school_name_filter,
-    name,
-    contact_id_accepted,
-    contact_id_applied_4_year,
-    contact_id_accepted_4_year, #to use in formula in final join
-    contact_id_enrolled_4_year,
-    school_type_applied,
-    app_college_id, #college id
-    Award_Letter_c,
-    CSS_Profile_Required_c,
-    CSS_Profile_c,
-    CSS_profile_status,
-    College_Fit_Type_Applied_c,
-    College_University_Academic_Calendar_c,
-    Control_of_Institution_c, #private or public school,
-    Enrollment_Deposit_c,
-    School_s_Financial_Aid_Form_Required_c, #yes/no
-    School_Financial_Aid_Form_Status_c,
-    School_Financial_Aid_Form_Status,
-    college_app_id,
-    Predominant_Degree_Awarded_c,
-    Type_of_School_c,
-    Situational_Fit_Type_c,
-    Verification_Status_c,
-    College_Fit_Type_Applied,
-    school_name_accepted,
-    college_accepted_app_id,
-    accepted,
-    fit_type_accepted,
-    contact_id_admissions,
-    school_name_enrolled,
-    college_enrolled_app_id,
-    school_type_enrolled,
-    admission_status_c,
-    fit_type_enrolled_c,
-    sort_helper_admission_status,
-    college_app_id_contact,
-    college_name_applied_wide,
-    contact_id_applied_status,
-    college_fit_type_applied_tight,
-    school_name_accepted_tight,
-    fit_type_accepted_tight,
-    housing_application_c,
-    admission_status,
-    college_name_on_app_for_case_statement,
-    strategic_type_app_table,
-    application_status_app_table
-    */
-    
-
-
