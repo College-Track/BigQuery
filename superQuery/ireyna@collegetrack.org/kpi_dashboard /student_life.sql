@@ -1,6 +1,7 @@
- SELECT
+SELECT
         contact_id,
         site_short,
+        high_school_graduating_class_c,
         Dream_Statement_filled_out_c,
         CASE
             WHEN high_school_graduating_class_c <> '2024' THEN NULL
