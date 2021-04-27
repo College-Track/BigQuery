@@ -1,11 +1,4 @@
 
-CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
-OPTIONS
-    (
-    description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
-    )
-AS
-
 WITH gather_data AS ( #active CT students; 10th grade EFC; 11th grade college aspirations
     SELECT
         contact_id,
@@ -17,13 +10,13 @@ WITH gather_data AS ( #active CT students; 10th grade EFC; 11th grade college as
             AND FA_Req_Expected_Financial_Contribution_c IS NOT NULL 
             AND fa_req_efc_source_c = 'FAFSA4caster') THEN 1
             ELSE 0
-            END AS hs_EFC_10th_num,
+            END AS hs_EFC_10th_count,
             
         CASE
             WHEN (c.grade_c = "10th Grade" 
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
-            END AS hs_EFC_10th_denom,
+            END AS hs_EFC_10th_denom_count,
             
      --11th Grade Aspirations num and demom
         CASE 
@@ -31,19 +24,19 @@ WITH gather_data AS ( #active CT students; 10th grade EFC; 11th grade college as
             AND college_track_status_c = '11A'
             AND a.id IS NOT NULL) THEN 1
             ELSE 0
-            END AS aspirations_any_num,
+            END AS aspirations_any_count,
         
         CASE
             WHEN (c.grade_c = '11th Grade' 
             AND fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable")) THEN 1
             ELSE 0
-            END AS aspirations_affordable_num,
+            END AS aspirations_affordable_count,
             
         CASE 
             WHEN (c.grade_c = '11th Grade'
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
-            END AS aspirations_denom
+            END AS aspirations_denom_count
             
     FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c
     LEFT JOIN`data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id=a.student_c
@@ -116,12 +109,13 @@ gather_data_twelfth_grade AS (
 gather_eleventh_grade_metrics AS ( #11th grade College Aspirations KPI
  SELECT
     site_short,
+    aspirations_denom_count,
     CASE 
-        WHEN (SUM(g.aspirations_any_num) >= 6 AND SUM(g.aspirations_affordable_num) >= 3) THEN 1
+        WHEN (SUM(g.aspirations_any_count) >= 6 AND SUM(g.aspirations_affordable_count) >= 3) THEN 1
         ELSE 0
-        END AS cc_hs_aspirations
+        END AS cc_hs_aspirations_num_prep
     FROM gather_data as g
-    GROUP BY contact_id,site_short
+    GROUP BY contact_id,site_short, aspirations_denom_count
 ),
 
 gather_twelfth_grade_metrics AS(
@@ -154,7 +148,8 @@ gather_twelfth_grade_metrics AS(
 prep_tenth_grade_metrics AS ( #10th Grade EFC KPI
     SELECT 
         site_short,
-        SUM(hs_EFC_10th_num) AS cc_hs_EFC_tenth_grade
+        SUM(hs_EFC_10th_count) AS cc_hs_EFC_10th_num,
+        SUM(hs_EFC_10th_denom_count) AS cc_hs_EFC_10th_denom
     FROM gather_data  
     GROUP BY site_short
 ),
@@ -162,7 +157,8 @@ prep_tenth_grade_metrics AS ( #10th Grade EFC KPI
 prep_eleventh_grade_metrics AS ( #11th grade College Aspirations KPI
     SELECT 
         site_short,
-        SUM(cc_hs_aspirations) AS cc_hs_aspirations
+        SUM(cc_hs_aspirations_num_prep) AS cc_hs_aspirations_num,
+        SUM(aspirations_denom_count) AS cc_hs_aspirations_denom
     FROM gather_eleventh_grade_metrics
     GROUP BY site_short
 ),
@@ -190,8 +186,10 @@ SELECT
         LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
 GROUP BY
     site_short, 
-    cc_hs_EFC_tenth_grade,
-    cc_hs_aspirations,
+    cc_hs_EFC_10th_num,
+    cc_hs_EFC_10th_denom,
+    cc_hs_aspirations_num,
+    cc_hs_aspirations_denom,
     cc_hs_above_80_cc_attendance,
     cc_hs_accepted_affordable,
     cc_hs_applied_best_good_situational,
