@@ -2,6 +2,7 @@ WITH gather_data AS (
   SELECT
     "National" AS national,
     site_short,
+    site_sort,
     region_abrev,
     Contact_Record_Type_Name,
     grade_c,
@@ -15,6 +16,7 @@ WITH gather_data AS (
     AND indicator_years_since_hs_graduation_c <= 6
   GROUP BY
     site_short,
+    site_sort,
     region_abrev,
     Contact_Record_Type_Name,
     grade_c,
@@ -24,6 +26,7 @@ WITH gather_data AS (
 SELECT
   national,
   site_short,
+  site_sort,
   region_abrev,
   SUM(
     IF(
@@ -46,13 +49,6 @@ SELECT
       NULL
     )
   ) AS hs_senior_student_count,
-    SUM(
-    IF(
-      grade_c = "10th Grade",
-      student_count,
-      NULL
-    )
-  ) AS hs_tenth_grade_student_count,
       SUM(
     IF(
       grade_c = "9th Grade",
@@ -72,4 +68,5 @@ FROM
 GROUP BY
   national,
   site_short,
+  site_sort,
   region_abrev
