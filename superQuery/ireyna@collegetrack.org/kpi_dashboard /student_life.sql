@@ -133,6 +133,7 @@ aggregate_mse_kpis AS (
 
 SELECT 
     d.site_short,
+    sl_dreams_declared,
     attendance_kpi.* EXCEPT (site_short),
     mse_kpi.* EXCEPT (site_short)
     FROM aggregate_dream_kpi AS d 
