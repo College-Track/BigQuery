@@ -1,9 +1,9 @@
-SELECT
+ SELECT
         contact_id,
         site_short,
         Dream_Statement_filled_out_c,
         CASE
-            WHEN high_school_graduating_class_c <> '2024' THEN 000
+            WHEN high_school_graduating_class_c <> '2024' THEN NULL
             WHEN (Dream_Statement_filled_out_c = True AND high_school_graduating_class_c = '2024') THEN 1
             ELSE 0
             END AS dream_declared
