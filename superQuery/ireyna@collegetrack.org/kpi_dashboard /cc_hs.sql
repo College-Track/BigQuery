@@ -1,10 +1,10 @@
 
-/*CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
 OPTIONS
     (
     description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
     )
-AS*/
+AS
 
 WITH gather_data AS ( #active CT students; 10th grade EFC; 11th grade college aspirations
     SELECT
@@ -12,12 +12,6 @@ WITH gather_data AS ( #active CT students; 10th grade EFC; 11th grade college as
         site_short,
         
          --10th Grade EFC num and demom
-        /*CASE
-            WHEN (c.grade_c = "10th Grade" 
-            AND FA_Req_Expected_Financial_Contribution_c IS NOT NULL 
-            AND fa_req_efc_source_c = 'FAFSA4caster' THEN 1
-            ELSE 0
-            END AS hs_EFC_10th,*/
         CASE
             WHEN (c.grade_c = "10th Grade" 
             AND FA_Req_Expected_Financial_Contribution_c IS NOT NULL 
@@ -50,19 +44,6 @@ WITH gather_data AS ( #active CT students; 10th grade EFC; 11th grade college as
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
             END AS aspirations_denom
-        /*
-        CASE 
-            WHEN (c.grade_c = '11th Grade'
-            AND a.id IS NOT NULL) THEN 1
-            ELSE 0
-            END AS student_has_aspirations,
-            
-        CASE
-            WHEN (c.grade_c = '11th Grade' 
-            AND fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable")) THEN 1
-            ELSE 0
-            END AS aspirations_affordable
-        */
             
     FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c
     LEFT JOIN`data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id=a.student_c
