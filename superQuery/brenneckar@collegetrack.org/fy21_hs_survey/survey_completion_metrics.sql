@@ -57,4 +57,4 @@ join_data AS (
 SELECT
     *
 FROM
-  gather_completed_survey_data
+  join_data
