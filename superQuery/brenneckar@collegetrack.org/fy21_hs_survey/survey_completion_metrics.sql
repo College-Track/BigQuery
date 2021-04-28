@@ -56,4 +56,4 @@ join_data AS (
 SELECT
   *
 FROM
-  join_data
+  gather_data
