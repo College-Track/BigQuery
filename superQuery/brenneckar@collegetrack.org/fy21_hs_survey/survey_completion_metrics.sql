@@ -55,6 +55,6 @@ join_data AS (
     AND gather_completed_survey_data.Most_Recent_GPA_Cumulative_bucket = GD.Most_Recent_GPA_Cumulative_bucket
 )
 SELECT
-  SUM(student_count)
+    *
 FROM
-  gather_data
+  gather_completed_survey_data
