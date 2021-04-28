@@ -76,8 +76,8 @@ SELECT
   SUM(above_325_gpa) AS aa_above_325_gpa,
   SUM(composite_ready) AS aa_composite_ready,
   SUM(above_80_aa_attendance) AS aa_above_80_aa_attendance,
-  SUM(i_am_in_control_of_my_academic_performance) AS i_am_in_control_of_my_academic_performance,
-SUM(i_feel_prepared_to_engage_in_academic_stretch_opportunities) AS i_feel_prepared_to_engage_in_academic_stretch_opportunities
+  SUM(i_am_in_control_of_my_academic_performance) AS aa_i_am_in_control_of_my_academic_performance,
+SUM(i_feel_prepared_to_engage_in_academic_stretch_opportunities) AS aa_i_feel_prepared_to_engage_in_academic_stretch_opportunities
 FROM
   gather_data GD
   LEFT JOIN aa_attendance_kpi AA ON GD.Contact_Id = AA.student_c
