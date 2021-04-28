@@ -81,7 +81,7 @@ GROUP BY
   )
   
   SELECT 
-  PSC.*,
---   SC.student_count AS hs_survey_completion_count
-  FROM prep_student_counts PSC
-  LEFT JOIN survey_completion SC ON SC.site_short = PSC.site_short
+--   PSC.*,
+  SC.*
+  FROM survey_completion SC
+--   LEFT JOIN survey_completion SC ON SC.site_short = PSC.site_short
