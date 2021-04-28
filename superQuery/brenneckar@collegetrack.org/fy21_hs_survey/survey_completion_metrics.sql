@@ -17,7 +17,7 @@ WITH gather_data AS(
       FROM
         `data-warehouse-289815.salesforce.contact_pipeline_history_c`
       WHERE
-        created_date >= '2021-02-17T23:59:00.000Z'
+        created_date >= '2021-02-17T23:59:59.000Z'
         AND Name = 'Started/Restarted CT HS Program'
     )
   GROUP BY
