@@ -53,6 +53,8 @@ join_data AS (
     LEFT JOIN gather_completed_survey_data ON gather_completed_survey_data.site_short = GD.site_short
     AND gather_completed_survey_data.high_school_graduating_class_c = GD.high_school_graduating_class_c
     AND gather_completed_survey_data.Most_Recent_GPA_Cumulative_bucket = GD.Most_Recent_GPA_Cumulative_bucket
+    AND gather_completed_survey_data.Ethnic_background_c = GD.Ethnic_background_c
+    AND gather_completed_survey_data.Gender_c = GD.Gender_c
 )
 SELECT
     SUM(student_count),
