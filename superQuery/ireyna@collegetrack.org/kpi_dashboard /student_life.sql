@@ -18,6 +18,7 @@ WITH gather_contact_data AS(
             WHEN high_school_graduating_class_c <> '2024' THEN NULL
             ELSE NULL
             END AS dream_declared
+            
     FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C
     WHERE college_track_status_c = '11A'
 
@@ -32,23 +33,27 @@ gather_mse_data AS ( #current AY.  #IR note - add term 'Summer'?
         AY_name,
         CASE
             WHEN (sl.id IS NOT NULL 
-            AND AY_name = 'AY 2019-20' 
+            AND AY_name = 'AY 2019-20'
+            AND term_c = 'Summer'
             AND (indicator_completed_ct_hs_program_c = TRUE OR college_track_status_c = '11A')) THEN 1
             ELSE 0
             END AS mse_completed_prev_AY,
         CASE
             WHEN (sl.id IS NOT NULL 
-            AND AY_name = 'AY 2020-21') THEN 1
+            AND AY_name = 'AY 2020-21'
+            AND term_c = 'Summer') THEN 1
             ELSE 0
             END AS mse_completed_current_AY,
         CASE 
             WHEN (competitive_c = True 
             AND AY_name = 'AY 2019-20'
+            AND term_c = 'Summer'
             AND (indicator_completed_ct_hs_program_c = TRUE OR college_track_status_c = '11A')) THEN 1
             ELSE 0
             END AS mse_competitive_prev_AY,
         CASE 
             WHEN (competitive_c = True 
+            AND term_c = 'Summer'
             AND AY_name = 'AY 2020-21') THEN 1
             ELSE 0
             END AS mse_competitive_current_AY,
