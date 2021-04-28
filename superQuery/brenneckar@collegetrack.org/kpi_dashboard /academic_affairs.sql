@@ -40,15 +40,47 @@ CASE WHEN attendance_rate >= 0.8 THEN 1
 ELSE 0
 END AS above_80_aa_attendance
 FROM aa_attendance_prep
-)  
+),
+
+gather_survey_data AS (
+  SELECT
+    CT.site_short,
+    S.contact_id,
+    CASE
+      WHEN ct_helps_me_better_understand_that_i_am_in_control_of_my_academic_performance = "Strongly Agree" THEN 1
+      WHEN ct_helps_me_better_understand_that_i_am_in_control_of_my_academic_performance = 'Agree' THEN 1
+      ELSE 0
+    END AS i_am_in_control_of_my_academic_performance,
+        CASE
+      WHEN i_feel_prepared_to_engage_in_academic_stretch_opportunities = "Strongly Agree" THEN 1
+      WHEN i_feel_prepared_to_engage_in_academic_stretch_opportunities = 'Agree' THEN 1
+      ELSE 0
+    END AS i_feel_prepared_to_engage_in_academic_stretch_opportunities
+    
+  FROM
+    `data-studio-260217.surveys.fy21_hs_survey` S
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CT ON CT.Contact_Id = S.contact_id
+ 
+)
+-- aggregate_survey_data AS (
+-- SELECT
+-- site_short,
+
+-- FROM gather_survey_data
+-- GROUP BY site_short
+-- )
+
   
 SELECT
-  site_short,
+  GD.site_short,
   SUM(above_325_gpa) AS aa_above_325_gpa,
   SUM(composite_ready) AS aa_composite_ready,
-  SUM(above_80_aa_attendance) AS aa_above_80_aa_attendance
+  SUM(above_80_aa_attendance) AS aa_above_80_aa_attendance,
+  SUM(i_am_in_control_of_my_academic_performance) AS i_am_in_control_of_my_academic_performance,
+SUM(i_feel_prepared_to_engage_in_academic_stretch_opportunities) AS i_feel_prepared_to_engage_in_academic_stretch_opportunities
 FROM
   gather_data GD
   LEFT JOIN aa_attendance_kpi AA ON GD.Contact_Id = AA.student_c
+  LEFT JOIN gather_survey_data GSD ON GSD.contact_id = GD.contact_id
 GROUP BY
   site_short
