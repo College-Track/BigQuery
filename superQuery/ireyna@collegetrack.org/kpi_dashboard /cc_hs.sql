@@ -73,6 +73,14 @@ gather_data_twelfth_grade AS (
         
         (SELECT student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq1
+        WHERE FA_Req_FAFSA_c = 'Submitted' 
+        AND (verification_status_c IN ('Submitted','Not Applicable')) 
+        AND Contact_Id=student_c
+        group by student_c
+        ) AS gather_fafsa_verification,
+        
+        (SELECT student_c
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq1
         WHERE admission_status_c = "Accepted" AND College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Local Affordable")
         AND Contact_Id=student_c
         group by student_c
@@ -132,6 +140,10 @@ gather_twelfth_grade_metrics AS(
             WHEN attendance_rate >= 0.8 THEN 1
             ELSE 0
             END AS cc_hs_above_80_cc_attendance,
+        CASE
+            WHEN gather_fafsa_verification IS NOT NULL THEN 1
+            ELSE 0
+            END AS fafsa_verification_prep,
         CASE 
             WHEN accepted_enrolled_affordable IS NOT NULL THEN 1
             WHEN applied_accepted_affordable IS NOT NULL THEN 1
@@ -150,7 +162,7 @@ gather_twelfth_grade_metrics AS(
 ),
 
 
-#prep KPIs for aggregation
+--prep KPIs for aggregation
 
 prep_tenth_grade_metrics AS ( #10th Grade EFC KPI
     SELECT 
@@ -176,7 +188,8 @@ prep_twelfth_grade_metrics AS (
         SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,
         SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
         SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational,
-        SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational 
+        SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational,
+        SUM(fafsa_verification_prep) AS cc_hs_financial_aid_submission_verification
     FROM gather_twelfth_grade_metrics
     GROUP BY site_short
 )
@@ -198,9 +211,11 @@ GROUP BY
     cc_hs_aspirations_num,
     cc_hs_aspirations_denom,
     cc_hs_above_80_cc_attendance,
+    cc_hs_financial_aid_submission_verification,
     cc_hs_accepted_affordable,
     cc_hs_applied_best_good_situational,
     cc_hs_accepted_best_good_situational 
+    
 
 
 
