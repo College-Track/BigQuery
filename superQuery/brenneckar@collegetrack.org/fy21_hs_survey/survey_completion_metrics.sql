@@ -57,7 +57,6 @@ join_data AS (
     AND gather_completed_survey_data.Gender_c = GD.Gender_c
 )
 SELECT
-    SUM(student_count),
-    SUM(completed_survey_count)
+*
 FROM
   join_data
