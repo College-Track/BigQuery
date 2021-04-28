@@ -22,8 +22,16 @@ WITH gather_data AS (
     grade_c,
     indicator_completed_ct_hs_program_c,
     college_track_status_c
-)
-SELECT
+),
+survey_completion AS (
+SELECT site_short,
+SUM(student_count) AS student_count
+FROM `data-studio-260217.surveys.fy21_hs_survey_completion`
+GROUP BY site_short
+),
+
+
+prep_student_counts AS (SELECT
   national,
   site_short,
   site_sort,
@@ -49,13 +57,6 @@ SELECT
       NULL
     )
   ) AS hs_senior_student_count,
-    SUM(
-    IF(
-      grade_c = "10th Grade",
-      student_count,
-      NULL
-    )
-  ) AS hs_tenth_grade_student_count,
       SUM(
     IF(
       grade_c = "9th Grade",
@@ -76,4 +77,10 @@ GROUP BY
   national,
   site_short,
   site_sort,
-  region_abrev
+  region_abrev 
+  )
+  
+  SELECT PSC.*,
+  SC.student_count AS hs_survey_completion_count
+  FROM prep_student_counts PSC
+  LEFT JOIN survey_completion SC ON SC.site_short = PSC.site_short
