@@ -10,6 +10,7 @@ WITH gather_data AS(
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
     College_Track_Status_c IN ('11A', '12A', '18a')
+    AND grade_c != '8th Grade'
     AND Contact_Id NOT IN (
       SELECT
         Contact_c
