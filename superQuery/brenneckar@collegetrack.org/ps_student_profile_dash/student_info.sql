@@ -36,7 +36,7 @@ WITH gather_contact_data AS (
     C.Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
     CASE WHEN C.door_recipient_current_c >= 1 THEN true
     ELSE false
-    END AS has_current_door_award
+    END AS has_current_door_award,
     ADG.GAS_Name AS anticipated_date_of_graduation_4_year_c
     
 
