@@ -34,6 +34,9 @@ WITH gather_contact_data AS (
     C.most_recent_reciprocal,
     C.PS_Internships_c,
     C.Credits_Accumulated_Most_Recent_c / 100 AS Credits_Accumulated_Most_Recent_c,
+    CASE WHEN C.door_recipient_current_c >= 1 THEN true
+    ELSE false
+    END AS has_current_door_award
     -- ADG.GAS_Name AS anticipated_date_of_graduation_4_year_c
     
 
@@ -74,15 +77,33 @@ sum_scholarship_applications AS (
     student_c
 ),
 
+sum_current_door_award AS (
+  SELECT
+    student_c,
+    SUM(amount_awarded_c) AS sum_current_door_award
+
+  FROM
+    `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+  WHERE
+    is_deleted = false
+    AND scholarship_application_record_type_name = 'DOOR'
+    AND status_c = 'Won'
+    AND current_scholarship_ay_c = true 
+  GROUP BY
+    student_c
+),
+
 join_data AS(
   SELECT
     GCD.*,
     CSA.num_scholarship_applications,
-    SSA.sum_scholarship_applications
+    SSA.sum_scholarship_applications,
+    SCDA.sum_current_door_award
   FROM
     gather_contact_data GCD
     LEFT JOIN count_scholarship_applications CSA ON CSA.student_c = GCD.Contact_Id
         LEFT JOIN sum_scholarship_applications SSA ON SSA.student_c = GCD.Contact_Id
+        LEFT JOIN sum_current_door_award SCDA ON SCDA.student_c = GCD.Contact_Id
 
 )
 SELECT
