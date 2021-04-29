@@ -37,13 +37,13 @@ WITH gather_contact_data AS (
     CASE WHEN C.door_recipient_current_c >= 1 THEN true
     ELSE false
     END AS has_current_door_award,
-    ADG.GAS_Name AS anticipated_date_of_graduation_4_year_c
+    ADG.Name AS anticipated_date_of_graduation_4_year_c
     
 
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
     LEFT JOIN `data-warehouse-289815.salesforce.contact` PC ON PC.Id = C.primary_contact_c -- LEFT JOIN `data-warehouse-289815.salesforce.npe_4_relationship_c` R ON R.npe_4_contact_c = C.Contact_Id
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` ADG ON  C.anticipated_date_of_graduation_4_year_c = ADG.global_academic_semester_c
+    LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` ADG ON  C.anticipated_date_of_graduation_4_year_c = ADG.Id
     -- LEFT JOIN `data-warehouse-289815.salesforce.contact` EC ON EC.Id = R.npe_4_related_contact_c
   WHERE
     C.college_track_status_c IN ('15A', '16A')
