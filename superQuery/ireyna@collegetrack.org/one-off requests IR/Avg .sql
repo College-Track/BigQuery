@@ -7,6 +7,6 @@ contact_id,
 site_short
 )
 
-SELECT number_acceptances
+SELECT site_short,number_acceptances
 FROM acceptance_by_student
 GROUP BY site_short,number_acceptances
