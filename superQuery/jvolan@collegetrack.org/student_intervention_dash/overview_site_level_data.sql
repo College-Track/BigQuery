@@ -11,7 +11,7 @@ SELECT
     Current_school_name,
     Current_HS_CT_Coach_c,
     CASE
-        WHEN Gender_c IN ("Decline to State","Other") THEN "Decline to State/Other"
+        WHEN Gender_c IN ("Decline to State","Other") THEN "Other"
         ELSE Gender_c
     END AS Gender_c, 
     CASE
