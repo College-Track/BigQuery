@@ -1,7 +1,7 @@
-
-    SELECT
+ SELECT
+    
         Contact_Id,
-        
+    
         --filters
         `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
 
