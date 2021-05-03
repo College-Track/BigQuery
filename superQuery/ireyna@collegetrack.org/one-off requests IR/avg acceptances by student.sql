@@ -19,7 +19,7 @@ prep_aggregation_of_acceptances AS (
 
 SELECT contact_id,site_short,SUM(accepted_count) AS sum_acceptances
 FROM gather_students
-WHERE accepted_count = 1
+--WHERE accepted_count = 1
 GROUP BY contact_id, site_short
 )
 
