@@ -29,5 +29,6 @@ WITH student_list_denom AS
 )
 
     SELECT
-    *
+    count(Contact_Id) AS student_count
     FROM student_list_denom
+    GROUP BY took_survey_yn
