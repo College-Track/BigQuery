@@ -1,4 +1,10 @@
-WITH gather_filter_data AS
+CREATE OR REPLACE TABLE `data-studio-260217.surveys.fy21_ps_survey_completion_metrics`
+OPTIONS
+    (
+    description= "fy21 ps survey completion metrics"
+    )
+AS
+WITH student_list_denom AS
 (   
     SELECT  
     contact_id,
@@ -8,22 +14,29 @@ WITH gather_filter_data AS
     high_school_graduating_class_c,
     Ethnic_background_c,
     Gender_c,
+    Current_School_Type_c_degree,
     current_cc_advisor_2_c, 
-    readiness_composite_off_c,
-    `data-warehouse-289815.UDF.determine_buckets` (college_eligibility_gpa_11th_grade,.25,2.5,3.75," %") AS college_eligibility_gpa_bucket,
-    Most_Recent_GPA_Cumulative_bucket,
-    school_type,
-    Current_Major_c,
-    credit_accumulation_pace_c,
+    CASE
+        WHEN completed_ct_2020_21_survey_c = "PS Survey" THEN 1
+        Else 0
+    END AS took_survey_yn
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    WHERE college_track_status_c IN ('15A','16A','17A')
+    WHERE college_track_status_c IN ('15A')
+    AND Contact_Id NOT IN (
+        SELECT
+        Contact_c
+      FROM
+        `data-warehouse-289815.salesforce.contact_pipeline_history_c`
+      WHERE
+        created_date >= '2021-03-15T22:00:00.000Z'
+        AND Name = 'Became Active Post-Secondary'
+    )
 )
 
     SELECT
     *
-    FROM gather_filter_data
-
+    FROM student_list_denom
     
     
 /*
