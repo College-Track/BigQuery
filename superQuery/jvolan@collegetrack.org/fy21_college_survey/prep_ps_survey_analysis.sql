@@ -1,6 +1,11 @@
 
     SELECT
         Contact_Id,
+        
+        --filters
+        `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
+
+        --survey Qs of interest
         `data-studio-260217.surveys.determine_positive_answers` (i_understood_what_academic_supports_would_be_available_to_me) AS i_understood_what_academic_supports_would_be_available_to_me,
         `data-studio-260217.surveys.determine_positive_answers` (i_located_these_support_services_once_i_arrived_on_campus_or) AS i_located_these_support_services_once_i_arrived_on_campus_or,
         `data-studio-260217.surveys.determine_positive_answers` (i_felt_confident_in_my_ability_to_seek_out_and_use_these_sup) AS i_felt_confident_in_my_ability_to_seek_out_and_use_these_sup,
@@ -46,7 +51,6 @@
         `data-studio-260217.surveys.determine_positive_answers` (besides_my_ct_college_advisor_i_have_at_least_one_ct_staff_m) AS besides_my_ct_college_advisor_i_have_at_least_one_ct_staff_m,
         `data-studio-260217.surveys.determine_positive_answers` (i_am_able_to_receive_my_scholarship_funds_from_college_track) AS i_am_able_to_receive_my_scholarship_funds_from_college_track,
         `data-studio-260217.surveys.determine_positive_answers` (which_of_the_factors_are_most_responsible_for_you_not_feelin) AS which_of_the_factors_are_most_responsible_for_you_not_feelin,
-        `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
         
         FROM `data-studio-260217.surveys.fy21_ps_survey`
         LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.filter_contact_id = Contact_Id
