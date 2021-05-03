@@ -1,123 +1,53 @@
 
     SELECT
         Contact_Id,
-        `data-studio-260217.surveys.determine_positive_answers` (i_understood_what_academic_supports_would_be_available_to_me) AS i_understood_what_academic_supports_would_be_available_to_me,        
+        `data-studio-260217.surveys.determine_positive_answers` (i_understood_what_academic_supports_would_be_available_to_me) AS i_understood_what_academic_supports_would_be_available_to_me,
+        `data-studio-260217.surveys.determine_positive_answers` (i_located_these_support_services_once_i_arrived_on_campus_or) AS i_located_these_support_services_once_i_arrived_on_campus_or,
+        `data-studio-260217.surveys.determine_positive_answers` (i_felt_confident_in_my_ability_to_seek_out_and_use_these_sup) AS i_felt_confident_in_my_ability_to_seek_out_and_use_these_sup,
+        `data-studio-260217.surveys.determine_positive_answers` (i_could_pay_for_tuition_and_living_expenses) AS i_could_pay_for_tuition_and_living_expenses,
+        `data-studio-260217.surveys.determine_positive_answers` (i_knew_there_were_going_to_be_some_obstacles_in_completing_m) AS i_knew_there_were_going_to_be_some_obstacles_in_completing_m,
+        `data-studio-260217.surveys.determine_positive_answers` (i_understood_how_getting_a_college_degree_fit_with_my_larger) AS i_understood_how_getting_a_college_degree_fit_with_my_larger,
+        `data-studio-260217.surveys.determine_positive_answers` (most_students_i_met_were_focused_on_getting_a_bachelors_degr) AS most_students_i_met_were_focused_on_getting_a_bachelors_degr,
+        `data-studio-260217.surveys.determine_positive_answers` (i_felt_i_belonged_on_my_college_campushelp_note_if_remote_th) AS i_felt_i_belonged_on_my_college_campushelp_note_if_remote_th,
+        `data-studio-260217.surveys.determine_positive_answers` (my_college_is_culturally_competenthelp_note_i_felt_that_the_) AS my_college_is_culturally_competenthelp_note_i_felt_that_the_,
+        `data-studio-260217.surveys.determine_positive_answers` (my_parent_s_were_involved_and_supportive_during_my_transitio) AS my_parent_s_were_involved_and_supportive_during_my_transitio,
+        `data-studio-260217.surveys.determine_positive_answers` (i_knew_who_to_contact_at_college_track_to_get_advice_or_help) AS i_knew_who_to_contact_at_college_track_to_get_advice_or_help,
+        `data-studio-260217.surveys.determine_positive_answers` (in_the_past_12th_months_were_you_involved_in_a_club_organiza) AS in_the_past_12th_months_were_you_involved_in_a_club_organiza,
+        `data-studio-260217.surveys.determine_positive_answers` (did_you_have_a_leadership_role_with_that_club_organization) AS did_you_have_a_leadership_role_with_that_club_organization,
+        `data-studio-260217.surveys.determine_positive_answers` (i_know_where_the_mental_health_center_services_are_on_my_col) AS i_know_where_the_mental_health_center_services_are_on_my_col,
+        `data-studio-260217.surveys.determine_positive_answers` (i_intend_to_use_these_services_if_ever_i_should_need_them) AS i_intend_to_use_these_services_if_ever_i_should_need_them,
+        `data-studio-260217.surveys.determine_positive_answers` (i_have_a_good_sense_of_what_makes_my_life_meaningful) AS i_have_a_good_sense_of_what_makes_my_life_meaningful,
+        `data-studio-260217.surveys.determine_positive_answers` (my_life_has_a_clear_sense_of_purpose) AS my_life_has_a_clear_sense_of_purpose,
+        `data-studio-260217.surveys.determine_positive_answers` (i_have_discovered_a_satisfying_life_purpose) AS i_have_discovered_a_satisfying_life_purpose,
+        `data-studio-260217.surveys.determine_positive_answers` (i_know_what_steps_i_will_take_next_to_pursue_my_purpose_in_l) AS i_know_what_steps_i_will_take_next_to_pursue_my_purpose_in_l,
+        `data-studio-260217.surveys.determine_positive_answers` (how_often_do_you_use_goal_setting_to_ensure_you_stay_on_trac) AS how_often_do_you_use_goal_setting_to_ensure_you_stay_on_trac,
+        `data-studio-260217.surveys.determine_positive_answers` (how_often_do_you_stay_focused_on_the_same_goal_for_several_m) AS how_often_do_you_stay_focused_on_the_same_goal_for_several_m,
+        `data-studio-260217.surveys.determine_positive_answers` (how_confident_are_you_that_you_can_complete_all_the_work_tha) AS how_confident_are_you_that_you_can_complete_all_the_work_tha,
+        `data-studio-260217.surveys.determine_positive_answers` (how_confident_are_you_that_you_can_learn_all_the_material_pr) AS how_confident_are_you_that_you_can_learn_all_the_material_pr,
+        `data-studio-260217.surveys.determine_positive_answers` (in_the_past_12_months_did_you_have_a_job_to_help_you_pay_the) AS in_the_past_12_months_did_you_have_a_job_to_help_you_pay_the,
+        `data-studio-260217.surveys.determine_positive_answers` (since_the_beginning_of_college_how_many_total_internships_or) AS since_the_beginning_of_college_how_many_total_internships_or,
+        `data-studio-260217.surveys.determine_positive_answers` (are_you_planning_on_doing_an_internship_prior_to_obtaining_y) AS are_you_planning_on_doing_an_internship_prior_to_obtaining_y,
+        `data-studio-260217.surveys.determine_positive_answers` (choosing_your_major_or_minor_field_of_study) AS choosing_your_major_or_minor_field_of_study,
+        `data-studio-260217.surveys.determine_positive_answers` (providing_advice_or_resources_to_help_manage_your_course_loa) AS providing_advice_or_resources_to_help_manage_your_course_loa,
+        `data-studio-260217.surveys.determine_positive_answers` (directing_you_to_resources_to_help_you_be_academically_succe) AS directing_you_to_resources_to_help_you_be_academically_succe,
+        `data-studio-260217.surveys.determine_positive_answers` (supporting_your_financial_aid_needs_filling_out_fafsa_financ) AS supporting_your_financial_aid_needs_filling_out_fafsa_financ,
+        `data-studio-260217.surveys.determine_positive_answers` (providing_advice_or_resources_to_help_you_manage_your_financ) AS providing_advice_or_resources_to_help_you_manage_your_financ,
+        `data-studio-260217.surveys.determine_positive_answers` (providing_advice_or_resources_to_help_you_be_career_ready_re) AS providing_advice_or_resources_to_help_you_be_career_ready_re,
+        `data-studio-260217.surveys.determine_positive_answers` (identifying_or_evaluating_potential_career_options) AS identifying_or_evaluating_potential_career_options,
+        `data-studio-260217.surveys.determine_positive_answers` (my_ct_advisor_provides_info_or_connects_me_to_additional_res) AS my_ct_advisor_provides_info_or_connects_me_to_additional_res,
+        `data-studio-260217.surveys.determine_positive_answers` (my_ct_advisor_pushes_me_to_find_my_own_answers_to_my_questio) AS my_ct_advisor_pushes_me_to_find_my_own_answers_to_my_questio,
+        `data-studio-260217.surveys.determine_positive_answers` (my_ct_advisor_and_i_discuss_and_work_through_problems_obstac) AS my_ct_advisor_and_i_discuss_and_work_through_problems_obstac,
+        `data-studio-260217.surveys.determine_positive_answers` (i_feel_like_my_ct_advisor_cares_about_me_as_a_person) AS i_feel_like_my_ct_advisor_cares_about_me_as_a_person,
+        `data-studio-260217.surveys.determine_positive_answers` (when_i_talk_to_my_ct_advisor_i_leave_feeling_heard_and_suppo) AS when_i_talk_to_my_ct_advisor_i_leave_feeling_heard_and_suppo,
+        `data-studio-260217.surveys.determine_positive_answers` (how_likely_are_you_to_recommend_college_track_to_a_student_w) AS how_likely_are_you_to_recommend_college_track_to_a_student_w,
+        `data-studio-260217.surveys.determine_positive_answers` (i_still_feel_strongly_connected_to_college_track) AS i_still_feel_strongly_connected_to_college_track,
+        `data-studio-260217.surveys.determine_positive_answers` (i_have_been_provided_enough_opportunities_to_stay_connected_) AS i_have_been_provided_enough_opportunities_to_stay_connected_,
+        `data-studio-260217.surveys.determine_positive_answers` (i_always_know_who_my_ct_college_advisor_is_and_never_have_is) AS i_always_know_who_my_ct_college_advisor_is_and_never_have_is,
+        `data-studio-260217.surveys.determine_positive_answers` (besides_my_ct_college_advisor_i_have_at_least_one_ct_staff_m) AS besides_my_ct_college_advisor_i_have_at_least_one_ct_staff_m,
+        `data-studio-260217.surveys.determine_positive_answers` (i_am_able_to_receive_my_scholarship_funds_from_college_track) AS i_am_able_to_receive_my_scholarship_funds_from_college_track,
+        `data-studio-260217.surveys.determine_positive_answers` (which_of_the_factors_are_most_responsible_for_you_not_feelin) AS which_of_the_factors_are_most_responsible_for_you_not_feelin,
         `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
         
         FROM `data-studio-260217.surveys.fy21_ps_survey`
         LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.filter_contact_id = Contact_Id
         
-/*
-WITH gather_data AS (
-  SELECT
-    HSS.contact_id,
-    CAT.site_short,
-    CAT.Most_Recent_GPA_Cumulative_c,
-    CAT.Most_Recent_GPA_Cumulative_bucket,
-    CAT.high_school_graduating_class_c,
-    CAT.Gender_c,
-    CAT.Ethnic_background_c,
-    CAT.Attendance_Rate_Current_AS_c,
-        CASE
-      WHEN (
-        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '10 - extremely likely'
-        OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '9'
-      ) THEN "Promoters"
-      WHEN (
-        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '8'
-        OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '7'
-      ) THEN "Passives"
-      ELSE "Detractors"
-    END AS NPS_Score,
-    -- Likert Awners,
-     `data-studio-260217.surveys.determine_positive_answers`(ct_provides_a_supportive_learning_environment_for_me) AS ct_provides_a_supportive_learning_environment_for_me,
-    `data-studio-260217.surveys.determine_positive_answers`(when_im_at_ct_i_feel_like_i_belong) AS when_im_at_ct_i_feel_like_i_belong,
-    `data-studio-260217.surveys.determine_positive_answers`(the_friends_ive_made_at_ct_support_me_in_working_towards_a_college_degree) AS the_friends_ive_made_at_ct_support_me_in_working_towards_a_college_degree,
-    `data-studio-260217.surveys.determine_positive_answers`(i_feel_connected_to_at_least_one_ct_staff_member) AS i_feel_connected_to_at_least_one_ct_staff_member,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_provides_me_enough_opportunities_to_form_meaningful_relationships_with_staff) AS ct_provides_me_enough_opportunities_to_form_meaningful_relationships_with_staff,
-    `data-studio-260217.surveys.determine_positive_answers`(i_make_it_a_priority_to_attend_my_ct_sessions_workshops) AS i_make_it_a_priority_to_attend_my_ct_sessions_workshops,
-    `data-studio-260217.surveys.determine_positive_answers`(my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site) AS my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site,
-    `data-studio-260217.surveys.determine_positive_answers`(inside_your_college_track_center) AS inside_your_college_track_center,
-    `data-studio-260217.surveys.determine_positive_answers`(in_the_area_outside_your_center) AS in_the_area_outside_your_center,
-    `data-studio-260217.surveys.determine_positive_answers`(i_believe_earning_a_college_degree_will_help_me_achieve_my_dreams_and_improv) AS i_believe_earning_a_college_degree_will_help_me_achieve_my_dreams_and_improv,
-    `data-studio-260217.surveys.determine_positive_answers`(college_track_keeps_my_parents_informed_about_my_progress_to_college) AS college_track_keeps_my_parents_informed_about_my_progress_to_college,
-    `data-studio-260217.surveys.determine_positive_answers`(check_ins_with_ct_staff_academic_coaches_success_coaches_etc) AS check_ins_with_ct_staff_academic_coaches_success_coaches_etc,
-    `data-studio-260217.surveys.determine_positive_answers`(credit_recovery_courses_opportunities) AS credit_recovery_courses_opportunities,
-    `data-studio-260217.surveys.determine_positive_answers`(academic_resources_e_g_textbooks_computers) AS academic_resources_e_g_textbooks_computers,
-    `data-studio-260217.surveys.determine_positive_answers`(academic_advising_e_g_study_habits_learning_about_college_eligible_vs_competitiv) AS academic_advising_e_g_study_habits_learning_about_college_eligible_vs_competitiv,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_helps_me_better_understand_what_im_learning_in_my_high_school_classes) AS ct_helps_me_better_understand_what_im_learning_in_my_high_school_classes,
-    `data-studio-260217.surveys.determine_positive_answers`(cts_support_has_increased_my_confidence_when_taking_practice_official_college_en) AS cts_support_has_increased_my_confidence_when_taking_practice_official_college_en,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_helps_me_better_understand_that_i_am_in_control_of_my_academic_performance) AS ct_helps_me_better_understand_that_i_am_in_control_of_my_academic_performance,
-    `data-studio-260217.surveys.determine_positive_answers`(i_have_a_better_understanding_of_the_math_concepts_im_currently_learning_in_scho) AS i_have_a_better_understanding_of_the_math_concepts_im_currently_learning_in_scho,
-    `data-studio-260217.surveys.determine_positive_answers`(i_am_more_determined_to_improve_my_math_skills) AS i_am_more_determined_to_improve_my_math_skills,
-    `data-studio-260217.surveys.determine_positive_answers`(i_feel_more_confident_in_my_ability_to_learn_math) AS i_feel_more_confident_in_my_ability_to_learn_math,
-    `data-studio-260217.surveys.determine_positive_answers`(i_am_more_excited_to_learn_math) AS i_am_more_excited_to_learn_math,
-    `data-studio-260217.surveys.determine_positive_answers`(i_know_what_academic_requirements_i_must_meet_to_attend_a_4_year_college) AS i_know_what_academic_requirements_i_must_meet_to_attend_a_4_year_college,
-    `data-studio-260217.surveys.determine_positive_answers`(i_have_new_or_improved_critical_thinking_skills) AS i_have_new_or_improved_critical_thinking_skills,
-    `data-studio-260217.surveys.determine_positive_answers`(i_have_new_or_improved_study_habits_skills) AS i_have_new_or_improved_study_habits_skills,
-    `data-studio-260217.surveys.determine_positive_answers`(i_feel_prepared_to_engage_in_academic_stretch_opportunities) AS i_feel_prepared_to_engage_in_academic_stretch_opportunities,
-    `data-studio-260217.surveys.determine_positive_answers`(i_am_more_comfortable_asking_for_help_if_i_need_it_from_teacher_school_staff_cou) AS i_am_more_comfortable_asking_for_help_if_i_need_it_from_teacher_school_staff_cou,
-    `data-studio-260217.surveys.determine_positive_answers`(i_feel_more_comfortable_working_with_students_in_study_groups_to_work_on_difficu) AS i_feel_more_comfortable_working_with_students_in_study_groups_to_work_on_difficu,
-    `data-studio-260217.surveys.determine_positive_answers`(i_am_actively_engaged_in_a_study_group_with_my_peers) AS i_am_actively_engaged_in_a_study_group_with_my_peers,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_has_helped_me_improve_my_ability_to_identify_share_things_im_passionate_about) AS ct_has_helped_me_improve_my_ability_to_identify_share_things_im_passionate_about,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_provides_me_with_opportunities_to_explore_my_passions_through_community_servi) AS ct_provides_me_with_opportunities_to_explore_my_passions_through_community_servi,
-    `data-studio-260217.surveys.determine_positive_answers`(through_ct_or_because_of_ct_i_have_taken_part_in_summer_activities_which_helped_) AS through_ct_or_because_of_ct_i_have_taken_part_in_summer_activities_which_helped_,
-    `data-studio-260217.surveys.determine_positive_answers`(my_life_has_a_clear_sense_of_purpose) AS my_life_has_a_clear_sense_of_purpose,
-    `data-studio-260217.surveys.determine_positive_answers`(i_have_a_good_sense_of_what_makes_my_life_meaningful) AS i_have_a_good_sense_of_what_makes_my_life_meaningful,
-    `data-studio-260217.surveys.determine_positive_answers`(i_have_discovered_a_satisfying_life_purpose) AS i_have_discovered_a_satisfying_life_purpose,
-    `data-studio-260217.surveys.determine_positive_answers`(i_know_what_steps_i_will_take_next_to_pursue_my_purpose_in_life) AS i_know_what_steps_i_will_take_next_to_pursue_my_purpose_in_life,
-    `data-studio-260217.surveys.determine_positive_answers`(during_my_time_in_ct_i_have_been_able_to_identify_a_dream_purpose_i_hope_to_achi) AS during_my_time_in_ct_i_have_been_able_to_identify_a_dream_purpose_i_hope_to_achi,
-    `data-studio-260217.surveys.determine_positive_answers`(at_ct_i_am_comfortable_sharing_my_dream_purpose_with_my_community_of_peers_and_s) AS at_ct_i_am_comfortable_sharing_my_dream_purpose_with_my_community_of_peers_and_s,
-    `data-studio-260217.surveys.determine_positive_answers`(i_feel_an_ownership_in_the_steps_actions_needed_to_be_taken_to_achieve_my_dream_) AS i_feel_an_ownership_in_the_steps_actions_needed_to_be_taken_to_achieve_my_dream_,
-    `data-studio-260217.surveys.determine_positive_answers`(i_have_a_hobby_or_interest_that_i_am_passionate_about_this_year) AS i_have_a_hobby_or_interest_that_i_am_passionate_about_this_year,
-    `data-studio-260217.surveys.determine_positive_answers`(opportunities_to_meet_college_representatives_and_attend_college_fairs) AS opportunities_to_meet_college_representatives_and_attend_college_fairs,
-    `data-studio-260217.surveys.determine_positive_answers`(providing_me_the_opportunity_to_earn_bank_book_scholarship_money_to_help_pay_for) AS providing_me_the_opportunity_to_earn_bank_book_scholarship_money_to_help_pay_for,
-    `data-studio-260217.surveys.determine_positive_answers`(support_in_applying_for_scholarships_and_financial_aid_to_help_pay_for_college) AS support_in_applying_for_scholarships_and_financial_aid_to_help_pay_for_college,
-    `data-studio-260217.surveys.determine_positive_answers`(providing_information_on_getting_into_and_paying_for_college_to_my_parents_guard) AS providing_information_on_getting_into_and_paying_for_college_to_my_parents_guard,
-    `data-studio-260217.surveys.determine_positive_answers`(because_of_coaching_i_have_been_able_to_form_supportive_relationships_with_ct_st) AS because_of_coaching_i_have_been_able_to_form_supportive_relationships_with_ct_st,
-    `data-studio-260217.surveys.determine_positive_answers`(because_of_coaching_i_have_been_able_to_form_supportive_relationships_with_peers) AS because_of_coaching_i_have_been_able_to_form_supportive_relationships_with_peers,
-    `data-studio-260217.surveys.determine_positive_answers`(because_of_coaching_i_am_more_self_motivated_and_have_a_sense_of_ownership_to_ac) AS because_of_coaching_i_am_more_self_motivated_and_have_a_sense_of_ownership_to_ac,
-    `data-studio-260217.surveys.determine_positive_answers`(working_with_college_track_wellness_services_has_assisted_you_in_managing_your_s) AS working_with_college_track_wellness_services_has_assisted_you_in_managing_your_s,
-    `data-studio-260217.surveys.determine_positive_answers`(working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c) AS working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c,
-    `data-studio-260217.surveys.determine_positive_answers`(working_with_college_tracks_wellness_services_has_enhanced_your_mental_health) AS working_with_college_tracks_wellness_services_has_enhanced_your_mental_health,
-    `data-studio-260217.surveys.determine_positive_answers`(how_excited_are_you_about_going_to_your_virtual_college_track_workshops) AS how_excited_are_you_about_going_to_your_virtual_college_track_workshops,
-    `data-studio-260217.surveys.determine_positive_answers`(how_often_do_you_stay_focused_on_the_same_goal_for_several_months_at_a_time) AS how_often_do_you_stay_focused_on_the_same_goal_for_several_months_at_a_time,
-    `data-studio-260217.surveys.determine_positive_answers`(how_often_do_you_get_so_focused_on_activities_in_your_workshops_that_you_lose_tr) AS how_often_do_you_get_so_focused_on_activities_in_your_workshops_that_you_lose_tr,
-    `data-studio-260217.surveys.determine_positive_answers`(ive_been_given_flexible_options_multiple_timings_assignment_completion_makeups_e) AS ive_been_given_flexible_options_multiple_timings_assignment_completion_makeups_e,
-    `data-studio-260217.surveys.determine_positive_answers`(when_you_are_not_in_school_how_often_do_you_talk_about_ideas_from_your_classes) AS when_you_are_not_in_school_how_often_do_you_talk_about_ideas_from_your_classes,
-    `data-studio-260217.surveys.determine_positive_answers`(ive_been_able_to_collaborate_with_other_college_track_students_while_participati) AS ive_been_able_to_collaborate_with_other_college_track_students_while_participati,
-    `data-studio-260217.surveys.determine_positive_answers`(i_enjoy_collaborating_with_other_college_track_students_while_participating_in_v) AS i_enjoy_collaborating_with_other_college_track_students_while_participating_in_v,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_supported_me_in_figuring_out_which_colleges_im_eligible_for_based_on_my_class) AS ct_supported_me_in_figuring_out_which_colleges_im_eligible_for_based_on_my_class,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_has_provided_useful_information_to_help_me_understand_which_colleges_are_best) AS ct_has_provided_useful_information_to_help_me_understand_which_colleges_are_best,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_has_provided_useful_information_to_help_me_understand_which_local_colleges_ar) AS ct_has_provided_useful_information_to_help_me_understand_which_local_colleges_ar,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_has_provided_me_with_enough_1_1_support_during_the_college_application_proces) AS ct_has_provided_me_with_enough_1_1_support_during_the_college_application_proces,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_helped_me_craft_a_strong_and_compelling_college_admissions_statement_essay) AS ct_helped_me_craft_a_strong_and_compelling_college_admissions_statement_essay,
-    `data-studio-260217.surveys.determine_positive_answers`(ct_has_helped_me_understand_my_options_when_it_comes_to_paying_for_college) AS ct_has_helped_me_understand_my_options_when_it_comes_to_paying_for_college,
-    `data-studio-260217.surveys.determine_positive_answers`(i_understand_the_ways_that_college_track_advisors_can_support_me_when_in_college) AS i_understand_the_ways_that_college_track_advisors_can_support_me_when_in_college,
-    `data-studio-260217.surveys.determine_positive_answers`(i_understand_the_requirements_i_must_meet_in_order_to_access_my_bank_book_when_i) AS i_understand_the_requirements_i_must_meet_in_order_to_access_my_bank_book_when_i,
-    `data-studio-260217.surveys.determine_positive_answers`(i_understand_how_to_determine_which_colleges_im_eligible_for_based_on_my_classes) AS i_understand_how_to_determine_which_colleges_im_eligible_for_based_on_my_classes,
-    `data-studio-260217.surveys.determine_positive_answers`(i_understand_what_a_best_fit_college_is) AS i_understand_what_a_best_fit_college_is,
-    `data-studio-260217.surveys.determine_positive_answers`(i_understand_what_a_local_affordable_college_is) AS i_understand_what_a_local_affordable_college_is,
-    `data-studio-260217.surveys.determine_positive_answers`(i_understand_my_options_when_it_comes_to_paying_for_college) AS i_understand_my_options_when_it_comes_to_paying_for_college,
-    `data-studio-260217.surveys.determine_positive_answers`(i_understand_where_to_find_and_how_to_apply_for_scholarships_to_help_pay_for_col) AS i_understand_where_to_find_and_how_to_apply_for_scholarships_to_help_pay_for_col,
-    `data-studio-260217.surveys.determine_positive_answers`(how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get) AS nps_positive,
-    CASE WHEN how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get NOT IN ('10 - extremely likely', '9', '8', '7') THEN 1
-    ELSE 0
-    END AS nps_detractor
-    
-
-
-  FROM
-    `data-studio-260217.surveys.fy21_hs_survey` HSS
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CAT ON CAT.Contact_Id = HSS.contact_id
-  WHERE
-    HSS.contact_id IS NOT NULL
-    AND site_short IS NOT NULL
-)
-
-SELECT
-  GD.*
-
-FROM
-  gather_data GD
-*/
