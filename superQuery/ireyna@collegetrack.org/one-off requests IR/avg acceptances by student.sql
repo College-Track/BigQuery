@@ -1,5 +1,5 @@
 --SUM Of acceptances
-WITH acceptance_by_student AS
+WITH gather_students AS
 (SELECT 
     contact_id,
     site_short,
@@ -15,14 +15,14 @@ college_accepted_app_id
 -- site_short = 'Watts'
 ),
 
-sum_of_acceptances AS (
+prep_aggregation_of_acceptances AS (
 
 SELECT contact_id,site_short,SUM(accepted_count) AS sum_acceptances
-FROM acceptance_by_student
+FROM gather_students
 WHERE accepted_count = 1
 GROUP BY contact_id, site_short
 )
 
 SELECT avg(sum_Acceptances) AS avg, 
-from sum_of_acceptances
+from prep_aggregation_of_acceptances
 --GROUP BY contact_id
