@@ -22,6 +22,6 @@ FROM acceptance_by_student
 GROUP BY contact_id, site_short
 )
 
-SELECT contact_id, avg(sum_Acceptances) AS avg, 
+SELECT avg(sum_Acceptances) AS avg, 
 from sum_of_acceptances
-GROUP BY contact_id
+--GROUP BY contact_id
