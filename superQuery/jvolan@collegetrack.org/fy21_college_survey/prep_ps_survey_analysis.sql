@@ -1,4 +1,10 @@
- SELECT
+CREATE OR REPLACE TABLE `data-studio-260217.surveys.fy21_ps_survey_analysis`
+OPTIONS
+    (
+    description= "fy21 ps survey file for analysis in python"
+    )
+AS
+    SELECT
     
         Contact_Id,
     
