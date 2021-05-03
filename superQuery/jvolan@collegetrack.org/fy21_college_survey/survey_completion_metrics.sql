@@ -29,6 +29,13 @@ WITH student_list_denom AS
 )
 
     SELECT
+    sum(took_survey_yn) AS took_survey_count,
     count(Contact_Id) AS student_count
+    
     FROM student_list_denom
-    GROUP BY took_survey_yn
+    GROUP BY
+    region_short,
+    site_short,
+    Ethnic_background_c,
+    Gender_c,
+    Current_School_Type_c_degree
