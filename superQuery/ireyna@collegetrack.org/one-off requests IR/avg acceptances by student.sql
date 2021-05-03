@@ -19,6 +19,7 @@ sum_of_acceptances AS (
 
 SELECT contact_id,site_short,SUM(accepted_count) AS sum_acceptances
 FROM acceptance_by_student
+WHERE accepted_count = 1
 GROUP BY contact_id, site_short
 )
 
