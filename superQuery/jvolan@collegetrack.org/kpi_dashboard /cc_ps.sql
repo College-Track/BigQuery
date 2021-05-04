@@ -4,20 +4,6 @@ WITH get_contact_data AS
     contact_Id,
     site_short,
     
-    --current PS fafsa complete for following AY
-    CASE
-        WHEN 
-        (fa_req_fafsa_c = 'Submitted' 
-        AND 
-        college_track_status_c IN ('11A','12A')
-        AND
-        (grade_c = '12th Grade' 
-        OR
-        indicator_years_since_hs_graduation_c = 0)) 
-        THEN 1
-        Else 0  
-    End AS indicator_fafsa_complete,
-    
     -- 6 year projected numerator, done as still PS & alumni already so we can further split out numerator if needed)
     CASE
       WHEN
@@ -97,17 +83,28 @@ WITH get_contact_data AS
     OR indicator_completed_ct_hs_program_c = true
 ),
 
-fafsa_complete AS
+-- data from ATs
+--fafsa completion
+get_at_data AS
 (
     SELECT
     AT_Id,
     Contact_Id,
+    site_short AS at_site,
     CASE    
         WHEN 
         (filing_status_c = "Filed for next year's financial aid"
+        AND college_track_status_c = '15A'
         AND current_as_c = true) THEN 1
         ELSE 0
-    END AS indicator_fafsa_complete
+    END AS indicator_fafsa_complete,
+    CASE
+        WHEN 
+        (loans_c IN ("Not using private loans, PLUS loans, or consumer debt to finance education", "Using private and/or PLUS loans but on track to owe less than $30k at graduation")
+        AND college_track_status_c = '15A'
+        AND current_as_c = true) THEN 1
+        ELSE 0
+    END AS indicator_loans_less_30k_loans
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 ),
@@ -145,7 +142,6 @@ cc_ps AS
 (
     SELECT
     site_short,
-    sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
     sum(cc_ps_projected_grad_num) AS cc_ps_projected_grad_num,
     sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom,
     sum(x_2_yr_transfer_num) AS cc_ps_2_yr_transfer_num,
@@ -154,7 +150,13 @@ cc_ps AS
     sum(cc_ps_grad_internship_denom) AS cc_ps_grad_internship_denom,
     sum(cc_ps_gpa_2_5_num) AS cc_ps_gpa_2_5_num,
     
+    sum(get_at_data.indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
+    sum(get_at_data.indicator_fafsa_complete) AS cc_ps_fasfa_complete,
+
+
+    
     FROM get_contact_data
+    LEFT JOIN get_at_data ON get_at_data.at_site = site_short
     GROUP BY site_short
 
 )
