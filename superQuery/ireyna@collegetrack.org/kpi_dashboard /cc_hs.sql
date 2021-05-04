@@ -157,7 +157,16 @@ gather_twelfth_grade_metrics AS(
             WHEN accepted_enrolled_best_good_situational IS NOT NULL THEN 1
             WHEN applied_accepted_best_good_situational IS NOT NULL THEN 1
             ELSE 0
-            END AS cc_hs_accepted_best_good_situational
+            END AS cc_hs_accepted_best_good_situational,
+        CASE 
+            WHEN accepted_enrolled_best_good_situational IS NOT NULL THEN 1
+            ELSE 0
+            END AS cc_hs_enrolled_best_good_situational,  
+        CASE 
+            WHEN accepted_enrolled_affordable IS NOT NULL THEN 1
+            ELSE 0
+            END AS cc_hs_enrolled_affordable,  
+            
     FROM gather_data_twelfth_grade
 ),
 
@@ -189,7 +198,9 @@ prep_twelfth_grade_metrics AS (
         SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
         SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational,
         SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational,
-        SUM(fafsa_verification_prep) AS cc_hs_financial_aid_submission_verification
+        SUM(fafsa_verification_prep) AS cc_hs_financial_aid_submission_verification,
+        SUM(cc_hs_enrolled_best_good_situational) AS cc_hs_enrolled_best_good_situational,
+        SUM(cc_hs_enrolled_affordable) AS cc_hs_enrolled_affordable
     FROM gather_twelfth_grade_metrics
     GROUP BY site_short
 )
@@ -214,7 +225,9 @@ GROUP BY
     cc_hs_financial_aid_submission_verification,
     cc_hs_accepted_affordable,
     cc_hs_applied_best_good_situational,
-    cc_hs_accepted_best_good_situational 
+    cc_hs_accepted_best_good_situational,
+    cc_hs_enrolled_best_good_situational, #projecting matriculation
+    cc_hs_enrolled_affordable #projecting matriculation
     
 
 
