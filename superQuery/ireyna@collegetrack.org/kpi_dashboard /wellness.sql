@@ -24,29 +24,20 @@ AY_Name,
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE record_type_id = '01246000000RNnSAAW' 
-AND grade_c != '12th Grade'
 AND site_short != 'College Track Arlen'
 AND AY_Name = 'AY 2020-21'
 
 ),
 
-prep_kpi AS (
+--prep_kpi AS (
 SELECT 
     CASE 
         WHEN test_record_id IS NOT NULL THEN 1
         ELSE 0
     END AS covi_assessment_ay,
-    student_site_c
+    student_site_c,
+    contact_id
     
 FROM gather_covi_data as C
 LEFT JOIN gather_at_data as A ON C.academic_semester_c=A.at_id
 )
-
-SELECT 
-SUM(covi_assessment_ay),
-student_site_c
-FROM prep_kpi
-GROUP BY student_site_c
-
-
-
