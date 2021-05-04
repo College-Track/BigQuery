@@ -9,7 +9,7 @@ SELECT
     site_sort,
     region_abrev AS region,
     CASE
-        WHEN Gender_c IN ("Decline to State","Other") THEN "Decline to State/Other"
+        WHEN Gender_c IN ("Decline to State","Other") THEN "Other"
         ELSE Gender_c
     END AS Gender_c, 
     CASE
