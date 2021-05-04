@@ -89,7 +89,7 @@ get_at_data AS
 (
     SELECT
     AT_Id,
-    Contact_Id,
+    Contact_Id AS at_contact_id,
     site_short AS at_site,
     CASE    
         WHEN 
@@ -137,7 +137,19 @@ persist_at_reporting_group AS
     AND term_c != 'Summer'
     GROUP BY Contact_Id
 */
+
+join_data AS
+(
+    SELECT
+    get_contact_data.*,
+    get_at_data.indicator_fafsa_complete,
+    get_at_data.indicator_loans_less_30k_loans,
     
+    FROM get_contact_data
+    LEFT JOIN get_at_data ON at_contact_id = contact_id
+),
+    
+
 cc_ps AS
 (
     SELECT
@@ -149,14 +161,10 @@ cc_ps AS
     sum(cc_ps_grad_internship_num) AS cc_ps_grad_internship_num,
     sum(cc_ps_grad_internship_denom) AS cc_ps_grad_internship_denom,
     sum(cc_ps_gpa_2_5_num) AS cc_ps_gpa_2_5_num,
+    sum(indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
+    sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
     
-    sum(get_at_data.indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
-    sum(get_at_data.indicator_fafsa_complete) AS cc_ps_fasfa_complete,
-
-
-    
-    FROM get_contact_data
-    LEFT JOIN get_at_data ON get_at_data.at_site = site_short
+    FROM join_data
     GROUP BY site_short
 
 )
