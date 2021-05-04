@@ -40,4 +40,3 @@ SELECT
     
 FROM gather_covi_data as C
 LEFT JOIN gather_at_data as A ON C.academic_semester_c=A.at_id
-)
