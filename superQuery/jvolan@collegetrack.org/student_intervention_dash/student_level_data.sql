@@ -3,7 +3,10 @@ WITH recent_logged_activities AS
     SELECT
     Who_Id,
     What_Id AS Related_to,
-    Activity_Date AS Date,
+    CASE
+        WHEN date_of_contact_c IS NOT NULL THEN date_of_contact_c
+        Else activity_date
+    END AS Date,
     Subject,
     Description,
     Id AS activity_id,
