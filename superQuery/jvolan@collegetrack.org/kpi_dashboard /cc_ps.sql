@@ -1,4 +1,6 @@
-ELECT
+WITH get_at_data AS
+(
+    SELECT
     AT_Id,
     Contact_Id AS at_contact_id,
     site_short AS at_site,
@@ -15,3 +17,9 @@ ELECT
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = true
     AND college_track_status_c = '15A'
+)
+    SELECT
+    *
+    FROM get_at_data
+    WHERE indicator_loans_less_30k_loans >0
+    OR indicator_fafsa_complete >0
