@@ -103,12 +103,13 @@ fafsa_complete AS
     AT_Id,
     Contact_Id,
     CASE    
-        WHEN filing_status_c = "Filed for next year's financial aid" THEN 1
+        WHEN 
+        (filing_status_c = "Filed for next year's financial aid"
+        AND current_as_c = true) THEN 1
         ELSE 0
     END AS indicator_fafsa_complete
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE current_as_c = true
 ),
     
 /*
