@@ -135,9 +135,7 @@ persist_calc AS
         WHEN at_count = persist_count THEN 1
         ELSE 0
     END) AS indicator_persisted
-
     FROM get_persist_at_data
-    
     GROUP BY persist_contact_id
 ),
 
@@ -147,9 +145,11 @@ join_data AS
     get_contact_data.*,
     get_at_data.indicator_fafsa_complete,
     get_at_data.indicator_loans_less_30k_loans,
+    persist_calc.indicator_persisted,
     
     FROM get_contact_data
     LEFT JOIN get_at_data ON at_contact_id = contact_id
+    LEFT JOIN persist_calc ON persist_calc.persist_contact_id = contact_id
 ),
     
 
@@ -166,6 +166,7 @@ cc_ps AS
     sum(cc_ps_gpa_2_5_num) AS cc_ps_gpa_2_5_num,
     sum(indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
     sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
+    sum(indicator_persisted) AS cc_ps_persisted
     
     FROM join_data
     GROUP BY site_short
