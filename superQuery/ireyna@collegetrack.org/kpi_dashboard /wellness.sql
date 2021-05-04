@@ -27,7 +27,7 @@ WHERE record_type_id = '01246000000RNnSAAW'
 AND site_short != 'College Track Arlen'
 AND AY_Name = 'AY 2020-21'
 
-),
+)
 
 --prep_kpi AS (
 SELECT 
