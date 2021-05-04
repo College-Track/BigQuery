@@ -4,7 +4,7 @@ WITH get_contact_data AS
     contact_Id,
     site_short,
     
-    --12th grade fasfa complete numerator
+    --current PS fafsa complete for following AY
     CASE
         WHEN 
         (fa_req_fafsa_c = 'Submitted' 
@@ -97,8 +97,22 @@ WITH get_contact_data AS
     OR indicator_completed_ct_hs_program_c = true
 ),
 
+fafsa_complete AS
+(
+    SELECT
+    AT_Id,
+    Contact_Id,
+    CASE    
+        WHEN filing_status_c = "Filed for next year's financial aid" THEN 1
+        ELSE 0
+    END AS indicator_fafsa_complete
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE current_as_c = true
+),
+    
 /*
-WITH persist_at_reporting_group AS
+persist_at_reporting_group AS
 (
     SELECT
     count(Contact_Id) AS reporting_group,
@@ -124,8 +138,7 @@ WITH persist_at_reporting_group AS
     WHERE AY_Name = 'AY 2020-21'
     AND term_c != 'Summer'
     GROUP BY Contact_Id
-    
-    */
+*/
     
 cc_ps AS
 (
@@ -142,6 +155,7 @@ cc_ps AS
     
     FROM get_contact_data
     GROUP BY site_short
+
 )
 
     SELECT
