@@ -1,4 +1,5 @@
 SELECT 
+    full_name_c,
     C.id AS test_record_id,
     test_date_c AS first_covi_ay,
     --PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
@@ -16,6 +17,6 @@ WHERE C.test_date_c = (
     
 GROUP BY 
     student_site_c,
-
+    full_name_c,
     test_date_c,
     id
