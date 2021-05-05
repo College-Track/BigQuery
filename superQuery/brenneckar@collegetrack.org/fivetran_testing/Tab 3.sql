@@ -1,3 +1,3 @@
-SELECT user_role_id
-FROM `data-warehouse-289815.salesforce.user`
-where email LIKE '%wm%'
+SELECT *
+FROM `data-warehouse-289815.salesforce_clean.user_clean`
+where user_role_id = '00E1M000001e0u3UAA'
