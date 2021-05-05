@@ -1,6 +1,4 @@
-WITH get_persist_at_data AS
-(
-  SELECT
+SELECT
     contact_id AS persist_contact_id,
     MAX(CASE
         WHEN
@@ -19,23 +17,3 @@ WITH get_persist_at_data AS
     AND AY_Name = 'AY 2020-21'
     AND term_c <> 'Summer'
     GROUP BY contact_id
-),
-
-persist_calc AS
-(
-    SELECT
-    persist_contact_id,
-    MAX(include_in_reporting_group) AS cc_persist_denom,
-    MAX(
-    CASE
-        WHEN at_count = persist_count THEN 1
-        ELSE 0
-    END) AS indicator_persisted
-    FROM get_persist_at_data
-    WHERE include_in_reporting_group = 1
-    GROUP BY persist_contact_id
-)
-
-    SELECT
-    *
-    FROM persist_calc
