@@ -114,9 +114,12 @@ GROUP BY
 SELECT 
     SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
     wellness_covi_median_growth,
+    first_raw_covi_score_median_ay,
+    last_raw_covi_score_median_ay,
     student_site_c
 FROM prep_kpi
-GROUP BY student_site_c, wellness_covi_median_growth
+GROUP BY student_site_c, wellness_covi_median_growth,first_raw_covi_score_median_ay,
+    last_raw_covi_score_median_ay
 
 
 
