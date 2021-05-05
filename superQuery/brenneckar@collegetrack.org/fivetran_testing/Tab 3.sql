@@ -1,3 +1,3 @@
 SELECT *
 FROM `data-warehouse-289815.salesforce.user`
-WHERE email = 'wmcneel@collegetrack.org'
+where email = 'wmcneel@collegetrack.org'
