@@ -67,3 +67,7 @@ SELECT
     
 FROM first_covi_test_ay AS f
 LEFT JOIN last_covi_test_ay AS l ON f.student_site_c = l.student_site_c
+group by f.full_name_c,
+    f.student_site_c,
+    first_covi_ay,
+    last_covi_ay
