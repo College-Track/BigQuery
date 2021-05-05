@@ -2,7 +2,7 @@ SELECT
     at_id,
     contact_id,
     AY_Name,
-    site_c
+    site_name
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE record_type_id = '01246000000RNnSAAW' 
