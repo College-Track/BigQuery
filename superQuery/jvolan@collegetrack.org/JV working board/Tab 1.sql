@@ -32,6 +32,7 @@ persist_calc AS
         ELSE 0
     END) AS indicator_persisted
     FROM get_persist_at_data
+    WHERE include_in_reporting_group = 1
     GROUP BY persist_contact_id
 )
 
