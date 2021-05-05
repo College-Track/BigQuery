@@ -124,9 +124,11 @@ get_persist_at_data AS
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE start_date_c < CURRENT_DATE()
-        AND (AY_Name = 'AY 2020-21'
+        AND((AY_Name = 'AY 2020-21'
         AND term_c <> 'Summer')
-        
+        OR
+        (AY_Name = 'AY 2021-22'
+        AND term_c = 'Fall'))
     GROUP BY contact_id
 ),
 
