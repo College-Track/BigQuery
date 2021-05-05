@@ -7,12 +7,13 @@ WITH get_persist_at_data AS
     SUM(indicator_persisted_at_c) AS persist_count
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE start_date_c < CURRENT_DATE()
+    WHERE 
+    (start_date_c < CURRENT_DATE()
     AND AY_Name = 'AY 2020-21'
-    AND term_c <> 'Summer'
-    AND college_track_status_c = '15A'
+    AND term_c <> 'Summer')
     AND
     (AT_Enrollment_Status_c IN ('Full-time','Part-time')
+        AND college_track_status_c = '15A'
         AND AY_Name = 'AY 2020-21'
         AND term_c = 'Fall'
         AND AT_school_type IN ('2-year', '4-year'))
