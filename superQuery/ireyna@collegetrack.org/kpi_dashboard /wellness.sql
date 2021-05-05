@@ -93,7 +93,11 @@ SELECT
     C.covi_assessment_ay,
     C.student_site_c,
     CF.first_raw_covi_score_median_ay,
-    CL.last_raw_covi_score_median_ay
+    CL.last_raw_covi_score_median_ay,
+    CASE 
+        WHEN last_raw_covi_score_median_ay > first_raw_covi_score_median_ay THEN 1
+        ELSE 0
+    END AS wellness_covi_median_growth
  
 FROM gather_at_data as A     
 LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
@@ -109,9 +113,10 @@ GROUP BY
 
 SELECT 
     SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
+    wellness_covi_median_growth,
     student_site_c
 FROM prep_kpi
-GROUP BY student_site_c
+GROUP BY student_site_c, wellness_covi_median_growth
 
 
 
