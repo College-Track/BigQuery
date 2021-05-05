@@ -2,11 +2,10 @@ SELECT
     contact_id AS persist_contact_id,
     MAX(CASE
         WHEN
-        (AT_Enrollment_Status_c IN ('Full-time','Part-time')
+        (enrolled_in_any_college_c = true
         AND college_track_status_c = '15A'
         AND AY_Name = 'AY 2020-21'
-        AND term_c = 'Fall'
-        AND AT_school_type IN ('2-year', '4-year')) THEN 1
+        AND term_c = 'Fall') THEN 1
         ELSE 0
     END) AS include_in_reporting_group,
     COUNT(AT_Id) AS at_count,
