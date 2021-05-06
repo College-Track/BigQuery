@@ -172,7 +172,7 @@ FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (
     select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
     AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
-    AND contact_id = '0031M00002xjHjbQAE'
+    
 GROUP BY
     student_site_c,
     raw_covi_score,
