@@ -182,6 +182,7 @@ cc_ps AS
     sum(cc_ps_gpa_2_5_num) AS cc_ps_gpa_2_5_num,
     sum(indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
     sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
+    sum(indicator_well_balanced) AS cc_ps_well_balanced_lifestyle,
     sum(indicator_persisted) AS cc_ps_persist_num,
     sum(cc_persist_denom) AS cc_persist_denom,
     
