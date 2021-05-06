@@ -89,6 +89,7 @@ WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi 
 gather_last_covi_ay AS (
 SELECT 
     test_date_c AS last_covi_ay,
+    contact_id,
     raw_covi_score AS last_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay,#median
     student_site_c
