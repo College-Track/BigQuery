@@ -154,7 +154,7 @@ SELECT
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
-   student_site_c,
+    student_site_c,
     test_record_id,
     contact_id
     
@@ -182,7 +182,7 @@ FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
 
     AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
- group by  
+ group by   
     student_site_c,
     test_record_id,
     contact_id,
@@ -199,13 +199,14 @@ SELECT
 prep_kpi AS (
 SELECT 
     --covi_assessment_ay,
-    --CF.student_site_c,
+    CF.student_site_c,
     last_covi_ay,
     first_covi_ay,
     CF.first_raw_covi_score_median_ay,
     CL.last_raw_covi_score_median_ay,
     first_score,
     last_score,
+    a.contact_id,
     CASE 
         WHEN last_raw_covi_score_median_ay > first_raw_covi_score_median_ay THEN 1
         ELSE 0
@@ -217,14 +218,15 @@ LEFT JOIN gather_first_covi_ay AS CF ON CF.student_site_c = A.site
 LEFT JOIN gather_last_covi_ay AS CL ON CL.student_site_c = A.site
 
 GROUP BY 
-    --student_site_c,
+    student_site_c,
     --covi_assessment_ay,
     first_score,
     last_score,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
     last_covi_ay,
-    first_covi_ay
+    first_covi_ay,
+    a.contact_id
 )
 
 SELECT 
@@ -234,18 +236,19 @@ SELECT
     last_score,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
-    --student_site_c,
+    student_site_c,
     last_covi_ay,
     first_covi_ay
 FROM prep_kpi
 --WHERE contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
 
-GROUP BY --student_site_c, 
+GROUP BY student_site_c, 
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
     first_score,
     last_score,last_covi_ay,
-    first_covi_ay
+    first_covi_ay,
+    contact_id
 
   
