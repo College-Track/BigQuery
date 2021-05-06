@@ -16,12 +16,41 @@ WITH gather_data AS (
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
     college_track_status_c = '11A'
+),
+gather_survey_data AS (
+  SELECT
+    CT.site_short,
+    S.contact_id,
+    CASE
+      WHEN (
+        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '10 - extremely likely'
+        OR how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get = '9'
+      ) THEN 1
+      ELSE 0
+    END AS nps_promoter,
+    CASE
+      WHEN (
+        how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get != '10 - extremely likely'
+        AND how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get != '9'
+        AND how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get != '8'
+        AND how_likely_are_you_to_recommend_college_track_to_a_student_who_wants_to_get != '7'
+      ) THEN 1
+      ELSE 0
+    END AS nps_detractor
+  FROM
+    `data-studio-260217.surveys.fy21_hs_survey` S
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CT ON CT.Contact_Id = S.contact_id
 )
+
 SELECT
-  site_short,
+  gather_data.site_short,
   SUM(incoming_cohort_first_gen) AS pro_ops_incoming_cohort_first_gen,
-  SUM(incoming_cohort_low_income) AS pro_ops_incoming_cohort_low_income
+  SUM(incoming_cohort_low_income) AS pro_ops_incoming_cohort_low_income,
+  AVG(nps_promoter) - AVG(nps_detractor)AS nps_score
+ 
+  
 FROM
   gather_data
+  LEFT JOIN gather_survey_data GSD ON GSD.site_short = gather_data.site_short
 GROUP BY
   site_short
