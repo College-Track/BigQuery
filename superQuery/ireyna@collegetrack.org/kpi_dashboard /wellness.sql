@@ -66,9 +66,9 @@ FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 WHERE AY_Name = 'AY 2019-20'
     AND status_c = 'Completed'
-)
+),
 
---gather_first_covi_ay AS (
+gather_first_covi_ay AS (
 SELECT 
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
@@ -82,3 +82,8 @@ GROUP BY
     student_site_c,
     test_date_c,
     raw_covi_score
+)
+gather_first_test_median AS (
+SELECT first_raw_covi_score_median_ay
+FROM gather_first_covi_ay
+WHERE student_site_c = 'College Track Oakland'
