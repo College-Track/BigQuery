@@ -46,7 +46,8 @@ SELECT
   gather_data.site_short,
   SUM(incoming_cohort_first_gen) AS pro_ops_incoming_cohort_first_gen,
   SUM(incoming_cohort_low_income) AS pro_ops_incoming_cohort_low_income,
-  AVG(nps_promoter) - AVG(nps_detractor)AS nps_score
+  SUM(nps_promoter) AS nps_promoter,
+  SUM(nps_detractor)AS nps_detractor
  
   
 FROM
