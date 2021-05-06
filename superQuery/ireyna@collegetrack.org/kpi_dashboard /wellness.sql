@@ -72,7 +72,7 @@ gather_first_covi_ay AS (
 SELECT 
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
-    MAX(PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c)) AS first_raw_covi_score_median_ay, #median
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c
     #create other CTE pull MAX median
 FROM join_term_data_with_covi AS j
@@ -84,6 +84,6 @@ GROUP BY
     raw_covi_score
 )
 --gather_first_test_median AS (
-SELECT first_raw_covi_score_median_ay
+SELECT MAX(first_raw_covi_score_median_ay)
 FROM gather_first_covi_ay
 WHERE student_site_c = 'College Track Oakland'
