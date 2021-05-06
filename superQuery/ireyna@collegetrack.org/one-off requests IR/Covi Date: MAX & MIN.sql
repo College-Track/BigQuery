@@ -109,6 +109,7 @@ SELECT
     test_date_c, 
     id AS test_record_id, #test id
     student_site_c,
+    record_type_id,
     CASE 
         WHEN id IS NOT NULL THEN 1
         ELSE 0
@@ -129,7 +130,8 @@ GROUP BY
     status_c,
     test_date_c, 
     id, #test id
-    student_site_c
+    student_site_c,
+    record_type_id
 ),
 
 join_term_data_with_covi AS (
@@ -143,6 +145,8 @@ SELECT
 
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
+WHERE record_type_id ='0121M000001cmuDQAQ'
+AND status_c = 'Completed'
 ),
 
 gather_first_covi_ay AS (
