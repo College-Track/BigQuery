@@ -159,6 +159,25 @@ persist_calc AS
     GROUP BY persist_contact_id
 ),
 
+get_fy20_alumni_survey_data AS
+(
+    SELECT
+    Contact_Id AS alum_contact_id,
+    CASE    
+        WHEN i_feel_my_current_job_is_meaningful IN ('Strongly Agree', "Agree") THEN 1
+        WHEN i_feel_my_current_job_is_meaningful IS NULL THEN NULL
+        ELSE 0
+    END AS fy20_alumni_survey_meaningful_num,
+    CASE    
+        WHEN i_feel_my_current_job_is_meaningful IS NOT NULL THEN 1
+        ELSE 0
+    END AS fy20_alumni_survey_meaningful_denom,
+    
+    
+    FROM `data-warehouse-289815.surveys.fy20_alumni_survey`
+),
+
+
 join_data AS
 (
     SELECT
@@ -168,12 +187,15 @@ join_data AS
     get_at_data.indicator_well_balanced,
     get_at_data.indicator_tech_interpersonal_skills,
     persist_calc.indicator_persisted,
-    persist_calc.cc_persist_denom
+    persist_calc.cc_persist_denom,
+    get_fy20_alumni_survey_data.fy20_alumni_survey_meaningful_num,
+    get_fy20_alumni_survey_data.fy20_alumni_survey_meaningful_denom,
 
     
     FROM get_contact_data
     LEFT JOIN get_at_data ON at_contact_id = contact_id
     LEFT JOIN persist_calc ON persist_calc.persist_contact_id = contact_id
+    LEFT JOIN get_fy20_alumni_survey_data ON get_fy20_alumni_survey_data.alum_contact_id = contact_id
 ),
     
 
@@ -194,6 +216,8 @@ cc_ps AS
     sum(indicator_tech_interpersonal_skills) AS cc_ps_tech_interpersonal_skills,
     sum(indicator_persisted) AS cc_ps_persist_num,
     sum(cc_persist_denom) AS cc_persist_denom,
+    sum(fy20_alumni_survey_meaningful_num) AS cc_ps_meaningful_num,
+    sum(fy20_alumni_survey_meaningful_denom) AS cc_ps_meaningful_denom
     
     FROM join_data
     GROUP BY site_short
