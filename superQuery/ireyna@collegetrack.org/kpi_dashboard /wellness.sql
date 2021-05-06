@@ -68,7 +68,7 @@ WHERE AY_Name = 'AY 2019-20'
     AND status_c = 'Completed'
 )
 
-gather_first_covi_ay AS (
+--gather_first_covi_ay AS (
 SELECT 
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
