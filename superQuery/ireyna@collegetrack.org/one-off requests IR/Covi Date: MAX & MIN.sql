@@ -230,12 +230,12 @@ SELECT
     first_covi_ay
 FROM prep_kpi
 WHERE contact_id = '0034600001TR5uoAAD'
-GROUP BY student_site_c, 
+/*GROUP BY student_site_c, 
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
     first_score,
     last_score,last_covi_ay,
     first_covi_ay
-    
+ */   
   
