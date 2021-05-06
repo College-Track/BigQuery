@@ -83,7 +83,7 @@ GROUP BY
     test_date_c,
     raw_covi_score
 )
-gather_first_test_median AS (
+--gather_first_test_median AS (
 SELECT first_raw_covi_score_median_ay
 FROM gather_first_covi_ay
 WHERE student_site_c = 'College Track Oakland'
