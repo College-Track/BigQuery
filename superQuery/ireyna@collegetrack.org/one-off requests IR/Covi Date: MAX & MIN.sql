@@ -1,4 +1,3 @@
-    
 WITH 
 
 gather_at_data AS
@@ -109,8 +108,8 @@ SELECT
 --prep_kpi AS (
 SELECT 
     A.contact_id,
-    C.covi_assessment_ay,
-    C.student_site_c,
+    --covi_assessment_ay,
+    CF.student_site_c,
     last_covi_ay,
     first_covi_ay,
     CF.first_raw_covi_score_median_ay,
@@ -123,14 +122,13 @@ SELECT
     END AS wellness_covi_median_growth
  
 FROM gather_at_data as A     
-LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
-LEFT JOIN gather_first_covi_ay AS CF ON CF.student_site_c = A.site
-LEFT JOIN gather_last_covi_ay AS CL ON CL.student_site_c = A.site
-WHERE contact_id = '0034600001TR5uoAAD'
+--LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
+LEFT JOIN gather_first_covi_ay AS CF ON CF.contact_id = A.contact_id
+LEFT JOIN gather_last_covi_ay AS CL ON CL.contact_id = A.contact_id
 GROUP BY 
     contact_id, 
     student_site_c,
-    covi_assessment_ay,
+    --covi_assessment_ay,
     first_score,
     last_score,
     first_raw_covi_score_median_ay,
