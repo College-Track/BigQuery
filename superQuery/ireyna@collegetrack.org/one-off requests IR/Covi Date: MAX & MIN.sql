@@ -148,6 +148,7 @@ LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 gather_first_covi_ay AS (
 SELECT 
     test_date_c AS first_covi_ay,
+    raw_covi_score AS first_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     test_record_id
@@ -166,6 +167,7 @@ GROUP BY
 gather_last_covi_ay AS (
 SELECT 
     test_date_c AS last_covi_ay,
+    raw_covi_score AS last_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay,#median
     student_site_c
 
@@ -192,6 +194,8 @@ SELECT
     C.student_site_c,
     CF.first_raw_covi_score_median_ay,
     CL.last_raw_covi_score_median_ay,
+    first_score,
+    last_score,
     CASE 
         WHEN last_raw_covi_score_median_ay > first_raw_covi_score_median_ay THEN 1
         ELSE 0
@@ -206,6 +210,8 @@ GROUP BY
     contact_id, 
     student_site_c,
     covi_assessment_ay,
+    first_score,
+    last_score,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay
 )
@@ -213,6 +219,8 @@ GROUP BY
 SELECT 
     SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
     wellness_covi_median_growth,
+    first_score,
+    last_score,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
     student_site_c
