@@ -72,9 +72,9 @@ WHERE AY_Name = 'AY 2019-20'
 SELECT 
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
+    MAX(PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c)) AS first_raw_covi_score_median_ay, #median
     student_site_c
-    
+    #create other CTE pull MAX median
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
 AND AY_Name = 'AY 2019-20'
