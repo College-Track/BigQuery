@@ -159,6 +159,7 @@ persist_calc AS
     GROUP BY persist_contact_id
 ),
 
+--trending alumni survey measures, using FY20 
 get_fy20_alumni_survey_data AS
 (
     SELECT
