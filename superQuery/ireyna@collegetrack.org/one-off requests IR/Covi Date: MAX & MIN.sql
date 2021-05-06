@@ -161,7 +161,12 @@ SELECT
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
     AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
-    
+    GROUP BY
+    student_site_c,
+    test_record_id,
+    contact_id,
+    test_date_c,
+    raw_covi_score
 
 ),
 
@@ -177,7 +182,12 @@ FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
 
     AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
-
+ group by  
+    student_site_c,
+    test_record_id,
+    contact_id,
+    test_date_c,
+    raw_covi_score
     
 ),
 /*
