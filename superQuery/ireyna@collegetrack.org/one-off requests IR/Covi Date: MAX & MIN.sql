@@ -1,13 +1,3 @@
-/*
-
-WITH
-
-join_term_data_with_covi AS (
-
-SELECT 
-    full_name_c,
-    C.id AS test_record_id,
-    test_date_c,
     contact_id,
     AY_Name,
     student_site_c
@@ -153,7 +143,7 @@ gather_first_covi_ay AS (
 SELECT 
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by CONTACT_ID) AS first_raw_covi_score_median_ay, #median
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     test_record_id
     
@@ -167,7 +157,7 @@ gather_last_covi_ay AS (
 SELECT 
     test_date_c AS last_covi_ay,
     raw_covi_score AS last_score,
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by CONTACT_ID) AS last_raw_covi_score_median_ay,#median
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay,#median
     student_site_c
 
 FROM join_term_data_with_covi AS j
@@ -176,14 +166,14 @@ WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi 
     AND contact_id = '0034600001TR5uoAAD'
 
     
-),
+)
 /*
 gather_casenotes_data AS (
 SELECT 
 )
 */
 
-prep_kpi AS (
+--prep_kpi AS (
 SELECT 
     A.contact_id,
     C.covi_assessment_ay,
@@ -214,26 +204,3 @@ GROUP BY
     last_raw_covi_score_median_ay,
     last_covi_ay,
     first_covi_ay
-)
-
-SELECT 
-    SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
-    wellness_covi_median_growth,
-    first_score,
-    last_score,
-    --first_raw_covi_score_median_ay,
-    --last_raw_covi_score_median_ay,
-    student_site_c,
-    last_covi_ay,
-    first_covi_ay
-FROM prep_kpi
-WHERE contact_id = '0034600001TR5uoAAD'
-GROUP BY student_site_c, 
-    wellness_covi_median_growth,
-  -- first_raw_covi_score_median_ay,
-    --last_raw_covi_score_median_ay,
-    first_score,
-    last_score,last_covi_ay,
-    first_covi_ay
-    
-  
