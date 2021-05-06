@@ -159,14 +159,9 @@ SELECT
     test_record_id
     
 FROM join_term_data_with_covi AS j
-WHERE j.test_date_c = (
-    select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
+WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
     AND contact_id = '0034600001TR5uoAAD'
-GROUP BY 
-    student_site_c,
-    raw_covi_score,
-    test_date_c,
-    test_record_id,contact_id
+
 ),
 
 gather_last_covi_ay AS (
@@ -177,14 +172,10 @@ SELECT
     student_site_c
 
 FROM join_term_data_with_covi AS j
-WHERE j.test_date_c = (
-    select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
+WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
 
     AND contact_id = '0034600001TR5uoAAD'
-GROUP BY
-    student_site_c,
-    test_date_c,
-    raw_covi_score,contact_id
+
     
 ),
 /*
@@ -213,7 +204,7 @@ FROM gather_at_data as A
 LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
 LEFT JOIN gather_first_covi_ay AS CF ON CF.student_site_c = A.site
 LEFT JOIN gather_last_covi_ay AS CL ON CL.student_site_c = A.site
-WHERE contact_id = '0034600001TR5uoAAD'
+
 GROUP BY 
     contact_id, 
     student_site_c,
