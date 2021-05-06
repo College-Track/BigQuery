@@ -66,7 +66,7 @@ FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 WHERE AY_Name = 'AY 2019-20'
     AND status_c = 'Completed'
-),
+)
 
 gather_first_covi_ay AS (
 SELECT 
@@ -82,71 +82,3 @@ GROUP BY
     student_site_c,
     test_date_c,
     raw_covi_score
-),
-
-gather_last_covi_ay AS (
-SELECT 
-    test_date_c AS last_covi_ay,
-    raw_covi_score AS last_score,
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay,#median
-    student_site_c
-
-FROM join_term_data_with_covi AS j
-WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
-AND AY_Name = 'AY 2019-20'
-GROUP BY
-    student_site_c,
-    test_date_c,
-    raw_covi_score
-),
-/*
-gather_casenotes_data AS (
-SELECT 
-)
-*/
-
-prep_kpi AS (
-SELECT 
-    --covi_assessment_ay,
-    CF.student_site_c,
-    --last_covi_ay,
-    --first_covi_ay,
-    CF.first_raw_covi_score_median_ay,
-    CL.last_raw_covi_score_median_ay,
-    first_score,
-    last_score,
-    CASE 
-        WHEN last_raw_covi_score_median_ay > first_raw_covi_score_median_ay THEN 1
-        ELSE 0
-    END AS wellness_covi_median_growth
- 
-FROM gather_at_data as A     
---LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
-LEFT JOIN gather_first_covi_ay AS CF ON CF.student_site_c = A.site
-LEFT JOIN gather_last_covi_ay AS CL ON CL.student_site_c = A.site
-GROUP BY 
-    student_site_c,
-    --covi_assessment_ay,
-    first_score,
-    last_score,
-    first_raw_covi_score_median_ay,
-    last_raw_covi_score_median_ay,
-    last_covi_ay,
-    first_covi_ay
-    
-)
-SELECT 
-    --SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
-    wellness_covi_median_growth,
-    first_raw_covi_score_median_ay,
-    last_raw_covi_score_median_ay,
-    student_site_c
-FROM prep_kpi
-
-GROUP BY 
-    student_site_c, 
-    wellness_covi_median_growth,
-    first_raw_covi_score_median_ay,
-    last_raw_covi_score_median_ay
-   
-    
