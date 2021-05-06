@@ -82,3 +82,19 @@ GROUP BY
     student_site_c,
     test_date_c,
     raw_covi_score
+),
+
+gather_last_covi_ay AS (
+SELECT 
+    test_date_c AS last_covi_ay,
+    raw_covi_score AS last_score,
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c, contact_id) AS last_raw_covi_score_median_ay,#median
+    student_site_c
+
+FROM join_term_data_with_covi AS j
+WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
+AND AY_Name = 'AY 2019-20'
+GROUP BY
+    student_site_c,
+    test_date_c,
+    raw_covi_score
