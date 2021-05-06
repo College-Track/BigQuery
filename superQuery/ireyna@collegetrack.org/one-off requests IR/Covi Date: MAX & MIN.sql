@@ -217,7 +217,7 @@ SELECT
     last_raw_covi_score_median_ay,
     student_site_c
 FROM prep_kpi
-WHERE contact_id = '0031M00002xjHjbQAE'
+WHERE contact_id = '0034600001TR5uoAAD'
 GROUP BY student_site_c, wellness_covi_median_growth,first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay
     
