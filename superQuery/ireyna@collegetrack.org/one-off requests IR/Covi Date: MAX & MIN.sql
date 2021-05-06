@@ -177,8 +177,9 @@ WHERE j.test_date_c = (
     AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
 GROUP BY
     student_site_c,
-    raw_covi_score,
-    test_date_c
+    test_date_c,
+    raw_covi_score
+    
 ),
 /*
 gather_casenotes_data AS (
@@ -186,12 +187,13 @@ SELECT
 )
 */
 
-
 prep_kpi AS (
 SELECT 
     A.contact_id,
     C.covi_assessment_ay,
     C.student_site_c,
+    last_covi_ay,
+    first_covi_ay,
     CF.first_raw_covi_score_median_ay,
     CL.last_raw_covi_score_median_ay,
     first_score,
@@ -213,7 +215,9 @@ GROUP BY
     first_score,
     last_score,
     first_raw_covi_score_median_ay,
-    last_raw_covi_score_median_ay
+    last_raw_covi_score_median_ay,
+    last_covi_ay,
+    first_covi_ay
 )
 
 SELECT 
@@ -221,13 +225,19 @@ SELECT
     wellness_covi_median_growth,
     first_score,
     last_score,
-    first_raw_covi_score_median_ay,
-    last_raw_covi_score_median_ay,
-    student_site_c
+    --first_raw_covi_score_median_ay,
+    --last_raw_covi_score_median_ay,
+    student_site_c,
+    last_covi_ay,
+    first_covi_ay
 FROM prep_kpi
 WHERE contact_id = '0034600001TR5uoAAD'
-GROUP BY student_site_c, wellness_covi_median_growth,first_raw_covi_score_median_ay,
-    last_raw_covi_score_median_ay,first_score,
-    last_score
+GROUP BY student_site_c, 
+    wellness_covi_median_growth,
+    first_raw_covi_score_median_ay,
+    last_raw_covi_score_median_ay,
+    first_score,
+    last_score,last_covi_ay,
+    first_covi_ay
     
   
