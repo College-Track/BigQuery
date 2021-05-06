@@ -221,6 +221,7 @@ GROUP BY
 
 SELECT 
     --SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
+    contact_id,
     wellness_covi_median_growth,
     first_score,
     last_score,
@@ -233,6 +234,7 @@ FROM prep_kpi
 WHERE contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
 
 GROUP BY student_site_c, 
+    contact_id,
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
