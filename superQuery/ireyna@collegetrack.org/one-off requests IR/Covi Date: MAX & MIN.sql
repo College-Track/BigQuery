@@ -184,7 +184,7 @@ WHERE j.test_date_c = (
 GROUP BY
     student_site_c,
     test_date_c,
-    raw_covi_score,contact_id
+    raw_covi_score,test_record_id,contact_id
     
 ),
 /*
