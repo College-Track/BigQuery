@@ -1,3 +1,4 @@
+    
 WITH 
 
 gather_at_data AS
@@ -125,7 +126,7 @@ FROM gather_at_data as A
 LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
 LEFT JOIN gather_first_covi_ay AS CF ON CF.student_site_c = A.site
 LEFT JOIN gather_last_covi_ay AS CL ON CL.student_site_c = A.site
-
+WHERE contact_id = '0034600001TR5uoAAD'
 GROUP BY 
     contact_id, 
     student_site_c,
