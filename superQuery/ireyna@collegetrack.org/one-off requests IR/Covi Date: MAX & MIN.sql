@@ -91,6 +91,7 @@ WHERE record_type_id = '01246000000RNnSAAW'
     AND site_short != 'College Track Arlen'
     AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
     AND College_Track_Status_Name = 'Current CT HS Student'
+    AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
 
 ),
 
