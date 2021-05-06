@@ -217,6 +217,7 @@ FROM gather_at_data as A
 LEFT JOIN gather_first_covi_ay AS CF ON CF.student_site_c = A.site
 LEFT JOIN gather_last_covi_ay AS CL ON CL.student_site_c = A.site
 
+WHERE a.contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
 GROUP BY 
     student_site_c,
     --covi_assessment_ay,
