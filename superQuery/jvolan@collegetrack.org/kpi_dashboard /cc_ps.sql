@@ -103,7 +103,14 @@ get_at_data AS
     CASE
         WHEN Overall_Rubric_Color = 'Green' THEN 1
         ELSE 0
-    END AS indicator_well_balanced
+    END AS indicator_well_balanced,
+    CASE
+        WHEN advising_rubric_career_readiness_v_2_c = 'Green'
+        AND 
+        (academic_networking_50_cred_c = 'Green'
+        OR academic_networking_over_50_credits_c = 'Green') THEN 1
+        ELSE 0
+    END AS indicator_tech_interpersonal_skills
     
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
@@ -159,6 +166,7 @@ join_data AS
     get_at_data.indicator_fafsa_complete,
     get_at_data.indicator_loans_less_30k_loans,
     get_at_data.indicator_well_balanced,
+    get_at_data.indicator_tech_interpersonal_skills,
     persist_calc.indicator_persisted,
     persist_calc.cc_persist_denom
 
@@ -183,6 +191,7 @@ cc_ps AS
     sum(indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
     sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
     sum(indicator_well_balanced) AS cc_ps_well_balanced_lifestyle,
+    sum(indicator_tech_interpersonal_skills) AS cc_ps_tech_interpersonal_skills,
     sum(indicator_persisted) AS cc_ps_persist_num,
     sum(cc_persist_denom) AS cc_persist_denom,
     
