@@ -141,14 +141,11 @@ SELECT
     contact_id,
     AY_Name,
     student_site_c,
-    raw_covi_score,
-    at_id,
-    academic_semester_c
-
+    raw_covi_score
+   
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 WHERE AY_Name IN ('AY 2020-21', 'AY 2019-20')
-
 AND status_c = 'Completed'
 ),
 
@@ -159,18 +156,20 @@ SELECT
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     test_record_id,
-    contact_id
+    contact_id,
+    AY_name
     
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
     AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
-    and at_id = academic_semester_c
+    
     GROUP BY
     student_site_c,
     test_record_id,
     contact_id,
     test_date_c,
-    raw_covi_score
+    raw_covi_score,
+    AY_name
 
 ),
 
@@ -180,18 +179,19 @@ SELECT
     raw_covi_score AS last_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay,#median
     student_site_c,
-    contact_id
+    contact_id,
+    AY_name
 
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
-and at_id = academic_semester_c
     AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
  group by   
     student_site_c,
     test_record_id,
     contact_id,
     test_date_c,
-    raw_covi_score
+    raw_covi_score,
+    AY_name
     
 ),
 /*
@@ -210,7 +210,7 @@ SELECT
     CL.last_raw_covi_score_median_ay,
     first_score,
     last_score,
-    a.contact_id,
+    a.AY_name,
     CASE 
         WHEN last_raw_covi_score_median_ay > first_raw_covi_score_median_ay THEN 1
         ELSE 0
@@ -231,7 +231,7 @@ GROUP BY
     last_raw_covi_score_median_ay,
     last_covi_ay,
     first_covi_ay,
-    a.contact_id
+    a.AY_name
 )
 
 SELECT 
@@ -254,6 +254,6 @@ GROUP BY student_site_c,
     first_score,
     last_score,last_covi_ay,
     first_covi_ay,
-    contact_id
+    AY_name
 
   
