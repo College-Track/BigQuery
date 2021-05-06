@@ -40,18 +40,32 @@ gather_survey_data AS (
   FROM
     `data-studio-260217.surveys.fy21_hs_survey` S
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CT ON CT.Contact_Id = S.contact_id
-)
+),
 
-SELECT
+aggregate_survey_data AS (
+SELECT 
+  site_short,
+  SUM(nps_promoter) AS nps_promoter,
+  SUM(nps_detractor)AS nps_detractor
+  FROM gather_survey_data
+  GROUP BY site_short
+),
+
+aggregate_metrics AS (SELECT
   gather_data.site_short,
   SUM(incoming_cohort_first_gen) AS pro_ops_incoming_cohort_first_gen,
   SUM(incoming_cohort_low_income) AS pro_ops_incoming_cohort_low_income,
-  SUM(nps_promoter) AS nps_promoter,
-  SUM(nps_detractor)AS nps_detractor
+
  
   
 FROM
   gather_data
-  LEFT JOIN gather_survey_data GSD ON GSD.site_short = gather_data.site_short
 GROUP BY
   gather_data.site_short
+  )
+  
+  SELECT aggregate_metrics.*,
+  aggregate_survey_data.* EXCEPT(site_short)
+  
+  FROM aggregate_metrics
+  LEFT JOIN aggregate_survey_data ON aggregate_survey_data.site_short = aggregate_metrics.site_short
