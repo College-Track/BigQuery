@@ -161,13 +161,12 @@ SELECT
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (
     select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
-    --AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
     AND contact_id = '0034600001TR5uoAAD'
 GROUP BY 
     student_site_c,
     raw_covi_score,
     test_date_c,
-    test_record_id
+    test_record_id,contact_id
 ),
 
 gather_last_covi_ay AS (
@@ -180,12 +179,12 @@ SELECT
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (
     select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
-    --AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
+
     AND contact_id = '0034600001TR5uoAAD'
 GROUP BY
     student_site_c,
     test_date_c,
-    raw_covi_score
+    raw_covi_score,contact_id
     
 ),
 /*
