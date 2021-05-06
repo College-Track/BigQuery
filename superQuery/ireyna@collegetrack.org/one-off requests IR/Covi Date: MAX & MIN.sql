@@ -188,7 +188,6 @@ SELECT
 
 prep_kpi AS (
 SELECT 
-    A.contact_id,
     --covi_assessment_ay,
     CF.student_site_c,
     last_covi_ay,
@@ -208,7 +207,6 @@ LEFT JOIN gather_first_covi_ay AS CF ON CF.student_site_c = A.site
 LEFT JOIN gather_last_covi_ay AS CL ON CL.student_site_c = A.site
 
 GROUP BY 
-    contact_id, 
     student_site_c,
     --covi_assessment_ay,
     first_score,
@@ -221,7 +219,6 @@ GROUP BY
 
 SELECT 
     --SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
-    contact_id,
     wellness_covi_median_growth,
     first_score,
     last_score,
@@ -231,10 +228,9 @@ SELECT
     last_covi_ay,
     first_covi_ay
 FROM prep_kpi
-WHERE contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
+--WHERE contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
 
 GROUP BY student_site_c, 
-    contact_id,
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
