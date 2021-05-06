@@ -145,8 +145,7 @@ SELECT
 
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
-WHERE record_type_id ='0121M000001cmuDQAQ'
---AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
+WHERE AY_Name IN ('AY 2020-21', 'AY 2019-20')
 AND status_c = 'Completed'
 ),
 
@@ -154,7 +153,7 @@ gather_first_covi_ay AS (
 SELECT 
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by CONTACT_ID) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     test_record_id
     
@@ -168,7 +167,7 @@ gather_last_covi_ay AS (
 SELECT 
     test_date_c AS last_covi_ay,
     raw_covi_score AS last_score,
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay,#median
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by CONTACT_ID) AS last_raw_covi_score_median_ay,#median
     student_site_c
 
 FROM join_term_data_with_covi AS j
