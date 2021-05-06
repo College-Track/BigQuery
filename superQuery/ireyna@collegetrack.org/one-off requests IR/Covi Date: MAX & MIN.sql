@@ -146,6 +146,7 @@ SELECT
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 WHERE AY_Name IN ('AY 2020-21', 'AY 2019-20')
+and A.at_id = C.academic_semester_c
 AND status_c = 'Completed'
 ),
 
