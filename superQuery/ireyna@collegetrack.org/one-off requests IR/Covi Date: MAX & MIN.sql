@@ -89,7 +89,7 @@ SELECT
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE record_type_id = '01246000000RNnSAAW' 
     AND site_short != 'College Track Arlen'
-    AND AY_Name = 'AY 2020-21'
+    AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
     AND College_Track_Status_Name = 'Current CT HS Student'
 
 ),
@@ -113,9 +113,9 @@ SELECT
     CASE 
         WHEN id IS NOT NULL THEN 1
         ELSE 0
-        END AS covi_assessment_ay
+        END AS covi_assessment_completed_ay
 
-FROM `data-warehouse-289815.salesforce_clean.test_clean` COVI
+FROM `data-warehouse-289815.salesforce_clean.test_clean` AS COVI
 WHERE record_type_id ='0121M000001cmuDQAQ'
 AND status_c = 'Completed'
 GROUP BY 
@@ -230,12 +230,13 @@ SELECT
     first_covi_ay
 FROM prep_kpi
 WHERE contact_id = '0034600001TR5uoAAD'
-/*GROUP BY student_site_c, 
+
+GROUP BY student_site_c, 
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
     first_score,
     last_score,last_covi_ay,
     first_covi_ay
- */   
+
   
