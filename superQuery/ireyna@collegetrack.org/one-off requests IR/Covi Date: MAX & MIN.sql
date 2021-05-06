@@ -136,12 +136,10 @@ GROUP BY
 
 join_term_data_with_covi AS (
 SELECT 
-    test_record_id,
     test_date_c,
-    contact_id,
-    AY_Name,
     student_site_c,
-    raw_covi_score
+    raw_covi_score,
+    contact_id
    
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
@@ -154,23 +152,15 @@ SELECT
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
-    student_site_c,
-    test_record_id,
-    contact_id,
-    AY_name
+    student_site_c
     
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
     AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
-    
-    GROUP BY
+GROUP BY
     student_site_c,
-    test_record_id,
-    contact_id,
     test_date_c,
-    raw_covi_score,
-    AY_name
-
+    raw_covi_score
 ),
 
 gather_last_covi_ay AS (
@@ -179,19 +169,16 @@ SELECT
     raw_covi_score AS last_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay,#median
     student_site_c,
-    contact_id,
-    AY_name
+    contact_id
 
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
     AND contact_id IN ('0034600001TR5uoAAD','0034600001TQwPaAAL')
  group by   
     student_site_c,
-    test_record_id,
     contact_id,
     test_date_c,
-    raw_covi_score,
-    AY_name
+    raw_covi_score
     
 ),
 /*
