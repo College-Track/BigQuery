@@ -11,7 +11,7 @@ SELECT
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE record_type_id = '01246000000RNnSAAW' 
     AND site_short != 'College Track Arlen'
-    AND AY_Name IN ('AY 2020-21', 'AY 2019-20')
+    AND AY_Name = 'AY 2020-21'
     AND College_Track_Status_Name = 'Current CT HS Student'
 ),
 
@@ -64,7 +64,7 @@ SELECT
    
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
-WHERE AY_Name IN ('AY 2020-21', 'AY 2019-20')
+WHERE AY_Name = 'AY 2020-21'
     AND status_c = 'Completed'
 ),
 
@@ -107,8 +107,8 @@ prep_kpi AS (
 SELECT 
     --covi_assessment_ay,
     CF.student_site_c,
-    last_covi_ay,
-    first_covi_ay,
+    --last_covi_ay,
+    --first_covi_ay,
     CF.first_raw_covi_score_median_ay,
     CL.last_raw_covi_score_median_ay,
     first_score,
@@ -136,21 +136,15 @@ GROUP BY
 SELECT 
     --SUM (covi_assessment_ay) AS wellness_covi_assessment_ay,
     wellness_covi_median_growth,
-    first_score,
-    last_score,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
-    student_site_c,
-    last_covi_ay,
-    first_covi_ay
+    student_site_c
 FROM prep_kpi
 
 GROUP BY 
     student_site_c, 
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
-    last_raw_covi_score_median_ay,
-    first_score,
-    last_score,last_covi_ay,
-    first_covi_ay
+    last_raw_covi_score_median_ay
+   
     
