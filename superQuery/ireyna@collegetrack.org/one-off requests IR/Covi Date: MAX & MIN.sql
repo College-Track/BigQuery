@@ -75,6 +75,7 @@ gather_first_covi_ay AS (
 SELECT 
     test_date_c AS first_covi_ay,
     raw_covi_score AS first_score,
+    contact_id,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     test_record_id
