@@ -54,4 +54,4 @@ FROM
   gather_data
   LEFT JOIN gather_survey_data GSD ON GSD.site_short = gather_data.site_short
 GROUP BY
-  site_short
+  gather_data.site_short
