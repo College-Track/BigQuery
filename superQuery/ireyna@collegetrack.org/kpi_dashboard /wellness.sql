@@ -11,7 +11,6 @@ SELECT
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE record_type_id = '01246000000RNnSAAW' 
     AND site_short != 'College Track Arlen'
-    AND AY_Name = 'AY 2019-20'
     AND College_Track_Status_Name = 'Current CT HS Student'
 ),
 
@@ -60,7 +59,8 @@ SELECT
     test_date_c,
     student_site_c,
     raw_covi_score,
-    contact_id
+    contact_id,
+    AY_NAME
    
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
@@ -77,6 +77,7 @@ SELECT
     
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
+AND AY_Name = 'AY 2019-20'
 GROUP BY
     student_site_c,
     test_date_c,
@@ -92,6 +93,7 @@ SELECT
 
 FROM join_term_data_with_covi AS j
 WHERE j.test_date_c = (select MAX(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
+AND AY_Name = 'AY 2019-20'
 GROUP BY
     student_site_c,
     test_date_c,
