@@ -52,9 +52,9 @@ GROUP BY
     id, #test id
     student_site_c,
     record_type_id
-),
+)
 
-join_term_data_with_covi AS (
+--join_term_data_with_covi AS (
 SELECT 
     test_date_c,
     student_site_c,
@@ -67,13 +67,3 @@ FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 WHERE AY_Name = 'AY 2019-20'
     AND status_c = 'Completed'
-)
-
---gather_students_with_more_than_1_covi AS (
-SELECT 
-    contact_id,
-    SUM(covi_assessment_completed_ay) AS total_tests
-    
-FROM join_term_data_with_covi 
-WHERE covi_assessment_completed_ay = 1
-GROUP BY contact_id
