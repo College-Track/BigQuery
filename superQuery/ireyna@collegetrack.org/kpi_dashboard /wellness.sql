@@ -84,7 +84,8 @@ SELECT
     test_date_c,
     (SELECT raw_covi_score,MIN(TEST_DATE_C)
      FROM join_term_data_with_covi j2 
-     WHERE j.contact_id = j2.contact_id) AS first_test,
+     WHERE j.contact_id = j2.contact_id
+     GROUP BY raw_covi_score) AS first_test,
      
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
