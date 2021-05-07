@@ -119,6 +119,7 @@ GROUP BY
 covi_score_first_test_ay AS (
 SELECT 
     contact_id,
+    student_site_c,
     PERCENTILE_CONT(first_covi_score, .5) OVER (PARTITION by student_site_c) AS prep_first_raw_covi_score_median_ay, #median
     first_covi_ay
 FROM gather_first_covi_test_date AS A
@@ -136,7 +137,7 @@ GROUP BY
 covi_score_last_test_ay AS (
 SELECT 
     contact_id,
-    last_covi_score,
+    student_site_c,
     PERCENTILE_CONT(last_covi_score, .5) OVER (PARTITION by student_site_c) AS prep_last_raw_covi_score_median_ay, #median
     last_covi_ay
 FROM gather_last_covi_test_date AS A
@@ -158,13 +159,14 @@ SELECT
 */
 prep_median_growth_kpi AS (
 SELECT
-    a.contact_id,
+    j.student_site_c,
     MAX(prep_first_raw_covi_score_median_ay) AS first_raw_covi_score_median_ay, 
     MAX(prep_last_raw_covi_score_median_ay) AS last_raw_covi_score_median_ay
-FROM covi_score_first_test_ay AS A
-LEFT JOIN covi_score_last_test_ay AS B ON a.contact_id = b.contact_id
+FROM join_term_data_with_covi AS j
+LEFT JOIN covi_score_first_test_ay AS A ON j.student_site_c = A.student_site_c
+LEFT JOIN covi_score_last_test_ay AS B ON j.student_site_c = B.student_site_c
 GROUP BY
-    a.contact_id
+    j.student_site_c
 ),
 
 prep_kpi AS (
@@ -182,7 +184,7 @@ FROM join_term_data_with_covi as A
 --LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
 LEFT JOIN covi_score_first_test_ay AS CF ON CF.contact_id = A.contact_id
 LEFT JOIN covi_score_last_test_ay AS CL ON CL.contact_id = A.contact_id
-LEFT JOIN prep_median_growth_kpi AS M ON M.contact_id = A.contact_id
+LEFT JOIN prep_median_growth_kpi AS M ON M.student_site_c = A.student_site_c
 GROUP BY 
     student_site_c,
     first_raw_covi_score_median_ay,
