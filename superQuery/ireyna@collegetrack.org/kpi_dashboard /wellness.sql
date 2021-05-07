@@ -82,6 +82,7 @@ GROUP BY contact_id
 
 gather_first_and_last_covi_ay AS (
 SELECT 
+    test_date_c,
     (SELECT MIN(TEST_DATE_C)
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
@@ -104,7 +105,8 @@ GROUP BY
     student_site_c,
     raw_covi_score, 
     j.contact_id,
-    test_record_id
+    test_record_id,
+    test_date_c
 )
 
 --gather_first_covi_score_data_ay AS (
