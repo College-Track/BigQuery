@@ -182,7 +182,7 @@ SELECT
     A.student_site_c,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
-    SUM(covi_assessment_completed_ay) AS wellness_covi_completed_ay,
+    SUM(covi_assessment_completed_ay) AS wellness_students_completing_covi_ay,
     CASE 
         WHEN last_raw_covi_score_median_ay > first_raw_covi_score_median_ay THEN 1
         ELSE 0
@@ -202,7 +202,7 @@ GROUP BY
     
 )
 SELECT 
-    wellness_covi_completed_ay,
+    wellness_students_completing_covi_ay,
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
@@ -210,7 +210,7 @@ SELECT
 FROM prep_kpi
 
 GROUP BY 
-    wellness_covi_completed_ay,
+    wellness_students_completing_covi_ay,
     student_site_c, 
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
