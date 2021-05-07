@@ -82,10 +82,11 @@ GROUP BY contact_id
 --gather_first_and_last_covi_ay AS (
 SELECT 
     test_date_c,
-    (SELECT raw_covi_score,MIN(j2.test_date_c)
+    (SELECT raw_covi_score,
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
-     group by raw_covi_score) AS first_test,
+     AND MIN(j2.test_date_c
+    ) AS first_test,
      
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
