@@ -97,7 +97,6 @@ SELECT
      WHERE j.contact_id = j2.contact_id
     ) AS last_test,
     raw_covi_score, 
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by j.contact_id) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     j.contact_id,
     test_record_id
@@ -120,7 +119,7 @@ GROUP BY
 SELECT 
     contact_id,
     raw_covi_score,
-    first_raw_covi_score_median_ay,
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     first_test,
     --test_date_c,
     co_vitality_test_completed_date_c
@@ -128,3 +127,9 @@ FROM gather_first_and_last_covi_ay AS A
 WHERE co_vitality_test_completed_date_c = first_test
     AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay AS A2 where A.contact_id = A2.contact_id) 
     --pull lowest CoVi score if student has more than 1 test on the same date
+GROUP BY
+    contact_id,
+    raw_covi_score,
+    first_test,
+    --test_date_c,
+    co_vitality_test_completed_date_c
