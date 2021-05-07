@@ -202,6 +202,7 @@ GROUP BY
     
 )
 SELECT 
+    wellness_covi_completed_ay,
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
     last_raw_covi_score_median_ay,
@@ -209,6 +210,7 @@ SELECT
 FROM prep_kpi
 
 GROUP BY 
+    wellness_covi_completed_ay,
     student_site_c, 
     wellness_covi_median_growth,
     first_raw_covi_score_median_ay,
