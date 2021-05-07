@@ -84,7 +84,7 @@ GROUP BY
     raw_covi_score, contact_id
 )
 --gather_first_test_median AS (
-SELECT MAX(first_raw_covi_score_median_ay), student_site_c
+SELECT first_raw_covi_score_median_ay, student_site_c
 FROM gather_first_covi_ay
 WHERE student_site_c = 'College Track Oakland'
 GROUP BY student_site_c
