@@ -87,4 +87,4 @@ GROUP BY
 SELECT first_raw_covi_score_median_ay, student_site_c
 FROM gather_first_covi_ay
 WHERE student_site_c = 'College Track Oakland'
-GROUP BY student_site_c
+GROUP BY student_site_c,first_raw_covi_score_median_ay
