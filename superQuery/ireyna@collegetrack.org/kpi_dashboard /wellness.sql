@@ -52,13 +52,14 @@ GROUP BY
     id, #test id
     student_site_c,
     record_type_id
-),
+)
 
-join_term_data_with_covi AS (
+--join_term_data_with_covi AS (
 SELECT 
     test_date_c,
     student_site_c,
     raw_covi_score,
+    SUM(covi_assessment_completed_ay) AS total_tests,
     contact_id,
     AY_NAME
    
@@ -66,25 +67,9 @@ FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 WHERE AY_Name = 'AY 2019-20'
     AND status_c = 'Completed'
-),
-
-gather_first_covi_ay AS (
-SELECT 
-    test_date_c AS first_covi_ay,
-    raw_covi_score AS first_score,
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
-    student_site_c
-    #create other CTE pull MAX median
-FROM join_term_data_with_covi AS j
-WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
-AND AY_Name = 'AY 2019-20'
-GROUP BY
-    student_site_c,
+GROUP BY 
     test_date_c,
-    raw_covi_score, contact_id
-)
---gather_first_test_median AS (
-SELECT first_raw_covi_score_median_ay, student_site_c
-FROM gather_first_covi_ay
-WHERE student_site_c = 'College Track Oakland'
-GROUP BY student_site_c,first_raw_covi_score_median_ay
+    student_site_c,
+    raw_covi_score,
+    contact_id,
+    AY_NAME
