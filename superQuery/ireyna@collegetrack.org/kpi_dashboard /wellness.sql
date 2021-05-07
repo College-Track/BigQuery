@@ -86,9 +86,9 @@ SELECT
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c
     
-FROM gather_students_with_more_than_1_covi AS j
-LEFT JOIN join_term_data_with_covi AS tc ON j.contact_id = tc.contact_id
-WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
+FROM gather_students_with_more_than_1_covi AS c
+LEFT JOIN join_term_data_with_covi AS j ON c.contact_id = j.contact_id
+WHERE k.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
 AND AY_Name = 'AY 2019-20'
 GROUP BY
     student_site_c,
