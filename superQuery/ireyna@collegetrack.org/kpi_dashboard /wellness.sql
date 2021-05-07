@@ -118,4 +118,4 @@ SELECT
     test_date_c
 FROM gather_first_and_last_covi_ay AS A
 WHERE test_date_c = first_test
-    AND A2.raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay AS A2 where A.contact_id = A2.contact_id)
+    AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay AS A2 where A.contact_id = A2.contact_id)
