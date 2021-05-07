@@ -132,4 +132,5 @@ GROUP BY
     raw_covi_score,
     first_test,
     --test_date_c,
-    co_vitality_test_completed_date_c
+    co_vitality_test_completed_date_c,
+    student_site_c
