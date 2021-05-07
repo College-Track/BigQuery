@@ -87,6 +87,7 @@ SELECT
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
     ) AS first_test,
+    
     (SELECT MAX(TEST_DATE_C)
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
@@ -115,5 +116,6 @@ SELECT
     raw_covi_score,
     first_test,
     test_date_c
-FROM gather_first_and_last_covi_ay
+FROM gather_first_and_last_covi_ay A
 WHERE test_date_c = first_test
+    AND A2.raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay A2 where A.contact_id = A2.contact_id)
