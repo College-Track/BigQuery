@@ -49,7 +49,6 @@ GROUP BY
     engaged_living_raw_score_c,
     version_c,
     status_c,
-    --test_date_c, 
     co_vitality_test_completed_date_c,
     id, #test id
     student_site_c,
@@ -58,7 +57,6 @@ GROUP BY
 
 join_term_data_with_covi AS (
 SELECT 
-    --test_date_c,
     co_vitality_test_completed_date_c,
     student_site_c,
     raw_covi_score,
@@ -76,61 +74,116 @@ WHERE AY_Name = 'AY 2019-20'
 gather_students_with_more_than_1_covi AS (
 SELECT 
     contact_id,
-    SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay
+    SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay #does sudent have more than 1 covi assessment?
     
 FROM join_term_data_with_covi 
 WHERE covi_assessment_completed_ay = 1
 GROUP BY contact_id
 ),
 
-gather_first_and_last_covi_ay AS (
+gather_first_and_last_covi_test_date AS (
 SELECT 
-    --test_date_c,
     co_vitality_test_completed_date_c,
+    raw_covi_score, 
+    student_site_c,
+    j.contact_id,
     (SELECT MIN(co_vitality_test_completed_date_c)
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
-    ) AS first_test,
+    ) AS first_covi_ay,
     
     (SELECT MAX(co_vitality_test_completed_date_c)
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
-    ) AS last_test,
-    raw_covi_score, 
-    student_site_c,
-    j.contact_id,
-    test_record_id
+    ) AS last_covi_ay
     
 FROM gather_students_with_more_than_1_covi AS c
 LEFT JOIN join_term_data_with_covi AS j ON c.contact_id = j.contact_id
---WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
 WHERE AY_Name = 'AY 2019-20'
-    AND sum_of_covi_tests_taken_ay > 1
+    AND sum_of_covi_tests_taken_ay > 1 #only students with 2 or more tests to assess growth
 GROUP BY
     student_site_c,
     raw_covi_score, 
     j.contact_id,
-    test_record_id,
-    --test_date_c
     co_vitality_test_completed_date_c
-)
+),
 
---gather_first_covi_score_data_ay AS (
+covi_score_first_test_ay AS (
 SELECT 
     contact_id,
     raw_covi_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
-    first_test,
-    --test_date_c,
-    co_vitality_test_completed_date_c
-FROM gather_first_and_last_covi_ay AS A
-WHERE co_vitality_test_completed_date_c = first_test
-    AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay AS A2 where A.contact_id = A2.contact_id) 
+    first_covi_ay
+FROM gather_first_and_last_covi_test_date AS A
+WHERE co_vitality_test_completed_date_c = first_covi_ay #filter for first test date
+    AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_test_date AS A2 where A.contact_id = A2.contact_id) 
     --pull lowest CoVi score if student has more than 1 test on the same date
+    
 GROUP BY
     contact_id,
     raw_covi_score,
-    first_test,
-    --test_date_c,
-    co_vitality_test_completed_date_c,
+    first_covi_ay,
     student_site_c
+),
+
+covi_score_last_test_ay AS (
+SELECT 
+    contact_id,
+    raw_covi_score,
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS last_raw_covi_score_median_ay, #median
+    last_covi_ay
+FROM gather_first_and_last_covi_test_date AS A
+WHERE co_vitality_test_completed_date_c = last_covi_ay #filter for last test date
+    AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_test_date AS A2 where A.contact_id = A2.contact_id) 
+    --pull lowest CoVi score if student has more than 1 test on the same date
+    
+GROUP BY
+    contact_id,
+    raw_covi_score,
+    last_covi_ay,
+    student_site_c
+),
+
+/*
+gather_casenotes_data AS (
+SELECT 
+)
+*/
+
+prep_kpi AS (
+SELECT 
+    A.student_site_c,
+    SUM(covi_assessment_completed_ay) AS wellness_covi_completed_ay,
+    CF.first_raw_covi_score_median_ay,
+    CL.last_raw_covi_score_median_ay,
+    CASE 
+        WHEN last_raw_covi_score_median_ay > first_raw_covi_score_median_ay THEN 1
+        ELSE 0
+    END AS wellness_covi_median_growth
+ 
+FROM join_term_data_with_covi as A     
+--LEFT JOIN gather_covi_data as C ON C.academic_semester_c = A.at_id
+LEFT JOIN covi_score_first_test_ay AS CF ON CF.contact_id = A.contact_id
+LEFT JOIN covi_score_last_test_ay AS CL ON CL.contact_id = A.contact_id
+GROUP BY 
+    student_site_c,
+    first_raw_covi_score_median_ay,
+    last_raw_covi_score_median_ay,
+    last_covi_ay,
+    first_covi_ay
+    
+)
+SELECT 
+    wellness_covi_median_growth,
+    first_raw_covi_score_median_ay,
+    last_raw_covi_score_median_ay,
+    student_site_c
+FROM prep_kpi
+
+GROUP BY 
+    student_site_c, 
+    wellness_covi_median_growth,
+    first_raw_covi_score_median_ay,
+    last_raw_covi_score_median_ay
+   
+    
