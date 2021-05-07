@@ -26,7 +26,8 @@ SELECT
     SUM(belief_in_self_raw_score_c + belief_in_others_raw_score_c + emotional_competence_raw_score_c + engaged_living_raw_score_c) AS raw_covi_score,
     version_c,
     status_c,
-    test_date_c, 
+    --test_date_c, 
+    co_vitality_test_completed_date_c, 
     id AS test_record_id, #test id
     student_site_c,
     record_type_id,
@@ -56,7 +57,8 @@ GROUP BY
 
 join_term_data_with_covi AS (
 SELECT 
-    test_date_c,
+    --test_date_c,
+    co_vitality_test_completed_date_c,
     student_site_c,
     raw_covi_score,
     contact_id,
@@ -82,13 +84,14 @@ GROUP BY contact_id
 
 gather_first_and_last_covi_ay AS (
 SELECT 
-    test_date_c,
-    (SELECT MIN(TEST_DATE_C)
+    --test_date_c,
+    co_vitality_test_completed_date_c,
+    (SELECT MIN(co_vitality_test_completed_date_c)
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
     ) AS first_test,
     
-    (SELECT MAX(TEST_DATE_C)
+    (SELECT MAX(co_vitality_test_completed_date_c)
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
     ) AS last_test,
@@ -108,7 +111,8 @@ GROUP BY
     raw_covi_score, 
     j.contact_id,
     test_record_id,
-    test_date_c
+    --test_date_c
+    co_vitality_test_completed_date_c
 )
 
 --gather_first_covi_score_data_ay AS (
@@ -119,6 +123,6 @@ SELECT
     first_test,
     test_date_c
 FROM gather_first_and_last_covi_ay AS A
-WHERE test_date_c = first_test
+WHERE co_vitality_test_completed_date_c = first_test
     AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay AS A2 where A.contact_id = A2.contact_id) 
     --pull lowest CoVi score if student has more than 1 test on the same date
