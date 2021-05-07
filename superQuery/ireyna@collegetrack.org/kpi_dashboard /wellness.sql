@@ -85,7 +85,7 @@ SELECT
     raw_covi_score AS first_score,
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
-    contact_id
+    c.contact_id
     
 FROM gather_students_with_more_than_1_covi AS c
 LEFT JOIN join_term_data_with_covi AS j ON c.contact_id = j.contact_id
