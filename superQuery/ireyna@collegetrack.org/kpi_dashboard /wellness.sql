@@ -49,7 +49,8 @@ GROUP BY
     engaged_living_raw_score_c,
     version_c,
     status_c,
-    test_date_c, 
+    --test_date_c, 
+    co_vitality_test_completed_date_c,
     id, #test id
     student_site_c,
     record_type_id
@@ -113,16 +114,3 @@ GROUP BY
     test_record_id,
     --test_date_c
     co_vitality_test_completed_date_c
-)
-
---gather_first_covi_score_data_ay AS (
-SELECT 
-    contact_id,
-    raw_covi_score,
-    first_raw_covi_score_median_ay,
-    first_test,
-    test_date_c
-FROM gather_first_and_last_covi_ay AS A
-WHERE co_vitality_test_completed_date_c = first_test
-    AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay AS A2 where A.contact_id = A2.contact_id) 
-    --pull lowest CoVi score if student has more than 1 test on the same date
