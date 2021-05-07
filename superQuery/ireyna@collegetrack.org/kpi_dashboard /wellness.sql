@@ -84,7 +84,7 @@ GROUP BY contact_id
 gather_first_covi_test_date AS (
 SELECT
     MIN(co_vitality_test_completed_date_c) AS first_covi_ay,
-    contact_id,
+    j.contact_id,
     co_vitality_test_completed_date_c,
     raw_covi_score AS first_covi_score,
     student_site_c
@@ -102,7 +102,7 @@ GROUP BY
 gather_last_covi_test_date AS (
 SELECT
     MAX(co_vitality_test_completed_date_c) AS last_covi_ay,
-    contact_id,
+    j.contact_id,
     co_vitality_test_completed_date_c,
     student_site_c,
     raw_covi_score AS last_covi_score
