@@ -81,7 +81,6 @@ GROUP BY contact_id
 
 --gather_first_and_last_covi_ay AS (
 SELECT 
-    test_date_c,
     (SELECT MIN(TEST_DATE_C)
      FROM join_term_data_with_covi j2 
      WHERE j.contact_id = j2.contact_id
@@ -97,6 +96,5 @@ LEFT JOIN join_term_data_with_covi AS j ON c.contact_id = j.contact_id
 WHERE AY_Name = 'AY 2019-20'
 GROUP BY
     student_site_c,
-    test_date_c,
     raw_covi_score, 
     j.contact_id
