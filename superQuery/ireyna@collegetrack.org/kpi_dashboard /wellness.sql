@@ -75,5 +75,5 @@ SELECT
     SUM(covi_assessment_completed_ay) AS total_tests
     
 FROM join_term_data_with_covi 
-WHERE covi_assessment_completed_ay > 1
+WHERE covi_assessment_completed_ay = 1
 GROUP BY contact_id
