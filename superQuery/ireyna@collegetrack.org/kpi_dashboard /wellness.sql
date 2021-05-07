@@ -79,10 +79,14 @@ WHERE covi_assessment_completed_ay = 1
 GROUP BY contact_id
 )
 
---gather_first_covi_ay AS (
+--gather_first_and_last_covi_ay AS (
 SELECT 
-    test_date_c AS first_covi_ay,
-    raw_covi_score AS first_score,
+    test_date_c,
+    (SELECT raw_covi_score,MIN(j2.test_date_c)
+     FROM join_term_data_with_covi j2 
+     WHERE j.contact_id = j2.contact_id
+     group by raw_covi_score) AS first_test,
+     
     PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     c.contact_id
@@ -90,7 +94,6 @@ SELECT
 FROM gather_students_with_more_than_1_covi AS c
 LEFT JOIN join_term_data_with_covi AS j ON c.contact_id = j.contact_id
 WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
-    AND raw_covi_score = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id group by raw_covi_score)
 AND AY_Name = 'AY 2019-20'
 GROUP BY
     student_site_c,
