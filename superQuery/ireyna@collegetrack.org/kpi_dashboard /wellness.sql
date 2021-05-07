@@ -60,7 +60,8 @@ SELECT
     student_site_c,
     raw_covi_score,
     contact_id,
-    AY_NAME
+    AY_NAME,
+    covi_assessment_completed_ay
    
 FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
