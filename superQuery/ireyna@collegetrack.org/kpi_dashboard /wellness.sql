@@ -115,6 +115,7 @@ GROUP BY
 SELECT 
     contact_id,
     raw_covi_score,
+    first_raw_covi_score_median_ay,
     first_test,
     test_date_c
 FROM gather_first_and_last_covi_ay AS A
