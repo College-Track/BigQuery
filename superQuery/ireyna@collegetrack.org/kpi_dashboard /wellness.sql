@@ -68,9 +68,9 @@ FROM gather_at_data AS A
 LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
 WHERE AY_Name = 'AY 2019-20'
     AND status_c = 'Completed'
-)
+),
 
---gather_students_with_more_than_1_covi AS (
+gather_students_with_more_than_1_covi AS (
 SELECT 
     contact_id,
     SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay
@@ -78,3 +78,46 @@ SELECT
 FROM join_term_data_with_covi 
 WHERE covi_assessment_completed_ay = 1
 GROUP BY contact_id
+),
+
+gather_first_and_last_covi_ay AS (
+SELECT 
+    test_date_c,
+    (SELECT MIN(TEST_DATE_C)
+     FROM join_term_data_with_covi j2 
+     WHERE j.contact_id = j2.contact_id
+    ) AS first_test,
+    
+    (SELECT MAX(TEST_DATE_C)
+     FROM join_term_data_with_covi j2 
+     WHERE j.contact_id = j2.contact_id
+    ) AS last_test,
+    raw_covi_score, 
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by student_site_c) AS first_raw_covi_score_median_ay, #median
+    student_site_c,
+    j.contact_id,
+    test_record_id
+    
+FROM gather_students_with_more_than_1_covi AS c
+LEFT JOIN join_term_data_with_covi AS j ON c.contact_id = j.contact_id
+--WHERE j.test_date_c = (select MIN(j2.test_date_c) FROM join_term_data_with_covi j2 where j.contact_id = j2.contact_id)
+WHERE AY_Name = 'AY 2019-20'
+    AND sum_of_covi_tests_taken_ay > 1
+GROUP BY
+    student_site_c,
+    raw_covi_score, 
+    j.contact_id,
+    test_record_id,
+    test_date_c
+)
+
+--gather_first_covi_score_data_ay AS (
+SELECT 
+    contact_id,
+    raw_covi_score,
+    first_test,
+    test_date_c
+FROM gather_first_and_last_covi_ay AS A
+WHERE test_date_c = first_test
+    AND raw_covi_score = (select MIN(A2.raw_covi_score) FROM gather_first_and_last_covi_ay AS A2 where A.contact_id = A2.contact_id) 
+    --pull lowest CoVi score if student has more than 1 test on the same date
