@@ -10,7 +10,7 @@ SELECT
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE record_type_id = '01246000000RNnSAAW' 
-    AND site_short != 'College Track Arlen'
+    AND site_short ='College Track Boyle Heights' --!= 'College Track Arlen'
     AND College_Track_Status_Name = 'Current CT HS Student'
 ),
 
@@ -86,5 +86,5 @@ GROUP BY
 --gather_first_test_median AS (
 SELECT MAX(first_raw_covi_score_median_ay), student_site
 FROM gather_first_covi_ay
-WHERE student_site_c = 'College Track Oakland'
+WHERE student_site_c = 'College Track Boyle Heights'
 GROUP BY student_site_c
