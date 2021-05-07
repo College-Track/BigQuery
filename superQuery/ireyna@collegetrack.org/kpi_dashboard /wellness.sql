@@ -81,7 +81,7 @@ AND AY_Name = 'AY 2019-20'
 GROUP BY
     student_site_c,
     test_date_c,
-    raw_covi_score
+    raw_covi_score, contact_id
 )
 --gather_first_test_median AS (
 SELECT MAX(first_raw_covi_score_median_ay), student_site_c
