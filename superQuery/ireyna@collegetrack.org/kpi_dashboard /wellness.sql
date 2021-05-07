@@ -97,7 +97,7 @@ SELECT
      WHERE j.contact_id = j2.contact_id
     ) AS last_test,
     raw_covi_score, 
-    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by contact_id) AS first_raw_covi_score_median_ay, #median
+    PERCENTILE_CONT(raw_covi_score, .5) OVER (PARTITION by j.contact_id) AS first_raw_covi_score_median_ay, #median
     student_site_c,
     j.contact_id,
     test_record_id
