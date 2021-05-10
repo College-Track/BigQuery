@@ -20,13 +20,12 @@ WITH gather_data AS
 ),
 
 gather_retention_data AS (
-SELECT DISTINCT student_c 
-FROM `data-warehouse-289815.salesforce_clean.class_template`
-LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` GAS ON GAS.id = global_academic_semester_c
+SELECT DISTINCT CT.student_c 
+FROM `data-warehouse-289815.salesforce_clean.class_template` CT
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
 WHERE Attendance_Numerator_c > 0 
 AND dosage_types_c NOT LIKE '%NSO%'
-AND GAS.name LIKE '%2020-21%'
-
+AND AY_Name = "AY 2020-21"
 )
 
 SELECT COUNT(student_c)
