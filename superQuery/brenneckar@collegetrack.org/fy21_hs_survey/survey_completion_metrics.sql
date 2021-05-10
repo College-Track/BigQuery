@@ -21,21 +21,21 @@ WITH gather_data AS(
     -- ),
     )
   SELECT
-    -- site_short,
-    -- high_school_graduating_class_c,
-    -- Most_Recent_GPA_Cumulative_bucket,
-    -- Ethnic_background_c,
-    -- Gender_c,
+    site_short,
+    high_school_graduating_class_c,
+    Most_Recent_GPA_Cumulative_bucket,
+    Ethnic_background_c,
+    Gender_c,
     COUNT(contact_id) AS student_count,
     SUM(completed_survey_indicator) AS completed_survey_count
   FROM
     gather_data
---   GROUP BY
---     site_short,
---     high_school_graduating_class_c,
---     Most_Recent_GPA_Cumulative_bucket,
---     Ethnic_background_c,
---     Gender_c 
+  GROUP BY
+    site_short,
+    high_school_graduating_class_c,
+    Most_Recent_GPA_Cumulative_bucket,
+    Ethnic_background_c,
+    Gender_c 
     
     -- gather_completed_survey_data AS (
     --   SELECT
