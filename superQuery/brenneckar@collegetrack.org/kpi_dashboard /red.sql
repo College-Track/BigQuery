@@ -20,7 +20,9 @@ WITH gather_data AS
 ),
 
 gather_retention_data AS (
-SELECT DISTINCT CT.student_c 
+SELECT DISTINCT CT.student_c, CASE WHEN college_track_status_c IN ('11A', '18a', '12A') THEN 1
+ELSE 0
+END AS currently_active
 FROM `data-warehouse-289815.salesforce_clean.class_template` CT
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
 WHERE Attendance_Numerator_c > 0 
@@ -28,7 +30,7 @@ AND dosage_types_c NOT LIKE '%NSO%'
 AND AY_Name = "AY 2020-21"
 )
 
-SELECT COUNT(student_c)
+SELECT COUNT(student_c), SUM(currently_active)
 FROM gather_retention_data
     -- SELECT
     -- site_short,
