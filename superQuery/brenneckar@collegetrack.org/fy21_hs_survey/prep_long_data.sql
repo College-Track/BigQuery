@@ -48,25 +48,25 @@ WITH gather_data AS (
   WHERE
     HSSL.Contact_Id IS NOT NULL
     AND site_short IS NOT NULL
-),
+)
 
- student_prior_215 AS(
-  SELECT
-    contact_id
-  FROM
-    `data-warehouse-289815.salesforce_clean.contact_template`
-  WHERE
-    College_Track_Status_c IN ('11A', '12A', '18a')
-    AND Contact_Id NOT IN (
-      SELECT
-        Contact_c
-      FROM
-        `data-warehouse-289815.salesforce.contact_pipeline_history_c`
-      WHERE
-        created_date >= '2021-02-17T21:59:59.000Z'
-        AND Name = 'Started/Restarted CT HS Program'
-    )
-    )
+--  student_prior_215 AS(
+--   SELECT
+--     contact_id
+--   FROM
+--     `data-warehouse-289815.salesforce_clean.contact_template`
+--   WHERE
+--     College_Track_Status_c IN ('11A', '12A', '18a')
+--     AND Contact_Id NOT IN (
+--       SELECT
+--         Contact_c
+--       FROM
+--         `data-warehouse-289815.salesforce.contact_pipeline_history_c`
+--       WHERE
+--         created_date >= '2021-02-17T21:59:59.000Z'
+--         AND Name = 'Started/Restarted CT HS Program'
+--     )
+--     )
 SELECT
   GD.*
 EXCEPT
@@ -112,5 +112,5 @@ EXCEPT
   HSWP.NPS_Score
 FROM
   gather_data GD
-  LEFT JOIN student_prior_215 SP ON SP.contact_id = GD.Contact_Id
+  LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_completion_reporting_group` SP ON SP.contact_id = GD.Contact_Id
   LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_wide_prepped` HSWP ON HSWP.contact_id = GD.Contact_id
