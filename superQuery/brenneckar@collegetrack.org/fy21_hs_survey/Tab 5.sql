@@ -1,6 +1,6 @@
 WITH gather_data AS(
   SELECT
-    site_short,
+    -- site_short,
     -- high_school_graduating_class_c,
     -- Most_Recent_GPA_Cumulative_bucket,
     -- Ethnic_background_c,
@@ -21,7 +21,7 @@ WITH gather_data AS(
         AND Name = 'Started/Restarted CT HS Program'
     )
   GROUP BY
-    site_short
+    -- site_short
     -- high_school_graduating_class_c,
     -- Most_Recent_GPA_Cumulative_bucket,
     --     Ethnic_background_c,
