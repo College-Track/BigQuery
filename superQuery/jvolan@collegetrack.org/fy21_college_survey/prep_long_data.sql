@@ -84,6 +84,11 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'I cannot predict at this point' THEN 7
         WHEN answer = 'I do not wish to be contacted by an advisor' THEN 8
         
+        WHEN answer = "Yes, more than one club/organization" THEN 1
+        WHEN answer = "Yes, one club/organization" THEN 2
+        WHEN answer = "No, but I plan to be involved in one club/organization next term" THEN 3
+        WHEN answer = "No" THEN 4
+        
         WHEN answer = "Extremely Interested" THEN 1
         WHEN answer = 'Very Interested' THEN 2
         WHEN answer = 'Moderately Interested' THEN 3
