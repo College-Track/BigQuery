@@ -28,6 +28,7 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CA
 WHERE Attendance_Numerator_c > 0 
 AND dosage_types_c NOT LIKE '%NSO%'
 AND AY_Name = "AY 2020-21"
+AND grade_c != '8th Grade'
 )
 
 SELECT COUNT(student_c), SUM(currently_active)
