@@ -1,5 +1,6 @@
 WITH gather_data AS(
   SELECT
+  distinct
     site_short,
     high_school_graduating_class_c,
     Most_Recent_GPA_Cumulative_bucket,
@@ -29,6 +30,7 @@ WITH gather_data AS(
 ),
 gather_completed_survey_data AS (
   SELECT
+  distinct
     site_short,
     high_school_graduating_class_c,
     Most_Recent_GPA_Cumulative_bucket,
