@@ -26,7 +26,7 @@ END AS currently_active
 FROM `data-warehouse-289815.salesforce_clean.class_template` CT
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
 WHERE Attendance_Numerator_c > 0 
--- AND dosage_types_c NOT LIKE '%NSO%'
+AND dosage_types_c NOT LIKE '%NSO%'
 AND AY_Name = "AY 2020-21"
 AND grade_c != '8th Grade'
 )
