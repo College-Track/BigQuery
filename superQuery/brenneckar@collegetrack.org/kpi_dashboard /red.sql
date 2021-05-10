@@ -34,16 +34,19 @@ gather_retention_data AS (
     AND AY_Name = "AY 2020-21"
     AND grade_c != '8th Grade'
 )
-SELECT
-  site_short,
-  COUNT(student_c) AS retention_denom,
-  SUM(currently_active) AS retention_num
-FROM
-  gather_retention_data 
-  GROUP BY site_short
+-- SELECT
+--   site_short,
+--   COUNT(student_c) AS retention_denom,
+--   SUM(currently_active) AS retention_num
+-- FROM
+--   gather_retention_data 
+--   GROUP BY site_short
   
-  -- SELECT
-  -- site_short,
-  -- SUM(gather_data.gpa_3_25__test_ready) AS red_gpa_3_25_test_ready
-  -- FROM gather_data
-  -- GROUP BY site_short
+   SELECT
+   GD.site_short,
+   SUM(GD.gpa_3_25__test_ready) AS red_gpa_3_25_test_ready,
+     COUNT(student_c) AS retention_denom,
+  SUM(currently_active) AS retention_num
+   FROM gather_data GD
+   LEFT JOIN gather_retention_data GRD ON GRD.site_short = GD.site_short
+   GROUP BY GD.site_short
