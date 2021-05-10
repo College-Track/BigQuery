@@ -31,4 +31,4 @@ WITH gather_data AS(
 
 SELECT *
 FROM gather_data
-ORDER BY site_short
+-- ORDER BY site_short
