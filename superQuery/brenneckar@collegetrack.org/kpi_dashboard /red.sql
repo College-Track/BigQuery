@@ -17,6 +17,15 @@ WITH gather_data AS (
     current_as_c = true
     AND college_track_status_c IN ('11A')
 ),
+aggregate_metrics AS (
+  SELECT
+    GD.site_short,
+    SUM(GD.gpa_3_25__test_ready) AS red_gpa_3_25_test_ready
+  FROM
+    gather_data GD
+  GROUP BY
+    GD.site_short
+),
 gather_retention_data AS (
   SELECT
     DISTINCT CT.student_c,
@@ -33,20 +42,22 @@ gather_retention_data AS (
     AND dosage_types_c NOT LIKE '%NSO%'
     AND AY_Name = "AY 2020-21"
     AND grade_c != '8th Grade'
+),
+aggregate_retention_data AS (
+  SELECT
+    site_short,
+    COUNT(student_c) AS retention_denom,
+    SUM(currently_active) AS retention_num
+  FROM
+    gather_retention_data
+  GROUP BY
+    site_short
 )
--- SELECT
---   site_short,
---   COUNT(student_c) AS retention_denom,
---   SUM(currently_active) AS retention_num
--- FROM
---   gather_retention_data 
---   GROUP BY site_short
-  
-   SELECT
-   GD.site_short,
-   SUM(GD.gpa_3_25__test_ready) AS red_gpa_3_25_test_ready,
-     COUNT(student_c) AS retention_denom,
-  SUM(currently_active) AS retention_num
-   FROM gather_data GD
-   LEFT JOIN gather_retention_data GRD ON GRD.site_short = GD.site_short
-   GROUP BY GD.site_short
+SELECT
+  AM.site_short,
+  AM.red_gpa_3_25_test_ready,
+  ARD.retention_denom,
+  ARD.retention_num
+FROM
+  aggregate_metrics AM
+  LEFT JOIN aggregate_retention_data ARD ON ARD.site_short = AM.site_short
