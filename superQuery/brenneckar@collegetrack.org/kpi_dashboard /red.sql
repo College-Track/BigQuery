@@ -29,7 +29,7 @@ AND GAS.name LIKE '%2020-21%'
 
 )
 
-SELECT COUNT student_c
+SELECT COUNT(student_c)
 FROM gather_retention_data
     -- SELECT
     -- site_short,
