@@ -1,5 +1,6 @@
 WITH gather_data AS(
   SELECT
+  distinct
     -- site_short,
     -- high_school_graduating_class_c,
     -- Most_Recent_GPA_Cumulative_bucket,
