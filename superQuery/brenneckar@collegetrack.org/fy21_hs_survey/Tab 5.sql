@@ -1,7 +1,7 @@
 WITH gather_data AS(
   SELECT
   
-    -- site_short,
+    site_short,
     -- high_school_graduating_class_c,
     -- Most_Recent_GPA_Cumulative_bucket,
     -- Ethnic_background_c,
@@ -21,8 +21,8 @@ WITH gather_data AS(
         created_date >= '2021-02-17T21:59:59.000Z'
         AND Name = 'Started/Restarted CT HS Program'
     )
---   GROUP BY
-    -- site_short
+  GROUP BY
+    site_short
     -- high_school_graduating_class_c,
     -- Most_Recent_GPA_Cumulative_bucket,
     --     Ethnic_background_c,
@@ -31,4 +31,4 @@ WITH gather_data AS(
 
 SELECT *
 FROM gather_data
--- ORDER BY site_short
+ORDER BY site_short
