@@ -40,7 +40,6 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'StronglyAgree' THEN 'Strongly Agree'
         Else answer
     END AS answer,
-    `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
     -- likert sort
     CASE
         WHEN answer = "Strongly Agree" THEN 1
@@ -71,7 +70,7 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'Almost never' THEN 5
     
         WHEN answer = 'Extremely confident' THEN 1
-        WHEN answer = 'Quiet confident' THEN 2
+        WHEN answer = 'Quite confident' THEN 2
         WHEN answer = 'Somewhat confident' THEN 3
         WHEN answer = 'Slightly confident' THEN 4
         WHEN answer = 'Not at all confident' THEN 5
@@ -91,7 +90,8 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'Slightly Interested' THEN 4
         WHEN answer = 'Not Interested' THEN 5
         ELSE NULL
-    END AS sort_column
+    END AS sort_column,
+    `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
     
 
     FROM `data-studio-260217.surveys.fy21_ps_survey_long`
