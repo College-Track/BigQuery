@@ -5,7 +5,8 @@
     Most_Recent_GPA_Cumulative_bucket,
     Ethnic_background_c,
     Gender_c,
-    COUNT(Contact_Id) as student_count
+    contact_id
+    
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
   WHERE
@@ -20,12 +21,7 @@
         created_date >= '2021-02-17T21:59:59.000Z'
         AND Name = 'Started/Restarted CT HS Program'
     )
-  GROUP BY
-    site_short,
-    high_school_graduating_class_c,
-    Most_Recent_GPA_Cumulative_bucket,
-    Ethnic_background_c,
-    Gender_c
+
 )
 
 SELECT *
