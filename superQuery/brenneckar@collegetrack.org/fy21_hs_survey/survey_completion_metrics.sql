@@ -17,14 +17,14 @@ WITH gather_data AS(
       FROM
         `data-warehouse-289815.salesforce.contact_pipeline_history_c`
       WHERE
-        created_date >= '2021-02-17T23:59:59.000Z'
+        created_date >= '2021-02-17T21:59:59.000Z'
         AND Name = 'Started/Restarted CT HS Program'
     )
   GROUP BY
     site_short,
     high_school_graduating_class_c,
     Most_Recent_GPA_Cumulative_bucket,
-        Ethnic_background_c,
+    Ethnic_background_c,
     Gender_c
 ),
 gather_completed_survey_data AS (
@@ -41,7 +41,7 @@ gather_completed_survey_data AS (
     site_short,
     high_school_graduating_class_c,
     Most_Recent_GPA_Cumulative_bucket,
-        Ethnic_background_c,
+    Ethnic_background_c,
     Gender_c
 ),
 join_data AS (
@@ -57,6 +57,6 @@ join_data AS (
     AND gather_completed_survey_data.Gender_c = GD.Gender_c
 )
 SELECT
-*
+  *
 FROM
   join_data
