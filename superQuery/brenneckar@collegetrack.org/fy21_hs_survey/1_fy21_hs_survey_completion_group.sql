@@ -28,5 +28,5 @@
     Gender_c
 )
 
-SELECT SUM(student_count)
+SELECT *
 FROM gather_data
