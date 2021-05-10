@@ -21,11 +21,11 @@ WITH gather_data AS(
         AND Name = 'Started/Restarted CT HS Program'
     )
   GROUP BY
-    site_short,
-    high_school_graduating_class_c,
-    Most_Recent_GPA_Cumulative_bucket,
-        Ethnic_background_c,
-    Gender_c
+    site_short
+    -- high_school_graduating_class_c,
+    -- Most_Recent_GPA_Cumulative_bucket,
+    --     Ethnic_background_c,
+    -- Gender_c
 )
 
 SELECT *
