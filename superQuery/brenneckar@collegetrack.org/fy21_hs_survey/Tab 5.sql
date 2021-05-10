@@ -1,4 +1,4 @@
-gather_completed_survey_data AS (
+WITH gather_completed_survey_data AS (
   SELECT
     -- site_short,
     -- high_school_graduating_class_c,
