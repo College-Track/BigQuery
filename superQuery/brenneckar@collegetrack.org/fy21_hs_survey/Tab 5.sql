@@ -1,6 +1,6 @@
 WITH gather_data AS(
   SELECT
-  distinct
+  
     -- site_short,
     -- high_school_graduating_class_c,
     -- Most_Recent_GPA_Cumulative_bucket,
@@ -18,7 +18,7 @@ WITH gather_data AS(
       FROM
         `data-warehouse-289815.salesforce.contact_pipeline_history_c`
       WHERE
-        created_date >= '2021-02-17T23:59:59.000Z'
+        created_date >= '2021-02-18T00:00:00.000Z'
         AND Name = 'Started/Restarted CT HS Program'
     )
 --   GROUP BY
