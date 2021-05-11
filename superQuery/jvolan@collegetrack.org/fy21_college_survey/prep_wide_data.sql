@@ -1,7 +1,7 @@
-SELECT
+  SELECT
     *,
     CASE
-        WHEN "Which of the factors are most responsible for you not feeling as connected to College Track?(select all that apply)" IN ("Staff turnover / I don't know the staff anymore") THEN 1
+        WHEN REGEXP_CONTAINS("Which of the factors are most responsible for you not feeling as connected to College Track?(select all that apply)","Staff turnover / I don't know the staff anymore") THEN 1
         ELSE 0
     END AS staff_turnover_count,
     CASE
