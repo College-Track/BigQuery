@@ -45,6 +45,15 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'NotHelpful' THEN 'Not Helpful'
         Else answer
     END AS answer,
+    `data-studio-260217.surveys.determine_positive_answers` (answer) AS positive_answer,
+    `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
+
+    FROM `data-studio-260217.surveys.fy21_ps_survey_long`
+    LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.filter_contact_id = contact_id
+)
+
+    SELECT
+    *,
     -- likert sort
     CASE
         WHEN answer = "Strongly Agree" THEN 1
@@ -101,16 +110,6 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'Not Interested' THEN 5
         ELSE NULL
     END AS sort_column,
-    `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.* except(filter_contact_id),
-    
-
-    FROM `data-studio-260217.surveys.fy21_ps_survey_long`
-    LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON `data-studio-260217.surveys.fy21_ps_survey_filters_clean`.filter_contact_id = contact_id
-)
-
-    SELECT
-    *,
-    `data-studio-260217.surveys.determine_positive_answers` (answer) AS positive_answer
 
     FROM pssl_with_filter_data
     WHERE site_short IS NOT NULL
