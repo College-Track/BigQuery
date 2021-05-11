@@ -1,3 +1,4 @@
+WITH gather_test_data AS (
   SELECT
     contact_name_c,
     AY_Name,
@@ -14,10 +15,28 @@
   WHERE
     T.record_type_id = '0121M000001cmuDQAQ'
     AND AY_Name IN ('AY 2019-20', 'AY 2020-21')
-    AND contact_name_c = '0031M00002spOFlQAM'
+    -- AND contact_name_c = '0031M00002spOFlQAM'
   GROUP BY
     contact_name_c,
     AY_Name
   ORDER BY
     contact_name_c,
     AY_Name
+),
+calc_growth AS (
+  SELECT
+    contact_name_c,
+    covi_raw_score - lag(covi_raw_score) over (
+      partition by contact_name_c
+      order by
+        AY_Name
+    ) AS covi_growth
+  FROM
+    gather_test_data
+)
+SELECT
+  *
+FROM
+  calc_growth
+WHERE
+  covi_growth IS NULL
