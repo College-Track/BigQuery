@@ -3,16 +3,23 @@ WITH gather_hs_data AS (
     Contact_Id,
     site_short,
     site_c,
+    -- % of seniors with GPA 3.25+
+    -- The denominator for this is created in join_prep
     CASE
       WHEN grade_c = '12th Grade'
       AND Prev_AT_Cum_GPA >= 3.25 THEN 1
       ELSE 0
     END AS above_325_gpa,
+    -- % of entering 9th grade students who are male
+    -- The denominator for this is created in join_prep
     CASE
       WHEN grade_c = '9th Grade'
       AND Gender_c = 'Male' THEN 1
       ELSE 0
     END as male_student,
+    -- % of entering 9th grade students who are low-income AND first-gen
+    -- The denominator for this is created in join_prep
+
     CASE
       WHEN (
         grade_c = '9th Grade'
@@ -21,6 +28,8 @@ WITH gather_hs_data AS (
       ) THEN 1
       ELSE 0
     END AS first_gen_and_low_income,
+    -- % of students with meaningful summer experiences
+    -- I might need to create a new denominator for this metric
     CASE
       WHEN summer_experiences_previous_summer_c > 0 THEN 1
       ELSE 0
@@ -35,6 +44,8 @@ gather_ps_data AS (
     Contact_Id,
     site_short,
     site_c,
+    -- % of students with enough credits accumulated to graduate in 6 years
+    -- The denominator for this is created in join_prep
     CASE
       WHEN (
         Credit_Accumulation_Pace_c != "6+ Years"
@@ -47,6 +58,8 @@ gather_ps_data AS (
   WHERE
     college_track_status_c = '15A'
 ),
+-- % of students meeting 80% attendance
+-- The second part of the attendance kpi is done in the join_hs_data CTE
 gather_ay_attendance AS (
   SELECT
     Contact_Id,
@@ -95,6 +108,9 @@ prep_ps_metrics AS (
   GROUP BY
     site_short
 ),
+
+-- % of students growing toward average or above social-emotional strengths
+-- This KPI is done over four CTEs (could probaly be made more efficient). The majority of the logic is done in the second CTE.
 gather_covi_data AS (
   SELECT
     contact_name_c,
@@ -109,6 +125,7 @@ gather_covi_data AS (
   WHERE
     T.record_type_id = '0121M000001cmuDQAQ'
     AND AY_Name IN ('AY 2019-20', 'AY 2020-21')
+    AND CAT.College_track_status_c = '11A'
   GROUP BY
     site_short,
     contact_name_c,
