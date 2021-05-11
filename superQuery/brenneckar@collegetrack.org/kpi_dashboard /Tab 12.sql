@@ -1,4 +1,3 @@
-WITH gather_covi_data AS (
   SELECT
     contact_name_c,
     site_short,
@@ -20,38 +19,3 @@ WITH gather_covi_data AS (
     site_short,
     contact_name_c,
     AY_Name
-),
-calc_covi_growth AS (
-  SELECT
-    site_short,
-    contact_name_c,
-    covi_raw_score - lag(covi_raw_score) over (
-      partition by contact_name_c
-      order by
-        AY_Name
-    ) AS covi_growth
-  FROM
-    gather_covi_data
-),
-determine_covi_indicators AS (
-  SELECT
-    site_short,
-    contact_name_c,
-    CASE
-      WHEN covi_growth > 0 THEN 1
-      ELSE 0
-    END AS covi_student_grew
-  FROM
-    calc_covi_growth
-  WHERE
-    covi_growth IS NOT NULL
-)
- (SELECT
-  site_short,
-  SUM(covi_student_grew) AS SD_covi_student_grew,
-  COUNT(contact_name_c) AS SD_covi_denominator
-FROM
-  determine_covi_indicators
-GROUP BY
-  site_short
-  )
