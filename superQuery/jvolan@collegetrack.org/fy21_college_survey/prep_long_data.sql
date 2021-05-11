@@ -109,6 +109,11 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'Moderately Interested' THEN 3
         WHEN answer = 'Slightly Interested' THEN 4
         WHEN answer = 'Not Interested' THEN 5
+        
+        WHEN answer = "I've only had 1 College Track advisor since starting college and it's never changed" THEN 0
+        WHEN answer = '1' THEN 1
+        WHEN answer = '2' THEN 2
+        WHEN answer = "4+" THEN 3
         ELSE NULL
     END AS sort_column,
 
