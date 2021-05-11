@@ -35,4 +35,4 @@ SELECT
 FROM
   calc_growth
 WHERE
-  covi_growth IS NULL
+  covi_growth IS NOT NULL
