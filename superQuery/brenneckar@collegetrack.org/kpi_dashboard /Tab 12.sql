@@ -19,8 +19,8 @@
     site_short,
     contact_name_c,
     AY_Name
-),
-calc_covi_growth AS (
+)
+-- calc_covi_growth AS (
   SELECT
     site_short,
     contact_name_c,
