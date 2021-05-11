@@ -38,6 +38,11 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'NotInterested' THEN 'Not Interested'
         WHEN answer = 'StronglyDisagree' THEN 'Strongly Disagree'
         WHEN answer = 'StronglyAgree' THEN 'Strongly Agree'
+        WHEN answer = 'ExtremelyHelpul' THEN 'Extremely Helpful'
+        WHEN answer = 'VeryHelpul' THEN 'Very Helpful'
+        WHEN answer = 'SlightlyHelpul' THEN 'Slightly Helpful'
+        WHEN answer = 'ModeratelylyHelpul' THEN 'Moderately Helpful'
+        WHEN answer = 'NotHelpul' THEN 'Not Helpful'
         Else answer
     END AS answer,
     -- likert sort
