@@ -19,3 +19,15 @@
     site_short,
     contact_name_c,
     AY_Name
+),
+calc_covi_growth AS (
+  SELECT
+    site_short,
+    contact_name_c,
+    covi_raw_score - LAG(covi_raw_score) over (
+      partition by contact_name_c
+      order by
+        AY_Name
+    ) AS covi_growth
+  FROM
+    gather_covi_data
