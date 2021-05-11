@@ -1,10 +1,17 @@
 WITH gather_test_data AS (
-SELECT 
-test_date_c, Id, act_math_readiness_c, version_c, co_vitality_indicator_c, record_type_id
-FROM `data-warehouse-289815.salesforce_clean.test_clean`
-WHERE co_vitality_indicator_c IS NOT NULL
+  SELECT
+    (
+      belief_in_self_raw_score_c + engaged_living_raw_score_c + belief_in_others_raw_score_c + emotional_competence_raw_score_c
+    ) AS covi_raw_score
+  FROM
+    `data-warehouse-289815.salesforce_clean.test_clean`
+  WHERE
+    co_vitality_indicator_c IS NOT NULL
+    AND record_type_id = '0121M000001cmuDQAQ'
 )
-
-SELECT *
-FROM gather_test_data
-LIMIT 100
+SELECT
+  *
+FROM
+  gather_test_data
+LIMIT
+  100
