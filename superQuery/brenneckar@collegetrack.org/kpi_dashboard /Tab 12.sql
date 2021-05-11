@@ -16,6 +16,7 @@ WITH gather_test_data AS (
   ORDER BY contact_name_c, AY_Name
 )
 SELECT
+   contact_name_c,
    covi_raw_score - lag(covi_raw_score) over (partition by contact_name_c order by AY_Name)
 FROM
   gather_test_data
