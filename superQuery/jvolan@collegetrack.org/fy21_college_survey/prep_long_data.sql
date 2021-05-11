@@ -43,6 +43,7 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'SlightlyHelpful' THEN 'Slightly Helpful'
         WHEN answer = 'ModeratelyHelpful' THEN 'Moderately Helpful'
         WHEN answer = 'NotHelpful' THEN 'Not Helpful'
+        WHEN answer = "Don't discusswith CT advisor" THEN "Don't discuss with CT advisor"
         Else answer
     END AS answer,
     `data-studio-260217.surveys.determine_positive_answers` (answer) AS positive_answer,
