@@ -31,7 +31,11 @@ calc_growth AS (
     gather_test_data
 )
 SELECT
-  *
+  contact_name_c,
+  CASE WHEN covi_growth > 0 THEN 1
+  ELSE 0
+  END AS covi_student_grew
+  
 FROM
   calc_growth
 WHERE
