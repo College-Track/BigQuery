@@ -17,7 +17,7 @@ WITH gather_test_data AS (
 )
 SELECT
    contact_name_c,
-   covi_raw_score - lag(covi_raw_score) over (partition by contact_name_c order by AY_Name)
+   covi_raw_score - lag(covi_raw_score) over (partition by contact_name_c order by AY_Name) AS covi_growth
 FROM
   gather_test_data
 LIMIT
