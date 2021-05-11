@@ -1,3 +1,4 @@
+WITH gather_covi_data AS (
   SELECT
     contact_name_c,
     site_short,
