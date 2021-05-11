@@ -38,10 +38,10 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'NotInterested' THEN 'Not Interested'
         WHEN answer = 'StronglyDisagree' THEN 'Strongly Disagree'
         WHEN answer = 'StronglyAgree' THEN 'Strongly Agree'
-        WHEN answer = 'ExtremelyHelfpul' THEN 'Extremely Helpful'
+        WHEN answer = 'ExtremelyHelpful' THEN 'Extremely Helpful'
         WHEN answer = 'VeryHelpful' THEN 'Very Helpful'
         WHEN answer = 'SlightlyHelpful' THEN 'Slightly Helpful'
-        WHEN answer = 'ModeratelylyHelpful' THEN 'Moderately Helpful'
+        WHEN answer = 'ModeratelyHelpful' THEN 'Moderately Helpful'
         WHEN answer = 'NotHelpful' THEN 'Not Helpful'
         Else answer
     END AS answer,
