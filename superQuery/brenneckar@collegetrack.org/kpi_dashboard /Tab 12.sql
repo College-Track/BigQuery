@@ -1,4 +1,4 @@
-WITH gather_test_data AS (
+WITH gather_covi_data AS (
   SELECT
     contact_name_c,
     site_short,
@@ -21,7 +21,7 @@ WITH gather_test_data AS (
     contact_name_c,
     AY_Name
 ),
-calc_growth AS (
+calc_covi_growth AS (
   SELECT
     site_short,
     contact_name_c,
@@ -31,7 +31,7 @@ calc_growth AS (
         AY_Name
     ) AS covi_growth
   FROM
-    gather_test_data
+    gather_covi_data
 ),
 determine_covi_indicators AS (
   SELECT
@@ -42,11 +42,11 @@ determine_covi_indicators AS (
       ELSE 0
     END AS covi_student_grew
   FROM
-    calc_growth
+    calc_covi_growth
   WHERE
     covi_growth IS NOT NULL
 )
-SELECT
+ (SELECT
   site_short,
   SUM(covi_student_grew) AS SD_covi_student_grew,
   COUNT(contact_name_c) AS SD_covi_denominator
@@ -54,3 +54,4 @@ FROM
   determine_covi_indicators
 GROUP BY
   site_short
+  )
