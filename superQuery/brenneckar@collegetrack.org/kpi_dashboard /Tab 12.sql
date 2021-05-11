@@ -8,8 +8,7 @@ WITH gather_test_data AS (
   FROM
     `data-warehouse-289815.salesforce_clean.test_clean` T
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = T.academic_semester_c
-  WHERE
-    AND T.record_type_id = '0121M000001cmuDQAQ'
+  WHERE T.record_type_id = '0121M000001cmuDQAQ'
 )
 SELECT
   *
