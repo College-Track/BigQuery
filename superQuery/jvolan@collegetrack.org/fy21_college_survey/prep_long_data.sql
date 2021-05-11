@@ -95,7 +95,7 @@ WITH pssl_with_filter_data AS
         WHEN answer = 'Once a month' THEN 3
         WHEN answer = "Once every other month" THEN 4
         WHEN answer = 'About once a year' THEN 5
-        WHEN answer = "I have not had any interaction with my advisor to date / Not sure who my advisor is" THEN 6
+        WHEN answer = "I have not had any interaction with my advisor to date /Not sure who my advisor is" THEN 6
         WHEN answer = 'I cannot predict at this point' THEN 7
         WHEN answer = 'I do not wish to be contacted by an advisor' THEN 8
         
