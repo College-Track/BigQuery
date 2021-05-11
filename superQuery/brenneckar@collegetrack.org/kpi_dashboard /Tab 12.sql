@@ -12,6 +12,7 @@ WITH gather_covi_data AS (
   WHERE
     T.record_type_id = '0121M000001cmuDQAQ'
     AND AY_Name IN ('AY 2019-20', 'AY 2020-21')
+    AND CAT.College_track_status_c = '11A'
   GROUP BY
     site_short,
     contact_name_c,
@@ -20,8 +21,8 @@ WITH gather_covi_data AS (
     site_short,
     contact_name_c,
     AY_Name
-)
--- calc_covi_growth AS (
+),
+calc_covi_growth AS (
   SELECT
     site_short,
     contact_name_c,
@@ -32,3 +33,26 @@ WITH gather_covi_data AS (
     ) AS covi_growth
   FROM
     gather_covi_data
+),
+determine_covi_indicators AS (
+  SELECT
+    site_short,
+    contact_name_c,
+    CASE
+      WHEN covi_growth > 0 THEN 1
+      ELSE 0
+    END AS covi_student_grew
+  FROM
+    calc_covi_growth
+  WHERE
+    covi_growth IS NOT NULL
+)
+ (SELECT
+  site_short,
+  SUM(covi_student_grew) AS SD_covi_student_grew,
+  COUNT(contact_name_c) AS SD_covi_denominator
+FROM
+  determine_covi_indicators
+GROUP BY
+  site_short
+  )
