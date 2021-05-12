@@ -68,5 +68,14 @@ determine_new_roles AS (
     LEFT JOIN `data-warehouse-289815.roles.group_role_id` GRI ON GRI.group_id = GM.group_id
 )
 
-SELECT *
-FROM determine_new_roles
+
+SELECT
+  U.*
+EXCEPT(user_role_id),
+  CASE
+    WHEN DNR.new_role IS NULL THEN U.user_role_id
+    ELSE DNR.new_role
+  END AS user_role_id,
+FROM
+  union_data U
+  LEFT JOIN determine_new_roles DNR ON DNR.id = U.Id
