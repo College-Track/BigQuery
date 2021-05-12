@@ -1,3 +1,3 @@
 SELECT *
-FROM `data-warehouse-289815.salesforce_clean.user_clean`
+FROM `data-warehouse-289815.salesforce.user`
 WHERE email LIKE '%dsullivan%'
