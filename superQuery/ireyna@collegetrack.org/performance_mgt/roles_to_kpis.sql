@@ -1,10 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy21_roles_to_kpi`
 OPTIONS
     (
-    description="This table maps CT-wide Staff List to KPIs based on Role anf Function/Team"
+    description="This table maps CT-wide Staff List to KPIs based on Role for FY21"
     )
 AS
+*/
 
 WITH
 gather_staff_table AS (
@@ -17,10 +18,12 @@ SELECT *
 FROM `data-studio-260217.performance_mgt.role_kpi_selection`
 )
 
-SELECT *,
+SELECT 
+    staff.* EXCEPT(position_id),
+    kpis.*,
     CASE WHEN kpi IS NULL THEN 1
-    ELSE 0
-    END AS missing_kpis
+        ELSE 0
+        END AS missing_kpis
 FROM gather_staff_table AS staff
 LEFT JOIN gather_kpis AS kpis ON staff.Job_Title_Description = kpis.Role
 
