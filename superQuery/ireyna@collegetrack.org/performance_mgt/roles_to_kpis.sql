@@ -20,4 +20,3 @@ FROM `data-studio-260217.performance_mgt.role_kpi_selection`
 SELECT *
 FROM gather_staff_table AS staff
 LEFT JOIN gather_kpis AS kpis ON staff.Job_Title_Description = kpis.Role
-Limit 10
