@@ -1,11 +1,11 @@
-/*
+
 CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.fy21_roles_to_kpi`
 OPTIONS
     (
     description="This table maps CT-wide Staff List to KPIs based on Role anf Function/Team"
     )
 AS
-*/
+
 WITH
 gather_staff_table AS (
 SELECT *
