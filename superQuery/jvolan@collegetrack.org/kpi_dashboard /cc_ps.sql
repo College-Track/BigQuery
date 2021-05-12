@@ -16,6 +16,7 @@ SELECT
     indicator_income_proxy
     indicator_loans_still_owe_proxy_wayn,
     indicator_loan_proxy_fd,
+    (indicator_annual_loan_repayment_amount_current_loan_debt_125 / indicator_income_proxy) AS annual_debt_income_ratio,
     CASE
         WHEN 
         (indicator_annual_loan_repayment_amount_current_loan_debt_125 / indicator_income_proxy) <=.08 THEN 1
