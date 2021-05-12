@@ -45,8 +45,8 @@ WITH gather_kpi_submissions AS (
       ELSE 0
     END AS program,
   FROM
-    `data-studio-260217.performance_mgt.role_kpi_selection` KPI_Selection #FormAssembly
-    LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_') #List of KPIs by Team/Role
+    `data-studio-260217.performance_mgt.role_kpi_selection` KPI_Selectio n#List of KPIs by Team/Role
+    LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly 
     AND KPI_Target.select_role = KPI_Selection.role
     AND KPI_Target.select_kpi = KPI_Selection.KPI
 )
