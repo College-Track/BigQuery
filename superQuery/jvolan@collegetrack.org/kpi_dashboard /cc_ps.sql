@@ -215,6 +215,7 @@ get_fy20_alumni_survey_data AS
     END AS fy20_alumni_survey_employed_grad_6_months_denom,
 
     FROM `data-warehouse-289815.surveys.fy20_alumni_survey`
+    
 ),
 
 
