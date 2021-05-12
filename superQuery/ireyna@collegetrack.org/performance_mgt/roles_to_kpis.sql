@@ -19,7 +19,7 @@ FROM `data-studio-260217.performance_mgt.role_kpi_selection`
 )
 
 SELECT 
-    staff.* EXCEPT(position_id),
+    staff.* EXCEPT(position_id, team),
     kpis.*,
     CASE WHEN kpi IS NULL THEN 1
         ELSE 0
