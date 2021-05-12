@@ -4,5 +4,8 @@
 --  ('Regional CC Advising - Aurora', '00G1M000004s0IhUAI', '00E46000000YcO1EAK')
 
 
-DELETE FROM `data-warehouse-289815.roles.group_role_id`
-WHERE group_name = 'Shared CC Advising - Denver/Aurora'
+-- DELETE FROM `data-warehouse-289815.roles.group_role_id`
+-- WHERE group_name = 'Shared CC Advising - Denver/Aurora'
+
+SELECT *
+FROM `data-warehouse-289815.roles.group_role_id`
