@@ -1,13 +1,3 @@
-#college applications for current academic year, graduating HS class
-
-
-CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
-OPTIONS
-    (
-    description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
-    )
-AS
-
 
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
@@ -23,7 +13,6 @@ SELECT
     END AS application_status,
  
 #Contact 
-    C.full_name_c,
     C.contact_id, 
     C.current_cc_advisor_2_c AS hs_ct_coach,
     C.high_school_graduating_class_c,
@@ -98,7 +87,7 @@ SELECT
     
     #account
     accnt.name AS high_school_name_filter,
-    #accnt_2.name AS college_name_applied_wide, #Wide filtter, college name on Application filter. Applications page. 
+    accnt_2.name AS college_name_applied_wide #Wide filtter, college name on Application filter. Applications page. 
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
@@ -321,11 +310,10 @@ WHERE contact_id_applied_status IS NULL
 ),
 
 --Identify students who have not enrolled
-no_enrollment AS
-(
+no_enrollment AS(
 SELECT  
     contact_id AS contact_id_not_enrolled
-FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C
+FROM filtered_data AS C
 LEFT JOIN college_application_data
 ON contact_id = contact_id_enrolled
 WHERE contact_id_enrolled IS NULL
@@ -341,6 +329,7 @@ SELECT
                 College_Fit_Type_Applied_sort,
                 fit_type_accepted_tight
                 ),
+    college_name_applied_wide,
     affordable_colleges.*,
     no_application_status.*,
     no_enrollment.*,
