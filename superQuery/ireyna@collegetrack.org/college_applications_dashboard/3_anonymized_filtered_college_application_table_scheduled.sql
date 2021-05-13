@@ -320,8 +320,7 @@ WHERE contact_id_applied_status IS NULL
 )
 
 --Identify students who have not enrolled
---no_enrollment AS
-(
+--no_enrollment AS(
 SELECT  
     contact_id AS contact_id_not_enrolled
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C
