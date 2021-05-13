@@ -1,15 +1,17 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
 OPTIONS
     (
     description="KPIs submitted by Team for FY22. References List of KPIs by role and Targets from FormAssembly Team KPI form"
     )
 AS
-
+*/
 
 WITH gather_kpi_submissions AS (
   SELECT
     KPI_Selection.*,
+    Region,
+    Site,
     CASE
       WHEN KPI_Target.select_role IS NOT NULL THEN true
       ELSE false
@@ -25,22 +27,22 @@ WITH gather_kpi_submissions AS (
     --  ELSE site_kpi
     --END AS site,
     CASE
-      WHEN function IN ('Talent Acquisition','Talent Development','Employee Experience')
+      WHEN KPI_Selection.function IN ('Talent Acquisition','Talent Development','Employee Experience')
       THEN 1
       ELSE 0
     END AS hr_people,
     CASE 
-      WHEN function IN ('Finance','Strategic Initiatives','Org Performance','IT','Marketing','Program Development','Operations')
+      WHEN KPI_Selection.function IN ('Finance','Strategic Initiatives','Org Performance','IT','Marketing','Program Development','Operations')
       THEN 1
       ELSE 0
     END AS national,
     CASE
-      WHEN function IN ('Partnerships','Fund Raising')
+      WHEN KPI_Selection.function IN ('Partnerships','Fund Raising')
       THEN 1
       ELSE 0
     END AS development,
     CASE
-      WHEN function IN ('Mature Site Staff','Non-Mature Site Staff')
+      WHEN KPI_Selection.function IN ('Mature Site Staff','Non-Mature Site Staff')
       THEN 1
       ELSE 0
     END AS program,
@@ -49,6 +51,10 @@ WITH gather_kpi_submissions AS (
     LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly 
     ON KPI_Target.select_role = KPI_Selection.role
     AND KPI_Target.select_kpi = KPI_Selection.KPI
+    LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
+    ON c.kpi = KPI_Selection.KPI
+    
+    
 )
 SELECT
   *
