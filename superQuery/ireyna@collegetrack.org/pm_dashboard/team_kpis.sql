@@ -11,7 +11,6 @@ WITH gather_kpi_submissions AS (
   SELECT
     KPI_Selection.*,
     Region,
-    Site,
     CASE
       WHEN KPI_Target.select_role IS NOT NULL THEN true
       ELSE false
@@ -46,6 +45,10 @@ WITH gather_kpi_submissions AS (
       THEN 1
       ELSE 0
     END AS program,
+    CASE
+      WHEN site_kpi IS NULL THEN "National"
+      ELSE site_kpi
+    END AS Site
   FROM
     `data-studio-260217.performance_mgt.role_kpi_selection` KPI_Selection#List of KPIs by Team/Role
     LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly 
@@ -53,9 +56,7 @@ WITH gather_kpi_submissions AS (
     AND KPI_Target.select_kpi = KPI_Selection.KPI
     LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
     ON c.kpi = KPI_Selection.KPI
-    AND c.role = KPI_Selection.role
-    
-    
+   
 )
 SELECT
   *
