@@ -12,7 +12,7 @@ FROM `data-warehouse-289815.google_sheets.staff_table`
 ),
 
 gather_kpis AS (
-SELECT *WITH
+SELECT *
 FROM `data-studio-260217.performance_mgt.role_kpi_selection`
 )
 
