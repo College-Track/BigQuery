@@ -1,4 +1,3 @@
-
 WITH gather_kpi_submissions AS (
   SELECT
     KPI_Selection.*,
@@ -49,6 +48,7 @@ WITH gather_kpi_submissions AS (
     AND KPI_Target.select_kpi = KPI_Selection.KPI
     LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
     ON c.kpi = KPI_Selection.KPI
+    AND c.role = KPI_Selection.role
    
 )
 SELECT
