@@ -12,7 +12,6 @@ WITH gather_kpi_submissions AS (
     KPI_Selection.*,
     Region,
     Site,
-    CONCAT(enter_the_target_numeric_ , '%') AS enter_the_target_numeric_,
     CASE
       WHEN KPI_Target.select_role IS NOT NULL THEN true
       ELSE false
@@ -23,14 +22,6 @@ WITH gather_kpi_submissions AS (
     --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
     END AS target_fy22,
-    /*
-    CASE
-      WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
-      WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
-    --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
-      ELSE NULL
-    END AS target_fy22,
-    */
     --CASE
     --  WHEN site_kpi = 0 THEN NULL
     --  ELSE site_kpi
