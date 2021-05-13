@@ -1,11 +1,18 @@
-WITH
+
+CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`
+OPTIONS
+    (
+    description="This table maps CT-wide Staff List to finalized KPIs based on Role for FY22"
+    )
+AS
+
 gather_staff_table AS (
 SELECT *
 FROM `data-warehouse-289815.google_sheets.staff_table`
 ),
 
 gather_kpis AS (
-SELECT *
+SELECT *WITH
 FROM `data-studio-260217.performance_mgt.role_kpi_selection`
 )
 
