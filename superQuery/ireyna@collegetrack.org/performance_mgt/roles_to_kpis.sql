@@ -8,7 +8,7 @@ AS
 
 WITH gather_staff_table AS (
 SELECT *
-FROM `data-warehouse-289815.google_sheets.staff_table`
+FROM `data-warehouse-289815.google_sheets.staff_list`
 ),
 
 gather_kpis AS (
