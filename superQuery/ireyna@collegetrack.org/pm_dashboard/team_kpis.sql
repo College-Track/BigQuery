@@ -1,3 +1,12 @@
+
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
+OPTIONS
+    (
+    description="KPIs submitted by Team for FY22. References List of KPIs by role and Targets from FormAssembly Team KPI form"
+    )
+AS
+
+
 WITH gather_kpi_submissions AS (
   SELECT
     KPI_Selection.*,
@@ -44,6 +53,7 @@ WITH gather_kpi_submissions AS (
     AND KPI_Target.select_kpi = KPI_Selection.KPI
     LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
     ON c.kpi = KPI_Selection.KPI
+    AND c.role = KPI_Selection.role
     
     
 )
