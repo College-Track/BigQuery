@@ -387,7 +387,7 @@ SELECT
         WHEN admission_status_c IN ('Accepted and Enrolled', 'Accepted and Deferred') THEN school_type
         WHEN admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         WHEN admission_status_c NOT IN ('Accepted and Enrolled', 'Accepted and Deferred') THEN 'Not Yet Enrolled'
-    END AS school_type_enrolled,    
+    END AS school_type_enrolled    
     
 FROM filtered_data AS filtered_data
 LEFT JOIN college_application_data  AS college_application_data
@@ -446,3 +446,5 @@ LEFT JOIN affordable_colleges AS affordable_colleges
         WHEN fit_type_accepted  = "Denied, Waitlisted, Conditional" THEN 6
         WHEN fit_type_accepted  = "Admission Status Not Yet Updated" THEN 7
         WHEN fit_type_accepted = 'Has Not Applied' THEN 8
+        END*/
+    
