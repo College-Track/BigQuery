@@ -38,8 +38,9 @@ WITH gather_kpi_submissions AS (
       ELSE 0
     END AS program,
     CASE
-      WHEN site_kpi IS NULL THEN "National"
-      ELSE site_kpi
+      WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
+      THEN NULL
+      else site_kpi
     END AS Site
   FROM
     `data-studio-260217.performance_mgt.role_kpi_selection` KPI_Selection#List of KPIs by Team/Role
