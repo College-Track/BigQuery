@@ -323,7 +323,7 @@ WHERE contact_id_applied_status IS NULL
 --no_enrollment AS(
 SELECT  
     contact_id AS contact_id_not_enrolled
-FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C
+FROM filtered_data AS C
 LEFT JOIN college_application_data
 ON contact_id = contact_id_enrolled
 WHERE contact_id_enrolled IS NULL
