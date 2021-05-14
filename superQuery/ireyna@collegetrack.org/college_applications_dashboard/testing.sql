@@ -354,4 +354,4 @@ LEFT JOIN admission_data AS adm
     ON app.college_app_id = adm.college_enrolled_app_id
 
 WHERE app.application_status_app_table = "Applied"
-AND app.college_app_id = college_accepted_app_id
+AND app.college_app_id = acc.college_accepted_app_id
