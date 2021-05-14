@@ -12,7 +12,11 @@ WITH gather_rubric_data AS
     financial_score_color,
     academic_score_color,
     wellness_score_color,
-    career_score_color
+    career_score_color,
+    Campus_Outlook_c,
+    Support_Network_c,
+    Housing_Food_c,
+    Personal_Well_Being_c
 
     FROM 
     `data-studio-260217.college_rubric.filtered_college_rubric`
