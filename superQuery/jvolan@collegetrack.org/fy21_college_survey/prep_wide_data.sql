@@ -1,5 +1,7 @@
- SELECT
-    * except (filter_contact_id, contact_id),
+WITH data_with_filters AS
+(
+    SELECT
+    * except (contact_id),
     contact_id AS wide_contact_id,
     CASE
         WHEN REGEXP_CONTAINS(which_of_the_factors_are_most_responsible_for_you_not_feelin,"Staff turnover / I don't know the staff anymore") THEN 1
@@ -63,3 +65,10 @@
     LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` F ON F.filter_contact_id = contact_id
     WHERE site_short IS NOT NULL
 
+)
+
+    SELECT
+    DF.*,
+    CR.wellness_score_color
+    FROM data_with_filters DF
+    LEFT JOIN `data-studio-260217.college_rubric.filtered_college_rubric` CR ON CR.Contact_Id = wide_contact_id
