@@ -74,7 +74,9 @@ SELECT
 EXCEPT(user_role_id),
   CASE
     WHEN DNR.new_role IS NULL THEN U.user_role_id
+    WHEN U.email = 'mmontague@collegetrack.org' THEN "00E46000000YaSLEA0"
     ELSE DNR.new_role
+    
   END AS user_role_id,
 FROM
   union_data U
