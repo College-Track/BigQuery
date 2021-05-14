@@ -66,18 +66,27 @@ determine_new_roles AS (
     gather_group_members GM
     LEFT JOIN union_data U ON U.id = GM.user_or_group_id
     LEFT JOIN `data-warehouse-289815.roles.group_role_id` GRI ON GRI.group_id = GM.group_id
-)
+),
 
-
+new_roles AS (
 SELECT
   U.*
 EXCEPT(user_role_id),
   CASE
+    
     WHEN DNR.new_role IS NULL THEN U.user_role_id
-    WHEN U.email = 'mmontague@collegetrack.org' THEN "00E46000000YaSLEA0"
+    
     ELSE DNR.new_role
     
   END AS user_role_id,
 FROM
   union_data U
   LEFT JOIN determine_new_roles DNR ON DNR.id = U.Id
+
+)
+
+SELECT * EXCEPT(user_role_id),
+CASE WHEN email = 'mmontague@collegetrack.org' THEN "00E46000000YaSLEA0"
+ELSE user_role_id
+END AS user_role_id
+FROM new_roles
