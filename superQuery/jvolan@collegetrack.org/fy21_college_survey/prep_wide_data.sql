@@ -1,3 +1,4 @@
+
 WITH gather_rubric_data AS
 (
     SELECT
@@ -9,11 +10,12 @@ WITH gather_rubric_data AS
 
     FROM 
     `data-studio-260217.college_rubric.filtered_college_rubric`
-)
+),
 
-    
+clean_add_filters AS
+(
     SELECT
-    * except (filter_contact_id, rubric_contact_id),
+    * except (filter_contact_id),
     CASE
         WHEN REGEXP_CONTAINS(which_of_the_factors_are_most_responsible_for_you_not_feelin,"Staff turnover / I don't know the staff anymore") THEN 1
         ELSE 0
@@ -74,5 +76,9 @@ WITH gather_rubric_data AS
 
     FROM `data-studio-260217.surveys.fy21_ps_survey`
     LEFT JOIN `data-studio-260217.surveys.fy21_ps_survey_filters_clean` ON filter_contact_id = contact_id
-    LEFT JOIN gather_rubric_data ON gather_rubric_data.rubric_contact_id = contact_id
     WHERE site_short IS NOT NULL
+)
+    SELECT
+    *
+    FROM clean_add_filters
+    LEFT JOIN gather_rubric_data ON gather_rubric_data.rubric_contact_id = contact_id
