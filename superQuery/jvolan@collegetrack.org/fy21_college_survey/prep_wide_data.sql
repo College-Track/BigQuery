@@ -1,4 +1,3 @@
-
 WITH gather_rubric_data AS
 (
     SELECT
@@ -10,6 +9,7 @@ WITH gather_rubric_data AS
 
     FROM 
     `data-studio-260217.college_rubric.filtered_college_rubric`
+    WHERE Current_or_Prev_At = 'Current AT'
 ),
 
 clean_add_filters AS
