@@ -66,7 +66,7 @@ WITH data_with_filters AS
     WHERE site_short IS NOT NULL
 )
     SELECT
-    data_with_filters.*,
-    wellness_score_color	
-    FROM data_with_filters
+    DF.*,
+    CR.wellness_score_color
+    FROM data_with_filters DF
     LEFT JOIN `data-studio-260217.college_rubric.filtered_college_rubric` CR ON CR.Contact_Id = wide_contact_id
