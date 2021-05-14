@@ -16,7 +16,18 @@ WITH gather_rubric_data AS
     Campus_Outlook_c,
     Support_Network_c,
     Housing_Food_c,
-    Personal_Well_Being_c
+    Time_Management_c,
+    Personal_Well_Being_c,
+    Social_Stability_c,
+    Family_Dependents_c,
+    
+    Resume_Cover_Letter_c,
+    Career_Counselor_25_credits_c,
+    Resources_2550_credits_c
+    Finding_Opportunities_75_c,
+    PostGraduate_Plans_5075_creds_c,
+    Post_Graduate_Opportunities_75_cred_c,
+    Alumni_Network_75_credits_c
 
     FROM 
     `data-studio-260217.college_rubric.filtered_college_rubric`
