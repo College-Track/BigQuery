@@ -323,7 +323,7 @@ SELECT
     contact_id_app_table,
     accnt.name AS school_name_enrolled,
     app_college_id AS college_enrolled_app_id,
-    college_name_on_app_for_case_statement
+    college_name_on_app_for_case_statement,
     
     FROM college_application_data AS app
     LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
@@ -345,10 +345,13 @@ SELECT
     acc.college_accepted_app_id,
     adm.contact_id_admissions,
     adm.school_name_enrolled,
-    adm.college_enrolled_app_id
-    
+    adm.college_enrolled_app_id,
+
 FROM college_application_data AS app
 LEFT JOIN acceptance_data AS acc 
     ON app.college_app_id = acc.college_accepted_app_id
 LEFT JOIN admission_data AS adm
     ON app.college_app_id = adm.college_enrolled_app_id
+
+WHERE application_status_c = "Applied"
+AND app.college_app_id = college_accepted_app_id
