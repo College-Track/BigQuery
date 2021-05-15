@@ -51,7 +51,7 @@ WITH gather_kpi_submissions AS (
       ELSE site_kpi
     END AS Site
   FROM
-    `data-studio-260217.performance_mgt.role_kpi_selection` KPI_Selection#List of KPIs by Team/Role
+    `data-studio-260217.performance_mgt.role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
     LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly 
     ON KPI_Target.select_role = KPI_Selection.role
     AND KPI_Target.select_kpi = KPI_Selection.KPI
