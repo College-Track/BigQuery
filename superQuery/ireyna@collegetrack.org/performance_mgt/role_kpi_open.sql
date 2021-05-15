@@ -31,6 +31,8 @@ LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
     
 WHERE kpi NOT IN 
-    (SELECT kpi_all FROM gather_kpis_by_team AS c)
+    (SELECT kpi_all FROM gather_kpis_by_team AS c
+    WHERE function = function_all
+    AND kpi <> kpi_all)
     AND function = function_all
     AND kpi <> kpi_all
