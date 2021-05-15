@@ -33,6 +33,7 @@ SELECT
     function_all,
     CASE 
         WHEN role <> role_all
+        AND kpi = kpi_all
         AND function = function_all
         THEN kpi
         ELSE "already a kpi"
