@@ -85,8 +85,5 @@ FROM
 
 )
 
-SELECT * EXCEPT(user_role_id),
-CASE WHEN email = 'mmontague@collegetrack.org' THEN "00E46000000YaSLEA0"
-ELSE user_role_id
-END AS user_role_id
+SELECT *
 FROM new_roles
