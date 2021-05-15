@@ -11,6 +11,8 @@ WITH
 
 gather_kpis_by_team AS (
 SELECT
+    first_name,
+    last_name,
     function AS function_all,
     role AS role_all,
     kpi AS kpi_all
@@ -24,6 +26,8 @@ FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`
 --Exception: CCAs- they will be able to enter a caseload size and cutomized target for their role during the Inidivudal KPI Selection phase
 --team_kpis_not_assigned_to_role AS (
 SELECT
+    b.first_name,
+    b.last_name,
     kpi_all,
     role_all,
     function_all,
@@ -39,6 +43,8 @@ LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
 
 GROUP BY
+    b.first_name,
+    b.last_name,
     kpi,
     role,
     function,
