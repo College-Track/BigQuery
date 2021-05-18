@@ -36,10 +36,10 @@ SELECT
     function,
     CASE 
         WHEN role <> role_all
-        AND kpi = kpi_all
+        --AND kpi = kpi_all
         AND function = function_all
-        THEN kpi
-        ELSE "already a kpi"
+        THEN "already a kpi"
+        ELSE kpi
     END AS open_kpis
 
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
