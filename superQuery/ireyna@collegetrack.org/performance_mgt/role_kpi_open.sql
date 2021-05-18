@@ -36,8 +36,8 @@ SELECT
     function,
     CASE 
         WHEN role <> role_all
-        AND kpi <> kpi_all
         AND function = function_all
+        AND kpi = kpi_all
         THEN "already a kpi"
         ELSE kpi
     END AS open_kpis
