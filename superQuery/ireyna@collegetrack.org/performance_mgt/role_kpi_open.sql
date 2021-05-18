@@ -59,12 +59,14 @@ GROUP BY
 
 SELECT 
     role,
+    open_kpis,
     kpi,
     function,
     kpi_all
 FROM team_kpis_not_assigned_to_role
 GROUP BY
     role,
+    open_kpis,
     kpi,
     function,
     kpi_all
