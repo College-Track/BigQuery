@@ -63,6 +63,11 @@ SELECT
     function,
     kpi_all
 FROM team_kpis_not_assigned_to_role
+GROUP BY
+    role,
+    kpi,
+    function,
+    kpi_all
 /*    
 WHERE kpi NOT IN 
     (SELECT kpi_all FROM gather_kpis_by_team AS c
