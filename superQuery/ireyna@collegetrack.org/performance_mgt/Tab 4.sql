@@ -25,7 +25,6 @@ GROUP BY
     function,
     role,
     kpi
-    
 ),
 
 
@@ -56,7 +55,7 @@ GROUP BY
     kpi_all
 )
 SELECT 
-    team_kpis.function_all,
+    function_all,
     role_kpi,
     CASE 
         WHEN role_kpi <> team_kpi
