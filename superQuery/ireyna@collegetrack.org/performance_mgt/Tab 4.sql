@@ -51,7 +51,7 @@ SELECT
 
 FROM gather_all_kpis AS gather_all_kpis
 LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS role
-ON gather_all_kpis.function_all = role.function_all_role
+ON gather_all_kpis.function_all = role.function_all
 
 GROUP BY 
     role_all,
