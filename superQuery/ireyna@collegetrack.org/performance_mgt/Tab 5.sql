@@ -41,21 +41,23 @@ FROM gather_all_kpis
 GROUP BY 
     function_all,
     kpi_all
-)
+),
 
---role_kpis AS (
+role_kpis AS (
 SELECT 
-    role_all AS role_select,
-    role ,
     kpi_all AS role_kpi_selected,
-    function_all AS function_all_role
 
-FROM gather_all_kpis AS gather_all_kpis
-LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS role
-ON gather_all_kpis.function_all = role.function
+FROM gather_all_kpis 
 
 GROUP BY 
-    role,
-    role_all,
-    kpi_all,
-    function_all
+    kpi_all
+    
+)
+SELECT 
+    function_all,
+    kpi_all
+    role_kpi_selected
+    
+FROM team_kpis
+LEFT JOIN role_kpis
+ON kpi_all = kpi_role_selected
