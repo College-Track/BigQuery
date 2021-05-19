@@ -39,7 +39,7 @@ FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
 
-WHERE kpi_all NOT IN (SELECT gather2.kpi_all FROM gather_kpis_by_team AS gather2)
+WHERE kpi NOT IN (SELECT gather2.kpi_all FROM gather_kpis_by_team AS gather2)
         AND role <> role_all
         AND function = function_all
         AND kpi = kpi_all
