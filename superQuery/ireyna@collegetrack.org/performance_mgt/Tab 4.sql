@@ -1,5 +1,3 @@
-*/
-
 WITH 
 
 gather_kpis_by_team AS (
