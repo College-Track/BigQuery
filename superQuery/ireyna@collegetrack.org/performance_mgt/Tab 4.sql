@@ -36,9 +36,9 @@ GROUP BY
 SELECT
     --b.first_name,
     --b.last_name,
-    kpi_all,
-    role_all,
-    function_all,
+    --kpi_all,
+    --role_all,
+    --function_all,
     kpi AS open_kpi,
     role,
     function
@@ -49,3 +49,10 @@ LEFT JOIN gather_kpis_by_team AS b
 
 WHERE kpi NOT IN (SELECT gather2.kpi_all FROM gather_kpis_by_team AS gather2 WHERE b.role_all <> gather2.role_all
         AND b.function_all = gather2.function_all)
+        
+GROUP BY
+    --b.first_name,
+    --b.last_name,
+    kpi,
+    role,
+    function
