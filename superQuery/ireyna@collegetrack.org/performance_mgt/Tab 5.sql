@@ -34,13 +34,15 @@ GROUP BY
 team_kpis AS (
 SELECT
     function_all,
+    role_all,
     kpi_all AS team_kpi
     
 FROM gather_all_kpis
 
 GROUP BY 
     function_all,
-    kpi_all
+    kpi_all,
+    role_all
 ),
 
 role_kpis AS (
@@ -63,7 +65,7 @@ SELECT
     role_kpi_selected,
     CASE 
         WHEN roles_team = function_all
-        AND role_kpi_selected <> team_kpi
+        AND role <> role_all
         THEN 'should be open kpi'
     end as open_q
     
