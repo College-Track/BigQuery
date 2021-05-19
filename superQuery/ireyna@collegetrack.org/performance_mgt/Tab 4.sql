@@ -60,9 +60,16 @@ GROUP BY
 --prep AS (
 SELECT 
     function_all,
+    role_all,
     role_kpi_selected,
     team_kpi
     
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
     ON team_kpi_table = function_all
+    
+GROUP BY
+    function_all,
+    role_all,
+    role_kpi_selected,
+    team_kpi
