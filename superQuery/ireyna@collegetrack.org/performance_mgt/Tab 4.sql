@@ -53,10 +53,13 @@ FROM gather_all_kpis
 GROUP BY 
     role_all,
     kpi_all
-)
+),
+
+prep AS (
 SELECT 
     function_all,
     role_kpi,
+    role_all,
     CASE 
         WHEN role_kpi <> team_kpi
         THEN "open kpi"
@@ -66,6 +69,22 @@ SELECT
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
     ON team_kpi = role_kpi
+),
+
+SELECT
+    function_all,
+    role_all
+    role_kpi,
+    test
+
+FROM prep
+GROUP BY 
+
+function_all,
+    role_all
+    role_kpi,
+    test
+    
 
 /*WHERE 
     a.role <> b.role_all
