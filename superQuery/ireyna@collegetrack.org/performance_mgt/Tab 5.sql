@@ -80,3 +80,6 @@ SELECT
 
 from select_open_kpi
 
+GROUP BY 
+    role, open_q, role_kpi_selected
+
