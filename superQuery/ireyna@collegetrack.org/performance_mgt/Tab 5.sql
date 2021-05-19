@@ -46,17 +46,20 @@ GROUP BY
 role_kpis AS (
 SELECT 
     kpi_all AS role_kpi_selected,
+    role_all AS role,
     function_all AS roles_team
 
 FROM gather_all_kpis 
 
 GROUP BY 
     kpi_all,
-    function_all
+    function_all,
+    role
     
 )
 SELECT 
     function_all,
+    role,
     team_kpi,
     role_kpi_selected,
     CASE 
