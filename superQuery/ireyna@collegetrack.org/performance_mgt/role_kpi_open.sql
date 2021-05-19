@@ -68,3 +68,6 @@ SELECT
     kpi_all
 FROM gather_kpis_by_team AS gather1
 WHERE kpi_all NOT IN (SELECT gather2.kpi_all FROM gather_kpis_by_team AS gather2)
+        AND role <> role_all
+        AND function = function_all
+        AND kpi = kpi_all
