@@ -67,7 +67,8 @@ SELECT
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
     ON team_kpi_table = function_all
-    
+
+WHERE role_kpi_selected not in (select k2.team_kpi from team_kpis AS k2 where k2.function_all=team_kpi_table )
 GROUP BY
     function_all,
     role_all,
