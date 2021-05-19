@@ -74,7 +74,7 @@ FROM team_kpis AS a
 FULL JOIN role_kpis 
 ON function_all = roles_team
 )
-SELECT team_kpi
+SELECT role,team_kpi
 FROM select_open_kpi AS a
 WHERE team_kpi NOT IN (select b.team_kpi from select_open_kpi AS b where a.role = b.role)
 /*)
