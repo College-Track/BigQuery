@@ -38,10 +38,9 @@ SELECT
     role,
     function,
       CASE 
-        WHEN role <> role_all
-        AND function = function_all
-        AND kpi = kpi_all
-        THEN "already a kpi"
+        WHEN function = function_all
+        AND kpi <> kpi_all
+        THEN "open_kpi"
         ELSE kpi
     END AS open_kpis
     
@@ -66,6 +65,7 @@ GROUP BY
 SELECT 
     role,
     team_kpi_not_assigned_to_role,
+    open_kpis,
     function
   
 FROM gather_kpis_by_team AS a 
@@ -76,6 +76,7 @@ WHERE role <> role_all
 GROUP BY
     role,
     team_kpi_not_assigned_to_role,
+    open_kpis,
     function
   
 
