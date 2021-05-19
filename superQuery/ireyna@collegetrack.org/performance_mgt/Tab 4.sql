@@ -81,7 +81,7 @@ FROM prep
 GROUP BY 
 
 function_all,
-    role_all
+    role_all,
     role_kpi,
     test
     
