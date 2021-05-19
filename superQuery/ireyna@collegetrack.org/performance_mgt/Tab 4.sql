@@ -26,13 +26,13 @@ GROUP BY
     role,
     kpi
     
-)
+),
 
 
 --KPIs on someone's team, but not mapped to their specific role KPIs.
 --They can select the KPIs on their team that is not one of their KPIs based on their role (MUST be a KPI on their team)
 --Exception: CCAs- they will be able to enter a caseload size and cutomized target for their role during the Inidivudal KPI Selection phase
---team_kpis_not_assigned_to_role AS (
+team_kpis_not_assigned_to_role AS (
 SELECT
     kpi AS team_kpi_not_assigned_to_role,
     role,
@@ -43,3 +43,33 @@ LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
 WHERE 
     a.role <> b.role_all
+    
+GROUP BY
+    kpi,
+    role,
+    function
+  
+)
+
+SELECT 
+    role,
+    team_kpi_not_assigned_to_role,
+    function
+  
+FROM gather_kpis_by_team AS a 
+LEFT JOIN team_kpis_not_assigned_to_role AS b
+ON function_all = function
+
+GROUP BY
+    role,
+    team_kpi_not_assigned_to_role,
+    function
+  
+
+/*
+(SELECT gather2.kpi_all 
+    FROM gather_kpis_by_team AS gather2 
+    WHERE a.role <> gather2.role_all
+    AND a.function = gather2.function_all
+    AND a.kpi <> gather2.kpi_all) AS open_kpi
+    */
