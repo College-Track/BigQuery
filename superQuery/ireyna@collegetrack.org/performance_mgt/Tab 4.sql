@@ -60,8 +60,9 @@ SELECT
     role_kpi,
     CASE 
         WHEN role_kpi <> team_kpi
-        THEN 'open kpi'
+        THEN "open kpi"
     ELSE role_kpi
+    END AS test
     
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
