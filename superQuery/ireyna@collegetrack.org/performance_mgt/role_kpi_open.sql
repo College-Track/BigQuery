@@ -65,6 +65,6 @@ GROUP BY
 SELECT 
     function_all,
     role_all,
-    kpis_all
+    kpi_all
 FROM gather_kpis_by_team AS gather1
 WHERE kpi_all NOT IN (SELECT gather2.kpi_all FROM gather_kpis_by_team AS gather2)
