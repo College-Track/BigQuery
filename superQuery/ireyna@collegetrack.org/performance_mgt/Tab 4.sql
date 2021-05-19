@@ -69,7 +69,7 @@ SELECT
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
     ON team_kpi = role_kpi
-),
+)
 
 SELECT
     function_all,
