@@ -47,7 +47,7 @@ role_kpis AS (
 SELECT 
     role_all,
     kpi_all AS role_kpi_selected,
-    function_all AS team_kpi_table
+    function_all AS function_all_role
 
 FROM gather_all_kpis
 
@@ -60,17 +60,17 @@ GROUP BY
 --prep AS (
 SELECT 
     function_all,
-    role_all,
-    role_kpi_selected,
+    --role_all,
+    --role_kpi_selected,
     team_kpi
     
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
-    ON team_kpi_table = function_all
+    ON function_all_role = function_all
 
 WHERE team_kpi not in (select k2.role_kpi_selected from role_kpis AS k2 where function_all=k2.team_kpi_table )
 GROUP BY
     function_all,
-    role_all,
-    role_kpi_selected,
+    --role_all,
+    --role_kpi_selected,
     team_kpi
