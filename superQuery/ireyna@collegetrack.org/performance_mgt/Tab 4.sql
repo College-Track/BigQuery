@@ -41,36 +41,19 @@ FROM gather_all_kpis
 GROUP BY 
     function_all,
     kpi_all
-),
+)
 
-role_kpis AS (
+--role_kpis AS (
 SELECT 
     role_all,
     kpi_all AS role_kpi_selected,
     function_all AS function_all_role
 
-FROM gather_all_kpis
+FROM gather_all_kpis AS gather_all_kpis
+LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS role
+ON gather_all_kpis.function_all = role.function_all_role
 
 GROUP BY 
     role_all,
     kpi_all,
-    function_all 
-)
-
---prep AS (
-SELECT 
-    function_all,
-    --role_all,
-    --role_kpi_selected,
-    team_kpi
-    
-FROM team_kpis AS team_kpis
-LEFT JOIN role_kpis AS role_kpis
-    ON function_all_role = function_all
-
---WHERE team_kpi not in (select k2.role_kpi_selected from role_kpis AS k2 where function_all=k2.team_kpi_table )
-GROUP BY
-    function_all,
-    --role_all,
-    --role_kpi_selected,
-    team_kpi
+    function_all
