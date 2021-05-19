@@ -43,8 +43,3 @@ LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
 WHERE 
     a.role <> b.role_all
-    
-GROUP BY
-    kpi,
-    role,
-    function
