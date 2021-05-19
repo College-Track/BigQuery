@@ -48,8 +48,10 @@ SELECT
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
+   
 WHERE 
     a.role <> b.role_all
+    AND a.kpi <> b.kpi_all
     
 GROUP BY
     kpi,
