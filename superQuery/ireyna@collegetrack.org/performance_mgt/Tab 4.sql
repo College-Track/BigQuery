@@ -36,7 +36,14 @@ team_kpis_not_assigned_to_role AS (
 SELECT
     kpi AS team_kpi_not_assigned_to_role,
     role,
-    function
+    function,
+      CASE 
+        WHEN role <> role_all
+        AND function = function_all
+        AND kpi = kpi_all
+        THEN "already a kpi"
+        ELSE kpi
+    END AS open_kpis
     
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 LEFT JOIN gather_kpis_by_team AS b
@@ -47,7 +54,10 @@ WHERE
 GROUP BY
     kpi,
     role,
-    function
+    function,
+    role_all,
+    function_all,
+    kpi_all
   
 )
 
