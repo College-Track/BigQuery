@@ -1,0 +1,10 @@
+WITH gather_missed_workshops AS (
+SELECT Contact_Id, full_name_c, workshop_display_name_c
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CLASS ON CLASS.Student_c = Contact_Id AND CLASS.Academic_Semester_c = AT_Id
+WHERE previous_as_c = true AND Outcome_c = 'Absent' AND EXTRACT(MONTH FROM date_c) = 12 
+
+)
+
+SELECT DISTINCT *
+FROM gather_missed_workshops
