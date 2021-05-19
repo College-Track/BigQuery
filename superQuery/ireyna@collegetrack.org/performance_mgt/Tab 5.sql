@@ -59,6 +59,7 @@ GROUP BY
 ),
 select_open_kpi AS (
 SELECT 
+    role,
     role_kpi_selected,
     CASE 
         WHEN roles_team = function_all
@@ -73,6 +74,7 @@ ON function_all = roles_team
 WHERE team_kpi NOT IN (role_kpi_selected)
 )
 SELECT 
+    role,
     open_q,
     role_kpi_selected
 
