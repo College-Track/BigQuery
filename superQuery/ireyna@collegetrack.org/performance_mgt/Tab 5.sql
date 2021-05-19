@@ -67,7 +67,8 @@ SELECT
         WHEN roles_team = function_all
         AND role <> role_all
         THEN 'should be open kpi'
-    end as open_q
+    end as open_q,
+    team_kpi
     
 FROM team_kpis
 FULL JOIN role_kpis AS a
