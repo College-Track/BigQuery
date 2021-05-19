@@ -55,7 +55,7 @@ GROUP BY
 )
 SELECT 
     function_all,
-    kpi_all
+    team_kpi,
     role_kpi_selected
     
 FROM team_kpis
