@@ -70,7 +70,7 @@ SELECT
     end as open_q
     
 FROM team_kpis
-LEFT JOIN role_kpis
+FULL JOIN role_kpis
 ON function_all = roles_team
 
 WHERE team_kpi NOT IN (role_kpi_selected)
