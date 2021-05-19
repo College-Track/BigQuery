@@ -56,11 +56,9 @@ GROUP BY
     function_all,
     role
     
-)
+),
+select_open_kpi AS (
 SELECT 
-    function_all,
-    role,
-    team_kpi,
     role_kpi_selected,
     CASE 
         WHEN roles_team = function_all
@@ -73,4 +71,10 @@ LEFT JOIN role_kpis
 ON function_all = roles_team
 
 WHERE team_kpi NOT IN (role_kpi_selected)
+)
+SELECT 
+    open_q,
+    role_kpi_selected
+
+from select_open_kpi
 
