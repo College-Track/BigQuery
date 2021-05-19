@@ -1,10 +1,3 @@
-/*
-CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.fy22_roles_kpis_open`
-OPTIONS
-    (
-    description="This table lists KPIs available for staff to select based on role during Individual KPI selection phase. If a KPI is on the staff member's team, they can select pre-determined KPIs on their team that was not mapped to their role. "
-    )
-AS
 */
 
 WITH 
@@ -50,12 +43,3 @@ SELECT
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
-
-WHERE kpi NOT IN 
-        
-GROUP BY
-    --b.first_name,
-    --b.last_name,
-    kpi,
-    role,
-    function
