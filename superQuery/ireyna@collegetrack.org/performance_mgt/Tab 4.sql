@@ -67,3 +67,24 @@ SELECT
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
     ON team_kpi = role_kpi
+
+/*WHERE 
+    a.role <> b.role_all
+    AND kpi NOT IN (SELECT gather2.kpi_all FROM gather_all_kpis AS gather2 WHERE gather2.kpi_all <> kpi )
+    
+GROUP BY
+    kpi,
+    role,
+    function,
+    role_all,
+    function_all,
+    kpi_all
+  
+
+/*
+(SELECT gather2.kpi_all 
+    FROM gather_kpis_by_team AS gather2 
+    WHERE a.role <> gather2.role_all
+    AND a.function = gather2.function_all
+    AND a.kpi <> gather2.kpi_all) AS open_kpi
+    */
