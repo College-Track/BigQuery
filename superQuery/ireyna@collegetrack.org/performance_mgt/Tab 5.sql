@@ -60,4 +60,4 @@ SELECT
     
 FROM team_kpis
 LEFT JOIN role_kpis
-ON team_kpi = kpi_role_selected
+ON team_kpi = role_kpi_selected
