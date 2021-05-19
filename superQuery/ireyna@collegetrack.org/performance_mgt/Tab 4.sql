@@ -60,6 +60,7 @@ FROM gather_kpis_by_team AS a
 LEFT JOIN team_kpis_not_assigned_to_role AS b
 ON function_all = function
 
+WHERE role <> role_all
 GROUP BY
     role,
     team_kpi_not_assigned_to_role,
