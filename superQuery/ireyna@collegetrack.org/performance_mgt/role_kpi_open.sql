@@ -1,12 +1,3 @@
-/*
-CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.fy22_roles_kpis_open`
-OPTIONS
-    (
-    description="This table lists KPIs available for staff to select based on role during Individual KPI selection phase. If a KPI is on the staff member's team, they can select pre-determined KPIs on their team that was not mapped to their role. "
-    )
-AS
-*/
-
 WITH 
 
 gather_kpis_by_team AS (
@@ -34,14 +25,14 @@ SELECT
     kpi,
     role,
     function,
-    CASE 
+    /*CASE 
         WHEN role <> role_all
         AND function = function_all
         AND kpi = kpi_all
         THEN "already a kpi"
         ELSE kpi
     END AS open_kpis
-
+    */
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 LEFT JOIN gather_kpis_by_team AS b
     ON a.function = b.function_all
@@ -61,24 +52,10 @@ GROUP BY
     function_all
 )
 
+--roles_kpis_not_selected AS (
 SELECT 
-    role,
-    open_kpis,
-    kpi,
-    function,
-    kpi_all
-FROM team_kpis_not_assigned_to_role
-GROUP BY
-    role,
-    open_kpis,
-    kpi,
-    function,
-    kpi_all
-/*    
-WHERE kpi NOT IN 
-    (SELECT kpi_all FROM gather_kpis_by_team AS c
-    WHERE function = function_all
-    AND role <> role_all)
-    AND function = function_all
-    AND role <> role_all
-*/
+    function_all,
+    role_all,
+    kpis_all
+FROM gather_kpis_by_team AS gather1
+WHERE kpis_all NOT IN (SELECT gather2.kpis_all FROM gather_kpis_by_team AS gather2)
