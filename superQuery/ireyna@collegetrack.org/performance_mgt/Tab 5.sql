@@ -58,8 +58,8 @@ GROUP BY
     function_all,
     role
     
-),
-select_open_kpi AS (
+)
+--select_open_kpi AS (
 SELECT 
     role,
     role_kpi_selected,
@@ -74,7 +74,7 @@ FULL JOIN role_kpis AS a
 ON function_all = roles_team
 
 WHERE team_kpi NOT IN (select b.role_kpi_selected from role_kpis AS b where a.roles_team = b.roles_team)
-)
+/*)
 SELECT 
     role,
     open_q,
@@ -84,4 +84,4 @@ from select_open_kpi
 
 GROUP BY 
     role, open_q, role_kpi_selected
-
+*/
