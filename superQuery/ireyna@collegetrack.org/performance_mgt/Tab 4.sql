@@ -49,7 +49,7 @@ LEFT JOIN gather_kpis_by_team AS b
 WHERE 
     a.role <> b.role_all
     AND a.function = b.function_all
-    AND a.kpi <> b.kpi_all 
+    --AND a.kpi <> b.kpi_all 
     
 GROUP BY
     --b.first_name,
