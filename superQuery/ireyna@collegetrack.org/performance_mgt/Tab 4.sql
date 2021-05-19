@@ -46,63 +46,23 @@ GROUP BY
 role_kpis AS (
 SELECT 
     role_all,
-    kpi_all AS role_kpi
+    kpi_all AS role_kpi_selected,
+    function_all AS team_kpi_table
 
 FROM gather_all_kpis
 
 GROUP BY 
     role_all,
-    kpi_all
-),
+    kpi_all,
+    function_all 
+)
 
-prep AS (
+--prep AS (
 SELECT 
     function_all,
-    role_kpi,
-    role_all,
-    CASE 
-        WHEN role_kpi <> team_kpi
-        THEN "open kpi"
-    ELSE role_kpi
-    END AS test
+    role_kpi_selected,
+    team_kpi
     
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
-    ON team_kpi = role_kpi
-)
-
-SELECT
-    function_all,
-    role_all
-    role_kpi,
-    test
-
-FROM prep
-GROUP BY 
-
-function_all,
-    role_all,
-    role_kpi,
-    test
-    
-
-/*WHERE 
-    a.role <> b.role_all
-    AND kpi NOT IN (SELECT gather2.kpi_all FROM gather_all_kpis AS gather2 WHERE gather2.kpi_all <> kpi )
-    
-GROUP BY
-    kpi,
-    role,
-    function,
-    role_all,
-    function_all,
-    kpi_all
-  
-
-/*
-(SELECT gather2.kpi_all 
-    FROM gather_kpis_by_team AS gather2 
-    WHERE a.role <> gather2.role_all
-    AND a.function = gather2.function_all
-    AND a.kpi <> gather2.kpi_all) AS open_kpi
-    */
+    ON team_kpi_table = function_all
