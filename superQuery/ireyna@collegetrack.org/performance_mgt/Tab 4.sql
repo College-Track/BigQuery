@@ -70,13 +70,7 @@ SELECT
         THEN 1
         ELSE 0
         END AS pullin,
-    CASE
-        WHEN function_all =function_team_kpi
-        AND role <> role_all 
-        AND role_kpi_selected <> team_kpi
-        THEN team_kpi
-        ELSE first_name
-        END AS kpi_pull
+    
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
     ON role_kpi_selected = team_kpi
