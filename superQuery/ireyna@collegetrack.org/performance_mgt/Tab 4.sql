@@ -25,13 +25,13 @@ GROUP BY
     function,
     role,
     kpi
-),
+)
 
 
 --KPIs on someone's team, but not mapped to their specific role KPIs.
 --They can select the KPIs on their team that is not one of their KPIs based on their role (MUST be a KPI on their team)
 --Exception: CCAs- they will be able to enter a caseload size and cutomized target for their role during the Inidivudal KPI Selection phase
-team_kpis AS (
+--team_kpis AS (
 SELECT
     function_all AS function_team_kpi,
     kpi_all AS team_kpi
@@ -40,66 +40,3 @@ FROM gather_all_kpis
 GROUP BY 
     function_all,
     kpi_all
-),
-
-role_kpis AS (
-SELECT 
-    role,
-    kpi AS role_kpi_selected
-
-FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` 
-GROUP BY 
-    role,
-    kpi
-)
-SELECT
-role_all,
-role_kpi_selected,
-kpi_all
-function_team_kpis
-
-FROM gather_all_kpis 
-FULL JOIN role_kpis 
-ON role_all = role
-LEFT JOIN team_kpis  
-ON function_all = function_team_kpi
-
-WHERE role_all IS NOT NULL
-
-GROUP BY
-role_all,
-role_kpi_selected,
-kpi_all,
-function_team_kpis
-
-/*
-SELECT 
-    function_all,
-    role_all,
-    role_kpi_selected,
-    team_kpi,
-    role,
-    role_all,
-    CASE 
-        WHEN function_all =function_team_kpi --role_kpi_selected = team_kpi
-        AND role <> role_all
-        THEN 1
-        ELSE 0
-        END AS pullin,
-    
-FROM team_kpis AS team_kpis
-LEFT JOIN role_kpis AS role_kpis
-    ON role_kpi_selected = team_kpi
-LEFT JOIN gather_all_kpis as gather_all
-    ON gather_all.function_all = team_kpis.function_team_kpi
-GROUP BY
-    function_all,
-    function_team_kpi,
-    first_name,
-    gather_all.role_all,
-    role_kpi_selected,
-    team_kpi,
-    role_kpi_selected ,
-    role
-
-   */
