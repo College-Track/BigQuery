@@ -51,7 +51,7 @@ GROUP BY
     kpi
 )
 SELECT
-role,
+distinct role,
 function_all,
 kpi_all,
 role_kpi_selected,
@@ -63,6 +63,7 @@ FROM role_kpis AS a
 LEFT JOIN gather_all_kpis AS b
 ON b.role_all = a.role
 where function_all = (select function_team from team_kpis where function_team=function_all group by function_team)
+
 
 /*
 FROM team_kpis as b
