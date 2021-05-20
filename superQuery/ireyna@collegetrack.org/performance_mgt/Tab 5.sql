@@ -26,7 +26,7 @@ FROM gather_all_kpis as a
 WHERE team_kpi NOT IN (
     SELECT b.role
     FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as b
-    WHERE a.function = b.function
+    WHERE a.function = b.function and a.role <> b.role
     GROUP BY b.role)
 GROUP BY 
     --function,
