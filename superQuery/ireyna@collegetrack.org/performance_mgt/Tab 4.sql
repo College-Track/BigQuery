@@ -1,13 +1,75 @@
+/*
+CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.fy22_roles_kpis_open`
+OPTIONS
+    (
+    description="This table lists KPIs available for staff to select based on role during Individual KPI selection phase. If a KPI is on the staff member's team, they can select pre-determined KPIs on their team that was not mapped to their role. "
+    )
+AS
+*/
 
-WITH a as (SELECT * FROM UNNEST(ARRAY<STRUCT<team_kpi string, fuction_team STRING),
-     b as (SELECT * FROM UNNEST(ARRAY<STRUCT<role_kpi-selected string, role STRING, function STRING) 
+WITH 
+
+gather_all_kpis AS (
 SELECT
-  a.*
-FROM
-  a
-LEFT JOIN
-  b
-ON
-  (a.function_team = b.function)
-WHERE
- team_kpi <> role_kpi-selected
+    first_name,
+    last_name,
+    function AS function_all,
+    role AS role_all,
+    kpi AS kpi_all
+    
+FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`
+
+GROUP BY
+    first_name,
+    last_name,
+    function,
+    role,
+    kpi
+),
+
+team_kpis AS (
+SELECT
+    function AS function_team,
+    kpi AS team_kpi
+FROM  `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` 
+GROUP BY 
+    function,
+    kpi
+),
+
+role_kpis AS (
+SELECT 
+    role,
+    kpi AS role_kpi_selected,
+    function
+FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` 
+GROUP BY 
+    role,
+    kpi,
+    function
+)
+
+SELECT a.*, b.*
+FROM team_kpis AS a
+FULL outer JOIN role_kpis AS b
+ON function_team = b.function
+WHERE role_kpi_selected <> team_kpi
+GROUP BY 
+    function_team,
+    team_kpi,
+    role_kpi_selected,
+    function,
+    role
+
+
+
+
+
+/*SELECT 
+ *
+from  (SELECT team_kpi , role
+                        FROM joined_kpis 
+                        where function_team = function 
+                        and role_kpi_selected <> team_kpi
+                        group by team_kpi,role) AS kpi_not_selected
+*/
