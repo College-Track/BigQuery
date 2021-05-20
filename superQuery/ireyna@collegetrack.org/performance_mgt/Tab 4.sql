@@ -47,7 +47,8 @@ GROUP BY
     role,
     kpi,
     function
-)
+),
+joined_kpis AS (
 SELECT a.*, b.*
 FROM team_kpis AS a
 FULL JOIN role_kpis AS b
@@ -59,3 +60,7 @@ GROUP BY
     role_kpi_selected,
     function,
     role
+)
+SELECT role_kpi_selected, role
+from joined_kpis
+WHERE role_kpi_selected NOT IN (select team_kpi FROM joined_kpis where function_team = function)
