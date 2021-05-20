@@ -33,33 +33,35 @@ GROUP BY
 --Exception: CCAs- they will be able to enter a caseload size and cutomized target for their role during the Inidivudal KPI Selection phase
 team_kpis AS (
 SELECT
-    --function_all AS function_team_kpi,
+    function_all AS function_team_kpi,
     kpi_all AS team_kpi
     
 FROM gather_all_kpis
 GROUP BY 
-   -- function_all,
+   function_all,
     kpi_all
 ),
 
 role_kpis AS (
 SELECT 
     role,
-    kpi AS role_kpi_selected
+    kpi AS role_kpi_selected,
+    function,
 
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` 
 GROUP BY 
     role,
-    kpi
+    kpi,
+    function
 )
 SELECT
 role,
 team_kpi
 
-from role_kpis
-full join team_kpis
+from role_kpis as a
+full join team_kpis as b
 on team_kpi = role_kpi_selected
-where role_kpi_selected not in (select team_kpi FROM team_kpis)
+where role_kpi_selected not in (select team_kpi FROM team_kpis where function = function_team_kpi)
 
 /*
 SELECT 
