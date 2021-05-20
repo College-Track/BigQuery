@@ -34,11 +34,12 @@ GROUP BY
 team_kpis AS (
 SELECT
     function_all AS function_team_kpi,
-    kpi_all AS team_kpi
+    kpi_all AS team_kpi,
+    role_all
 FROM gather_all_kpis
 GROUP BY 
    function_all,
-    kpi_all
+    kpi_all, role_all
 ),
 
 role_kpis AS (
@@ -52,14 +53,17 @@ GROUP BY
 )
 SELECT
 role,
+role_all
 team_kpi
 
-from role_kpis as a
-full join team_kpis as b
-on team_kpi = role_kpi_selected
-where role_kpi_selected not in (select kpi_all FROM gather_all_kpis 
-where function_team_kpi = function_all
-AND team_kpi <> role_kpi_selected)
+FROM role_kpis as a
+FULL JOIN team_kpis as b
+ON team_kpi = role_kpi_selected
+WHERE role_kpi_selected not in 
+    (select kpi_all FROM gather_all_kpis 
+    where function_team_kpi = function_all
+    AND team_kpi <> role_kpi_selected)
+AND function_team_kpi IS NOT NULL
 
 /*
 SELECT 
