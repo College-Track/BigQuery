@@ -18,4 +18,4 @@ WHERE GAFR.role != GAK.role
 
 SELECT *
 FROM create_list_of_unseleted_kpis
-ORDER BY function, role
+ORDER BY function, role DESC
