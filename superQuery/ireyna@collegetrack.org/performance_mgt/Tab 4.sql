@@ -53,7 +53,7 @@ GROUP BY
 SELECT
 distinct role,
 function_all,
-kpi_all,
+(select team_kpi from team_kpis where function_team = function_all AND role <> role_all)
 role_kpi_selected,
 CASE
     when role_kpi_selected <> kpi_all  THEN 'not a match'
