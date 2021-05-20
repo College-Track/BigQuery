@@ -54,6 +54,7 @@ SELECT
 role,
 function_all,
 kpi_all,
+role_kpi_selected,
 CASE
     when role_kpi_selected <> kpi_all  THEN 'not a match'
     else 'same kpi'
