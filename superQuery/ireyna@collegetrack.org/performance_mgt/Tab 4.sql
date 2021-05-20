@@ -35,7 +35,6 @@ team_kpis AS (
 SELECT
     function_all AS function_team_kpi,
     kpi_all AS team_kpi
-    
 FROM gather_all_kpis
 GROUP BY 
    function_all,
@@ -45,14 +44,11 @@ GROUP BY
 role_kpis AS (
 SELECT 
     role,
-    kpi AS role_kpi_selected,
-    function,
-
+    kpi AS role_kpi_selected
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` 
 GROUP BY 
     role,
-    kpi,
-    function
+    kpi
 )
 SELECT
 role,
@@ -61,7 +57,9 @@ team_kpi
 from role_kpis as a
 full join team_kpis as b
 on team_kpi = role_kpi_selected
-where role_kpi_selected not in (select team_kpi FROM team_kpis where function = function_team_kpi)
+where role_kpi_selected not in (select kpi_all FROM gather_all_kpis 
+where function_team_kpi = function_all
+AND team_kpi <> role_kpi_selected)
 
 /*
 SELECT 
