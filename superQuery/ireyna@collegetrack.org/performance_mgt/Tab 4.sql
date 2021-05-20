@@ -61,9 +61,8 @@ FROM team_kpis AS a
 LEFT JOIN gather_all_kpis AS b
 ON function_team_kpi = function_all
 WHERE team_kpi NOT IN (
-                SELECT kpi_all
-                FROM gather_all_kpis
-                WHERE function_team_kpi = function_all
+                SELECT role_kpi_selected
+                FROM role_kpis
                 )
 
 /*
