@@ -9,4 +9,4 @@ FROM gather_all_kpis
 )
 
 SELECT *
-FROM gather_unique_kpis
+FROM gather_unique_function_role
