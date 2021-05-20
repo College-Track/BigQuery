@@ -53,7 +53,7 @@ GROUP BY
 )
 SELECT
 role,
-role_all
+role_all,
 team_kpi
 
 FROM role_kpis as a
