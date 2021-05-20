@@ -52,3 +52,10 @@ SELECT a.*, b.*
 FROM team_kpis AS a
 FULL JOIN role_kpis AS b
 ON function_team = b.function
+
+GROUP BY 
+    function_team,
+    team_kpi,
+    role_kpi_selected,
+    function,
+    role
