@@ -53,8 +53,8 @@ GROUP BY
 )
 SELECT
 role,
-role_all,
-team_kpi
+team_kpi,
+function_team_kpi
 
 FROM role_kpis as a
 FULL JOIN team_kpis as b
