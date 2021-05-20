@@ -55,7 +55,7 @@ GROUP BY
     kpi
 )
 SELECT
-role_all
+role_all,
 role_kpi_selected,
 function_all
 
@@ -66,6 +66,7 @@ LEFT JOIN team_kpis
 ON function_all = function_team_kpi
 
 GROUP BY
+role_all,
 role_kpi_selected,
 function_all
 
