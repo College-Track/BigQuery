@@ -16,6 +16,6 @@ LEFT JOIN gather_all_kpis GAK ON GAK.function = GAFR.function
 WHERE GAFR.role != GAK.role
 )
 
-SELECT *
-FROM create_list_of_unseleted_kpis
-ORDER BY function, role ASC
+SELECT CLUK.function, CLUK.role, CLUK.kpi, GAK.kpi
+FROM create_list_of_unseleted_kpis CLUK
+LEFT JOIN gather_all_kpis GAK ON GAK.role = CLUK.role
