@@ -56,10 +56,10 @@ SELECT
 role,
 team_kpi
 
-from team_kpis
-inner join role_kpis
+from role_kpis
+full join team_kpis
 on team_kpi = role_kpi_selected
-where team_kpi not in (select role_kpi_selected FROM role_kpis)
+where role_kpi_selected not in (select team_kpi FROM team_kpis)
 
 /*
 SELECT 
