@@ -65,7 +65,7 @@ SELECT
     role,
     role_all,
     CASE 
-        WHEN role_kpi_selected = team_kpi
+        WHEN function_all =function_team_kpi --role_kpi_selected = team_kpi
         AND role <> role_all
         THEN 1
         ELSE 0
