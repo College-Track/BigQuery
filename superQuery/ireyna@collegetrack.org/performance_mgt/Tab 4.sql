@@ -65,6 +65,8 @@ ON role_all = role
 LEFT JOIN team_kpis  
 ON function_all = function_team_kpi
 
+WHERE role_all IS NOT NULL
+
 GROUP BY
 role_all,
 role_kpi_selected,
