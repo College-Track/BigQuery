@@ -57,7 +57,7 @@ kpi_all
 FROM role_kpis AS a
 LEFT JOIN gather_all_kpis AS b
 ON b.role_all = a.role
-where function_all = (select function_team from team_kpis)
+where function_all = (select role from team_kpis where function_team=function_all group by role)
 AND role_kpi_selected <> kpi_all
 
 /*
