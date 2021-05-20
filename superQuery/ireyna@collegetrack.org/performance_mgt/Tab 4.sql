@@ -63,8 +63,8 @@ GROUP BY
 )
 SELECT 
  *
-from  (SELECT team_kpi 
+from  (SELECT team_kpi , role
                         FROM joined_kpis 
                         where function_team = function 
                         and role_kpi_selected <> team_kpi
-                        group by team_kpi) AS kpi_not_selected
+                        group by team_kpi,role) AS kpi_not_selected
