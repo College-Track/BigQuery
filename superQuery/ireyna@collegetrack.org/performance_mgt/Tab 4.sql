@@ -54,7 +54,7 @@ GROUP BY
 SELECT
 role,
 team_kpi,
-function_team_kpi
+--function_team_kpi
 
 FROM team_kpis as b
 LEFT JOIN role_kpis as a
@@ -65,6 +65,9 @@ WHERE role_kpi_selected not in
     AND team_kpi <> role_kpi_selected
     group by role_all)
 AND function_team_kpi IS NOT NULL
+
+GROUP BY
+role, team_kpi
 
 /*
 SELECT 
