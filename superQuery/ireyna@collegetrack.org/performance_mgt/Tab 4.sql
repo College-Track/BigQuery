@@ -53,10 +53,10 @@ GROUP BY
     kpi
 )
 SELECT
+function_team_kpi,
 role_all,
 role_kpi_selected,
 kpi_all
-function_team_kpis
 
 FROM gather_all_kpis 
 INNER JOIN role_kpis 
@@ -67,10 +67,10 @@ ON function_all = function_team_kpi
 WHERE role_all IS NOT NULL
 
 GROUP BY
+function_team_kpi,
 role_all,
 role_kpi_selected,
-kpi_all,
-function_team_kpis
+kpi_all
 
 /*
 SELECT 
