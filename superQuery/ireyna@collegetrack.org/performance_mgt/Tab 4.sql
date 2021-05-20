@@ -73,7 +73,7 @@ SELECT
     CASE
         WHEN role_kpi_selected <> team_kpi
         AND gather_all.function_all = team_kpis.function_team_kpi
-        AND role_kpi_selected <> team_kpi
+        AND role <> role_all
         THEN team_kpi
         ELSE first_name
         END AS kpi_pull
