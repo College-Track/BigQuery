@@ -19,8 +19,7 @@ FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 WHERE kpi NOT IN 
                 (SELECT b.KPI 
                 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS b
-                WHERE a.function = b.function 
-                AND a.role <> b.role)
+                WHERE a.function = b.function)
 GROUP BY
     first_name,
     last_name,
