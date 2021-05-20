@@ -19,4 +19,4 @@ WHERE GAFR.role != GAK.role
 SELECT DISTINCT CLUK.function, CLUK.role, CLUK.kpi
 FROM create_list_of_unseleted_kpis CLUK
 LEFT JOIN gather_all_kpis GAK ON GAK.role = CLUK.role AND GAK.kpi = CLUK.kpi 
-WHERE CLUK.role = 'Data Analyst' AND GAK.kpi IS NULL
+WHERE GAK.kpi IS NULL
