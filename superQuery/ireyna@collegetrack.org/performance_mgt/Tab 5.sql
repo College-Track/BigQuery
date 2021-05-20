@@ -15,7 +15,7 @@ SELECT
     a.role,
     kpi
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as a
-LEFT JOIN gather_all_kpis AS b ON b.function = a.function AND team_kpi = kpi
+LEFT JOIN gather_all_kpis AS b ON b.function = a.function --AND team_kpi = kpi
 WHERE a.role <> b.role
 GROUP BY 
     function,kpi,role
