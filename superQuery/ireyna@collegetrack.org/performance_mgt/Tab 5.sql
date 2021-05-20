@@ -26,7 +26,7 @@ GROUP BY
     role,kpi
 )
 SELECT 
-    role, kpi,
+    role, kpi,function,
     kpi NOT IN 
     (SELECT kpi 
     FROM gather_all_kpis AS b 
@@ -35,7 +35,7 @@ SELECT
 
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`  AS a
 GROUP BY 
-role, kpi,kpis_not_assigned
+function,role, kpi,kpis_not_assigned
 --SELECT "corba" IN (SELECT account FROM Players) as result;
 
 --                (SELECT b.KPI 
