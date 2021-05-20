@@ -63,6 +63,7 @@ SELECT
     --role_kpi_selected,
     team_kpi,
     role,
+    role_all,
     CASE 
         WHEN role_kpi_selected = team_kpi
         AND role <> role_all
