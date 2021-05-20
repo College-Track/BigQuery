@@ -22,10 +22,11 @@ SELECT
     a.last_name,
     a.function,
     a.role,
-    (SELECT kpi 
+    (SELECT a.kpi
         FROM gather_all_kpis AS b 
         WHERE a.function = b.function 
-        AND a.kpi <> b.kpi) AS kpi
+        AND a.kpi <> b.kpi
+        GROUP BY a.kpi) AS kpi
 
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`  AS a
        
