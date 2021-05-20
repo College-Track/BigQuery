@@ -61,6 +61,6 @@ GROUP BY
     function,
     role
 )
-SELECT role_kpi_selected, role
+SELECT role,
+(select team_kpi FROM joined_kpis where function_team = function) AS team_kpi
 from joined_kpis
-WHERE role_kpi_selected NOT IN (select team_kpi FROM joined_kpis where function_team = function)
