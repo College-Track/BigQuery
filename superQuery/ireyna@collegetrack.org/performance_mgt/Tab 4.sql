@@ -69,8 +69,14 @@ SELECT
         AND role <> role_all
         THEN 1
         ELSE 0
-        END AS pullin
-    
+        END AS pullin,
+    CASE
+        WHEN role_kpi_selected <> team_kpi
+        AND gather_all.function_all = team_kpis.function_team_kpi
+        AND role_kpi_selected <> team_kpi
+        THEN team_kpi
+        ELSE first_name
+        END AS kpi_pull
 FROM team_kpis AS team_kpis
 LEFT JOIN role_kpis AS role_kpis
     ON role_kpi_selected = team_kpi
@@ -80,6 +86,8 @@ LEFT JOIN gather_all_kpis as gather_all
 --WHERE team_kpi not in (select k2.role_kpi_selected from role_kpis AS k2 where function_all=k2.team_kpi_table )
 GROUP BY
     function_all,
+    function_team_kpi,
+    first_name,
     --role_all,
     --role_kpi_selected,
     team_kpi,
