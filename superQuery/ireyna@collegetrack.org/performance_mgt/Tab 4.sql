@@ -59,8 +59,8 @@ GROUP BY
 )
 SELECT 
     function_all,
-    --role_all,
-    --role_kpi_selected,
+    role_all,
+    role_kpi_selected,
     team_kpi,
     role,
     role_all,
@@ -82,12 +82,11 @@ GROUP BY
     function_all,
     function_team_kpi,
     first_name,
-    --role_all,
-    --role_kpi_selected,
+    gather_all.role_all,
+    role_kpi_selected,
     team_kpi,
     role_kpi_selected ,
-    role,
-    role_all
+    role
 
     
 
