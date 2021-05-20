@@ -53,11 +53,12 @@ GROUP BY
 SELECT
 role,
 function_all,
+kpi_all
 FROM role_kpis AS a
 LEFT JOIN gather_all_kpis AS b
 ON b.role_all = a.role
 where function_all = (select function_team from team_kpis)
-AND role NOT IN (select role from role_kpis)
+AND role_kpi_selected <> kpi_all
 
 /*
 FROM team_kpis as b
