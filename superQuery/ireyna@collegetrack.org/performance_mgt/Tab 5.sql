@@ -31,7 +31,7 @@ SELECT
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`  AS a
 WHERE kpi NOT IN 
     (SELECT kpi 
-    FROM gather_all_kpis AS b
+    FROM kpi_by_team AS b
     WHERE a.function = b.function)
 GROUP BY role, kpi, function
 --SELECT "corba" IN (SELECT account FROM Players) as result;
