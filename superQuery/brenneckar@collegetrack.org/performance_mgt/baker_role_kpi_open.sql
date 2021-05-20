@@ -4,7 +4,7 @@ FROM `data-studio-260217.performance_mgt.role_kpi_selection`
 ),
 
 gather_unique_function_role AS (
-SELECT DISTINCT function role 
+SELECT DISTINCT function function, role 
 FROM gather_all_kpis
 )
 
