@@ -56,6 +56,44 @@ role,
 team_kpi,
 function_team_kpi
 
-FROM role_kpis as a
-FULL JOIN team_kpis as b
+FROM team_kpis as b
+LEFT JOIN role_kpis as a
 ON team_kpi = role_kpi_selected
+WHERE role_kpi_selected not in 
+    (select role_all FROM gather_all_kpis 
+    where function_team_kpi = function_all
+    AND team_kpi <> role_kpi_selected
+    group by role_all)
+AND function_team_kpi IS NOT NULL
+
+/*
+SELECT 
+    function_all,
+    role_all,
+    role_kpi_selected,
+    team_kpi,
+    role,
+    role_all,
+    CASE 
+        WHEN function_all =function_team_kpi --role_kpi_selected = team_kpi
+        AND role <> role_all
+        THEN 1
+        ELSE 0
+        END AS pullin,
+    
+FROM team_kpis AS team_kpis
+LEFT JOIN role_kpis AS role_kpis
+    ON role_kpi_selected = team_kpi
+LEFT JOIN gather_all_kpis as gather_all
+    ON gather_all.function_all = team_kpis.function_team_kpi
+GROUP BY
+    function_all,
+    function_team_kpi,
+    first_name,
+    gather_all.role_all,
+    role_kpi_selected,
+    team_kpi,
+    role_kpi_selected ,
+    role
+
+   */
