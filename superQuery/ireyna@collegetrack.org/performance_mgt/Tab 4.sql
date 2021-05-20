@@ -58,3 +58,4 @@ team_kpi
 
 FROM role_kpis as a
 FULL JOIN team_kpis as b
+ON team_kpi = role_kpi_selected
