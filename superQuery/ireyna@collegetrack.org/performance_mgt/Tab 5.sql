@@ -15,7 +15,7 @@ SELECT
     (SELECT b.KPI 
                 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS b
                 WHERE a.function = b.function AND a.role <> b.role
-                GROUP BY b.function) AS kpi
+                GROUP BY b.function,b.kpi) AS kpi
     
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 
@@ -29,5 +29,4 @@ GROUP BY
     last_name,
     function,
     role,
-    kpi,
-    b.kpi
+    kpi
