@@ -1,7 +1,7 @@
-SELECT
-    function,
-    kpi AS team_kpi
-FROM  `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` 
-GROUP BY 
-    function,
-    kpi
+WITH gather_all_kpis AS (
+SELECT function, role, kpi
+FROM `data-studio-260217.performance_mgt.role_kpi_selection`
+)
+
+SELECT *
+FROM gather_all_kpis
