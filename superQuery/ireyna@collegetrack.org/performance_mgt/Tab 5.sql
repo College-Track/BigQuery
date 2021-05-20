@@ -34,6 +34,7 @@ WHERE kpi NOT IN
     FROM kpi_by_team AS b
     WHERE a.function = b.function
     AND A.KPI <> B.KPi)
+AND role IS NOT NULL
 
 --SELECT "corba" IN (SELECT account FROM Players) as result;
 
