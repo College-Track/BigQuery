@@ -71,9 +71,9 @@ SELECT
         ELSE 0
         END AS pullin,
     CASE
-        WHEN role_kpi_selected <> team_kpi
-        AND gather_all.function_all = team_kpis.function_team_kpi
-        AND role <> role_all
+        WHEN function_all =function_team_kpi
+        AND role <> role_all 
+        AND role_kpi_selected <> team_kpi
         THEN team_kpi
         ELSE first_name
         END AS kpi_pull
