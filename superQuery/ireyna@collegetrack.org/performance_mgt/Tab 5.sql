@@ -12,18 +12,22 @@ SELECT
     last_name,
     function,
     role,
-    kpi
+    (SELECT b.KPI 
+                FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS b
+                WHERE a.function = b.function AND a.role <> b.role
+                GROUP BY b.function) AS kpi
     
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS a
 
-WHERE kpi NOT IN 
-                (SELECT b.KPI 
-                FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS b
-                WHERE a.function = b.function
-                GROUP BY b.first_name,b.last_name,b.kpi)
+--WHERE kpi NOT IN 
+--                (SELECT b.KPI 
+--                FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS b
+--                WHERE a.function = b.function
+--                GROUP BY b.first_name,b.last_name,b.kpi)
 GROUP BY
     first_name,
     last_name,
     function,
     role,
-    kpi
+    kpi,
+    b.kpi
