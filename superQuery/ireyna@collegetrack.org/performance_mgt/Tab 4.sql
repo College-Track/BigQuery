@@ -40,13 +40,15 @@ GROUP BY
 role_kpis AS (
 SELECT 
     role,
-    kpi AS role_kpi_selected
+    kpi AS role_kpi_selected,
+    function
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` 
 GROUP BY 
     role,
-    kpi
+    kpi,
+    function
 )
 SELECT a.*, b.*
 FROM team_kpis AS a
 FULL JOIN role_kpis AS b
-ON team_kpi = role_kpi_selected
+ON function_team = b.function
