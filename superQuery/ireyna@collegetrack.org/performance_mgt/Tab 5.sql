@@ -17,27 +17,31 @@ SELECT
     kpi AS team_kpi
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`
 ),
-kpi_by_role AS (
+kpi_by_team AS (
 SELECT 
-    role,
+    function,
     kpi
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`
 GROUP BY 
-    role,kpi
+    function,kpi
 )
 SELECT 
-    role, kpi,function,
-    kpi NOT IN 
+    role,kpi,function
+ 
+FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`  AS a
+WHERE kpi NOT IN 
     (SELECT kpi 
+    FROM gather_all_kpis AS b
+    WHERE a.function = b.function)
+GROUP BY role, kpi, function
+--SELECT "corba" IN (SELECT account FROM Players) as result;
+
+/*
+ (SELECT kpi 
     FROM gather_all_kpis AS b 
     WHERE team_kpi <> KPI 
     AND a.function = b.function) as kpis_not_assigned
-
-FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`  AS a
-GROUP BY 
-function,role, kpi,kpis_not_assigned
---SELECT "corba" IN (SELECT account FROM Players) as result;
-
+    */
 --                (SELECT b.KPI 
 --                FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS b
 --                WHERE a.function = b.function
