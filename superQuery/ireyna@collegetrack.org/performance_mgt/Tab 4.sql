@@ -62,5 +62,5 @@ GROUP BY
     role
 )
 SELECT role,
-(select team_kpi FROM joined_kpis where function_team = function) AS team_kpi
+(select team_kpi FROM joined_kpis where function_team = function and role_kpi_selected <> team_kpi group by team_kpi) AS team_kpi
 from joined_kpis
