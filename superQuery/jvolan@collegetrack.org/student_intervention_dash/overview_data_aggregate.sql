@@ -30,11 +30,21 @@ SELECT
         ELSE 'na'
     END AS grade,    
     CASE
-        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = TRUE THEN "GPA & Attendance"
-        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = FALSE THEN "GPA Only"
-        WHEN indicator_prev_gpa_below_2_75_c = FALSE AND indicator_sem_attendance_below_65_c = TRUE THEN "Attendance Only"
-        ELSE "None"
-    END AS intervention_AT_bucket,
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = TRUE THEN 1
+        ELSE 0 
+        END AS GPA_Attendance_count,
+    CASE
+        WHEN indicator_prev_gpa_below_2_75_c = TRUE AND indicator_sem_attendance_below_65_c = FALSE THEN 1
+        ELSE 0
+        END AS GPA_Only_count,
+    CASE
+        WHEN indicator_prev_gpa_below_2_75_c = FALSE AND indicator_sem_attendance_below_65_c = TRUE THEN 1
+        ELSE 0
+        END AS Attendance_Only_count,
+    CASE
+        WHEN indicator_prev_gpa_below_2_75_c = FALSE AND indicator_sem_attendance_below_65_c = FALSE THEN 1
+        ELSE 0
+        END AS no_intervention_count,
     CASE
         WHEN indicator_student_on_intervention_c = TRUE THEN 1
         Else 0
@@ -58,12 +68,16 @@ SELECT
     Ethnic_background_c,
     intervention_AT,
     indicator_high_risk_dismissal,
-    intervention_AT_bucket,
     attendance_bucket_current_at,
     sort_attendance_bucket,
     COUNT(Contact_Id) AS student_count,
     sum(intervention_AT) AS intervention_AT_count,
     sum(indicator_high_risk_dismissal) AS high_risk_count,
+    sum(GPA_Attendance_count) AS gpa_attendance_count,
+    sum(GPA_Only_count) AS gpa_only_count,
+    sum(Attendance_Only_count) AS attendance_only_count,
+    sum(no_intervention_count) AS no_intervention_count,
+    
     
     FROM overview_data
     GROUP BY
@@ -77,7 +91,6 @@ SELECT
     Ethnic_background_c,
     intervention_AT,
     indicator_high_risk_dismissal,
-    intervention_AT_bucket,
     attendance_bucket_current_at,
     sort_attendance_bucket
     
