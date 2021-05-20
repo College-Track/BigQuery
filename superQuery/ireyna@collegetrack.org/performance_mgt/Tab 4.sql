@@ -52,7 +52,7 @@ SELECT a.*, b.*
 FROM team_kpis AS a
 FULL JOIN role_kpis AS b
 ON function_team = b.function
-
+WHERE role_selected_kpi <> team_kpi
 GROUP BY 
     function_team,
     team_kpi,
