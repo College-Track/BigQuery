@@ -55,12 +55,15 @@ GROUP BY
     kpi
 )
 SELECT
+role_all
 role_kpi_selected,
 function_all
 
-FROM gather_all_kpis
+FROM gather_all_kpis 
 FULL JOIN role_kpis 
 ON role_all = role
+LEFT JOIN team_kpis  
+ON function_all = function_team_kpi
 
 GROUP BY
 role_kpi_selected,
