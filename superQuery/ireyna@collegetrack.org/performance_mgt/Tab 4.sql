@@ -56,7 +56,7 @@ SELECT
 role_all,
 role_kpi_selected,
 kpi_all
-function_team_kpis
+function_team_kpi
 
 FROM gather_all_kpis 
 FULL JOIN role_kpis 
@@ -70,7 +70,7 @@ GROUP BY
 role_all,
 role_kpi_selected,
 kpi_all,
-function_team_kpis
+function_team_kpi
 
 /*
 SELECT 
