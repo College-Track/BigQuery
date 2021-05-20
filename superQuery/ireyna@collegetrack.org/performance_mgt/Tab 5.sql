@@ -1,11 +1,3 @@
-/*
-CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.fy22_roles_kpis_open`
-OPTIONS
-    (
-    description="This table lists KPIs available for staff to select based on role during Individual KPI selection phase. If a KPI is on the staff member's team, they can select pre-determined KPIs on their team that was not mapped to their role. "
-    )
-AS
-*/
 WITH 
 
 gather_all_kpis AS (
@@ -16,35 +8,13 @@ SELECT
     role,
     kpi AS team_kpi
 FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`
-),
-kpi_by_team AS (
+)
+--kpi_by_team AS (
 SELECT 
-    function,
+    a.function,
     kpi
-FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`
+FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as a
+LEFT JOIN gather_all_kpis AS b ON b.function = a.function AND team_kpi = kpi
+WHERE a.role <> b.role
 GROUP BY 
     function,kpi
-)
-SELECT 
-    role,kpi
- 
-FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi`  AS a
-WHERE kpi NOT IN 
-    (SELECT B.KPI
-    FROM kpi_by_team AS b
-    WHERE a.function = b.function
-    AND A.KPI <> B.KPi)
-AND role IS NOT NULL
-
---SELECT "corba" IN (SELECT account FROM Players) as result;
-
-/*
- (SELECT kpi 
-    FROM gather_all_kpis AS b 
-    WHERE team_kpi <> KPI 
-    AND a.function = b.function) as kpis_not_assigned
-    */
---                (SELECT b.KPI 
---                FROM `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` AS b
---                WHERE a.function = b.function
---                GROUP BY b.first_name,b.last_name,b.kpi)
