@@ -55,7 +55,8 @@ GROUP BY
     kpi
 )
 SELECT
-role_kpi_selected
+role_kpi_selected,
+function_all
 
 FROM gather_all_kpis
 FULL JOIN role_kpis 
