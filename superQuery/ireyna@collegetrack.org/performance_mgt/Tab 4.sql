@@ -55,15 +55,11 @@ GROUP BY
     kpi
 )
 SELECT
-    role_all,
-    team_kpi
-FROM team_kpis AS a
-LEFT JOIN gather_all_kpis AS b
-ON function_team_kpi = function_all
-WHERE team_kpi NOT IN (
-                SELECT role_kpi_selected
-                FROM role_kpis
-                )
+role_kpi_selected
+
+FROM gather_all_kpis
+FULL JOIN role_kpis 
+ON role_all = role
 
 /*
 SELECT 
