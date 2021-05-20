@@ -62,6 +62,10 @@ FROM gather_all_kpis
 FULL JOIN role_kpis 
 ON role_all = role
 
+GROUP BY
+role_kpi_selected,
+function_all
+
 /*
 SELECT 
     function_all,
