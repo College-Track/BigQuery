@@ -24,6 +24,6 @@ WHERE
 GROUP BY
   section,
   site_short
-  -- ORDER BY section,
-  -- score,
-  -- site_short
+   ORDER BY section,
+   score,
+   site_short
