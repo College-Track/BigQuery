@@ -7,6 +7,7 @@ WITH calc_score AS (
     `data-studio-260217.surveys.determine_positive_answers`(answer) AS answer_score,
   FROM
     `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
+    -- WHERE Ethnic_background_c = "African-American"
 )
 SELECT
   section,
