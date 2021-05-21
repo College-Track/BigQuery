@@ -9,12 +9,12 @@ FROM `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
 
 SELECT 
 -- section,
--- site_short,
+site_short,
 SUM(answer_score)
 -- avg(answer_score) as score 
 FROM calc_score
 WHERE section = 'coaching_programming_section'
--- GROUP BY section,
+GROUP BY site_short
 -- site_short
 -- ORDER BY section, 
 -- score,
