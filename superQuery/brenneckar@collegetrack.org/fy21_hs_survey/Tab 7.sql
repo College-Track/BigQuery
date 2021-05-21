@@ -18,9 +18,9 @@ FROM
   calc_score -- WHERE sub_section = 'wellness_programming_services_subsection'
 WHERE
   question != 'Did you engage with Wellness services at your site?'
-  AND sub_section = 'virtual_programming_engagement_excitement_subsection'
-  OR sub_section = 'virtual_programming_self_direction_subsection'
-  OR sub_section = 'virtual_programming_collaboration_subsection'
+  AND sub_section != 'virtual_programming_return_to_ct_subsection'
+--   OR sub_section = 'virtual_programming_self_direction_subsection'
+--   OR sub_section = 'virtual_programming_collaboration_subsection'
 GROUP BY
   section -- site_short
   -- ORDER BY section,
