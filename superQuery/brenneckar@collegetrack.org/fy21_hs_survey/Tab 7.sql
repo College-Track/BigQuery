@@ -23,7 +23,7 @@ WHERE
 --   OR sub_section = 'virtual_programming_self_direction_subsection'
 --   OR sub_section = 'virtual_programming_collaboration_subsection'
 GROUP BY
-  section,
+  section
 --   site_short
 --   ORDER BY section,
 --   score,
