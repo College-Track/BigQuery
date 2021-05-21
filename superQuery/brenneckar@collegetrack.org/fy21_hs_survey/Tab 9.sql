@@ -21,5 +21,5 @@ GROUP BY
   )
   
 
-SELECT SUM(student_count)
+SELECT *
 FROM group_data
