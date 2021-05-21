@@ -1,13 +1,14 @@
 WITH calc_score AS (
   SELECT
-    site_short,
+    S.site_short,
     section,
     sub_section,
     question,
     `data-studio-260217.surveys.determine_positive_answers`(answer) AS answer_score,
   FROM
-    `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
-    -- WHERE Ethnic_background_c = "African-American"
+    `data-studio-260217.surveys.fy21_hs_survey_long_prepped` S
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON C.contact_Id = S.contact_id
+    WHERE C.Ethnic_background_c = "African-American" AND C.Gender_c = 'Male'
 )
 SELECT
   section,
