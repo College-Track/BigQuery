@@ -12,7 +12,7 @@ section,
 site_short,
 avg(answer_score) as score 
 FROM calc_score
-GROUP BY section
+GROUP BY section,
 site_short
 ORDER BY section, 
 site_short
