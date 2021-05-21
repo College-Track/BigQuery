@@ -13,7 +13,7 @@ WITH calc_score AS (
 SELECT
   section,
   -- question,
-  site_short,
+--   site_short,
   -- SUM(answer_score)
   avg(answer_score) as score
 FROM
