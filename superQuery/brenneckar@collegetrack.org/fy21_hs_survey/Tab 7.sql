@@ -8,6 +8,7 @@ FROM `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
 )
 
 SELECT section,
-avg(answer_score)
+avg(answer_score) as score 
 FROM calc_score
 GROUP BY section
+ORDER BY score
