@@ -19,6 +19,7 @@ FROM
 WHERE
   question != 'Did you engage with Wellness services at your site?'
   AND sub_section != 'virtual_programming_return_to_ct_subsection'
+  AND sub_section != 'bank_book_subsection'
 --   OR sub_section = 'virtual_programming_self_direction_subsection'
 --   OR sub_section = 'virtual_programming_collaboration_subsection'
 GROUP BY
