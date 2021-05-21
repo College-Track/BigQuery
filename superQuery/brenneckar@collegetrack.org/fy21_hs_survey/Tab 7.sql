@@ -9,7 +9,7 @@ WITH calc_score AS (
     `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
 )
 SELECT
-  sub_section,
+  section,
   -- question,
   -- site_short,
   -- SUM(answer_score)
@@ -22,7 +22,7 @@ WHERE
   OR sub_section = 'virtual_programming_self_direction_subsection'
   OR sub_section = 'virtual_programming_collaboration_subsection'
 GROUP BY
-  sub_section -- site_short
+  section -- site_short
   -- ORDER BY section,
   -- score,
   -- site_short
