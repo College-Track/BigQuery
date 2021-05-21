@@ -14,6 +14,7 @@ SELECT
   COUNT(Contact_Id)
 FROM
   gahter_ethnicity_data
- GROUP BY what_race_ethnicity_best_describes_you_for_a_more_detailed_description_of_asian_
 WHERE
   what_race_ethnicity_best_describes_you_for_a_more_detailed_description_of_asian_ != Ethnic_background_c
+GROUP BY
+  what_race_ethnicity_best_describes_you_for_a_more_detailed_description_of_asian_
