@@ -11,7 +11,7 @@ WITH calc_score AS (
 SELECT
   section,
   -- question,
---   site_short,
+  site_short,
   -- SUM(answer_score)
   avg(answer_score) as score
 FROM
@@ -23,8 +23,8 @@ WHERE
 --   OR sub_section = 'virtual_programming_self_direction_subsection'
 --   OR sub_section = 'virtual_programming_collaboration_subsection'
 GROUP BY
-  section
---   site_short
---   ORDER BY section,
---   score,
---   site_short
+  section,
+  site_short
+  ORDER BY section,
+  score,
+  site_short
