@@ -11,12 +11,14 @@ FROM `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
 
 SELECT 
 sub_section,
+question,
 -- site_short,
 -- SUM(answer_score)
 avg(answer_score) as score 
 FROM calc_score
 WHERE sub_section = 'wellness_programming_services_subsection'
-GROUP BY sub_section
+GROUP BY sub_section,
+question
 -- site_short
 -- ORDER BY section, 
 -- score,
