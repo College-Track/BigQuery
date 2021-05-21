@@ -15,7 +15,7 @@ sub_section,
 -- SUM(answer_score)
 avg(answer_score) as score 
 FROM calc_score
--- WHERE section = 'coaching_programming_section'
+WHERE section = 'wellness_programming_services_subsection'
 GROUP BY sub_section
 -- site_short
 -- ORDER BY section, 
