@@ -111,6 +111,6 @@ EXCEPT
   END AS joined_prior,
   HSWP.NPS_Score
 FROM
-  gather_data GD3_
+  gather_data GD
   LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_completion_reporting_group` SP ON SP.contact_id = GD.Contact_Id
   LEFT JOIN `data-studio-260217.surveys.fy21_hs_survey_wide_prepped` HSWP ON HSWP.contact_id = GD.Contact_id
