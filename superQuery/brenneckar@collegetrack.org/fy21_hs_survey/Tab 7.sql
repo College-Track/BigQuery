@@ -10,7 +10,7 @@ FROM `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
 )
 
 SELECT 
-sub_section,
+section,
 -- question,
 -- site_short,
 -- SUM(answer_score)
@@ -18,7 +18,8 @@ avg(answer_score) as score
 FROM calc_score
 -- WHERE sub_section = 'wellness_programming_services_subsection'
 WHERE question != 'Did you engage with Wellness services at your site?'
-GROUP BY sub_section
+AND sub_section != 'virtual_programming_return_to_ct_subsection'
+GROUP BY section
 -- site_short
 -- ORDER BY section, 
 -- score,
