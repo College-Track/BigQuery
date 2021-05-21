@@ -16,8 +16,8 @@ sub_section,
 -- SUM(answer_score)
 avg(answer_score) as score 
 FROM calc_score
-WHERE sub_section = 'wellness_programming_services_subsection'
-AND question != 'Did you engage with Wellness services at your site?'
+-- WHERE sub_section = 'wellness_programming_services_subsection'
+WHERE question != 'Did you engage with Wellness services at your site?'
 GROUP BY sub_section
 -- site_short
 -- ORDER BY section, 
