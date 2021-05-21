@@ -7,8 +7,8 @@ SELECT
 FROM `data-studio-260217.surveys.fy21_hs_survey_long_prepped`
 )
 
-SELECT section,
+SELECT section,site_short,
 avg(answer_score) as score 
 FROM calc_score
-GROUP BY section
-ORDER BY score
+GROUP BY section, site_short
+ORDER BY score, site_short
