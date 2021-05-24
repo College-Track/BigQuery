@@ -11,7 +11,7 @@ WITH gather_data AS (
     -- % of seniors who are composite ready
     -- Will need to add in the opt-out indicator once it is made.
     CASE
-      WHEN composite_readiness_most_recent_c = '1. Ready'
+      WHEN Readiness_Composite_Off_c = '1. Ready'
       AND (grade_c = '12th Grade' OR (grade_c = 'Year 1' AND years_since_hs_grad_c =0)) THEN 1
       ELSE 0
     END AS composite_ready
