@@ -1,4 +1,4 @@
-WITH gather_data AS (
+WITH gather_student_data AS (
   SELECT
     "National" AS national,
     site_short,
@@ -73,7 +73,7 @@ prep_student_counts AS (SELECT
     )
   ) AS completed_hs_program_count,
 FROM
-  gather_data
+  gather_student_data
 GROUP BY
   national,
   site_short,
