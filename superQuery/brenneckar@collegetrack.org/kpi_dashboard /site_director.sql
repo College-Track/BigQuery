@@ -24,7 +24,7 @@ WITH gather_hs_data AS (
       WHEN (
         grade_c = '9th Grade'
         AND indicator_low_income_c = 'Yes'
-        AND first_generation_fy_20_c = 'Yes'
+        AND indicator_first_generation_c = true
       ) THEN 1
       ELSE 0
     END AS first_gen_and_low_income,
