@@ -150,10 +150,6 @@ SELECT
     wellness_covi_student_grew,
     wellness_covi_denominator
 FROM aggregate_covi_data 
-GROUP BY 
-    site_short,
-    wellness_covi_student_grew,
-    wellness_covi_denominator
 
 
 /*
