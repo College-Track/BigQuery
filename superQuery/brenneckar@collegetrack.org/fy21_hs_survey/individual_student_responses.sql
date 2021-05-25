@@ -5,6 +5,7 @@ WITH gather_student_data AS(
     Most_Recent_GPA_Cumulative_bucket,
     Ethnic_background_c,
     Gender_c,
+    full_name_c,
     Contact_Id
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
@@ -60,13 +61,23 @@ gather_survey_data AS (
       virtual_programming_self_direction_subsection,
       wellness_programming_section,
       wellness_programming_services_subsection,
-      ct_stengths_weakness_section
+      ct_stengths_weakness_section,
+      math_programming_subsection
     )
   FROM
     `data-studio-260217.surveys.fy21_hs_survey`
-    WHERE your_responses_to_this_survey_are_anonymous_we_only_ask_for_your_name_for_determ = 'Yes, I accept to share my survey results with staff at my College Track center.'
+  WHERE
+    your_responses_to_this_survey_are_anonymous_we_only_ask_for_your_name_for_determ = 'Yes, I accept to share my survey results with staff at my College Track center.'
 )
-    
-SELECT 
-* 
-FROM gather_survey_data
+SELECT
+  GCD.site_short,
+  GCD.full_name_c,
+  GCD.high_school_graduating_class_c,
+  GCD.Most_Recent_GPA_Cumulative_bucket,
+  GCD.Ethnic_background_c,
+  GCD.Gender_c,
+  GSD.*,
+
+FROM
+  gather_survey_data GSD
+  LEFT JOIN gather_student_data GCD ON GCD.Contact_Id = GSD.Contact_Id
