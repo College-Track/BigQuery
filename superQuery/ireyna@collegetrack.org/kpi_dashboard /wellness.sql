@@ -1,6 +1,23 @@
+WITH 
+
+--gather contact and academic term data to join with COVI data
+gather_at_data AS
+(
+SELECT 
+    at_id,
+    contact_id,
+    AY_Name,
+    site
+
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
+WHERE record_type_id = '01246000000RNnSAAW' --HS student
+    AND site != 'College Track Arlen'
+    AND College_Track_Status_Name = 'Current CT HS Student'
+),
+
+gather_covi_data AS (
 SELECT 
     academic_semester_c,
-    co_vitality_indicator_c,
     co_vitality_scorecard_color_c,
     belief_in_self_raw_score_c,
     belief_in_others_raw_score_c,
@@ -25,7 +42,6 @@ WHERE record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
 AND status_c = 'Completed'
 GROUP BY 
     academic_semester_c,
-    co_vitality_indicator_c,
     co_vitality_scorecard_color_c,
     belief_in_self_raw_score_c,
     belief_in_others_raw_score_c,
@@ -37,3 +53,20 @@ GROUP BY
     id, --test id
     student_site_c,
     record_type_id
+)
+
+--Join contact_at data with COVI data to obtain contact id and pull in 2019-20AY Covi data
+--join_term_data_with_covi AS (
+SELECT 
+    co_vitality_test_completed_date_c,
+    student_site_c,
+    raw_covi_score,
+    contact_id,
+    AY_NAME,
+    covi_assessment_completed_ay,
+    test_record_id
+   
+FROM gather_at_data AS A
+LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
+WHERE AY_Name = 'AY 2019-20'
+    AND status_c = 'Completed'
