@@ -141,7 +141,8 @@ SELECT
 FROM
   determine_covi_indicators
 GROUP BY
-  site_short
+  site_short,
+  contact_id_covi
 )
 
 SELECT 
