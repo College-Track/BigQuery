@@ -26,6 +26,14 @@ SELECT
     site_short,
     AY_Name,
     
+    --Setting groundwork for indicator: students with a Covi score during 2020-21AY
+    CASE 
+        WHEN AY_Name = 'AY 2020-21'
+        AND id IS NOT NULL 
+        THEN 1
+        ELSE 0
+        END AS covi_assessment_completed_ay,
+    
     --add Covi Domain scores to obtain total raw Covitality score. Use lowest score if student has 1+ Covi
     MIN(belief_in_self_raw_score_c + engaged_living_raw_score_c + belief_in_others_raw_score_c + emotional_competence_raw_score_c) AS min_covi_raw_score
     
@@ -51,6 +59,17 @@ ORDER BY
     AY_Name
 ),
 
+students_that_completed_covi AS (
+SELECT 
+    contact_id AS student_completed_covi_ay,
+    site_short
+  
+FROM gather_covi_data
+WHERE covi_assessment_completed_ay = 1
+GROUP BY 
+    contact_id,
+    site_short
+),
 /*--Join COVI data completed 2020-21AY with contact_at data
 join_term_data_with_covi AS (
 SELECT 
@@ -77,13 +96,7 @@ GROUP BY
     test_record_id
 ),
 
-students_that_completed_covi AS (
-SELECT 
-    contact_id AS student_completed_covi_ay
-  
-FROM join_term_data_with_covi 
-WHERE covi_assessment_completed_ay = 1
-GROUP BY contact_id
+
 ),
 */
 --Using same logic from Site Director KPIs to calculate: % of students growing toward average or above social-emotional strengths
@@ -100,20 +113,11 @@ FROM
     gather_covi_data
 ),
 
-determine_covi_indicators AS (
+covi_growth_indicator AS (
 SELECT
-    A.site_short,
-    A.contact_id_covi,
+    site_short,
+    contact_id_covi,
     
-     --Indicator for students without a Covi score during 2020-21AY
-    CASE 
-        WHEN AY_Name = 'AY 2020-21'
-        AND contact_id = B.contact_id_covi
-        AND test_record_id IS NOT NULL 
-        THEN 1
-        ELSE 0
-        END AS covi_assessment_completed_ay,
-        
     --Indicator for students demonstrating growth in Covi taken between 2019-20 and 2020-21
     CASE
         WHEN covi_growth > 0 
@@ -122,19 +126,7 @@ SELECT
         ELSE 0
         END AS covi_student_grew
         
-FROM
-    calc_covi_growth AS A
-LEFT JOIN gather_covi_data AS B
-    ON A.contact_id_covi = B.contact_id_covi
-    
-GROUP BY
-    A.site_short,
-    A.contact_id_covi,
-    B.contact_id_covi,
-    B.contact_id,
-    B.AY_NAME,
-    B.test_record_id,
-    covi_growth
+FROM calc_covi_growth 
 ),
 
 -- % of students growing toward average or above social-emotional strengths
@@ -142,29 +134,21 @@ GROUP BY
 
 aggregate_covi_data AS (
 SELECT
-  site_short,
+  A.site_short,
+  COUNT(DISTINCT student_completed_covi_ay) AS wellness_covi_assessment_completed_ay,
   SUM(covi_student_grew) AS wellness_covi_student_grew,
-  contact_id_covi,
-  --SUM(covi_assessment_completed_ay) AS wellness_covi_assessment_completed_ay,
-  CASE 
-    WHEN covi_assessment_completed_ay = 1
-    THEN contact_id_covi
-    ELSE NULL 
-    END AS student_completed_covi_ay,
-
   COUNT(contact_id_covi) AS wellness_covi_denominator
-FROM
-  determine_covi_indicators
+FROM covi_growth_indicator AS A
+LEFT JOIN students_that_completed_covi AS B
+    ON A.site_short = B.site_short
 GROUP BY
-  site_short,
-  covi_assessment_completed_ay,
-  contact_id_covi
+  site_short
 )
 
 SELECT 
+    wellness_covi_assessment_completed_ay
     wellness_covi_student_grew,
-    wellness_covi_denominator,
-    COUNT (DISTINCT contact_id_covi) AS wellness_covi_assessment_completed_ay
+    wellness_covi_denominator
 FROM aggregate_covi_data 
 GROUP BY 
     site_short,
