@@ -146,7 +146,7 @@ GROUP BY
 )
 
 SELECT 
-    wellness_covi_assessment_completed_ay
+    wellness_covi_assessment_completed_ay,
     wellness_covi_student_grew,
     wellness_covi_denominator
 FROM aggregate_covi_data 
