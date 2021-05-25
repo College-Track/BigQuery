@@ -138,7 +138,7 @@ SELECT
     site_short,
     wellness_covi_assessment_completed_ay,
     wellness_covi_student_grew,
-    wellness_covi_denominator
+    wellness_covi_growth_denominator
 FROM aggregate_covi_data 
 
 
