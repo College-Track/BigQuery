@@ -146,6 +146,7 @@ GROUP BY
 )
 
 SELECT 
+    site_short,
     wellness_covi_assessment_completed_ay,
     wellness_covi_student_grew,
     wellness_covi_denominator
