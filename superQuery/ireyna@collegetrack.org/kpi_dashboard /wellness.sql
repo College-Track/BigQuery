@@ -59,13 +59,12 @@ GROUP BY
 --Isolate students that completed a Covitality assessment in 2020-21AY
 students_that_completed_covi AS (
 SELECT 
-    contact_id AS student_completed_covi_ay,
+    COUNT(DISTINCT contact_id) AS wellness_covi_assessment_completed_ay,
     site_short
   
 FROM completing_covi_data
 WHERE covi_assessment_completed_ay = 1
 GROUP BY 
-    contact_id,
     site_short
 ),
 
@@ -118,23 +117,27 @@ SELECT
         
 FROM calc_covi_growth 
 WHERE covi_growth IS NOT NULL
-GROUP BY
-    site_short,
-    covi_growth,
-    contact_id_covi
 ),
 
-aggregate_covi_data AS (
+aggregate_growth_covi_data AS (
 SELECT
-  A.site_short,
-  COUNT(DISTINCT student_completed_covi_ay) AS wellness_covi_assessment_completed_ay,
+  site_short,
   SUM(covi_student_grew) AS wellness_covi_student_grew,
   COUNT(DISTINCT contact_id_covi) AS wellness_covi_growth_denominator
-FROM covi_growth_indicator AS A
-LEFT JOIN students_that_completed_covi AS B
-    ON A.site_short = B.site_short
+FROM covi_growth_indicator 
 GROUP BY
   site_short
+),
+
+prep_all_wellness_kpis AS (
+SELECT
+    A.site_short,
+    wellness_covi_assessment_completed_ay,
+    wellness_covi_student_grew,
+    wellness_covi_growth_denominator
+FROM aggregate_growth_covi_data AS A
+LEFT JOIN students_that_completed_covi AS B
+ON A.site_short = B.site_short
 )
 
 SELECT 
@@ -142,7 +145,7 @@ SELECT
     wellness_covi_assessment_completed_ay,
     wellness_covi_student_grew,
     wellness_covi_growth_denominator
-FROM aggregate_covi_data 
+FROM prep_all_wellness_kpis 
 
 
 /*
