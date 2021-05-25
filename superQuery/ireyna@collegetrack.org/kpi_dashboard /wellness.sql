@@ -25,14 +25,6 @@ SELECT
     site_short,
     AY_Name,
     
-    --Setting groundwork for indicator: students with a Covi score during 2020-21AY
-    CASE 
-        WHEN AY_Name = 'AY 2020-21'
-        AND id IS NOT NULL 
-        THEN 1
-        ELSE 0
-        END AS covi_assessment_completed_ay,
-    
     --add Covi Domain scores to obtain total raw Covitality score. Use lowest score if student has 1+ Covi
     MIN(belief_in_self_raw_score_c + engaged_living_raw_score_c + belief_in_others_raw_score_c + emotional_competence_raw_score_c) AS min_covi_raw_score
     
@@ -50,11 +42,24 @@ GROUP BY
     id, --test record id
     site_short,
     AY_Name
-    
-ORDER BY
+),
+
+--Setting groundwork for indicator: students with a Covi score during 2020-21AY
+completing_covi_data AS (
+SELECT 
     site_short,
-    contact_name_c,
-    AY_Name
+    contact_id,
+    CASE 
+        WHEN test_record_id IS NOT NULL 
+        THEN 1
+        ELSE 0
+        END AS covi_assessment_completed_ay
+FROM gather_covi_data
+WHERE AY_Name = 'AY 2020-21'
+GROUP BY
+    contact_id,
+    site_short,
+    test_record_id
 ),
 
 --Isolate students that completed a Covitality assessment in 2020-21AY
@@ -63,15 +68,38 @@ SELECT
     contact_id AS student_completed_covi_ay,
     site_short
   
-FROM gather_covi_data
+FROM completing_covi_data
 WHERE covi_assessment_completed_ay = 1
 GROUP BY 
     contact_id,
     site_short
 ),
 
+
 --Using same logic from Site Director KPIs to calculate: % of students growing toward average or above social-emotional strengths
 --This KPI is done over four CTEs. The majority of the logic is done in the second CTE.
+data_for_social_emotional_growth AS ( 
+ SELECT
+    contact_id_covi,
+    site_short,
+    AY_Name,
+    min_covi_raw_score
+
+FROM gather_covi_data
+WHERE AY_Name IN ('AY 2019-20', 'AY 2020-21')
+
+GROUP BY
+    site_short,
+    contact_id_covi,
+    AY_Name,
+    min_covi_raw_score
+    
+ORDER BY
+    site_short,
+    contact_id_covi,
+    AY_Name
+),
+
 calc_covi_growth AS (
 SELECT
     site_short,
@@ -81,7 +109,7 @@ SELECT
       order by AY_Name
       ) AS covi_growth
 FROM
-    gather_covi_data
+    data_for_social_emotional_growth
 ),
 
 covi_growth_indicator AS (
@@ -98,7 +126,13 @@ SELECT
         
 FROM calc_covi_growth 
 WHERE covi_growth IS NOT NULL
+
 ),
+
+
+
+
+
 
 aggregate_covi_data AS (
 SELECT
