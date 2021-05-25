@@ -91,5 +91,5 @@ SELECT
     --SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay --does sudent have more than 1 covi assessment?
     
 FROM join_term_data_with_covi 
-WHERE covi_assessment_completed_ay = 0
+WHERE covi_assessment_completed_ay = 1
 GROUP BY contact_id
