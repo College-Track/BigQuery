@@ -31,7 +31,6 @@ SELECT
     SUM(belief_in_self_raw_score_c + belief_in_others_raw_score_c + emotional_competence_raw_score_c + engaged_living_raw_score_c) AS raw_covi_score,
     version_c,
     status_c,
-    --test_date_c, 
     co_vitality_test_completed_date_c, 
     id AS test_record_id,
     student_site_c,
@@ -66,7 +65,7 @@ GROUP BY
 SELECT 
     full_name_c,
     contact_id_covi,
-    co_vitality_test_completed_date_c,
+    --co_vitality_test_completed_date_c,
     --at_id,
     covi_at, 
     --at_name,
@@ -87,7 +86,7 @@ LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
 GROUP BY 
     full_name_c,
     contact_id_covi,
-    co_vitality_test_completed_date_c,
+    --co_vitality_test_completed_date_c,
     --at_id,
     covi_at,
     --at_name,
