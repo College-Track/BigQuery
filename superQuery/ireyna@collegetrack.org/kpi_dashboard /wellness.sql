@@ -144,21 +144,31 @@ aggregate_covi_data AS (
 SELECT
   site_short,
   SUM(covi_student_grew) AS wellness_covi_student_grew,
-  SUM(covi_assessment_completed_ay) AS wellness_covi_assessment_completed_ay,
+  contact_id_covi,
+  --SUM(covi_assessment_completed_ay) AS wellness_covi_assessment_completed_ay,
+  CASE 
+    WHEN covi_assessment_completed_ay = 1
+    THEN contact_id_covi
+    ELSE NULL 
+    END AS student_completed_covi_ay,
+
   COUNT(contact_id_covi) AS wellness_covi_denominator
 FROM
   determine_covi_indicators
 GROUP BY
-  site_short
+  site_short,
+  covi_assessment_completed_ay,
+  contact_id_covi
 )
 
 SELECT 
-    A.*
-FROM aggregate_covi_data AS A
+    wellness_covi_student_grew,
+    wellness_covi_denominator,
+    COUNT (DISTINCT contact_id_covi) AS wellness_covi_assessment_completed_ay
+FROM aggregate_covi_data 
 GROUP BY 
     site_short,
     wellness_covi_student_grew,
-    wellness_covi_assessment_completed_ay,
     wellness_covi_denominator
 
 
