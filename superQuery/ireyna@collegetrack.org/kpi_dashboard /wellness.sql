@@ -41,7 +41,7 @@ FROM `data-warehouse-289815.salesforce_clean.test_clean` AS COVI
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template`  AS GAD
     ON GAD.at_id = COVI.academic_semester_c
     
-WHERE record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
+WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     AND status_c = 'Completed'
     AND AY_Name = 'AY 2020-21'
     
