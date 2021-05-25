@@ -6,7 +6,7 @@ gather_at_data AS
 SELECT 
     full_name_c,
     at_id,
-    global_academic_semester_c,
+    global_academic_semester_name,
     contact_id,
     AY_Name,
     site
@@ -42,7 +42,7 @@ WHERE record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     AND status_c = 'Completed'
 GROUP BY 
     contact_name_c,
-    academic_semester_c,
+    academic_semester_name,
     co_vitality_scorecard_color_c,
     belief_in_self_raw_score_c,
     belief_in_others_raw_score_c,
@@ -61,6 +61,7 @@ GROUP BY
 SELECT 
     contact_id_covi,
     co_vitality_test_completed_date_c,
+    at_id,
     covi_at, 
     global_academic_semester_c,
     student_site_c,
@@ -80,6 +81,7 @@ LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
 GROUP BY 
     contact_id_covi,
     co_vitality_test_completed_date_c,
+    at_id,
     covi_at,
     global_academic_semester_c,
     student_site_c,
