@@ -21,7 +21,6 @@ gather_covi_data AS (
 SELECT 
     contact_name_c AS contact_id_covi,
     contact_id,
-    academic_semester_c AS covi_at,
     id AS test_record_id,
     site_short,
     AY_Name,
@@ -48,7 +47,6 @@ WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
 GROUP BY 
     contact_name_c,
     contact_id,
-    academic_semester_c,
     id, --test record id
     site_short,
     AY_Name
