@@ -24,9 +24,10 @@ SELECT
     id AS test_record_id,
     site_short,
     AY_Name,
-    
-    --add Covi Domain scores to obtain total raw Covitality score. Use lowest score if student has 1+ Covi
-    MIN(belief_in_self_raw_score_c + engaged_living_raw_score_c + belief_in_others_raw_score_c + emotional_competence_raw_score_c) AS min_covi_raw_score
+    belief_in_self_raw_score_c, 
+    engaged_living_raw_score_c,
+    belief_in_others_raw_score_c,
+    emotional_competence_raw_score_c
     
 FROM `data-warehouse-289815.salesforce_clean.test_clean` AS COVI
 LEFT JOIN gather_at_data AS GAD
@@ -35,13 +36,6 @@ LEFT JOIN gather_at_data AS GAD
 WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     AND status_c = 'Completed'
     AND AY_Name IN ('AY 2019-20', 'AY 2020-21')
-    
-GROUP BY 
-    contact_name_c,
-    contact_id,
-    id, --test record id
-    site_short,
-    AY_Name
 ),
 
 --Setting groundwork for indicator: students with a Covi score during 2020-21AY
@@ -83,7 +77,9 @@ data_for_social_emotional_growth AS (
     contact_id_covi,
     site_short,
     AY_Name,
-    min_covi_raw_score
+    
+     --add Covi Domain scores to obtain total raw Covitality score. Use lowest score if student has 1+ Covi
+    MIN(belief_in_self_raw_score_c + engaged_living_raw_score_c + belief_in_others_raw_score_c + emotional_competence_raw_score_c) AS covi_raw_score
 
 FROM gather_covi_data
 WHERE AY_Name IN ('AY 2019-20', 'AY 2020-21')
@@ -91,8 +87,7 @@ WHERE AY_Name IN ('AY 2019-20', 'AY 2020-21')
 GROUP BY
     site_short,
     contact_id_covi,
-    AY_Name,
-    min_covi_raw_score
+    AY_Name
     
 ORDER BY
     site_short,
@@ -104,7 +99,7 @@ calc_covi_growth AS (
 SELECT
     site_short,
     contact_id_covi,
-    min_covi_raw_score - lag(min_covi_raw_score) over (
+    covi_raw_score - lag(covi_raw_score) over (
       partition by contact_id_covi
       order by AY_Name
       ) AS covi_growth
