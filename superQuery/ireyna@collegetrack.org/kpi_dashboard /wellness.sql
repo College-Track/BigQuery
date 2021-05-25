@@ -42,6 +42,7 @@ WHERE record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     AND status_c = 'Completed'
 GROUP BY 
     contact_name_c,
+    academic_semester_c,
     co_vitality_scorecard_color_c,
     belief_in_self_raw_score_c,
     belief_in_others_raw_score_c,
