@@ -1,3 +1,4 @@
+SELECT 
     academic_semester_c,
     co_vitality_indicator_c,
     co_vitality_scorecard_color_c,
