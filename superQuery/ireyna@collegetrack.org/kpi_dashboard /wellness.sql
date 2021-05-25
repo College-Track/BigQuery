@@ -38,7 +38,7 @@ SELECT
     record_type_id
 
 FROM `data-warehouse-289815.salesforce_clean.test_clean` AS COVI
-LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template`  AS GAD
+LEFT JOIN gather_at_data  AS GAD
     ON GAD.at_id = COVI.academic_semester_c
     
 WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
