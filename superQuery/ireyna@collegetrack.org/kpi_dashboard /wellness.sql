@@ -59,6 +59,7 @@ ORDER BY
     AY_Name
 ),
 
+--Isolate students that completed a Covitality assessment in 2020-21AY
 students_that_completed_covi AS (
 SELECT 
     contact_id AS student_completed_covi_ay,
@@ -70,35 +71,7 @@ GROUP BY
     contact_id,
     site_short
 ),
-/*--Join COVI data completed 2020-21AY with contact_at data
-join_term_data_with_covi AS (
-SELECT 
-    contact_id,
-    student_site_c,
-    test_record_id,
-    
-    --Indicator for students without a Covi score during 2020-21AY
-    CASE 
-        WHEN AY_Name = 'AY 2020-21'
-        AND test_record_id IS NOT NULL 
-        THEN 1
-        ELSE 0
-        END AS covi_assessment_completed_ay
-   
-FROM gather_at_data AS A
-LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
 
-GROUP BY 
-    contact_id,
-    student_site_c,
-    raw_covi_score,
-    AY_NAME,
-    test_record_id
-),
-
-
-),
-*/
 --Using same logic from Site Director KPIs to calculate: % of students growing toward average or above social-emotional strengths
 --This KPI is done over four CTEs. The majority of the logic is done in the second CTE.
 calc_covi_growth AS (
@@ -121,16 +94,13 @@ SELECT
     --Indicator for students demonstrating growth in Covi taken between 2019-20 and 2020-21
     CASE
         WHEN covi_growth > 0 
-        AND covi_growth IS NOT NULL
         THEN 1
         ELSE 0
         END AS covi_student_grew
         
 FROM calc_covi_growth 
+WHERE covi_growth IS NOT NULL
 ),
-
--- % of students growing toward average or above social-emotional strengths
--- This KPI is done over four CTEs (could probaly be made more efficient). The majority of the logic is done in the second CTE.
 
 aggregate_covi_data AS (
 SELECT
