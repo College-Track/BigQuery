@@ -81,8 +81,8 @@ SELECT
         END AS covi_assessment_completed_ay
    
 FROM gather_at_data AS A
---LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
-LEFT JOIN gather_covi_data AS C ON A.at_id = C.covi_at
+LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
+--LEFT JOIN gather_covi_data AS C ON A.at_id = C.covi_at
 
 GROUP BY 
     full_name_c,
