@@ -118,7 +118,10 @@ SELECT
         
 FROM calc_covi_growth 
 WHERE covi_growth IS NOT NULL
-
+GROUP BY
+    site_short,
+    covi_growth,
+    contact_id_covi
 ),
 
 aggregate_covi_data AS (
