@@ -59,7 +59,6 @@ SELECT
     raw_covi_score,
     contact_id,
     AY_NAME,
-    covi_assessment_completed_ay,
     test_record_id,
     CASE 
         WHEN test_record_id IS NOT NULL THEN 1
