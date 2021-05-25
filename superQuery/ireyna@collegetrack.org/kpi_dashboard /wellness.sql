@@ -6,21 +6,22 @@ gather_at_data AS
 SELECT 
     full_name_c,
     at_id,
+    global_academic_semester_c,
     contact_id,
     AY_Name,
     site
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
-WHERE record_type_id = '01246000000RNnSAAW' --HS student
+WHERE record_type_id = '01246000000RNnSAAW' --HS student contact record type
     AND site != 'College Track Arlen'
     AND College_Track_Status_Name = 'Current CT HS Student'
-    AND AY_Name = 'AY 2020-21' --To pull in Academic Terms referenced on Covi test records this AY 
+    AND AY_Name = 'AY 2020-21' --To pull in Covi test records within this given AY 
 ),
 
 gather_covi_data AS (
 SELECT 
     contact_name_c AS contact_id_covi,
-    academic_semester_c,
+    academic_semester_c AS covi_at,
     co_vitality_scorecard_color_c,
     belief_in_self_raw_score_c,
     belief_in_others_raw_score_c,
@@ -60,6 +61,8 @@ GROUP BY
 SELECT 
     contact_id_covi,
     co_vitality_test_completed_date_c,
+    covi_at, 
+    global_academic_semester_c,
     student_site_c,
     raw_covi_score,
     contact_id,
@@ -71,11 +74,14 @@ SELECT
         END AS covi_assessment_completed_ay
    
 FROM gather_at_data AS A
+--LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
 LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
 
 GROUP BY 
     contact_id_covi,
     co_vitality_test_completed_date_c,
+    covi_at,
+    global_academic_semester_c,
     student_site_c,
     raw_covi_score,
     contact_id,
