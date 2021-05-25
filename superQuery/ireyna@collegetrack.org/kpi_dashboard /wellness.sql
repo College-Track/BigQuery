@@ -20,6 +20,7 @@ WHERE record_type_id = '01246000000RNnSAAW' --HS student contact record type
 gather_covi_data AS (
 SELECT 
     contact_name_c AS contact_id_covi,
+    contact_id,
     academic_semester_c AS covi_at,
     id AS test_record_id,
     site_short,
@@ -38,6 +39,7 @@ WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     
 GROUP BY 
     contact_name_c,
+    contact_id,
     academic_semester_c,
     id, --test record id
     site_short,
@@ -106,6 +108,7 @@ SELECT
      --Indicator for students without a Covi score during 2020-21AY
     CASE 
         WHEN AY_Name = 'AY 2020-21'
+        AND contact_id = B.contact_id_covi
         AND test_record_id IS NOT NULL 
         THEN 1
         ELSE 0
@@ -113,7 +116,9 @@ SELECT
         
     --Indicator for students demonstrating growth in Covi taken between 2019-20 and 2020-21
     CASE
-        WHEN covi_growth > 0 THEN 1
+        WHEN covi_growth > 0 
+        AND covi_growth IS NOT NULL
+        THEN 1
         ELSE 0
         END AS covi_student_grew
         
@@ -121,8 +126,7 @@ FROM
     calc_covi_growth AS A
 LEFT JOIN gather_covi_data AS B
     ON A.contact_id_covi = B.contact_id_covi
-WHERE
-    covi_growth IS NOT NULL
+
 ),
 
 -- % of students growing toward average or above social-emotional strengths
