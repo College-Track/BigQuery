@@ -59,7 +59,6 @@ join_term_data_with_covi AS (
 SELECT 
     full_name_c,
     contact_id,
-    co_vitality_test_completed_date_c,
     covi_at, 
     student_site_c,
     raw_covi_score,
