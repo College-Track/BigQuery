@@ -51,7 +51,7 @@ GROUP BY
     record_type_id
 )
 
---Join contact_at data with COVI data to obtain contact id and pull in 2019-20AY Covi data
+--Join contact_at data with COVI data to obtain contact id and pull in 2020-21AY Covi data
 --join_term_data_with_covi AS (
 SELECT 
     co_vitality_test_completed_date_c,
@@ -66,6 +66,6 @@ SELECT
         END AS covi_assessment_completed_ay
    
 FROM gather_at_data AS A
-LEFT JOIN gather_covi_data C ON A.at_id = C.academic_semester_c
-WHERE AY_Name = 'AY 2019-20'
+LEFT JOIN gather_covi_data AS C ON A.at_id = C.academic_semester_c
+WHERE AY_Name = 'AY 2020-21'
     AND status_c = 'Completed'
