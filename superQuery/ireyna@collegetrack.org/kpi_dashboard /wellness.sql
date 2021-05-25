@@ -1,6 +1,15 @@
+
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.wellness` 
+OPTIONS
+    (
+    description= "Aggregating Wellness metrics for the Data Studio KPI dashboard"
+    )
+AS
+
+
 WITH 
 
---Gather contact and academic term data to join with COVI data
+--Gather contact and academic term data to join with COVI data to set reporting groups
 gather_at_data AS
 (
 SELECT 
@@ -16,11 +25,11 @@ WHERE record_type_id = '01246000000RNnSAAW' --HS student contact record type
     AND College_Track_Status_Name = 'Current CT HS Student'
 ),
 
---Pull Covi assessments completed within appropriate AYs (2019,20, 2020-21)
+--Pull Covi assessments completed within appropriate AYs (2019-20, 2020-21)
 gather_covi_data AS (
 SELECT 
     contact_name_c AS contact_id_covi,
-    contact_id,
+    contact_id, --from contact_at
     id AS test_record_id,
     site_short,
     AY_Name,
@@ -38,7 +47,9 @@ WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     AND AY_Name IN ('AY 2019-20', 'AY 2020-21')
 ),
 
---Setting groundwork for indicator: students with a Covi score during 2020-21AY
+--Setting groundwork for KPI indicator: % of students who have taken the the CoVi assessment each academic year (2020-21AY)
+--Denom should be Current CT HS Student
+--Wondering if this should be 2019-20AY instead?
 completing_covi_data AS (
 SELECT 
     site_short,
@@ -129,6 +140,7 @@ GROUP BY
   site_short
 ),
 
+--Growth KPIs and students completing Covitality KPI
 prep_all_wellness_kpis AS (
 SELECT
     A.site_short,
@@ -146,12 +158,3 @@ SELECT
     wellness_covi_student_grew,
     wellness_covi_growth_denominator
 FROM prep_all_wellness_kpis 
-
-
-/*
-gather_casenotes_data AS (
-SELECT 
-)
-*/
-
-    
