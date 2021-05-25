@@ -1,4 +1,18 @@
-SELECT
+WITH gather_student_data AS(
+  SELECT
+    site_short,
+    high_school_graduating_class_c,
+    Most_Recent_GPA_Cumulative_bucket,
+    Ethnic_background_c,
+    Gender_c,
+    Contact_Id
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_template`
+  WHERE
+    College_Track_Status_c IN ('11A', '12A', '18a')
+),
+gather_survey_data AS (
+  SELECT
     *
   EXCEPT(
       completion_status,
@@ -49,3 +63,8 @@ SELECT
     )
   FROM
     `data-studio-260217.surveys.fy21_hs_survey`
+)
+    
+SELECT 
+your_responses_to_this_survey_are_anonymous_we_only_ask_for_your_name_for_determ 
+FROM gather_survey_data
