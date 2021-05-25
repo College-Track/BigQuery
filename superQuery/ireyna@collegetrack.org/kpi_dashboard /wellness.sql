@@ -6,7 +6,7 @@ gather_at_data AS
 SELECT 
     full_name_c,
     at_id,
-    global_academic_semester_name,
+    at_name,
     contact_id,
     AY_Name,
     site
@@ -63,7 +63,7 @@ SELECT
     co_vitality_test_completed_date_c,
     at_id,
     covi_at, 
-    global_academic_semester_c,
+    at_name,
     student_site_c,
     raw_covi_score,
     contact_id,
@@ -83,7 +83,7 @@ GROUP BY
     co_vitality_test_completed_date_c,
     at_id,
     covi_at,
-    global_academic_semester_c,
+    at_name,
     student_site_c,
     raw_covi_score,
     contact_id,
