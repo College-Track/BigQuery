@@ -63,6 +63,7 @@ gather_survey_data AS (
     )
   FROM
     `data-studio-260217.surveys.fy21_hs_survey`
+    WHERE your_responses_to_this_survey_are_anonymous_we_only_ask_for_your_name_for_determ = 'Yes, I accept to share my survey results with staff at my College Track center.'
 )
     
 SELECT 
