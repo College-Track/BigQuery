@@ -76,7 +76,7 @@ SELECT
    
 FROM gather_at_data AS A
 --LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
-LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
+LEFT JOIN gather_covi_data AS C ON A.at_id = C.covi_at
 
 GROUP BY 
     contact_id_covi,
