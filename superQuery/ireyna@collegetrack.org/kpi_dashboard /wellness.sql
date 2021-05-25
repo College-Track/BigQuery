@@ -59,6 +59,7 @@ GROUP BY
 --Join contact_at data with COVI data to obtain contact id and pull in 2020-21AY Covi data
 --join_term_data_with_covi AS (
 SELECT 
+    full_name_c,
     contact_id_covi,
     co_vitality_test_completed_date_c,
     at_id,
@@ -79,6 +80,7 @@ FROM gather_at_data AS A
 LEFT JOIN gather_covi_data AS C ON A.at_id = C.covi_at
 
 GROUP BY 
+    full_name_c,
     contact_id_covi,
     co_vitality_test_completed_date_c,
     at_id,
