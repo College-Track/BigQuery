@@ -67,5 +67,5 @@ gather_survey_data AS (
 )
     
 SELECT 
-your_responses_to_this_survey_are_anonymous_we_only_ask_for_your_name_for_determ 
+* 
 FROM gather_survey_data
