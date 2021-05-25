@@ -69,7 +69,6 @@ GROUP BY
     site_short
 ),
 
-
 --Using same logic from Site Director KPIs to calculate: % of students growing toward average or above social-emotional strengths
 --This KPI is done over four CTEs. The majority of the logic is done in the second CTE.
 data_for_social_emotional_growth AS ( 
@@ -88,7 +87,6 @@ GROUP BY
     site_short,
     contact_id_covi,
     AY_Name
-    
 ORDER BY
     site_short,
     contact_id_covi,
@@ -103,8 +101,7 @@ SELECT
       partition by contact_id_covi
       order by AY_Name
       ) AS covi_growth
-FROM
-    data_for_social_emotional_growth
+FROM data_for_social_emotional_growth
 ),
 
 covi_growth_indicator AS (
@@ -124,17 +121,12 @@ WHERE covi_growth IS NOT NULL
 
 ),
 
-
-
-
-
-
 aggregate_covi_data AS (
 SELECT
   A.site_short,
   COUNT(DISTINCT student_completed_covi_ay) AS wellness_covi_assessment_completed_ay,
   SUM(covi_student_grew) AS wellness_covi_student_grew,
-  COUNT(contact_id_covi) AS wellness_covi_denominator
+  COUNT(DISTINCT contact_id_covi) AS wellness_covi_growth_denominator
 FROM covi_growth_indicator AS A
 LEFT JOIN students_that_completed_covi AS B
     ON A.site_short = B.site_short
