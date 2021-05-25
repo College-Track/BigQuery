@@ -126,7 +126,15 @@ FROM
     calc_covi_growth AS A
 LEFT JOIN gather_covi_data AS B
     ON A.contact_id_covi = B.contact_id_covi
-
+    
+GROUP BY
+    A.site_short,
+    A.contact_id_covi,
+    B.contact_id_covi,
+    B.contact_id,
+    B.AY_NAME,
+    B.test_record_id,
+    covi_growth
 ),
 
 -- % of students growing toward average or above social-emotional strengths
@@ -141,8 +149,7 @@ SELECT
 FROM
   determine_covi_indicators
 GROUP BY
-  site_short,
-  contact_id_covi
+  site_short
 )
 
 SELECT 
