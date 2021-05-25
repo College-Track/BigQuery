@@ -1,5 +1,5 @@
 SELECT 
-    full_name,
+    full_name_c,
     at_id,
     contact_id,
     AY_Name,
