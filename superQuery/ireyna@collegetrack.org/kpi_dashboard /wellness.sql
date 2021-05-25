@@ -39,7 +39,7 @@ SELECT
 
 FROM `data-warehouse-289815.salesforce_clean.test_clean` AS COVI
 LEFT JOIN gather_at_data AS GAD
-    ON GAD.at_id = COVI.covi_at
+    ON GAD.at_id = COVI.academic_semester_c
     
 WHERE record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     AND status_c = 'Completed'
