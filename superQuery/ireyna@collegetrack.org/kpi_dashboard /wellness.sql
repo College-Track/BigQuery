@@ -77,7 +77,6 @@ LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
 GROUP BY 
     full_name_c,
     contact_id,
-    co_vitality_test_completed_date_c,
     covi_at,
     student_site_c,
     raw_covi_score,
