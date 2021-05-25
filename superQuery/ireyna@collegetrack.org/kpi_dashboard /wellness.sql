@@ -59,3 +59,40 @@ GROUP BY
     id, --test record id
     student_site_c,
     record_type_id
+)
+
+--Join contact_at data with COVI data to obtain contact id and pull in 2020-21AY Covi data
+--join_term_data_with_covi AS (
+SELECT 
+    full_name_c,
+    contact_id_covi,
+    co_vitality_test_completed_date_c,
+    at_id,
+    covi_at, 
+    --at_name,
+    student_site_c,
+    raw_covi_score,
+    contact_id,
+    AY_NAME,
+    test_record_id,
+    CASE 
+        WHEN test_record_id IS NOT NULL THEN 1
+        ELSE 0
+        END AS covi_assessment_completed_ay
+   
+FROM gather_at_data AS A
+--LEFT JOIN gather_covi_data AS C ON A.contact_id = C.contact_id_covi
+LEFT JOIN gather_covi_data AS C ON A.at_id = C.covi_at
+
+GROUP BY 
+    full_name_c,
+    contact_id_covi,
+    co_vitality_test_completed_date_c,
+    at_id,
+    covi_at,
+    --at_name,
+    student_site_c,
+    raw_covi_score,
+    contact_id,
+    AY_NAME,
+    test_record_id
