@@ -16,7 +16,6 @@ SELECT
       confirm_your_high_school_class,
       ct_experience_subsection,
       ct_has_helped_me_improve_my_ability_to_identify_share_things_im_passionate_about,
-      ct_safety_subsection,
       ct_services_subsection,
       ct_site_section,
       earning_degree_value_subsection,
