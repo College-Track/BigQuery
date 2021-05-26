@@ -1,11 +1,11 @@
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
 OPTIONS
     (
     description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
     )
 AS
-*/
+
 
 --Pull in active CT students for 10th grade EFCKPI; 11th grade college aspirations KPI
 WITH gather_data AS ( 
@@ -133,7 +133,7 @@ gather_data_twelfth_grade AS (
         WHERE College_Fit_Type_Applied_c IN ("Best Fit","Good Fit")  
         AND Contact_Id=student_c
         group by student_c
-        ) AS applied_best_good_situational,
+        ) AS applied_best_good,
             
       
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
@@ -173,7 +173,7 @@ gather_twelfth_grade_metrics AS(
             ELSE 0
             END AS cc_hs_accepted_affordable,
         CASE 
-            WHEN applied_best_good_situational IS NOT NULL THEN 1
+            WHEN applied_best_good IS NOT NULL THEN 1
             ELSE 0
             END AS cc_hs_applied_best_good_situational,
         CASE 
@@ -197,7 +197,7 @@ gather_twelfth_grade_metrics AS(
     FROM gather_data_twelfth_grade
 ),
 
-/*
+
 --Aggregating 10th Grade EFC KPI
 prep_tenth_grade_metrics AS ( 
     SELECT 
@@ -230,34 +230,8 @@ prep_twelfth_grade_metrics AS (
         SUM(cc_hs_enrolled_affordable) AS cc_hs_enrolled_affordable
     FROM gather_twelfth_grade_metrics
     GROUP BY site_short
-),
-*/
---combine all KPIs in prep for final SELECT statement
-combine_all_cc_hs_kpis AS (
-SELECT
-    a.site_short,
-    SUM(hs_EFC_10th_count) AS cc_hs_EFC_10th_num,
-    SUM(hs_EFC_10th_denom_count) AS cc_hs_EFC_10th_denom,
-    SUM(cc_hs_aspirations_num_prep) AS cc_hs_aspirations_num,
-    SUM(b.aspirations_denom_count) AS cc_hs_aspirations_denom,
-    SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,
-    SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
-    SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational,
-    SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational,
-    SUM(fafsa_verification_prep) AS cc_hs_financial_aid_submission_verification,
-    SUM(cc_hs_enrolled_best_good_situational) AS cc_hs_enrolled_best_good_situational,
-    SUM(cc_hs_enrolled_affordable) AS cc_hs_enrolled_affordable
-    
-    FROM gather_data as a
-    LEFT JOIN gather_eleventh_grade_metrics AS b
-        ON a.site_short=b.site_short
-    LEFT JOIN gather_twelfth_grade_metrics AS c
-        ON a.site_short=c.site_short
-    GROUP BY a.site_short
 )
-SELECT *
-FROM combine_all_cc_hs_kpis
-/*
+
 #final kpi join
 SELECT 
     gd.site_short,
@@ -268,7 +242,21 @@ SELECT
         LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short
         LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short
         LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
+GROUP BY
+    site_short, 
+    cc_hs_EFC_10th_num,
+    cc_hs_EFC_10th_denom,
+    cc_hs_aspirations_num,
+    cc_hs_aspirations_denom,
+    cc_hs_above_80_cc_attendance,
+    cc_hs_financial_aid_submission_verification,
+    cc_hs_accepted_affordable,
+    cc_hs_applied_best_good_situational,
+    cc_hs_accepted_best_good_situational,
+    cc_hs_enrolled_best_good_situational, #projecting matriculation
+    cc_hs_enrolled_affordable #projecting matriculation
+    
 
 
-*/
+
 
