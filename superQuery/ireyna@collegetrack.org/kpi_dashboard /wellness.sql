@@ -171,7 +171,7 @@ FROM gather_wellness_survey_data
 GROUP BY site_short
 ),
 
---Growth KPIs and students completing Covitality KPI
+--Growth KPIs, survey KPI, students completing Covitality KPI
 prep_all_wellness_kpis AS (
 SELECT
     A.site_short,
