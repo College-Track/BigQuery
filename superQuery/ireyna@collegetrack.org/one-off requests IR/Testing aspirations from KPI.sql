@@ -45,4 +45,6 @@
     FROM
         `data-warehouse-289815.salesforce_clean.contact_template` AS c
         LEFT JOIN `data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id = a.student_c
+        where  c.grade_c IN ('11th Grade','10th Grade')
+        AND college_track_status_c = '11A'
         group by site_short, contact_id, full_name_c
