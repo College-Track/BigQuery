@@ -13,7 +13,8 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
 ON CAT.AT_Id = CT.Academic_Semester_c
 
 --pull in students that have attended 1+ workshop in Fall/Spring 2019-20, excluding NSO 
-WHERE Attendance_Numerator_c > 0
+WHERE site_short <> "College Track Arlen"
+    AND Attendance_Numerator_c > 0
     AND dosage_types_c NOT LIKE '%NSO%'
     AND AY_Name = "AY 2019-20"
     AND term_c IN ("Fall","Spring")
