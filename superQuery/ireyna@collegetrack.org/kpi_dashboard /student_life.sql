@@ -1,4 +1,5 @@
 
+
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -67,22 +68,9 @@ gather_mse_data AS ( #current AY.  #IR note - add term 'Summer'?
         
     WHERE sl.record_type_id = '01246000000ZNi8AAG' #Summer Experience
     AND AY_name IN ('AY 2020-21', 'AY 2019-20')
-    #AND term_c = 'Summer'
+    AND term_c = 'Summer'
     AND experience_meaningful_c = True
     AND status_c = 'Approved'
-    
-GROUP BY 
-    contact_id,
-    site_short,
-    type_c,
-    semester_c,
-    AY_name,
-    sl.id,
-    competitive_c,
-    type_c,
-    term_c,
-    indicator_completed_ct_hs_program_c,
-    college_track_status_c 
 ),
 
 gather_attendance_data AS ( #group attendance data by student first, aggregate at site level in prep_attendance_kpi
@@ -131,15 +119,17 @@ aggregate_dream_kpi AS (
 
 aggregate_mse_kpis AS (
     SELECT 
-        site_short,
+        c.site_short,
         SUM(mse_completed_prev_AY) AS sl_mse_completed_prev_AY,
         SUM(mse_completed_current_AY) AS sl_mse_completed_current_AY,
         SUM(mse_competitive_prev_AY) AS sl_mse_competitive_prev_AY,
         SUM(mse_competitive_current_AY) AS sl_mse_competitive_current_AY,
         SUM(mse_internship_prev_AY) AS sl_mse_internship_prev_AY,
         SUM(mse_internship_current_AY) AS sl_mse_internship_current_AY
-    FROM gather_mse_data
-    GROUP BY site_short
+    FROM gather_contact_data AS c
+    LEFT JOIN gather_mse_data AS m
+    ON c.contact_id = m.contact_id
+    GROUP BY c.site_short, c.contact_id
 )
 
 SELECT 
