@@ -66,12 +66,15 @@ gather_mse_data AS (
         --This will allow us to include PS student MSEs completed last Summer while still in HS
         --pull completed MSE last Summer
         
+        --pull completed MSE last Summer
+
         MAX(CASE
             WHEN (AY_name = 'AY 2019-20'
             AND term_c = 'Summer')
             THEN 1
             ELSE 0
             END) AS mse_completed_prev_AY,
+        --pull competitive MSE last Summer
         MAX(CASE 
             WHEN (competitive_c = True 
             AND AY_name = 'AY 2019-20'
@@ -79,6 +82,7 @@ gather_mse_data AS (
             THEN 1
             ELSE 0
             END) AS mse_competitive_prev_AY,
+        --pull completed internship last AY. Should this be limited to Summer only?
         MAX(CASE
             WHEN (type_c = 'Internship' 
             AND AY_name = 'AY 2019-20')
