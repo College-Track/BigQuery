@@ -1,11 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.wellness` 
 OPTIONS
     (
     description= "Aggregating Wellness metrics for the Data Studio KPI dashboard"
     )
 AS
-
+*/
 
 WITH 
 
@@ -48,7 +48,7 @@ WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
 ),
 
 --Setting groundwork for KPI indicator: % of students who have taken the the CoVi assessment each academic year (2020-21AY)
---Denom should be Current CT HS Student
+--Data gathered through 2 CTEs. Denom should be Current CT HS Student
 --Wondering if this should be 2019-20AY instead?
 completing_covi_data AS (
 SELECT 
@@ -140,21 +140,60 @@ GROUP BY
   site_short
 ),
 
+gather_wellness_survey_data AS (
+SELECT
+    CT.site_short,
+    S.contact_id AS students_receiving_wellness_services,
+    
+    -- % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health
+    -- The denominator for this metric will be students who answered "yes" to receiving wellness services
+    CASE
+        WHEN (
+            working_with_college_track_wellness_services_has_assisted_you_in_managing_your_s = "Strongly Agree"
+            OR working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c = "Strongly Agree"
+            OR working_with_college_tracks_wellness_services_has_enhanced_your_mental_health = "Strongly Agree"
+            )
+        THEN 1
+        ELSE 0
+        END AS strongly_agree_wellness_services_assisted_them
+        
+FROM `data-studio-260217.surveys.fy21_hs_survey` S
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CT ON CT.Contact_Id = S.contact_id
+WHERE did_you_engage_with_wellness_services_at_your_site = "Yes"
+),
+
+aggregate_wellness_survey_data AS (
+SELECT 
+    COUNT (DISTINCT students_receiving_wellness_services) AS wellness_survey_wellness_services_assisted_denom,
+    SUM(strongly_agree_wellness_services_assisted_them) AS wellness_survey_wellness_services_assisted_num,
+    site_short
+FROM gather_wellness_survey_data 
+GROUP BY site_short
+),
+
 --Growth KPIs and students completing Covitality KPI
 prep_all_wellness_kpis AS (
 SELECT
     A.site_short,
     wellness_covi_assessment_completed_ay,
     wellness_covi_student_grew,
-    wellness_covi_growth_denominator
+    wellness_covi_growth_denominator,
+    wellness_survey_wellness_services_assisted_num,
+    wellness_survey_wellness_services_assisted_denom
 FROM aggregate_growth_covi_data AS A
+
 LEFT JOIN students_that_completed_covi AS B
 ON A.site_short = B.site_short
+
+LEFT JOIN aggregate_wellness_survey_data AS C
+ON A.site_short = C.site_short
 )
 
 SELECT 
     site_short,
     wellness_covi_assessment_completed_ay,
     wellness_covi_student_grew,
-    wellness_covi_growth_denominator
+    wellness_covi_growth_denominator,
+    wellness_survey_wellness_services_assisted_num,
+    wellness_survey_wellness_services_assisted_denom
 FROM prep_all_wellness_kpis 
