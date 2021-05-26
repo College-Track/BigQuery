@@ -1,10 +1,11 @@
+--pull in students that have at least 1
 SELECT 
-    DISTINCT CT.student_c,
-    CASE
+    COUNT (DISTINCT CT.student_c),
+    MAX(CASE
         WHEN college_track_status_c IN ('11A') --current ct hs student
         THEN 1
         ELSE 0
-        END AS mse_denom,
+        END) AS mse_denom,
     site_short
     
 FROM `data-warehouse-289815.salesforce_clean.class_template` CT
@@ -21,3 +22,5 @@ WHERE Attendance_Numerator_c > 0
 --pull in students that were active at end of Spring 2019-20
     AND CAT.global_academic_semester_c = 'a3646000000dMXhAAM' --Spring 2019-20 (Semester)
     AND student_audit_status_c IN ('Current CT HS Student','Leave of Absence')
+GROUP BY
+    site_short
