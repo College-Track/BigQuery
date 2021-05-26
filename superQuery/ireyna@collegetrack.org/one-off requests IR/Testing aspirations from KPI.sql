@@ -1,5 +1,5 @@
  SELECT
-        contact_id,
+        full_name_c,contact_id,
         site_short,
         --10th Grade EFC, FAFSA4Caster only
         CASE
