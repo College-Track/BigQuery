@@ -18,9 +18,21 @@ WITH gather_rubric_data AS
         WHEN Campus_Outlook_c = "CO_Y" THEN "Neutral outlook"
         WHEN Campus_Outlook_c = "CO_R" THEN "Negative outlook"    
         END AS Campus_Outlook_c,
-    Support_Network_c,
-    Personal_Well_Being_c,
-    Social_Stability_c,
+    CASE
+        WHEN Support_Network_c = "SN_G" THEN "2+ people in network to check-in with on wellness concerns"
+        WHEN Support_Network_c= "SN_Y" THEN "1+ person in network to check-in with on wellness concerns"
+        WHEN Support_Network_c = "SN_R" THEN "No one to check-in on wellness concerns"    
+    END AS Support_Network_c,
+    CASE
+        WHEN Personal_Well_Being_c = "PWB_G" THEN "Taking care of themselves, is stable, and is aware of physical and mental health resources on campus or in the community"
+        WHEN Personal_Well_Being_c = "PWB_Y" THEN "Struggling physically or emotionally, but are utilizing on campus/community resources to manage"
+        WHEN Personal_Well_Being_c = "PWB_R" THEN "Not doing well physically or emotionally and is not utilizing on campus/community resources to manage"
+    END AS Personal_Well_Being_c,
+    CASE
+        WHEN Social_Stability_c = "SS_G" THEN "In a stable & healthy place with all close friends and family"
+        WHEN Social_Stability_c = "SS_Y" THEN "Not in a stable & healthy place with all close friends and family, but is managing it in a healthy manner"
+        WHEN Social_Stability_c = "SS_R" THEN "Not in a stable & healthy place with close friends and/or family, and not managing it in a healthy manner"
+    END AS Social_Stability_c,
 
     FROM 
     `data-studio-260217.college_rubric.filtered_college_rubric`
