@@ -1,5 +1,4 @@
 
-
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -129,7 +128,7 @@ aggregate_mse_kpis AS (
     FROM gather_contact_data AS c
     LEFT JOIN gather_mse_data AS m
     ON c.contact_id = m.contact_id
-    GROUP BY c.site_short, c.contact_id
+    GROUP BY c.site_short
 )
 
 SELECT 
