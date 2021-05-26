@@ -33,6 +33,21 @@ WITH gather_rubric_data AS
         WHEN Social_Stability_c = "SS_Y" THEN "Not in a stable & healthy place with all close friends and family, but is managing it in a healthy manner"
         WHEN Social_Stability_c = "SS_R" THEN "Not in a stable & healthy place with close friends and/or family, and not managing it in a healthy manner"
     END AS Social_Stability_c,
+    CASE    
+        WHEN Campus_Outlook_c = "CO_G" THEN 3
+        WHEN Campus_Outlook_c = "CO_Y" THEN 2
+        WHEN Campus_Outlook_c = "CO_R" THEN 1
+        WHEN Support_Network_c = "SN_G" THEN 3
+        WHEN Support_Network_c= "SN_Y" THEN 2
+        WHEN Support_Network_c = "SN_R" THEN 1
+        WHEN Personal_Well_Being_c = "PWB_G" THEN 3
+        WHEN Personal_Well_Being_c = "PWB_Y" THEN 2
+        WHEN Personal_Well_Being_c = "PWB_R" THEN 1
+        WHEN Social_Stability_c = "SS_G" THEN 3
+        WHEN Social_Stability_c = "SS_Y" THEN 2
+        WHEN Social_Stability_c = "SS_R" THEN 1
+    ELSE 0
+    END AS adv_rubric_sort
 
     FROM 
     `data-studio-260217.college_rubric.filtered_college_rubric`
