@@ -1,11 +1,11 @@
- /*
+
 CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.student_life` 
 OPTIONS
     (
     description= "Aggregating Student Life KPI metrics for the Data Studio KPI dashboard"
     )
 AS
-*/
+
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -174,7 +174,6 @@ SELECT
         LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.site_short=attendance_kpi.site_short
         LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.site_short=mse_kpi.site_short
         LEFT JOIN aggregate_mse_reporting_group AS mse_grp ON mse_grp.site_short=mse_kpi.site_short
-        --LEFT JOIN set_mse_reporting_group AS mse_denom ON d.site_short=mse_denom.site_short
     GROUP BY
         site_short,
         sl_mse_reporting_group_prev_AY,
