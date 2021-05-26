@@ -242,20 +242,6 @@ SELECT
         LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short
         LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short
         LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
-GROUP BY
-    site_short, 
-    cc_hs_EFC_10th_num,
-    cc_hs_EFC_10th_denom,
-    cc_hs_aspirations_num,
-    cc_hs_aspirations_denom,
-    cc_hs_above_80_cc_attendance,
-    cc_hs_financial_aid_submission_verification,
-    cc_hs_accepted_affordable,
-    cc_hs_applied_best_good_situational,
-    cc_hs_accepted_best_good_situational,
-    cc_hs_enrolled_best_good_situational, #projecting matriculation
-    cc_hs_enrolled_affordable #projecting matriculation
-    
 
 
 
