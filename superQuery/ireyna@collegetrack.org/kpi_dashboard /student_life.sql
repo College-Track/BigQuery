@@ -30,11 +30,11 @@ WITH gather_contact_data AS(
 set_mse_reporting_group AS (
 SELECT 
     CAT.student_c,
-    MAX(CASE 
+    /*MAX(CASE 
         WHEN CAT.student_c IS NOT NULL
         THEN 1
         ELSE 0
-    END) AS student_count,
+    END) AS student_count,*/
     site_short
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT
@@ -66,7 +66,11 @@ gather_mse_data AS (
     SELECT 
         contact_id,
         m.site_short,
-      
+         MAX(CASE 
+        WHEN m.student_c IS NOT NULL
+        THEN 1
+        ELSE 0
+        END) AS student_count,
         --pull completed MSE last Summer
         MAX(CASE
             WHEN (AY_name = 'AY 2019-20'
