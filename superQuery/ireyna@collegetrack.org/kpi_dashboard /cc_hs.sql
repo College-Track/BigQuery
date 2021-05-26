@@ -253,7 +253,7 @@ SELECT
         ON a.site_short=b.site_short
     LEFT JOIN gather_twelfth_grade_metrics AS c
         ON a.site_short=c.site_short
-    GROUP BY site_short
+    GROUP BY a.site_short
 )
 SELECT *
 FROM combine_all_cc_hs_kpis
