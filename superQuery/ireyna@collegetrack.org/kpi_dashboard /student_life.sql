@@ -68,7 +68,7 @@ gather_mse_data AS ( #current AY.  #IR note - add term 'Summer'?
     #AND term_c = 'Summer'
     AND experience_meaningful_c = True
     AND status_c = 'Approved'
-    AND college_track_status_c = '11A'
+    
 ),
 
 gather_attendance_data AS ( #group attendance data by student first, aggregate at site level in prep_attendance_kpi
