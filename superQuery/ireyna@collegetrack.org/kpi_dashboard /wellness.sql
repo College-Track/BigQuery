@@ -190,10 +190,5 @@ ON A.site_short = C.site_short
 )
 
 SELECT 
-    site_short,
-    wellness_covi_assessment_completed_ay,
-    wellness_covi_student_grew,
-    wellness_covi_growth_denominator,
-    wellness_survey_wellness_services_assisted_num,
-    wellness_survey_wellness_services_assisted_denom
+    *
 FROM prep_all_wellness_kpis 
