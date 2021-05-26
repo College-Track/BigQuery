@@ -1,11 +1,11 @@
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.wellness` 
 OPTIONS
     (
     description= "Aggregating Wellness metrics for the Data Studio KPI dashboard"
     )
 AS
-*/
+
 
 WITH 
 
@@ -171,7 +171,7 @@ FROM gather_wellness_survey_data
 GROUP BY site_short
 ),
 
---Growth KPIs, survey KPI, students completing Covitality KPI
+--Growth KPIs and students completing Covitality KPI
 prep_all_wellness_kpis AS (
 SELECT
     A.site_short,
