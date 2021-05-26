@@ -1,4 +1,3 @@
-set_mse_reporting_group AS (
 SELECT 
     COUNT (DISTINCT CT.student_c) AS mse_denom_prev_ay,
     CAT.student_c,
@@ -20,4 +19,3 @@ WHERE site_short <> "College Track Arlen"
     AND student_audit_status_c IN ('Current CT HS Student','Leave of Absence')
 GROUP BY
     site_short, CAT.student_c
-),
