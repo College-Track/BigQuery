@@ -21,9 +21,6 @@ gather_mse_data AS ( #current AY.  #IR note - add term 'Summer'?
     SELECT 
         contact_id,
         site_short,
-        type_c,
-        semester_c,
-        AY_name,
         MAX(CASE
             WHEN (sl.id IS NOT NULL 
             AND AY_name = 'AY 2019-20'
@@ -72,10 +69,7 @@ gather_mse_data AS ( #current AY.  #IR note - add term 'Summer'?
     AND status_c = 'Approved'
 GROUP BY 
     contact_id,
-    site_short,
-    type_c,
-    semester_c,
-    AY_name
+    site_short
 ),
 
 gather_attendance_data AS ( #group attendance data by student first, aggregate at site level in prep_attendance_kpi
