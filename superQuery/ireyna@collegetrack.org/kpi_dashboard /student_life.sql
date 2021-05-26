@@ -1,3 +1,4 @@
+SELECT 
     COUNT (DISTINCT CT.student_c) AS mse_denom_prev_ay,
     CAT.student_c,
     site_short
