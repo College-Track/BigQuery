@@ -1,4 +1,5 @@
 
+
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -11,7 +12,7 @@ WITH gather_contact_data AS(
             END AS dream_declared
             
     FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C
-    WHERE college_track_status_c = '11A'
+    WHERE (college_track_status_c = '11A' OR indicator_completed_ct_hs_program_c = TRUE)
 
 ),
 
