@@ -146,16 +146,22 @@ aggregate_dream_kpi AS (
     FROM gather_contact_data
     GROUP BY site_short
 ),
+
+aggregate_mse_reporting_group AS (
+SELECT 
+    site_short,
+    SUM(mse_reporting_group) AS sl_mse_reporting_group_prev_AY
+FROM set_mse_reporting_group
+GROUP BY site_short
+),
+
 aggregate_mse_kpis AS (
     SELECT 
         a.site_short,
-        SUM(mse_reporting_group) AS sl_mse_reporting_group_prev_AY,
         SUM(mse_completed_prev_AY) AS sl_mse_completed_prev_AY,
         SUM(mse_competitive_prev_AY) AS sl_mse_competitive_prev_AY,
         SUM(mse_internship_prev_AY) AS sl_mse_internship_prev_AY,
     FROM gather_mse_data AS A
-    LEFT JOIN set_mse_reporting_group AS B
-    ON a.site_short = b.site_short
     GROUP BY site_short
 )
 SELECT 
@@ -167,10 +173,11 @@ SELECT
     FROM aggregate_dream_kpi AS d 
         LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.site_short=attendance_kpi.site_short
         LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.site_short=mse_kpi.site_short
+        LEFT JOIN aggregate_mse_reporting_group AS mse_grp ON mse_grp.site_short=mse_kpi.site_short
         --LEFT JOIN set_mse_reporting_group AS mse_denom ON d.site_short=mse_denom.site_short
     GROUP BY
         site_short,
-        mse_kpi.sl_mse_reporting_group_prev_AY,
+        sl_mse_reporting_group_prev_AY,
         sl_mse_completed_prev_AY,
         sl_mse_competitive_prev_AY,
         sl_mse_internship_prev_AY,
