@@ -140,18 +140,18 @@ GROUP BY
   site_short
 ),
 
+-- % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health
+-- The denominator for this metric will be students who answered "yes" to receiving wellness services
 gather_wellness_survey_data AS (
 SELECT
     CT.site_short,
     S.contact_id AS students_receiving_wellness_services,
     
-    -- % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health
-    -- The denominator for this metric will be students who answered "yes" to receiving wellness services
     CASE
         WHEN (
-            working_with_college_track_wellness_services_has_assisted_you_in_managing_your_s = "Strongly Agree"
-            OR working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c = "Strongly Agree"
-            OR working_with_college_tracks_wellness_services_has_enhanced_your_mental_health = "Strongly Agree"
+            working_with_college_track_wellness_services_has_assisted_you_in_managing_your_s IN ("Strongly Agree", "Totalmente de acuerdo")
+            OR working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c IN ("Strongly Agree", "Totalmente de acuerdo")
+            OR working_with_college_tracks_wellness_services_has_enhanced_your_mental_health IN ("Strongly Agree", "Totalmente de acuerdo")
             )
         THEN 1
         ELSE 0
