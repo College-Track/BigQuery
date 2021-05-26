@@ -1,4 +1,5 @@
 
+
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -25,8 +26,8 @@ gather_mse_data AS ( #current AY.  #IR note - add term 'Summer'?
         semester_c,
         AY_name,
         CASE
-            --WHEN (sl.id IS NOT NULL 
-            WHEN (AY_name = 'AY 2019-20'
+            WHEN (sl.id IS NOT NULL 
+            AND AY_name = 'AY 2019-20'
             AND term_c = 'Summer'
             AND (indicator_completed_ct_hs_program_c = TRUE OR college_track_status_c = '11A')) THEN 1
             ELSE 0
