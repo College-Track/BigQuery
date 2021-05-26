@@ -1,4 +1,3 @@
---pull in students that have at least 1
 SELECT 
     COUNT (DISTINCT CT.student_c),
     /*MAX(CASE
@@ -9,7 +8,7 @@ SELECT
     site_short
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT
-ON CAT.AT_Id = CT.Academic_Semester_c
+ON CAT.contact_id = CT.student_c
 
 --pull in students that have attended 1+ workshop in Fall/Spring 2019-20, excluding NSO 
 WHERE site_short <> "College Track Arlen"
