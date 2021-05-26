@@ -1,11 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.cc_hs` 
 OPTIONS
     (
     description= "Aggregating College Completion - HS metrics for the Data Studio KPI dashboard"
     )
 AS
-
+*/
 
 --Pull in active CT students for 10th grade EFCKPI; 11th grade college aspirations KPI
 WITH gather_data AS ( 
