@@ -197,7 +197,7 @@ gather_twelfth_grade_metrics AS(
     FROM gather_data_twelfth_grade
 ),
 
-
+/*
 --Aggregating 10th Grade EFC KPI
 prep_tenth_grade_metrics AS ( 
     SELECT 
@@ -230,8 +230,34 @@ prep_twelfth_grade_metrics AS (
         SUM(cc_hs_enrolled_affordable) AS cc_hs_enrolled_affordable
     FROM gather_twelfth_grade_metrics
     GROUP BY site_short
+),
+*/
+--combine all KPIs in prep for final SELECT statement
+combine_all_cc_hs_kpis AS (
+SELECT
+    a.site_short,
+    SUM(hs_EFC_10th_count) AS cc_hs_EFC_10th_num,
+    SUM(hs_EFC_10th_denom_count) AS cc_hs_EFC_10th_denom,
+    SUM(cc_hs_aspirations_num_prep) AS cc_hs_aspirations_num,
+    SUM(b.aspirations_denom_count) AS cc_hs_aspirations_denom,
+    SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,
+    SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
+    SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational,
+    SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational,
+    SUM(fafsa_verification_prep) AS cc_hs_financial_aid_submission_verification,
+    SUM(cc_hs_enrolled_best_good_situational) AS cc_hs_enrolled_best_good_situational,
+    SUM(cc_hs_enrolled_affordable) AS cc_hs_enrolled_affordable
+    
+    FROM gather_data as a
+    LEFT JOIN gather_eleventh_grade_metrics AS b
+        ON a.site_short=b.site_short
+    LEFT JOIN gather_twelfth_grade_metrics AS c
+        ON a.site_short=c.site_short
+    GROUP BY site_short
 )
-
+SELECT *
+FROM combine_all_cc_hs_kpis
+/*
 #final kpi join
 SELECT 
     gd.site_short,
@@ -244,5 +270,5 @@ SELECT
         LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
 
 
-
+*/
 
