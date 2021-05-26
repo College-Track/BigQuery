@@ -30,6 +30,11 @@ WITH gather_contact_data AS(
 set_mse_reporting_group AS (
 SELECT 
     CAT.student_c,
+    MAX(CASE 
+        WHEN CAT.student_c IS NOT NULL
+        THEN 1
+        ELSE 0
+    END) AS student_count,
     site_short
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT
@@ -148,7 +153,7 @@ aggregate_dream_kpi AS (
 aggregate_mse_kpis AS (
     SELECT 
         A.site_short,
-        COUNT(DISTINCT student_c) AS mse_denom_prev_ay,
+        SUM(student_count) AS sl_mse_denom_prev_ay,
         SUM(mse_completed_prev_AY) AS sl_mse_completed_prev_AY,
         SUM(mse_competitive_prev_AY) AS sl_mse_competitive_prev_AY,
         SUM(mse_internship_prev_AY) AS sl_mse_internship_prev_AY,
@@ -163,7 +168,7 @@ SELECT
     sl_dreams_declared,
     attendance_kpi.* EXCEPT (site_short),
     mse_kpi.* EXCEPT (site_short),
-    mse_denom_prev_ay
+    sl_mse_denom_prev_ay
     FROM aggregate_dream_kpi AS d 
         LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.site_short=attendance_kpi.site_short
         LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.site_short=mse_kpi.site_short
@@ -172,7 +177,7 @@ SELECT
         sl_mse_completed_prev_AY,
         sl_mse_competitive_prev_AY,
         sl_mse_internship_prev_AY,
-        mse_kpi.mse_denom_prev_ay,
+        mse_kpi.sl_mse_denom_prev_ay,
         sl_dreams_declared,
         sl_above_80_attendance
         
