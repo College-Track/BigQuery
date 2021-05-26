@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.student_life` 
+OPTIONS
+    (
+    description= "Aggregating Student Life KPI metrics for the Data Studio KPI dashboard"
+    )
+AS
+
 
 WITH gather_contact_data AS(
     SELECT
@@ -17,7 +24,8 @@ WITH gather_contact_data AS(
 
 ),
 
-gather_mse_data AS ( #current AY.  #IR note - add term 'Summer'?
+--Pull meaningful summer experience data from current and previous AY (hard-entry 2019,20, 2020-21)
+gather_mse_data AS (
     SELECT 
         contact_id,
         site_short,
