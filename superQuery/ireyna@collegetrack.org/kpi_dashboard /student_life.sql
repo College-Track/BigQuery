@@ -167,13 +167,13 @@ SELECT
     FROM aggregate_dream_kpi AS d 
         LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.site_short=attendance_kpi.site_short
         LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.site_short=mse_kpi.site_short
-    /*GROUP BY
+    GROUP BY
         site_short,
         sl_mse_completed_prev_AY,
         sl_mse_competitive_prev_AY,
         sl_mse_internship_prev_AY,
-        mse_denom_prev_ay,
+        mse_kpi.mse_denom_prev_ay,
         sl_dreams_declared,
         sl_above_80_attendance
-        */
+        
         
