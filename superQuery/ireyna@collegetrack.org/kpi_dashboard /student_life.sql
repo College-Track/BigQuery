@@ -1,5 +1,4 @@
 
-
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -7,7 +6,9 @@ WITH gather_contact_data AS(
         high_school_graduating_class_c,
         Dream_Statement_filled_out_c,
         CASE
-            WHEN Dream_Statement_filled_out_c = True  THEN 1
+            WHEN (Dream_Statement_filled_out_c = True  
+            AND college_track_status_c = '11A')
+            THEN 1
             ELSE  0 
             END AS dream_declared
             
