@@ -1,3 +1,3 @@
-SELECT working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c, COUNT(*)
+SELECT ct_has_helped_me_improve_my_ability_to_identify_share_things_im_passionate_about, COUNT(*)
 FROM `data-studio-260217.surveys.fy21_hs_survey`
-GROUP BY working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c
+GROUP BY ct_has_helped_me_improve_my_ability_to_identify_share_things_im_passionate_about
