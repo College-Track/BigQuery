@@ -1,4 +1,3 @@
-SELECT besides_my_ct_college_advisor_i_have_at_least_one_ct_staff_m, COUNT(*)
-FROM `data-studio-260217.surveys.fy21_ps_survey_analysis`
-WHERE site_short = "Sacramento"
-GROUP BY besides_my_ct_college_advisor_i_have_at_least_one_ct_staff_m
+SELECT working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c, COUNT(*)
+FROM `data-studio-260217.surveys.fy21_hs_survey`
+GROUP BY working_with_college_tracks_wellness_programming_has_helped_you_engage_in_self_c
