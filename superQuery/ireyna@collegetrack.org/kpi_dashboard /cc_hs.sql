@@ -23,21 +23,21 @@ gather_11th_aspiration_data AS (
         site_short,
             
      --11th Grade Aspirations, any Aspiration
-        SUM(CASE 
+        MAX(CASE 
             WHEN a.id IS NOT NULL 
             THEN 1
             ELSE 0
             END) AS aspirations_any_count,
             
     --11th Grade Aspirations, Affordable colleges
-        SUM(CASE
+        MAX(CASE
             WHEN fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable") 
             THEN 1
             ELSE 0
             END) AS aspirations_affordable_count,
             
     --11th Grade Aspirations reporting group        
-        SUM(CASE 
+        MAX(CASE 
             WHEN (c.grade_c = '11th Grade'
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
@@ -175,12 +175,12 @@ gather_eleventh_grade_metrics AS (
     site_short,
     aspirations_denom_count,
     CASE 
-        WHEN (aspirations_any_count >= 6 AND aspirations_affordable_count >= 3) 
+        WHEN (SUM(aspirations_any_count) >= 6 AND SUM(aspirations_affordable_count) >= 3) 
         THEN 1
         ELSE 0
         END AS cc_hs_aspirations_num_prep
     FROM gather_11th_aspiration_data
-    GROUP BY contact_id,site_short, aspirations_denom_count,aspirations_any_count,aspirations_affordable_count
+    GROUP BY contact_id,site_short, aspirations_denom_count
 ),
 
 --Prepping attendance data, FAFSA Verification KPI, Affordable college data for aggregation
