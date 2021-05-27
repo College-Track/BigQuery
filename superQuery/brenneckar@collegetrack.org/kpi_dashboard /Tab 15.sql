@@ -23,5 +23,5 @@
 
 
 SELECT *
-FROM `data-warehouse-289815.salesforce_clean.class_template`
-WHERE Class_Attendance_Id = 'a2z1M000000eAwXQAU'
+FROM `data-warehouse-289815.salesforce.class_attendance_c``
+WHERE Id = 'a2z1M000000eAwXQAU'
