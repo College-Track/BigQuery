@@ -19,4 +19,4 @@ WHERE
     )
   )
   AND current_as_c = true
-  AND is_deleted = false
+  AND C.is_deleted = false
