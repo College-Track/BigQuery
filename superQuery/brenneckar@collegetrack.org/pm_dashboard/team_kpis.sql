@@ -31,6 +31,11 @@ WITH gather_kpi_submissions AS (
       THEN 1
       ELSE 0
     END AS development,
+        CASE
+      WHEN KPI_Selection.function IN ('Mature Region Staff','Non-Mature Region Staff')
+      THEN 1
+      ELSE 0
+    END AS region_function,
     CASE
       WHEN KPI_Selection.function IN ('Mature Site Staff','Non-Mature Site Staff')
       THEN 1
