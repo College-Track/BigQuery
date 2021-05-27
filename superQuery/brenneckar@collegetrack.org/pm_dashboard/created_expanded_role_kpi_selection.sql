@@ -14,6 +14,7 @@ VALUES
 ('Mature Site Staff', 'Sacramento'),
 ('Mature Site Staff', 'San Francisco'),
 ('Mature Site Staff', 'Watts'),
+('Mature Site Staff', 'Oakland'),
 ('Non-Mature Site Staff', 'Crenshaw'),
 ('Non-Mature Site Staff', 'The Durant Center'),
 ('Non-Mature Site Staff', 'Ward 8'),
