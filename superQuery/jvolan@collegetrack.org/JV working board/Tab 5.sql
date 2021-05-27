@@ -12,6 +12,9 @@
     FROM
         `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
     WHERE 
+    (GAS_Name = 'Spring 2019-20 (Semester)'
+    AND student_audit_status_c = 'Current CT HS Student')
+    AND
     (GAS_Name = 'Summer 2019-20 (Semester)'
     AND student_audit_status_c = 'Current CT HS Student')
     GROUP BY
