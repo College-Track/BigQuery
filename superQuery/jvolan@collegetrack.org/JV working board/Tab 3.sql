@@ -28,13 +28,20 @@ WITH get_at_data AS
         OR academic_networking_over_50_credits_c = 'AN2_G') THEN 1
         ELSE 0
     END AS indicator_tech_interpersonal_skills,
-    CAST (CURRENT_DATE() AS DATE) AS determine_at_date,
-    FORMAT_DATE("%m", CURRENT_DATE()) AS report_month,
+    CAST (CURRENT_DATE() AS DATE) AS determine_at_date,  
+    current_as_c,
+    previous_as_c,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE college_track_status_c = '15A'
- )   
+ )
+ 
     SELECT
     *
     FROM get_at_data
-   
+    WHERE
+    (determine_at_date < '2021-07-01'
+    AND current_as_c = TRUE)
+    OR
+    previous_as_c = TRUE
+ 
