@@ -176,12 +176,12 @@ gather_eleventh_grade_metrics AS (
     site_short,
     aspirations_denom_count,
     CASE 
-        WHEN (SUM(aspirations_any_count) >= 6 AND SUM(aspirations_affordable_count) >= 3) 
+        WHEN (aspirations_any_count >= 6 AND aspirations_affordable_count >= 3) 
         THEN 1
         ELSE 0
         END AS cc_hs_aspirations_num_prep
     FROM gather_11th_aspiration_data
-    GROUP BY contact_id,site_short, aspirations_denom_count
+    GROUP BY contact_id,site_short, aspirations_denom_count,aspirations_any_count,aspirations_affordable_count
 ),
 
 --Prepping attendance data, FAFSA Verification KPI, Affordable college data for aggregation
