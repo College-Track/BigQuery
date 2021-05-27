@@ -16,7 +16,8 @@ join_team_kpis AS (
     RED.* EXCEPT(site_short),
     PRO_OPS.* EXCEPT(site_short),
     OM_ATTEND.* EXCEPT(site_short),
-    WLLNSS.* EXCEPT(site_short)
+    WLLNSS.* EXCEPT(site_short),
+    FP.* EXCEPT(site_short)
   FROM
     join_prep JP
     LEFT JOIN `data-studio-260217.kpi_dashboard.academic_affairs` AA ON AA.site_short = JP.site_short
