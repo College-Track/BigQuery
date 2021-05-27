@@ -94,7 +94,7 @@ WITH get_contact_data AS
         WHEN
         (indicator_completed_ct_hs_program_c = true
         AND college_track_status_c = '15A'
-        AND Most_Recent_GPA_Cumulative_c >= 2.5) THEN 1
+        AND Prev_AT_Cum_GPA >= 2.5) THEN 1
         ELSE 0
     END AS cc_ps_gpa_2_5_num,
 
