@@ -18,11 +18,11 @@ VALUES
 ('Non-Mature Site Staff', 'Crenshaw'),
 ('Non-Mature Site Staff', 'The Durant Center'),
 ('Non-Mature Site Staff', 'Ward 8'),
-('Non-Mature Region Staff', 'DC'),
-('Mature Region Staff', 'LA'),
-('Mature Region Staff', 'NOLA'),
-('Mature Region Staff', 'Bay Area'),
-('Mature Region Staff', 'Sacramento')
+('Non-Mature Regional Staff', 'DC'),
+('Mature Regional Staff', 'LA'),
+('Mature Regional Staff', 'NOLA'),
+('Mature Regional Staff', 'Bay Area'),
+('Mature Regional Staff', 'Sacramento')
 
 
  ;
@@ -31,4 +31,4 @@ VALUES
 SELECT R.*, RSC.site_or_region
 FROM `data-studio-260217.performance_mgt.role_kpi_selection` R
 LEFT JOIN region_sites_classification RSC ON RSC.function = R.function
-WHERE R.function = 'Non-Mature Region Staff'
+WHERE R.function = 'Mature Regional Staff'
