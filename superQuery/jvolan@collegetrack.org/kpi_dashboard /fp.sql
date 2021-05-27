@@ -12,8 +12,10 @@ WITH gather_survey_data AS
     FROM  data-studio-260217.surveys.fy21_ps_survey_wide_prepped
     WHERE i_am_able_to_receive_my_scholarship_funds_from_college_track IS NOT NULL
     GROUP BY site_short
-)
+),
 
+gather_contact_data AS
+(
     SELECT
     site_short,
     SUM(
@@ -22,5 +24,13 @@ WITH gather_survey_data AS
         ELSE 0
     END) AS fp_12_fafsa_complete_num
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    LEFT JOIN gather_survey_data ON gather_survey_data.survey_site_short = site_short
     GROUP BY site_short
+)
+
+    SELECT
+    gather_contact_data.*,
+    gather_survey_data.ps_survey_scholarship_denom,
+    gather_survey_data.ps_survey_scholarship_num,
+     
+    FROM gather_contact_data
+    LEFT JOIN gather_survey_data ON gather_survey_data.survey_site_short = site_short
