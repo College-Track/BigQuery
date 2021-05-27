@@ -92,6 +92,7 @@ gather_attendance_data AS (
     AND Cancelled_c = FALSE
     AND (workshop_display_name_c LIKE '%Junior Advisory%'
         OR workshop_display_name_c LIKE '%Senior Advisory%'
+        OR workshop_display_name_c LIKE '%Senior Seminar%'
         OR workshop_display_name_c LIKE '%College Exposure%')
     AND CAT.AY_Name = 'AY 2020-21'
     AND college_track_status_c = '11A'
