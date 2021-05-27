@@ -1,2 +1,2 @@
-SELECT *
+SELECT what_is_the_type_of_target_
 FROM `data-warehouse-289815.google_sheets.team_kpi_target`
