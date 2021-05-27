@@ -36,7 +36,7 @@ gather_contact_data AS
 join_data AS
 (
     SELECT
-    site_short,
+    site_short AS fp_site_short,
     fp_12_fafsa_complete_num AS fp_12_fasfa_num,
     gather_survey_data.ps_survey_scholarship_denom,
     gather_survey_data.ps_survey_scholarship_num
