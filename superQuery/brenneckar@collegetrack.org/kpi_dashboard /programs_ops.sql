@@ -2,6 +2,8 @@ WITH gather_data AS (
   SELECT
     Contact_Id,
     site_short,
+    -- All sites admit cohorts that meet X% low-income, X% first-generation, and X% male demographic metrics.
+    -- The denominator for these metrics is calculated in join_prep
     CASE
       WHEN grade_c = '9th Grade'
       AND (indicator_first_generation_c = true) THEN 1
@@ -17,6 +19,8 @@ WITH gather_data AS (
   WHERE
     college_track_status_c = '11A'
 ),
+-- High school NPS score from student survey
+-- This is done over two CTEs, but the first one contains most of the logic
 gather_survey_data AS (
   SELECT
     CT.site_short,
