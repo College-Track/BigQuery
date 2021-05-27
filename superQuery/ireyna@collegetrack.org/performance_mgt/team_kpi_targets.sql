@@ -1,11 +1,4 @@
 
-CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.team_kpi_targets`
-OPTIONS
-    (
-    description="Filtered table to house CT Team KPIs and respective Targets"
-    )
-AS
-
 SELECT 
 submission_id,
 select_your_team_function AS Team,
