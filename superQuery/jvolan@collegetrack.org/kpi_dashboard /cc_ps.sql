@@ -134,10 +134,13 @@ get_at_data AS
         (academic_networking_50_cred_c = 'AN1_G'
         OR academic_networking_over_50_credits_c = 'AN2_G') THEN 1
         ELSE 0
-    END AS indicator_tech_interpersonal_skills
-    
+    END AS indicator_tech_interpersonal_skills,
+
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE current_as_c = true
+    WHERE 
+    (CURRENT_DATE() < '2021-07-01'
+    AND current_as_c = TRUE)
+    OR previous_as_c = TRUE
     AND college_track_status_c = '15A'
 ),
 
