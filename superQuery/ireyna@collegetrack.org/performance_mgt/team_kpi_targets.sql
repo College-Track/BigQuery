@@ -9,11 +9,11 @@ AS
 SELECT 
 submission_id,
 select_your_team_function AS Team,
-team_role,
 select_role AS Role,
-site AS Site,
+site_kpi AS Site,
+region_kpi AS Region,
 select_kpi AS KPI,
-enter_the_target_non_numeric_ AS KPI__target_str,
+--enter_the_target_non_numeric_ AS KPI__target_str,
 enter_the_target_numeric_ AS KPI__target_num,
 enter_the_target_percent_ AS KPI__target_perc
 /*
