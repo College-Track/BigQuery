@@ -1,6 +1,6 @@
 CREATE TEMP TABLE mature_region_sites
 (
-  `function` INT64,
+  `function` STRING,
   site_or_region STRING
 );
 
