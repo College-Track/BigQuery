@@ -20,7 +20,7 @@ with get_mse_terms AS
 )
 
     SELECT 
-    COUNT(student_c)
+    COUNT(student_c) AS mse_student_count
     FROM get_mse_terms
     WHERE current_at_count = 2
     GROUP BY
