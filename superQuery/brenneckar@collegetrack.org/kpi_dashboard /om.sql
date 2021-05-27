@@ -2,6 +2,8 @@ WITH gather_survey_data AS (
   SELECT
     CT.site_short,
     S.contact_id,
+    -- % of students that agree or strongly agree to 'my site is run effectively'
+    -- The denominator for this metric is housed in the join_prep query.
     CASE
       WHEN my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site = "Strongly Agree" THEN 1
       WHEN my_site_is_run_effectively_examples_i_know_how_to_find_zoom_links_i_receive_site = 'Agree' THEN 1
@@ -16,11 +18,8 @@ WITH gather_survey_data AS (
 
 SELECT
   GSD.site_short,
---   COUNT(GSD.contact_Id) AS om_hs_completion_count,
---   MAX(SC.student_count) AS om_hs_survey_denominator,
   SUM(GSD.agree_site_is_run_effectively) AS OM_agree_site_is_run_effectively
 from
   gather_survey_data GSD
---   LEFT JOIN survey_completion SC ON SC.site_short = GSD.site_short
 GROUP BY
   GSD.site_short
