@@ -23,30 +23,32 @@ gather_11th_aspiration_data AS (
         site_short,
             
      --11th Grade Aspirations, any Aspiration
-        CASE 
-            WHEN (c.grade_c = '11th Grade'
-            AND college_track_status_c = '11A'
-            AND a.id IS NOT NULL) THEN 1
+        SUM(CASE 
+            WHEN a.id IS NOT NULL 
+            THEN 1
             ELSE 0
-            END AS aspirations_any_count,
+            END) AS aspirations_any_count,
             
     --11th Grade Aspirations, Affordable colleges
-        CASE
-            WHEN (c.grade_c = '11th Grade' 
-            AND fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable")) THEN 1
+        SUM(CASE
+            WHEN fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable") 
+            THEN 1
             ELSE 0
-            END AS aspirations_affordable_count,
+            END) AS aspirations_affordable_count,
             
     --11th Grade Aspirations reporting group        
-        CASE 
+        SUM(CASE 
             WHEN (c.grade_c = '11th Grade'
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
-            END AS aspirations_denom_count
+            END) AS aspirations_denom_count
             
     FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c
     LEFT JOIN`data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id=a.student_c
     WHERE college_track_status_c = '11A'
+    GROUP BY
+        contact_id,
+        site_short
 ),
 
 --CT students for 10th grade EFC KPI
@@ -87,6 +89,9 @@ gather_attendance_data AS (
         ON CAT.global_academic_semester_c = c.global_academic_semester_c
     WHERE Department_c = "College Completion"
     AND Cancelled_c = FALSE
+    AND (workshop_display_name_c LIKE '%Junior Advisory%'
+        OR workshop_display_name_c LIKE '%Senior Advisory%'
+        OR workshop_display_name_c LIKE '%College Exposure%')
     AND CAT.AY_Name = 'AY 2020-21'
     AND college_track_status_c = '11A'
     AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND years_since_hs_grad_c = 0))
