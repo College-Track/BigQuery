@@ -5,7 +5,9 @@ CREATE TEMP TABLE mature_region_sites
 );
 
 INSERT INTO mature_region_sites
-VALUES ('Mature Site Staff', 'Aurora');
+VALUES ('Mature Site Staff', 'Aurora'),
+('Mature Site Staff', 'Denver')
+ ;
 
 
 SELECT *
