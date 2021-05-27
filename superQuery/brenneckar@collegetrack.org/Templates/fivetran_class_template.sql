@@ -50,7 +50,8 @@ WITH workshop_template AS (
     LEFT JOIN `data-warehouse-289815.salesforce.global_academic_semester_c` GAT ON C.global_academic_semester_c = GAT.Id
   WHERE
     GAT.start_date_c >= "2018-09-01"
-    AND (CA.is_deleted = false OR CS.is_deleted = false OR C.is_deleted = false)
+    AND (CA.is_deleted = false)
+    -- OR CS.is_deleted = false OR C.is_deleted = false)
 )
 SELECT
   *
