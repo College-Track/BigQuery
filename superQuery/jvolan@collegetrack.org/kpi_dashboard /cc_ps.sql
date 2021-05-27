@@ -100,10 +100,7 @@ WITH get_contact_data AS
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
 --needed widest reporting group to ensure I had all students I need to evaluate if they were in one of my custom denoms. Added in more detail filter logic into case statements above.
-    WHERE 
-    (college_track_status_c IN ('11A','12A')
-    AND grade_c = "12th Grade")
-    OR indicator_completed_ct_hs_program_c = true
+    WHERE indicator_completed_ct_hs_program_c = true
 ),
 
 -- adv rubric data from current AT
