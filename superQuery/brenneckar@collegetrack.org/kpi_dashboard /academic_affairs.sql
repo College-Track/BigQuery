@@ -16,7 +16,7 @@ WITH gather_data AS (
         grade_c = '12th Grade'
         OR (
           grade_c = 'Year 1'
-          AND years_since_hs_grad_c = 0
+          AND indicator_years_since_hs_graduation_c = 0
         )
       ) THEN 1
       ELSE 0
