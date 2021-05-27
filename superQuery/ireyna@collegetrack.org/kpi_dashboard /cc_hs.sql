@@ -134,10 +134,10 @@ gather_data_twelfth_grade AS (
         --Same logic as the 2 queries above, except only looking at Good Fit and Best Fit in Fit Type (Applied)     
         (SELECT student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq4
-        WHERE admission_status_c = "Accepted" AND College_Fit_Type_Applied_c IN ("Best Fit","Good Fit","Situational")
+        WHERE admission_status_c = "Accepted" AND College_Fit_Type_Applied_c IN ("Best Fit","Good Fit")
         AND Contact_Id=student_c
         group by student_c
-        ) AS applied_accepted_best_good_situational,
+        ) AS applied_accepted_best_good,
     
     --% accepted to Best Fit, Good Fit; % hs seniors who matriculate to Good/Best/Situational
         --Same logic as the 2 queries above, except only looking at Good Fit and Best Fit in Fit Type (Enrolled) 
@@ -161,7 +161,7 @@ gather_data_twelfth_grade AS (
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
         LEFT JOIN gather_attendance_data ON contact_id=student_c
     WHERE  college_track_status_c = '11A'
-    AND grade_c = '12th Grade'
+    AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND years_since_hs_grad_c = 0))
 ),
 
 --Prepping 11th grade College Aspirations for aggregation
@@ -197,10 +197,10 @@ gather_twelfth_grade_metrics AS(
         CASE 
             WHEN applied_best_good IS NOT NULL THEN 1
             ELSE 0
-            END AS cc_hs_applied_best_good_situational,
+            END AS cc_hs_applied_best_good,
         CASE 
             WHEN accepted_enrolled_best_good_situational IS NOT NULL THEN 1
-            WHEN applied_accepted_best_good_situational IS NOT NULL THEN 1
+            WHEN applied_accepted_best_good IS NOT NULL THEN 1
             ELSE 0
             END AS cc_hs_accepted_best_good_situational,
             
@@ -245,7 +245,7 @@ prep_twelfth_grade_metrics AS (
         site_short,
         SUM(cc_hs_above_80_cc_attendance) AS cc_hs_above_80_cc_attendance,
         SUM(cc_hs_accepted_affordable) AS cc_hs_accepted_affordable,
-        SUM(cc_hs_applied_best_good_situational) AS cc_hs_applied_best_good_situational,
+        SUM(cc_hs_applied_best_good) AS cc_hs_applied_best_good,
         SUM(cc_hs_accepted_best_good_situational) AS cc_hs_accepted_best_good_situational,
         SUM(fafsa_verification_prep) AS cc_hs_financial_aid_submission_verification,
         SUM(cc_hs_enrolled_best_good_situational) AS cc_hs_enrolled_best_good_situational,
@@ -273,7 +273,7 @@ GROUP BY
     cc_hs_above_80_cc_attendance,
     cc_hs_financial_aid_submission_verification,
     cc_hs_accepted_affordable,
-    cc_hs_applied_best_good_situational,
+    cc_hs_applied_best_good,
     cc_hs_accepted_best_good_situational,
     cc_hs_enrolled_best_good_situational, #projecting matriculation
     cc_hs_enrolled_affordable #projecting matriculation
