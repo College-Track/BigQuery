@@ -21,16 +21,25 @@ gather_contact_data AS
         ELSE 0
     END AS fp_12_fafsa_complete_num
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-)
+),
 
+join_data AS
+(
     SELECT
     site_short,
-    SUM(fp_12_fafsa_complete_num) AS fp_12_fasfa_num,
-    COUNT(gather_survey_data.ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
-    SUM(gather_survey_data.ps_survey_scholarship_num) AS ps_survey_scholarship_num,
+    fp_12_fafsa_complete_num,
+    gather_survey_data.ps_survey_scholarship_denom AS ps_survey_scholarship_denom,
+    gather_survey_data.ps_survey_scholarship_num AS ps_survey_scholarship_num,
      
     FROM gather_contact_data
     LEFT JOIN gather_survey_data ON gather_survey_data.survey_site_short = site_short
+)
+    SELECT
+    site_short,
+    SUM(fp_12_fafsa_complete_num) AS fp_12_fasfa_num,
+    COUNT(ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
+    SUM(ps_survey_scholarship_num) AS ps_survey_scholarship_num,
+    
+    FROM join_data
     GROUP BY site_short
-
-
+     
