@@ -15,6 +15,6 @@ LEFT JOIN gather_regions R ON R.site_short = P.site_short
 ORDER BY P.site_short, high_school_class
 )
 
-SELECT site_short, COUNT(*)
+SELECT *
 FROM join_data
-GROUP BY site_short
+where site_short IN ('Oakland')
