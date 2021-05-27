@@ -16,3 +16,4 @@ SELECT P.*,
 R.region_abrev
 FROM gather_projection_data P
 LEFT JOIN gather_regions R ON R.site_short = P.site_short
+ORDER BY P.site_short, high_school_class
