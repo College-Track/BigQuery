@@ -5,4 +5,4 @@ GROUP BY team_kpi, region_kpi, site_kpi, select_kpi
 
 SELECT team_kpi, region_kpi, site_kpi, select_kpi
 FROM create_count_of_kpis
-WHERE kpi_count > 1
+WHERE kpi_count = 1
