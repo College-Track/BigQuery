@@ -1,5 +1,4 @@
 
-
 WITH gather_kpi_submissions AS (
   SELECT
     KPI_Selection.*,
