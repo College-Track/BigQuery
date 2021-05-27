@@ -14,7 +14,7 @@ WITH gather_data AS (
     HIGH_SCHOOL_GRADUATING_CLASS_c,
     Current_CC_Advisor_c,
     Grade_c,
-    Attendance_Rate_Current_AS_c / 100 as attendance_rate,
+    Attendance_Rate_Current_AS_c as attendance_rate,
     Indicator_Low_Income_c,
     Summer_Experiences_Previous_Summer_c,
     college_applications_all_fit_types_c,
