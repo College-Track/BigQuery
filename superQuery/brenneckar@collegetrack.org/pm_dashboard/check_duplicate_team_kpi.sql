@@ -22,7 +22,7 @@ gather_duplicate_kpis AS (
   FROM
     create_count_of_kpis
   WHERE
-    kpi_count = 1
+    kpi_count >1
 )
 SELECT
   GDK.*,
