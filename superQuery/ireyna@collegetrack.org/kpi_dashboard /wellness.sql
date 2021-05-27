@@ -22,7 +22,7 @@ SELECT
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE College_Track_Status_Name = 'Current CT HS Student'
     AND 
-        (grade_c IN ('9th Grade','10 Grade','11th Grade')
+        (grade_c IN ('9th Grade','10th Grade','11th Grade')
         OR 
         (grade_c = "12th Grade" OR (grade_c='Year 1' AND years_since_hs_grad_c = 0)))
 ),
@@ -46,7 +46,7 @@ LEFT JOIN gather_at_data AS GAD
     
 WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type
     AND status_c = 'Completed'
-    AND AY_Name IN ('AY 2019-20', 'AY 2020-21')
+    AND AY_Name = 'AY 2020-21'
 ),
 
 --Setting groundwork for KPI indicator: % of students who have taken the the CoVi assessment each academic year (2020-21AY)
