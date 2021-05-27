@@ -55,12 +55,14 @@ WITH gather_kpi_submissions AS (
       WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
       THEN 'National'
       ELSE site_kpi
-    END AS Site
+    END AS Site,
+    
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
     LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly 
     ON KPI_Target.select_role = KPI_Selection.role
     AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
+    AND KPI_Target.site_kpi = KPI_Selection.site_or_region
     -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
     -- ON c.kpi = KPI_Selection.kpis_by_role
     -- AND c.role = KPI_Selection.role
