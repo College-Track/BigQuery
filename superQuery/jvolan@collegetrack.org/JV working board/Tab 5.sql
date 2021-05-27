@@ -1,4 +1,6 @@
-   SELECT
+with get_mse_terms AS
+(
+    SELECT
         student_c,
         site_short,
         SUM(
@@ -14,4 +16,13 @@
     AND grade_c != '8th Grade'
     GROUP BY
     student_c,
+    site_short
+)
+
+    SELECT 
+    site_short,
+    COUNT(student_c) AS mse_student_count
+    FROM get_mse_terms
+    WHERE current_at_count = 2
+    GROUP BY
     site_short
