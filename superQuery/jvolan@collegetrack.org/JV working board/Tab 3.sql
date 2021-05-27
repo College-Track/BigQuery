@@ -43,5 +43,6 @@ WITH get_at_data AS
     (determine_at_date < '2021-07-01'
     AND current_as_c = TRUE)
     OR
-    previous_as_c = TRUE
+    (determine_at_date > '2021-07-01'
+    AND previous_as_c = TRUE)
  
