@@ -51,7 +51,7 @@ college_track_status_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE AT_Grade_c = 'Year 1'
 AND AT_Enrollment_Status_c != 'Approved Gap Year'
-AND years_since_hs_grad_c <= 6
+AND indicator_years_since_hs_graduation_c <= 6
 AND indicator_completed_ct_hs_program_c = true
 ),
 
@@ -131,7 +131,7 @@ prep_ps_metrics AS (
     site_short
 ),
 
--- % of students growing toward average or above social-emotional strengths
+-- % of students growing toward average or above cialcial-emotional strengths
 -- This KPI is done over four CTEs (could probaly be made more efficient). The majority of the logic is done in the second CTE.
 gather_covi_data AS (
   SELECT
