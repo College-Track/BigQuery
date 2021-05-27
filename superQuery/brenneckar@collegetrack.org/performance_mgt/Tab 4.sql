@@ -6,14 +6,15 @@ LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON C.site_
 gather_regions AS (
 SELECT distinct region_abrev, site_short
 FROM `data-warehouse-289815.salesforce_clean.contact_template`
-)
-
--- SELECT SUM(student_count)
--- FROM gather_data
-
+), join_data AS (
 
 SELECT P.*,
 R.region_abrev
 FROM gather_projection_data P
 LEFT JOIN gather_regions R ON R.site_short = P.site_short
 ORDER BY P.site_short, high_school_class
+)
+
+SELECT site_short, COUNT(*)
+FROM join_data
+GROUP BY site_short
