@@ -1,18 +1,25 @@
-
+with get_mse_terms AS
+(
     SELECT
         student_c,
         site_short,
-        MAX(
+        SUM(
             CASE
-                WHEN  grade_c != '8th Grade'
-                    THEN 1
-                ELSE 0
-            END
-         ) AS mse_reporting_group
+            WHEN student_audit_status_c = 'Current CT HS Student' THEN 1
+            ELSE 0
+        END) AS current_at_count,
+        
     FROM
         `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE 
-    (GAS_Name = 'Spring 2019-20 (Semester)' AND student_audit_status_c = 'Current CT HS Student') AND (GAS_Name = 'Summer 2019-20 (Semester)'AND student_audit_status_c = 'Current CT HS Student')
+    GAS_Name IN ('Spring 2019-20 (Semester)', 'Summer 2019-20 (Semester)')
+    AND grade_c != '8th Grade'
     GROUP BY
-    site_short,
-    student_c
+    student_c,
+    site_short
+)
+
+    SELECT 
+    *
+    FROM get_mse_terms
+    WHERE current_at_count = 2
