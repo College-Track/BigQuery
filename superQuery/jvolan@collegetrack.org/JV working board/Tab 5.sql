@@ -14,9 +14,6 @@
     WHERE 
     (GAS_Name = 'Spring 2019-20 (Semester)'
     AND student_audit_status_c = 'Current CT HS Student') 
-    AND
-    (GAS_Name = 'Summer 2019-20 (Semester)'
-    AND student_audit_status_c = 'Current CT HS Student')
     GROUP BY
     site_short,
     CAT.student_c
