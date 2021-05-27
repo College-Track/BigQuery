@@ -11,11 +11,15 @@ WITH get_contact_data AS
         grade_c = 'Year 6'
         AND indicator_completed_ct_hs_program_c = true
         AND
-        ((Credit_Accumulation_Pace_c NOT IN ("6+ Years", 'Credit Data Missing')
-        AND Current_Enrollment_Status_c = "Full-time"
-        AND college_track_status_c = '15A')
+        (
+         (college_track_status_c = '15A'
+         AND Credit_Accumulation_Pace_c NOT IN ("6+ Years", 'Credit Data Missing')
+         AND credits_accumulated_most_recent_c >= 80
+         AND Current_Enrollment_Status_c = "Full-time"
+         AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting"
+         )
         OR
-        college_track_status_c = '17A') THEN 1
+         college_track_status_c = '17A') THEN 1
         ELSE 0
         END AS cc_ps_projected_grad_num,
 -- % of students graduating from college within 6 years (denominator)
