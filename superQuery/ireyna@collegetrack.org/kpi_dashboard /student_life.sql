@@ -1,15 +1,10 @@
-  SELECT
+SELECT
         CAT.student_c,
         site_short,
         MAX(
             CASE
                 --pull in students that have a session attendance record in Fall/Spring 2019-20, excluding NSO     
-                WHEN (
-                    Attendance_Denominator_c IS NOT NULL
-                    AND dosage_types_c NOT LIKE '%NSO%'
-                    AND AY_Name = "AY 2019-20"
-                    AND grade_c != '8th Grade'
-                        ) 
+                WHEN grade_c != '8th Grade'
                     THEN 1
                 ELSE 0
             END
