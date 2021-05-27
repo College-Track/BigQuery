@@ -1,4 +1,3 @@
-CREATE OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.class_template`AS(
 WITH workshop_template AS (
   SELECT
     CA.Id AS Class_Attendance_Id,
@@ -58,4 +57,3 @@ SELECT
   *
 FROM
   workshop_template
-)
