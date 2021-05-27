@@ -72,3 +72,4 @@ SELECT
   *
 FROM
   gather_kpi_submissions
+  WHERE Function = 'Mature Site Staff'
