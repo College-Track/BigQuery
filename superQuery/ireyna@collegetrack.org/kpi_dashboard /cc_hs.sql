@@ -37,7 +37,7 @@ gather_11th_aspiration_data AS (
             END) AS aspirations_affordable_count,
             
     --11th Grade Aspirations reporting group        
-        SUM(CASE 
+        MAX(CASE 
             WHEN (c.grade_c = '11th Grade'
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
