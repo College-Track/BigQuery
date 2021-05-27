@@ -1,10 +1,10 @@
-CREATE TEMP TABLE mature_region_sites
+CREATE TEMP TABLE region_sites_classification
 (
   `function` STRING,
   site_or_region STRING
 );
 
-INSERT INTO mature_region_sites
+INSERT INTO region_sites_classification
 VALUES 
 ('Mature Site Staff', 'Aurora'),
 ('Mature Site Staff', 'Denver'),
@@ -28,5 +28,6 @@ VALUES
  ;
 
 
-SELECT *
-FROM mature_region_sites;
+SELECT R.*, RSC.site_or_region
+FROM `data-studio-260217.performance_mgt.role_kpi_selection` R
+LEFT JOIN region_sites_classification RSC ON RSC.function = R.function
