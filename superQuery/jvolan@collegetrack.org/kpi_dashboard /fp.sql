@@ -1,16 +1,11 @@
 SELECT
-    site_short AS survey_site_short,
+    site_short,
     SUM(
     CASE
-        WHEN contact_id IS NOT NULL THEN 1
+        WHEN fa_req_fafsa_c = 'Submitted' THEN 1
         ELSE 0
-    END) AS ps_survey_scholarship_denom,
-    SUM(
-    CASE
-        WHEN i_am_able_to_receive_my_scholarship_funds_from_college_track IN ('StronglyAgree', 'Strongly Agree', 'Agree') THEN 1
-        ELSE 0
-    END) AS ps_survey_scholarship_num
-    
-    FROM  `data-studio-260217.surveys.fy21_ps_survey_wide_prepped`
-    WHERE i_am_able_to_receive_my_scholarship_funds_from_college_track IS NOT NULL
+    END) AS fp_12_fafsa_complete_num
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+    WHERE college_track_status_c = '11A'
+    AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND years_since_hs_grad_c = 0))
     GROUP BY site_short
