@@ -11,7 +11,7 @@
 WITH gather_kpi_submissions AS (
   SELECT
     KPI_Selection.*,
-    Region,
+    -- Region,
     CASE
       WHEN KPI_Target.select_role IS NOT NULL THEN true
       ELSE false
@@ -61,9 +61,9 @@ WITH gather_kpi_submissions AS (
     LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly 
     ON KPI_Target.select_role = KPI_Selection.role
     AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
-    LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
-    ON c.kpi = KPI_Selection.kpis_by_role
-    AND c.role = KPI_Selection.role
+    -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
+    -- ON c.kpi = KPI_Selection.kpis_by_role
+    -- AND c.role = KPI_Selection.role
    
 )
 SELECT
