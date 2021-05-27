@@ -31,7 +31,7 @@ WITH get_contact_data AS
         ELSE 0
     END AS cc_ps_projected_grad_denom,
 --% of 2yr students transferring to a 4yr within 3 years
---cohort based, trending is students in year 2. final calc is done in fall of year 3.  Will need to be reworked for final
+--cohort based, trending is students in year 3. final calc is done in fall of year 4.  Will need to be reworked for final
 --numerator for trending shows which of the 2-year starters, currently in year 2 have already enrolled in a 4-year.
     CASE
         WHEN
@@ -47,7 +47,7 @@ WITH get_contact_data AS
     CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
-        AND grade_c = 'Year 2'
+        AND grade_c = 'Year 3'
         AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")) THEN 1
         ELSE 0
         END AS x_2_yr_transfer_denom,
