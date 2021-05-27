@@ -1,4 +1,4 @@
-    SELECT
+ SELECT
         CAT.student_c,
         site_short,
         MAX(
@@ -9,10 +9,6 @@
                     AND dosage_types_c NOT LIKE '%NSO%'
                     AND AY_Name = "AY 2019-20"
                     AND grade_c != '8th Grade'
-                    AND ((CAT.global_academic_semester_c = 'a3646000000dMXhAAM' --Spring 2019-20 (Semester)
-                        AND student_audit_status_c = 'Current CT HS Student') 
-                    AND (CAT.global_academic_semester_c = 'a3646000000dMXiAAM' --Summer 2019-20 (Semester)
-                        AND student_audit_status_c = 'Current CT HS Student'))
                         ) 
                     THEN 1
                 ELSE 0
@@ -21,8 +17,10 @@
     FROM
         `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
         LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT ON CAT.contact_id = CT.student_c
-    WHERE
-        site_short <> "College Track Arlen"
+    WHERE ((CAT.global_academic_semester_c = 'a3646000000dMXhAAM' --Spring 2019-20 (Semester)
+             AND student_audit_status_c = 'Current CT HS Student') 
+                        AND (CAT.global_academic_semester_c = 'a3646000000dMXiAAM' --Summer 2019-20 (Semester)
+                            AND student_audit_status_c = 'Current CT HS Student'))
     GROUP BY
         site_short,
         CAT.student_c
