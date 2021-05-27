@@ -13,4 +13,4 @@ FROM `data-studio-260217.performance_mgt.fy22_projections` P
 )
 
 SELECT SUM(student_count)
-FROM gather_projection_data
+FROM `data-studio-260217.performance_mgt.fy22_projections` P
