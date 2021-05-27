@@ -62,8 +62,12 @@ WITH get_contact_data AS
         AND 
         ps_internships_c > 0
         AND
---QUESTION FOR TEAM - Should we use the same logic we use in projeccted to grad above (active, enrolled ft, etc)?
-        (anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+        ((anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+         AND college_track_status_c = '15A'
+         AND Credit_Accumulation_Pace_c NOT IN ("6+ Years", 'Credit Data Missing')
+         AND credits_accumulated_most_recent_c >= 80
+         AND Current_Enrollment_Status_c = "Full-time"
+         AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting")
         OR
         academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
         ELSE 0
@@ -72,9 +76,13 @@ WITH get_contact_data AS
     CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
-        AND 
---SAME QUESTION FOR TEAM
-        (anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+        AND
+        ((anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+         AND college_track_status_c = '15A'
+         AND Credit_Accumulation_Pace_c NOT IN ("6+ Years", 'Credit Data Missing')
+         AND credits_accumulated_most_recent_c >= 80
+         AND Current_Enrollment_Status_c = "Full-time"
+         AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting")
         OR
         academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
         ELSE 0
