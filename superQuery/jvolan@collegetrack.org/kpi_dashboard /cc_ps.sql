@@ -137,8 +137,13 @@ get_at_data AS
     END AS indicator_tech_interpersonal_skills,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE current_as_c = TRUE
-    AND college_track_status_c = '15A'
+    WHERE college_track_status_c = '15A'
+    AND(
+    (CURRENT_DATE() < '2021-07-01'
+    AND current_as_c = TRUE)
+    OR
+    (CURRENT_DATE() > '2021-07-01'
+    AND previous_as_c = TRUE))
 ),
 
 --% of students who persist into the following year (all college students)
