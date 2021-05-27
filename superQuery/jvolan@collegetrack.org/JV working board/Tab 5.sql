@@ -20,6 +20,8 @@ with get_mse_terms AS
 )
 
     SELECT 
-    *
+    COUNT(student_c)
     FROM get_mse_terms
     WHERE current_at_count = 2
+    GROUP BY
+    site_short
