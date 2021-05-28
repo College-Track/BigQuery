@@ -103,4 +103,4 @@ SELECT
   *
 FROM
   prep_regional_kpis
---   WHERE Function = 'Mature Site Staff'
+WHERE target_submitted = true
