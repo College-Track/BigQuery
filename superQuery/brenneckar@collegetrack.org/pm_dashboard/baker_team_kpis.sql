@@ -76,8 +76,9 @@ WITH prep_kpi_targets AS (
 prep_non_program_kpis AS (
 SELECT 
 *
-FROM prep_kpi_targets Non_Program_Targets
-LEFT JOIN `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+FROM `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+LEFT JOIN prep_kpi_targets Non_Program_Targets
+
 ON KPI_by_role.role = Non_Program_Targets.select_role
 AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
 
