@@ -90,4 +90,5 @@ SELECT
   *
 FROM
   prep_non_program_kpis
+  WHERE target_submitted = True
 --   WHERE Function = 'Mature Site Staff'
