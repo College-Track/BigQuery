@@ -1,16 +1,11 @@
-
 -- CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
 -- OPTIONS
 --     (
 --     description="KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 --     )
 -- AS
-	
-
-
 WITH prep_kpi_targets AS (
   SELECT
-    
     team_kpi,
     region_kpi,
     site_kpi,
@@ -24,8 +19,7 @@ WITH prep_kpi_targets AS (
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
-      WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1
-    --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
+      WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
     END AS target_fy22,
     --CASE
@@ -37,7 +31,7 @@ WITH prep_kpi_targets AS (
     --   THEN 1
     --   ELSE 0
     -- END AS hr_people,
-    -- CASE 
+    -- CASE
     --   WHEN KPI_Selection.function IN ('Finance','Strategic Initiatives','Org Performance','IT','Marketing','Program Development','Operations')
     --   THEN 1
     --   ELSE 0
@@ -62,61 +56,67 @@ WITH prep_kpi_targets AS (
     --   THEN 'National'
     --   ELSE site_kpi
     -- END AS Site,
-    
   FROM
-  `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target
-    -- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
-    -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly 
+    `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target -- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
+    -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
     -- ON KPI_Target.select_role = KPI_Selection.role
     -- AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
     -- AND KPI_Target.site_kpi = KPI_Selection.site_or_region
     -- -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
     -- ON c.kpi = KPI_Selection.kpis_by_role
     -- AND c.role = KPI_Selection.role
-   
 ),
 prep_non_program_kpis AS (
-SELECT 
-*
-FROM `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
-LEFT JOIN prep_kpi_targets Non_Program_Targets
-
-ON KPI_by_role.role = Non_Program_Targets.select_role
-AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
-
-WHERE KPI_by_role.function NOT IN ('Non-Mature Site Staff', 'Mature Site Staff', 'Mature Regional Staff', 'Non-Mature Regional Staff')
+  SELECT
+    *
+  FROM
+    `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+    LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
+    AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
+  WHERE
+    KPI_by_role.function NOT IN (
+      'Non-Mature Site Staff',
+      'Mature Site Staff',
+      'Mature Regional Staff',
+      'Non-Mature Regional Staff'
+    )
 ),
-
 prep_regional_kpis AS (
-SELECT 
-*
-FROM `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
-LEFT JOIN prep_kpi_targets Non_Program_Targets
-
-ON KPI_by_role.role = Non_Program_Targets.select_role
-AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
-AND KPI_by_role.site_or_region = Non_Program_Targets.region_kpi
-
-
-WHERE KPI_by_role.function IN ('Mature Regional Staff', 'Non-Mature Regional Staff')
+  SELECT
+    *
+  FROM
+    `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+    LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
+    AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
+    AND KPI_by_role.site_or_region = Non_Program_Targets.region_kpi
+  WHERE
+    KPI_by_role.function IN (
+      'Mature Regional Staff',
+      'Non-Mature Regional Staff'
+    )
 ),
-
 prep_site_kpis AS (
-SELECT 
-*
-FROM `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
-LEFT JOIN prep_kpi_targets Non_Program_Targets
-
-ON KPI_by_role.role = Non_Program_Targets.select_role
-AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
-AND KPI_by_role.site_or_region = Non_Program_Targets.site_kpi
-
-
-WHERE KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
+  SELECT
+    *
+  FROM
+    `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+    LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
+    AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
+    AND KPI_by_role.site_or_region = Non_Program_Targets.site_kpi
+  WHERE
+    KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
 )
-
 SELECT
-  *
+  PSK.*
 FROM
-  prep_site_kpis
-WHERE target_submitted = true
+  prep_site_kpis PSK
+UNION ALL
+SELECT
+  PRK.*
+FROM
+  prep_regional_kpis PRK
+UNION ALL
+SELECT
+  PNPK.*
+FROM
+  prep_non_program_kpis PNPK
