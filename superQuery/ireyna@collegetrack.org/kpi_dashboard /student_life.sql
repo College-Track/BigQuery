@@ -1,11 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.student_life` 
 OPTIONS
     (
     description= "Aggregating Student Life KPI metrics for the Data Studio KPI dashboard"
     )
 AS
-
+*/
 WITH gather_contact_data AS(
     SELECT
         contact_id,
@@ -41,6 +41,7 @@ mse_reporting_group AS (
     FROM
         `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE
+    --CT Status (AT) = Current CT HS Student during Spring 2019-20 AND Summer 2019-20
     GAS_Name IN ('Spring 2019-20 (Semester)', 'Summer 2019-20 (Semester)')
     AND grade_c != '8th Grade'
     GROUP BY
