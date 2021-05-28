@@ -72,9 +72,17 @@ WITH prep_kpi_targets AS (
     -- ON c.kpi = KPI_Selection.kpis_by_role
     -- AND c.role = KPI_Selection.role
    
+),
+prep_non_program_kpis AS (
+SELECT 
+*
+FROM prep_kpi_targets
+WHERE team_kpi NOT IN ('Non-Mature_Site_Staff', 'Mature_Site_Staff', 'Mature_Regional_Staff', 'Non-Mature_Regional_Staff')
 )
+
+
 SELECT
   *
 FROM
-  prep_kpi_targets
+  prep_non_program_kpis
 --   WHERE Function = 'Mature Site Staff'
