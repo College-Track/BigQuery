@@ -79,7 +79,7 @@ SELECT
 FROM prep_kpi_targets Non_Program_Targets
 LEFT JOIN `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
 ON KPI_by_role.role = Non_Program_Targets.select_role
-AND KPI_by_role.kpis_by_role = Non_Program_Targets.kpi
+AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
 
 WHERE team_kpi NOT IN ('Non-Mature_Site_Staff', 'Mature_Site_Staff', 'Mature_Regional_Staff', 'Non-Mature_Regional_Staff')
 )
