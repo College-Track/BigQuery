@@ -82,7 +82,7 @@ LEFT JOIN prep_kpi_targets Non_Program_Targets
 ON KPI_by_role.role = Non_Program_Targets.select_role
 AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
 
--- WHERE team_kpi NOT IN ('Non-Mature_Site_Staff', 'Mature_Site_Staff', 'Mature_Regional_Staff', 'Non-Mature_Regional_Staff')
+WHERE KPI_by_role.function NOT IN ('Non-Mature Site Staff', 'Mature Site Staff', 'Mature Regional Staff', 'Non-Mature Regional Staff')
 )
 
 
