@@ -24,7 +24,7 @@ WITH prep_kpi_targets AS (
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
-    --   WHEN what_is_the_type_of_target_ = 
+      WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1
     --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
     END AS target_fy22,
