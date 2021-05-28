@@ -1,18 +1,3 @@
-
-CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
-OPTIONS
-    (
-    description="KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
-    )
-AS
-	
-
--- CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
--- OPTIONS
---     (
---     description="KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
---     )
--- AS
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
@@ -136,4 +121,3 @@ target_fy22,
     --   ELSE site_kpi
     -- END AS Site,
 FROM join_tables
-
