@@ -1,3 +1,12 @@
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+) AS -- CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
+-- OPTIONS
+--     (
+--     description="KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+--     )
+-- AS
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
@@ -16,7 +25,6 @@ WITH prep_kpi_targets AS (
       WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
     END AS target_fy22,
-    
   FROM
     `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target -- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
     -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
@@ -68,56 +76,66 @@ prep_site_kpis AS (
     KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
 ),
 join_tables AS (
+  SELECT
+    PSK.*
+  FROM
+    prep_site_kpis PSK
+  UNION ALL
+  SELECT
+    PRK.*
+  FROM
+    prep_regional_kpis PRK
+  UNION ALL
+  SELECT
+    PNPK.*
+  FROM
+    prep_non_program_kpis PNPK
+)
 SELECT
-  PSK.*
+  function,
+  role,
+  kpis_by_role,
+  site_or_region,
+  CASE
+    WHEN target_submitted = true THEN True
+    ELSE false
+  END AS target_submitted,
+  CASE
+    WHEN function IN (
+      'Talent Acquisition',
+      'Talent Development',
+      'Employee Experience'
+    ) THEN 1
+    ELSE 0
+  END AS hr_people,
+  CASE
+    WHEN function IN (
+      'Finance',
+      'Strategic Initiatives',
+      'Org Performance',
+      'IT',
+      'Marketing',
+      'Program Development',
+      'Operations'
+    ) THEN 1
+    ELSE 0
+  END AS national,
+  CASE
+    WHEN function IN ('Partnerships', 'Fund Raising') THEN 1
+    ELSE 0
+  END AS development,
+  CASE
+    WHEN function IN ('Mature Region Staff', 'Non-Mature Region Staff') THEN 1
+    ELSE 0
+  END AS region_function,
+  CASE
+    WHEN function IN ('Mature Site Staff', 'Non-Mature Site Staff') THEN 1
+    ELSE 0
+  END AS program,
+  -- CASE
+  --   WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
+  --   THEN 'National'
+  --   ELSE site_kpi
+  -- END AS Site,
 FROM
-  prep_site_kpis PSK
-UNION ALL
-SELECT
-  PRK.*
-FROM
-  prep_regional_kpis PRK
-UNION ALL
-SELECT
-  PNPK.*
-FROM
-  prep_non_program_kpis PNPK
- )
- 
- 
-SELECT 
-function, role, kpis_by_role,
-site_or_region,
-target_submitted,
-target_fy22,
-    CASE
-      WHEN function IN ('Talent Acquisition','Talent Development','Employee Experience')
-      THEN 1
-      ELSE 0
-    END AS hr_people,
-    CASE
-      WHEN function IN ('Finance','Strategic Initiatives','Org Performance','IT','Marketing','Program Development','Operations')
-      THEN 1
-      ELSE 0
-    END AS national,
-    CASE
-      WHEN function IN ('Partnerships','Fund Raising')
-      THEN 1
-      ELSE 0
-    END AS development,
-        CASE
-      WHEN function IN ('Mature Region Staff','Non-Mature Region Staff')
-      THEN 1
-      ELSE 0
-    END AS region_function,
-    CASE
-      WHEN function IN ('Mature Site Staff','Non-Mature Site Staff')
-      THEN 1
-      ELSE 0
-    END AS program,
-    -- CASE
-    --   WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
-    --   THEN 'National'
-    --   ELSE site_kpi
-    -- END AS Site,
-FROM join_tables
+  join_tables
