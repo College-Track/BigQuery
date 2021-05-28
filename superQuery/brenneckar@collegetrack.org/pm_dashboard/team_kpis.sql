@@ -96,6 +96,7 @@ SELECT
   role,
   kpis_by_role,
   site_or_region,
+  target_fy22,
   Projections.site_short AS Site,
   Projections.region_abrev AS Region,
   CASE
