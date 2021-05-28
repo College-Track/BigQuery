@@ -83,12 +83,24 @@ ON KPI_by_role.role = Non_Program_Targets.select_role
 AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
 
 WHERE KPI_by_role.function NOT IN ('Non-Mature Site Staff', 'Mature Site Staff', 'Mature Regional Staff', 'Non-Mature Regional Staff')
-)
+),
 
+prep_regional_kpis AS (
+SELECT 
+*
+FROM `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+LEFT JOIN prep_kpi_targets Non_Program_Targets
+
+ON KPI_by_role.role = Non_Program_Targets.select_role
+AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
+AND KPI_by_role.site_or_region = Non_Program_Targets.region_kpi
+
+
+WHERE KPI_by_role.function IN ('Mature Regional Staff', 'Non-Mature Regional Staff')
+)
 
 SELECT
   *
 FROM
-  prep_non_program_kpis
-  WHERE target_submitted = True
+  prep_regional_kpis
 --   WHERE Function = 'Mature Site Staff'
