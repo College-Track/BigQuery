@@ -10,7 +10,12 @@
 
 WITH prep_kpi_targets AS (
   SELECT
-    *,
+    
+    team_kpi,
+    region_kpi,
+    site_kpi,
+    select_role,
+    select_kpi,
     CASE
       WHEN KPI_Target.select_role IS NOT NULL THEN true
       ELSE false
