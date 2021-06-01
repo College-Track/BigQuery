@@ -28,7 +28,10 @@ VALUES
 
  ;
 
-
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.expanded_role_kpi_selection` OPTIONS (
+  description = "List of all KPIs for each function, region, and site."
+) AS
 SELECT R.*, RSC.site_or_region
 FROM `data-studio-260217.performance_mgt.role_kpi_selection` R
 LEFT JOIN region_sites_classification RSC ON RSC.function = R.function
