@@ -62,7 +62,8 @@ gather_survey_data AS (
       wellness_programming_section,
       wellness_programming_services_subsection,
       ct_stengths_weakness_section,
-      math_programming_subsection
+      math_programming_subsection,
+      math_programming_participation_subsection
     )
   FROM
     `data-studio-260217.surveys.fy21_hs_survey`
