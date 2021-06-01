@@ -1,3 +1,12 @@
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+) AS -- CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
+-- OPTIONS
+--     (
+--     description="KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+--     )
+-- AS
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
@@ -119,7 +128,7 @@ SELECT
     ELSE 0
   END AS development,
   CASE
-    WHEN function IN ('Mature Region Staff', 'Non-Mature Region Staff') THEN 1
+    WHEN function IN ('Mature Regional Staff', 'Non-Mature Regional Staff') THEN 1
     ELSE 0
   END AS region_function,
   CASE
@@ -134,3 +143,4 @@ SELECT
 FROM
   join_tables
   LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON Projections.site_short = site_or_region
+  WHERE kpis_by_role != "KPIs by role"
