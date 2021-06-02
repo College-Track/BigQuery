@@ -1,6 +1,8 @@
 WITH gather_survey_data AS (
   SELECT
     CT.site_short,
+    CT.Gender_c,
+    CT.Ethnic_background_c,
     S.contact_id,
     -- % of students that agree or strongly agree to 'my site is run effectively'
     -- The denominator for this metric is housed in the join_prep query.
@@ -18,8 +20,12 @@ WITH gather_survey_data AS (
 
 SELECT
   GSD.site_short,
+  GSD.gender_c,
+  GSD.Ethnic_background_c,
   SUM(GSD.agree_site_is_run_effectively) AS OM_agree_site_is_run_effectively
 from
   gather_survey_data GSD
 GROUP BY
-  GSD.site_short
+  GSD.site_short,
+    GSD.gender_c,
+  GSD.Ethnic_background_c
