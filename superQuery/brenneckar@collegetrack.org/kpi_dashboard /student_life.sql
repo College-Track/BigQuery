@@ -195,7 +195,8 @@ EXCEPT
     mse_kpi.*
 EXCEPT
     (site_short),
-    sl_mse_reporting_group_prev_AY
+    sl_mse_reporting_group_prev_AY,
+    GSD.agree_they_have_hobby AS sl_agree_they_have_hobby
 FROM
     aggregate_dream_kpi AS d
     LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.site_short = attendance_kpi.site_short
@@ -209,4 +210,5 @@ GROUP BY
     sl_mse_competitive_prev_AY,
     sl_mse_internship_prev_AY,
     sl_dreams_declared,
-    sl_above_80_attendance 
+    sl_above_80_attendance,
+    sl_agree_they_have_hobby
