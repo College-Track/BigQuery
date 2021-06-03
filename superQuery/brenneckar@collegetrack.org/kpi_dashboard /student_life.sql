@@ -203,12 +203,3 @@ FROM
     LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.site_short = mse_kpi.site_short
     LEFT JOIN aggregate_mse_reporting_group AS mse_grp ON mse_grp.site_short = mse_kpi.site_short
     LEFT JOIN gather_survey_data AS GSD ON GSD.site_short = d.site_short
-GROUP BY
-    site_short,
-    sl_mse_reporting_group_prev_AY,
-    sl_mse_completed_prev_AY,
-    sl_mse_competitive_prev_AY,
-    sl_mse_internship_prev_AY,
-    sl_dreams_declared,
-    sl_above_80_attendance,
-    sl_agree_they_have_hobby
