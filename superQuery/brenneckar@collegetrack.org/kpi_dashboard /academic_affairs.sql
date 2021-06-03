@@ -22,7 +22,7 @@ WITH gather_data AS (
       ELSE 0
     END AS composite_ready,
     CASE
-      WHEN Readiness_10_th_Composite_c IN('2. Near Ready','3. Not Ready') THEN 1
+      WHEN Readiness_10_th_Composite_c IN('2. Near Ready','3. Not Ready') AND grade_c NOT IN ('9th Grade', '10th Grade') THEN 1
       ELSE 0
     END AS tenth_grade_test_not_ready,
     CASE
