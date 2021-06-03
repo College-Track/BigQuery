@@ -26,7 +26,7 @@ WITH gather_data AS (
       ELSE 0
     END AS tenth_grade_test_not_ready,
     CASE
-      WHEN Readiness_Composite_Off_c = '1. Ready' THEN 1
+      WHEN (Readiness_Composite_Off_c = '1. Ready') AND (Readiness_10_th_Composite_c IN('2. Near Ready','3. Not Ready')) THEN 1
       ELSE 0
     END AS offical_test_ready
   FROM
