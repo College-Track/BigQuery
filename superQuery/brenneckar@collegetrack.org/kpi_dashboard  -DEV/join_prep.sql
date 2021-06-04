@@ -105,4 +105,4 @@ SELECT
   SC.hs_survey_completion_count
 FROM
   prep_student_counts PSC
-  LEFT JOIN survey_completion SC ON SC.site_short = PSC.site_short
+  LEFT JOIN survey_completion SC ON SC.site_short = PSC.site_short AND SC.Ethnic_background_c = PSC.Ethnic_background_c, SC.Gender_c = PSC.Gender_c
