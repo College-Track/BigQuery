@@ -1,5 +1,6 @@
 SELECT 
     Type_Counseling_c,
+    id,
     contact_c
     
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
