@@ -241,6 +241,6 @@ FROM
   LEFT JOIN prep_on_track_denom POTD ON POTD.site_short = HS_Data.site_short AND POTD.Gender_c = HS_Data.Gender_c AND POTD.Ethnic_background_c = HS_Data.Ethnic_background_c
  )
  
- SELECT site_short, SUM(SD_senior_above_235) AS SD_senior_above_235
+ SELECT site_short, SUM(SD_senior_above_325) AS SD_senior_above_325
  FROM join_metrics
  GROUP BY site_short
