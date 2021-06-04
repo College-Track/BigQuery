@@ -1,4 +1,4 @@
-SELECT
+    SELECT
         CASE
         WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
         THEN 1
@@ -17,6 +17,3 @@ SELECT
         AND grade_c != '8th Grade'
         AND Outcome_c != 'Cancelled'
         AND college_track_status_c = '11A'
-       
-  FROM
-    `data-warehouse-289815.salesforce_clean.contact_at_template`
