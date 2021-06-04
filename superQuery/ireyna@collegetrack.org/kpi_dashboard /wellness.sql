@@ -6,7 +6,7 @@
         THEN 1
         ELSE 0
     END AS wellness_sessions_num,
-    SUM(attended_workshops_c) AS attended_workshops_c, #attended sessions from AT
+    SUM(Attendance_Numerator_c) AS attended_workshops_c, #attended sessions from AT
         site_short
     FROM
         `data-warehouse-289815.salesforce_clean.class_template` CT
@@ -22,3 +22,4 @@
         
         group by 
             full_name_c,CAT.STUDENT_C, co_vitality_scorecard_color_c,site_short
+       
