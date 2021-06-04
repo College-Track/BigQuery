@@ -1,4 +1,5 @@
-    SELECT
+SELECT
+        CAT.student_c,
         CASE
         WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
         THEN 1
@@ -17,3 +18,6 @@
         AND grade_c != '8th Grade'
         AND Outcome_c != 'Cancelled'
         AND college_track_status_c = '11A'
+        
+        group by 
+            CAT.STUDENT_C, co_vitality_scorecard_color_c,site_short
