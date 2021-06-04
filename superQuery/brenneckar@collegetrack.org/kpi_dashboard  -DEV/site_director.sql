@@ -243,4 +243,3 @@ FROM
  
  SELECT *
  FROM join_metrics
- GROUP BY site_short
