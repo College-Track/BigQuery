@@ -224,9 +224,9 @@ GROUP BY
   site_short,
       Ethnic_background_c,
     Gender_c
-  )
+  ),
 
-SELECT
+join_metrics AS (SELECT
   HS_Data.*,
   PS_Data.*
 EXCEPT(site_short,Ethnic_background_c,
@@ -239,3 +239,7 @@ FROM
   LEFT JOIN prep_ps_metrics PS_Data ON PS_Data.site_short = HS_Data.site_short AND PS_Data.Gender_c = HS_Data.Gender_c AND HS_Data.Ethnic_background_c = PS_Data.Ethnic_background_c
   LEFT JOIN aggregate_covi_data ON aggregate_covi_data.site_short = HS_Data.site_short AND aggregate_covi_data.Gender_c = HS_Data.Gender_c AND aggregate_covi_data.Ethnic_background_c = HS_Data.Ethnic_background_c
   LEFT JOIN prep_on_track_denom POTD ON POTD.site_short = HS_Data.site_short AND POTD.Gender_c = HS_Data.Gender_c AND POTD.Ethnic_background_c = HS_Data.Ethnic_background_c
+ )
+ 
+ SELECT *
+ FROM join_metrics
