@@ -1,5 +1,6 @@
-SELECT
+ SELECT
         CAT.student_c,
+        full_name_c,
         CASE
         WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
         THEN 1
@@ -20,4 +21,4 @@ SELECT
         AND college_track_status_c = '11A'
         
         group by 
-            CAT.STUDENT_C, co_vitality_scorecard_color_c,site_short
+            full_name_c,CAT.STUDENT_C, co_vitality_scorecard_color_c,site_short
