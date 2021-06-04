@@ -1,25 +1,8 @@
- SELECT
-        CAT.student_c,
-        full_name_c,
-        CASE
-        WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
-        THEN 1
-        ELSE 0
-    END AS wellness_sessions_num,
-    SUM(Attendance_Numerator_c) AS attended_workshops_c, #attended sessions from AT
-        site_short
-    FROM
-        `data-warehouse-289815.salesforce_clean.class_template` CT
-        LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
-    WHERE
-        Attendance_Numerator_c > 0
-        AND department_c = 'Wellness'
-        AND dosage_types_c NOT LIKE '%NSO%'
-        AND AY_Name = "AY 2020-21"
-        AND grade_c != '8th Grade'
-        AND Outcome_c != 'Cancelled'
-        AND college_track_status_c = '11A'
-        
-        group by 
-            full_name_c,CAT.STUDENT_C, co_vitality_scorecard_color_c,site_short
-       
+SELECT 
+    Type_Counseling_c,
+    contact_c
+    
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE  ON CAT.AT_Id = CSE.Academic_Semester_c
+WHERE Type_Counseling_c = TRUE
+    AND AY_name = 'AY 2020-21'
