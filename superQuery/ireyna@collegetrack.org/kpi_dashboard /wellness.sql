@@ -43,7 +43,7 @@ LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE  ON CAT.AT_Id = 
 WHERE Type_Counseling_c = TRUE
     AND AY_name = 'AY 2020-21'
 GROUP BY
-    a.site_short,
+    site_short,
     id
 )
 /*
@@ -66,4 +66,4 @@ SELECT
 FROM gather_wellness_attendance_data as a 
 left join gather_case_note_data as b on a.site_short=b.site_short
 GROUP BY 
-    site_short
+    a.site_short
