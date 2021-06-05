@@ -64,6 +64,6 @@ SELECT
     AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop session
     site_short
 FROM gather_wellness_attendance_data as a 
-left join gather_case_note_data as b a.site_short=b.site_short
+left join gather_case_note_data as b on a.site_short=b.site_short
 GROUP BY 
     site_short
