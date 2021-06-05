@@ -43,27 +43,5 @@ LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE  ON CAT.AT_Id = 
 WHERE Type_Counseling_c = TRUE
     AND AY_name = 'AY 2020-21'
 GROUP BY
-    site_short,
+    a.site_short,
     id
-)
-/*
-aggregate_wellness_session_data AS(
-SELECT
-    SUM(wellness_blue_red_num) AS wellness_blue_red_num,
-    AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop sessions
-    site_short
-FROM gather_wellness_attendance_data
-GROUP BY 
-    site_short
-)*/
-
---aggregate_case_note_data AS(
-SELECT
-    SUM(wellness_case_note_2020_21) AS wellness_case_notes, #wellness casenotes from 2020-21
-    SUM(wellness_blue_red_num) AS wellness_blue_red_num,
-    AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop session
-    site_short
-FROM gather_wellness_attendance_data as a 
-left join gather_case_note_data as b on a.site_short=b.site_short
-GROUP BY 
-    site_short
