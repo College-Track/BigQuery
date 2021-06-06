@@ -65,7 +65,7 @@ SELECT
     SUM(wellness_blue_red_num) AS wellness_blue_red_num,
     AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop session
     a.site_short
-FROM gather_wellness_attendance_data as a 
-left join gather_case_note_data as b on a.site_short=b.site_short
+FROM gather_case_note_data as b
+left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 GROUP BY 
     a.site_short
