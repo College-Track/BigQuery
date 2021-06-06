@@ -18,8 +18,8 @@ with gather_wellness_attendance_data AS (
         AND dosage_types_c NOT LIKE '%NSO%'
         AND ct.global_academic_semester_c IN 
                                         (SELECT AY_NAME
-                                        FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT2
-                                        LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE2  ON CAT.AT_Id = CSE.Academic_Semester_c
+                                        FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+                                        LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE  ON CAT.AT_Id = CSE.Academic_Semester_c
                                         WHERE AY_NAME = "AY 2020-21")
         AND grade_c != '8th Grade'
         AND Outcome_c != 'Cancelled'
