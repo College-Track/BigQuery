@@ -17,7 +17,7 @@ with gather_wellness_attendance_data AS (
         AND department_c = 'Wellness'
         AND dosage_types_c NOT LIKE '%NSO%'
         AND ct.global_academic_semester_c IN 
-                                        (SELECT AY_NAME
+                                        (SELECT ct2.global_academic_semester_c
                                         FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT2
                                         LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE2  ON CAT2.AT_Id = CSE2.Academic_Semester_c
                                         WHERE AY_NAME = "AY 2020-21")
