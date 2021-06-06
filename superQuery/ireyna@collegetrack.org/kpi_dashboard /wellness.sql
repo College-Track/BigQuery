@@ -29,7 +29,8 @@ with gather_wellness_attendance_data AS (
             full_name_c,
             CAT.STUDENT_C, 
             co_vitality_scorecard_color_c,
-            site_short
+            site_short,
+            Attendance_Numerator_c
 ),
 #gather case load data
 gather_case_note_data AS (
