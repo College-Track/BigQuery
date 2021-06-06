@@ -6,8 +6,7 @@ SELECT
         THEN 1
         ELSE 0
     END AS wellness_blue_red_num,
-    SUM(Attendance_Numerator_c) AS attended_wellness_sessions,
-    attended_wellness_sessions,#attended sessions from AT
+    SUM(Attendance_Numerator_c) AS attended_wellness_sessions,#attended sessions from AT
         site_short
     FROM
         `data-warehouse-289815.salesforce_clean.class_template` CT
