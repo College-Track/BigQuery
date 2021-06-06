@@ -77,4 +77,4 @@ left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 left join aggregate_wellness_sessions_from_attendance as c on c.site_short=b.site_short
 GROUP BY 
     a.site_short,
-    attended_wellness_sessions
+    sum_attended_wellness_sessions
