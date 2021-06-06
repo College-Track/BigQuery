@@ -7,7 +7,8 @@ with gather_wellness_attendance_data AS (
         THEN 1
         ELSE 0
     END AS wellness_blue_red_num,
-    SUM(Attendance_Numerator_c) AS attended_wellness_sessions, #attended sessions from AT
+    --SUM(Attendance_Numerator_c) AS attended_wellness_sessions,
+    attended_wellness_sessions,#attended sessions from AT
         site_short
     FROM
         `data-warehouse-289815.salesforce_clean.class_template` CT
@@ -64,10 +65,9 @@ SELECT
     SUM(wellness_case_note_2020_21) AS wellness_case_notes, #wellness casenotes from 2020-21
     SUM(wellness_blue_red_num) AS wellness_blue_red_num,
     AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop session
-    attended_wellness_sessions,
+    SUM(Attendance_Numerator_c) AS attended_wellness_sessions,,
     a.site_short
 FROM gather_case_note_data as b
 left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 GROUP BY 
-    a.site_short,
-    attended_wellness_sessions
+    a.site_short
