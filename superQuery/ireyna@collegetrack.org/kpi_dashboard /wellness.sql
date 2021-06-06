@@ -16,7 +16,7 @@ with gather_wellness_attendance_data AS (
         Attendance_Numerator_c > 0
         AND department_c = 'Wellness'
         AND dosage_types_c NOT LIKE '%NSO%'
-        AND AY_Name = "AY 2020-21"
+        AND Workshop_Global_Academic_Year_c = "AY 2020-21"
         AND grade_c != '8th Grade'
         AND Outcome_c != 'Cancelled'
         AND college_track_status_c = '11A'
