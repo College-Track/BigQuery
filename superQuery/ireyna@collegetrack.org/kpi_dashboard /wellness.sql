@@ -1,5 +1,4 @@
-with gather_wellness_attendance_data AS (
-    SELECT
+SELECT
         CAT.student_c,
         full_name_c,
         CASE
@@ -7,8 +6,8 @@ with gather_wellness_attendance_data AS (
         THEN 1
         ELSE 0
     END AS wellness_blue_red_num,
-    --SUM(Attendance_Numerator_c) AS attended_wellness_sessions,
-    Attendance_Numerator_c AS attended_wellness_sessions,#attended sessions from AT
+    SUM(Attendance_Numerator_c) AS attended_wellness_sessions,
+    attended_wellness_sessions,#attended sessions from AT
         site_short
     FROM
         `data-warehouse-289815.salesforce_clean.class_template` CT
@@ -29,46 +28,4 @@ with gather_wellness_attendance_data AS (
             full_name_c,
             CAT.STUDENT_C, 
             co_vitality_scorecard_color_c,
-            site_short,
-            Attendance_Numerator_c
-),
-#gather case load data
-gather_case_note_data AS (
-SELECT 
-    CASE
-        WHEN id IS NOT NULL 
-        THEN 1
-        ELSE 0
-    END AS wellness_case_note_2020_21,
-    id AS case_note_id, #case note id
-    site_short
-    
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
-LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE  ON CAT.AT_Id = CSE.Academic_Semester_c
-WHERE Type_Counseling_c = TRUE
-    AND AY_name = 'AY 2020-21'
-GROUP BY
-    site_short,
-    id
-)
-/*
-aggregate_wellness_session_data AS(
-SELECT
-    SUM(wellness_blue_red_num) AS wellness_blue_red_num,
-    AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop sessions
-    site_short
-FROM gather_wellness_attendance_data
-GROUP BY 
-    site_short
-)*/
---aggregate_case_note_data AS(
-SELECT
-    SUM(wellness_case_note_2020_21) AS wellness_case_notes, #wellness casenotes from 2020-21
-    SUM(wellness_blue_red_num) AS wellness_blue_red_num,
-    AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop session
-    SUM(attended_wellness_sessions) AS attended_wellness_sessions,
-    a.site_short
-FROM gather_case_note_data as b
-left join gather_wellness_attendance_data as a on a.site_short=b.site_short
-GROUP BY 
-    a.site_short
+            site_short
