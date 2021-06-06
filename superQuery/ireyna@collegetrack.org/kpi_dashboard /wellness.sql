@@ -69,4 +69,5 @@ SELECT
 FROM gather_case_note_data as b
 left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 GROUP BY 
-    a.site_short
+    a.site_short,
+    attended_wellness_sessions
