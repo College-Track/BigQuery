@@ -236,5 +236,3 @@ LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON C
 
 SELECT *
 FROM correct_missing_site_region
-WHERE Region IS NULL
-AND student_count IS NOT NULL
