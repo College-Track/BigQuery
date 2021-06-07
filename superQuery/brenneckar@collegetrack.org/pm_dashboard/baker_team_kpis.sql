@@ -225,7 +225,14 @@ FROM identify_teams
 
 )
 
+correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
+CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
+END AS Region,
+CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
+END AS Site,
+FROM calculate_numerators CN
+LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
+)
+
 SELECT *
-FROM calculate_numerators
-WHERE Region IS NULL 
-AND Program = 1
+FROM correct_missing_site_region
