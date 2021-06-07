@@ -1,3 +1,14 @@
+aggregate_wellness_survey_data AS (
+SELECT 
+    COUNT (DISTINCT students_receiving_wellness_services) AS wellness_survey_wellness_services_assisted_denom,
+    SUM(strongly_agree_wellness_services_assisted_them) AS wellness_survey_wellness_services_assisted_num,
+    site_short
+FROM gather_wellness_survey_data 
+GROUP BY site_short
+),
+
+#For KPI on average # of sessions for reb/blue Covi students 
+#kpi: % of students/# of sessions/amt of time that students with red and blue CoVi scores have spent receiving support/counseling/coaching for their social emotional wellbeing health (either through a workshop, small group or 1:1s)
 with gather_wellness_attendance_data AS (
     SELECT
         Ct.student_c,
@@ -72,10 +83,8 @@ GROUP BY
 SELECT
     A.site_short,
     wellness_covi_assessment_completed_ay,
-    wellness_survey_wellness_services_assisted_num,
-    wellness_survey_wellness_services_assisted_denom,
+    --wellness_survey_wellness_services_assisted_num,
+   -- wellness_survey_wellness_services_assisted_denom,
     attended_wellness_sessions AS wellness_sum_attended_sessions,
     
 FROM  students_that_completed_covi AS A
-LEFT JOIN aggregate_wellness_survey_data AS B
-ON A.site_short = B.site_short
