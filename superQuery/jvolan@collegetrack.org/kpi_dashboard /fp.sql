@@ -75,7 +75,7 @@ join_data AS
     fp_12_fafsa_complete_num AS fp_12_fasfa_num,
     gather_survey_data.ps_survey_scholarship_denom,
     gather_survey_data.ps_survey_scholarship_num,
-    get_at_data.indicator_efund,
+    get_at_data.indicator_efund AS fp_efund_num,
     
     
     FROM gather_contact_data
