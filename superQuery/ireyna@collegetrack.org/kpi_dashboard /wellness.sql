@@ -69,3 +69,4 @@ GROUP BY
 select a.*, attended_wellness_Sessions
 FROM aggregate_kpis_data as a
 left join gather_wellness_attendance_data as b on a.site_short = b.site_short
+group by a.site_short,attended_wellness_Sessions
