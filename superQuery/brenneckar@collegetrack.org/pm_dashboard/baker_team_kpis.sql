@@ -61,10 +61,11 @@ grade
 
 join_projections AS (
 SELECT *
-FROM prep_student_type_projections
+FROM prep_grade_projections
 UNION ALL
 SELECT *
-FROM prep_grade_projections
+FROM prep_student_type_projections
+
 
 ),
 
