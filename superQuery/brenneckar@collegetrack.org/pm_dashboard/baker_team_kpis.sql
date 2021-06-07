@@ -142,76 +142,7 @@ prep_site_kpis AS (
   WHERE
     KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
  
-),
-
-
-join_tables AS (
-  SELECT
-    PSK.*
-  FROM
-    prep_site_kpis PSK
-  UNION ALL
-  SELECT
-    PRK.*
-  FROM
-    prep_regional_kpis PRK
---   UNION ALL
---   SELECT
---     PNPK.*
---   FROM
---     prep_non_program_kpis PNPK
 )
-SELECT
-  function,
-  role,
-  kpis_by_role,
-  site_or_region,
-  target_fy22,
-  region_abrev,
-  site_short,
-  student_count,
-  
-  CASE
-    WHEN target_submitted = true THEN True
-    ELSE false
-  END AS target_submitted,
-  CASE
-    WHEN function IN (
-      'Talent Acquisition',
-      'Talent Development',
-      'Employee Experience'
-    ) THEN 1
-    ELSE 0
-  END AS hr_people,
-  CASE
-    WHEN function IN (
-      'Finance',
-      'Strategic Initiatives',
-      'Org Performance',
-      'IT',
-      'Marketing',
-      'Program Development',
-      'Operations'
-    ) THEN 1
-    ELSE 0
-  END AS national,
-  CASE
-    WHEN function IN ('Partnerships', 'Fund Raising') THEN 1
-    ELSE 0
-  END AS development,
-  CASE
-    WHEN function IN ('Mature Regional Staff', 'Non-Mature Regional Staff') THEN 1
-    ELSE 0
-  END AS region_function,
-  CASE
-    WHEN function IN ('Mature Site Staff', 'Non-Mature Site Staff') THEN 1
-    ELSE 0
-  END AS program,
-  -- CASE
-  --   WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
-  --   THEN 'National'
-  --   ELSE site_kpi
-  -- END AS Site,
-FROM
-  join_tables
-  WHERE kpis_by_role != "KPIs by role"
+
+SELECT *
+FROM prep_non_program_kpis
