@@ -223,7 +223,7 @@ SELECT *,
 target_fy22 * student_count AS target_numerator
 FROM identify_teams
 
-)
+),
 
 correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
