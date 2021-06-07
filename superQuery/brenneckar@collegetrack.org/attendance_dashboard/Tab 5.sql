@@ -1,4 +1,3 @@
-SELECT site_short, SUM(student_count)
-FROM `data-studio-260217.attendance_dashboard.kpi_prep`
-WHERE Workshop_Global_Academic_Semester_c = 'Spring 2020-21'
-GROUP BY site_short
+SELECT workshop_display_name_c
+FROM `data-studio-260217.attendance_dashboard.attendance_filtered_data`
+WHERE REGEXP_CONTAINS(workshop_display_name_c, 'Summer Bridge')
