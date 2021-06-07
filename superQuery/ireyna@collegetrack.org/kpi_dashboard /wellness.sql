@@ -17,7 +17,8 @@ with gather_wellness_attendance_data AS (
     GROUP BY
             --Attendance_Numerator_c, 
            -- co_vitality_scorecard_color_c,
-            site_short
+            site_short,
+            Attendance_Numerator_c
             --ct.student_c
 ),
 #gather case load data
