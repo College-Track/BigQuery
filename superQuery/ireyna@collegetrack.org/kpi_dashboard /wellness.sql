@@ -1,5 +1,4 @@
-with gather_wellness_attendance_data AS (
-    SELECT
+SELECT
         Ct.student_c,
         CASE
             WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
@@ -25,11 +24,3 @@ with gather_wellness_attendance_data AS (
             co_vitality_scorecard_color_c,
             site_short,
             ct.student_c
-)
---aggregate_wellness_sessions_from_attendance AS (
-SELECT 
-    Site_short,
-    SUM(attended_wellness_sessions) AS sum_attended_wellness_sessions
-FROM gather_wellness_attendance_data
-GROUP BY
-    site_short
