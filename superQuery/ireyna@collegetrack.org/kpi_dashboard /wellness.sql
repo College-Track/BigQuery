@@ -34,7 +34,7 @@ WHERE
 GROUP BY
     ct.student_c,
     site_short
-)
+),
 #gather case load data
 gather_case_note_data AS (
 SELECT 
@@ -76,3 +76,8 @@ left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 LEFT JOIN prep_attendance_data_for_avg as c a.site_short=c.site_short
 GROUP BY 
     a.site_short
+)
+select *
+FROM aggregate_kpis_data 
+--Growth KPIs and students completing Covitality KPI
+--prep_all_wellness_kpis AS (
