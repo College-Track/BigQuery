@@ -22,4 +22,4 @@
     GROUP BY
             Attendance_Numerator_c, 
             co_vitality_scorecard_color_c,
-            site_shor
+            site_short
