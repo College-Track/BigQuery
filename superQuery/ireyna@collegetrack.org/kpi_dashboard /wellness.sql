@@ -1,5 +1,5 @@
 with gather_wellness_attendance_data AS (
-    
+SELECT
     --SUM(Attendance_Numerator_c) AS attended_wellness_sessions,#attended sessions from AT
     attendance_numerator_c AS attended_wellness_sessions,
         site_short
