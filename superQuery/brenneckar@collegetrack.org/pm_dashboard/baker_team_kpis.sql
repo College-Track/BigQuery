@@ -38,8 +38,9 @@ WITH prep_kpi_targets AS (
 ),
 
 prep_student_type_projections AS (
-SELECT site_short, 
+SELECT  
 region_abrev,
+site_short,
 student_type,
 SUM(student_count) AS student_count,
 
@@ -115,8 +116,6 @@ prep_site_kpis AS (
  
 )
 
-SELECT PGP.*
-FROM prep_grade_projections PGP
-UNION ALL
-SELECT PSTP.*
-FROM prep_student_type_projections PSTP
+SELECT *
+FROM join_projections
+WHERE site_short = 'Denver'
