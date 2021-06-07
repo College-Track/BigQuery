@@ -73,7 +73,7 @@ SELECT
 FROM gather_case_note_data as b
 left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 LEFT JOIN prep_attendance_data_for_avg as c on a.site_short=c.site_short
-GROUP BY  a.site_short,attended_wellness_sessesions
+GROUP BY  a.site_short,attended_wellness_sessions
 )
 select *
 FROM aggregate_kpis_data 
