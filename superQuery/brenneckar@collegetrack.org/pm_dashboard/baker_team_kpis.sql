@@ -117,5 +117,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM join_projections
-WHERE site_short = 'Denver'
+FROM prep_site_kpis
