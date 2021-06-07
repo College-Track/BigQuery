@@ -1,10 +1,6 @@
  SELECT
         --Ct.student_c,
-        CASE
-            WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
-            THEN 1
-            ELSE 0
-        END AS wellness_blue_red_num,
+       
     --SUM(Attendance_Numerator_c) AS attended_wellness_sessions,#attended sessions from AT
     SUM(attendance_numerator_c) AS attended_wellness_sessions,
         site_short
@@ -21,5 +17,6 @@
         AND college_track_status_c = '11A'
     GROUP BY
             --Attendance_Numerator_c, 
-            co_vitality_scorecard_color_c,
+           -- co_vitality_scorecard_color_c,
             site_short
+            --ct.student_c
