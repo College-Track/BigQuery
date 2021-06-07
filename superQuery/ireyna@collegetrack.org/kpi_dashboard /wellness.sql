@@ -10,5 +10,5 @@ FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE grade_c != '8th Grade'
     AND college_track_status_c = '11A'
 GROUP BY 
-    student_c
+    student_c,
     site_short
