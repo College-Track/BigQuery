@@ -50,6 +50,7 @@ region_abrev,
 student_type
 
 ),
+
 prep_grade_projections AS (
 SELECT region_abrev, site_short,
 grade AS student_type,
@@ -85,6 +86,7 @@ prep_non_program_kpis AS (
       'Non-Mature Regional Staff'
     )
 ),
+
 modify_regional_kpis AS (
 SELECT
 * EXCEPT (site_or_region),
@@ -106,7 +108,7 @@ prep_regional_kpis AS (
     Projections.site_short,
     Projections.student_count
   FROM
-    `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+    modify_regional_kpis KPI_by_role
     LEFT JOIN prep_kpi_targets KPI_Tagets ON KPI_by_role.role = KPI_Tagets.select_role
     AND KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi
     AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi
@@ -134,4 +136,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM modify_regional_kpis
+FROM prep_regional_kpis
