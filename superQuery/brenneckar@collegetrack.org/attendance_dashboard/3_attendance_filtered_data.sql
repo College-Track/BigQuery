@@ -126,8 +126,12 @@ combined_metrics AS (
 format_metrics AS (
   SELECT
     CM.*
-  EXCEPT(dosage_split),
-    TRIM(dosage_split) AS dosage_split,
+  EXCEPT(dosage_split, dosage_types_c),
+    CASE WHEN REGEXP_CONTAINS(workshop_display_name_c, 'Summer Bridge') THEN "Summer Bridge"
+    ELSE TRIM(dosage_split) END AS dosage_split,
+    CASE WHEN REGEXP_CONTAINS(workshop_display_name_c, 'Summer Bridge') THEN "Summer Bridge"
+    ELSE dosage_types_c
+    END AS dosage_types_c,
     CASE
       WHEN AA.attendance_rate IS NULL THEN "No Data"
       WHEN AA.attendance_rate <.65 THEN "< 65%"
