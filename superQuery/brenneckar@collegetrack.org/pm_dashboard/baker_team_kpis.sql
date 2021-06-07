@@ -86,6 +86,7 @@ prep_non_program_kpis AS (
       'Mature Site Staff',
       'Mature Regional Staff',
       'Non-Mature Regional Staff'
+      'Function'
     )
 ),
 
@@ -138,4 +139,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM prep_non_program_kpis
+FROM prep_regional_kpis
