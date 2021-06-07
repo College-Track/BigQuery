@@ -115,6 +115,8 @@ prep_site_kpis AS (
  
 )
 
-SELECT *
-FROM join_projections
-WHERE site_short = 'The Durant Center'
+SELECT PGP.*
+FROM prep_grade_projections PGP
+UNION ALL
+SELECT PSTP.*
+FROM prep_student_type_projections PSTP
