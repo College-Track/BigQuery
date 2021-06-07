@@ -20,6 +20,6 @@
         AND Outcome_c != 'Cancelled'
         AND college_track_status_c = '11A'
     GROUP BY
-            Attendance_Numerator_c, 
+            --Attendance_Numerator_c, 
             co_vitality_scorecard_color_c,
             site_short
