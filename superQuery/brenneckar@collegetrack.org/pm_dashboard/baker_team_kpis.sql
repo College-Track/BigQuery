@@ -85,7 +85,7 @@ prep_non_program_kpis AS (
       'Non-Mature Site Staff',
       'Mature Site Staff',
       'Mature Regional Staff',
-      'Non-Mature Regional Staff'
+      'Non-Mature Regional Staff',
       'Function'
     )
 ),
