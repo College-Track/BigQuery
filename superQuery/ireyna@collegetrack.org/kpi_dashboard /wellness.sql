@@ -118,7 +118,14 @@ GROUP BY site_short
 --Broken down into various CTEs to gather students with red/blue covi, wellness sessions attended, case notes
 
 --Pulling students with red/blue covi from academic term (2020-21AY)
-gather_red_blue_covi_at AS ( 
+
+
+--Average # of sessions for reb/blue Covi students or 1:1 (case notes)
+--% of students/# of sessions/amt of time that students with red and blue CoVi scores have spent receiving support/counseling/coaching for their social emotional wellbeing health (either through a workshop, small group or 1:1s)
+--Broken down into various CTEs to gather students with red/blue covi, wellness sessions attended, case notes
+
+--Pulling students with red/blue covi from academic term (2020-21AY)
+with gather_red_blue_covi_at AS ( 
 SELECT
         student_c,
         site_short,
@@ -181,11 +188,11 @@ GROUP BY
 sum_case_note_data_for_avg AS (
 SELECT 
     CAT.student_c,
-    SUM(CASE
+    CASE
         WHEN id IS NOT NULL 
         THEN 1
         ELSE 0
-    END) AS sum_wellness_case_note_2020_21, #wellness casenotes from 2020-21
+    END AS sum_wellness_case_note_2020_21, #wellness casenotes from 2020-21
     id AS case_note_id, #case note id
     site_short
     
@@ -201,12 +208,12 @@ GROUP BY
 
 validate_sum_case_note_data AS (
 SELECT 
-    CAT.student_c,
-    SUM(CASE
+    cat.student_c,
+    CASE
         WHEN id IS NOT NULL 
         THEN 1
         ELSE 0
-    END) AS validate_sum_wellness_case_note_2020_21, #wellness casenotes from 2020-21
+    END AS validate_sum_wellness_case_note_2020_21, #wellness casenotes from 2020-21
     id AS case_note_id, #case note id
     site_short
     
@@ -214,10 +221,11 @@ FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
 LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c` CSE ON CAT.AT_Id = CSE.Academic_Semester_c
 WHERE Type_Counseling_c = TRUE
     AND AY_name = 'AY 2020-21'
+    AND college_track_status_c = '11A'
 GROUP BY
     site_short,
-    student_c,
-    id
+    id,
+    cat.student_c
     
 ),
 --Add 1:1 case notes and sessions attended by student to average out later
@@ -235,9 +243,15 @@ GROUP BY
 ),
 
 validate_sum_wellness_support_received AS (
-SELECT  sum_wellness_support_received AS validate_sum_wellness_support_received, site_short
-FROM combine_session_case_notes
-GROUP BY site_short,validate_sum_wellness_support_received
+SELECT 
+    ATTNDCE.site_short,
+    SUM(validate_attended_wellness_sessions + validate_sum_wellness_case_note_2020_21) AS validate_sum_wellness_support_received,
+    SUM(validate_sum_wellness_case_note_2020_21) as sum_of_validated_case_notes
+    
+FROM validate_wellness_attendance_data AS ATTNDCE
+LEFT JOIN validate_sum_case_note_data AS CSE ON ATTNDCE.site_short = CSE.site_short
+GROUP BY 
+    site_short
 ),
 
 avg_session_case_notes AS (
@@ -253,25 +267,25 @@ GROUP BY
 --Aggregate all KPIs - sessions and casenotes only for now
 --aggregate_kpis_data AS(
 SELECT
-    --sum_wellness_case_note_2020_21,
-   -- sum_wellness_support_received,
      a.site_short,
     validate_sum_wellness_support_received,
-    avg_wellness_support_received,
-    validate_sum_wellness_case_note_2020_21,
+    sum_of_validated_case_notes ,
+    --avg_wellness_support_received,
+    --validate_sum_wellness_case_note_2020_21,
     validate_attended_wellness_sessions
    
 FROM combine_session_case_notes AS a
-LEFT JOIN sum_attendance_data_for_avg AS b ON a.site_short=b.site_short
-LEFT JOIN sum_case_note_data_for_avg AS c ON a.site_short=c.site_short
+--LEFT JOIN sum_attendance_data_for_avg AS b ON a.site_short=b.site_short
+--LEFT JOIN sum_case_note_data_for_avg AS c ON a.site_short=c.site_short
 LEFT JOIN validate_wellness_attendance_data AS d ON a.site_short=d.site_short
 LEFT JOIN validate_sum_case_note_data AS e ON a.site_short=e.site_short
 LEFT JOIN validate_sum_wellness_support_received AS f ON a.site_short = f.site_short
-LEFT JOIN avg_session_case_notes AS g ON a.site_short = g.site_short
+--LEFT JOIN avg_session_case_notes AS g ON a.site_short = g.site_short
 GROUP BY  
     validate_sum_wellness_support_received,
-    avg_wellness_support_received,
-    validate_sum_wellness_case_note_2020_21,
+    --avg_wellness_support_received,
+    --validate_sum_wellness_case_note_2020_21,
+    sum_of_validated_case_notes ,
     validate_attended_wellness_sessions,
     a.site_short
 /*)
