@@ -6,3 +6,4 @@
 SELECT Class_c, Workshop_Display_Name_c
 FROM `data-warehouse-289815.salesforce_clean.class_template` 
 WHERE Workshop_Display_Name_c LIKE '%Summer Bridge%'
+AND Workshop_Display_Name_c = 'CC: Virtual Regional Summer Bridge CCCT'
