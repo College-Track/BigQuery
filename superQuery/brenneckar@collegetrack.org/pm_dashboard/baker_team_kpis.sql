@@ -115,6 +115,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM prep_grade_projections
-RIGHT JOIN `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role ON student_type = student_group AND site_or_region = site_short
-WHERE student_group IS NULL
+FROM prep_site_kpis
