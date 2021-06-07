@@ -1,6 +1,6 @@
 with gather_wellness_attendance_data AS ( --prep for SUM of sessions to validate data
 SELECT
-    attendance_numerator_c AS attended_wellness_sessions,
+    SUM(attendance_numerator_c) AS attended_wellness_sessions,
     site_short
     FROM `data-warehouse-289815.salesforce_clean.class_template` CT
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
@@ -13,9 +13,7 @@ SELECT
         AND Outcome_c != 'Cancelled'
         AND college_track_status_c = '11A'
     GROUP BY
-            site_short,
-            Attendance_Numerator_c
-),
+            site_short
 prep_attendance_data_for_avg AS (
 SELECT
     ct.student_c,
@@ -69,12 +67,12 @@ SELECT
     SUM(wellness_case_note_2020_21) AS wellness_case_notes, #wellness casenotes from 2020-21
     --SUM(wellness_blue_red_num) AS wellness_blue_red_num,
     AVG(sum_attended_wellness_by_student) AS avg_attended_sessions, #workshop session
-    SUM(attended_wellness_sessions) AS attended_wellness_sessions,
+    attended_wellness_sessions,
     a.site_short
 FROM gather_case_note_data as b
 left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 LEFT JOIN prep_attendance_data_for_avg as c on a.site_short=c.site_short
-GROUP BY  a.site_short
+GROUP BY  a.site_short,attended_wellness_sessesions
 )
 select *
 FROM aggregate_kpis_data 
