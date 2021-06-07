@@ -158,7 +158,9 @@ join_tables AS (
     PNPK.*
   FROM
     prep_non_program_kpis PNPK
-)
+),
+
+identify_teams AS (
 SELECT
   function,
   role,
@@ -213,3 +215,14 @@ SELECT
 FROM
   join_tables
   WHERE kpis_by_role != "KPIs by role"
+),
+
+calculate_numerators AS (
+SELECT *,
+target_fy22 * student_count AS target_numerator
+FROM identify_teams
+
+)
+
+SELECT *
+FROM calculate_numerators
