@@ -1,5 +1,5 @@
  SELECT
-        Ct.student_c,
+        --Ct.student_c,
         CASE
             WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
             THEN 1
@@ -22,5 +22,4 @@
     GROUP BY
             Attendance_Numerator_c, 
             co_vitality_scorecard_color_c,
-            site_short,
-            ct.student_c
+            site_shor
