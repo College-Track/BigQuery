@@ -1,5 +1,5 @@
 SELECT
-  site_short
+  grade_c, COUNT(*)
 FROM
-  `data-studio-260217.performance_mgt.fy22_projections`
-  WHERE grade = 'Year 6'
+  `data-warehouse-289815.salesforce_clean.contact_template`
+  WHERE site_short IN ('Watts', 'Sacramento', 'Denver')
