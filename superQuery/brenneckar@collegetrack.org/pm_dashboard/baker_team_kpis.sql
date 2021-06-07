@@ -144,4 +144,4 @@ SELECT
 FROM
   join_tables
   LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON Projections.site_short = site_or_region
-  WHERE kpis_by_role != "KPIs by role", student_group 
+  WHERE kpis_by_role != "KPIs by role"
