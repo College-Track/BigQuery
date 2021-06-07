@@ -115,5 +115,5 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM join_projections
+FROM prep_grade_projections
 WHERE site_short = 'The Durant Center'
