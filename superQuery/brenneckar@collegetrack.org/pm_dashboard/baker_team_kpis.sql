@@ -118,3 +118,4 @@ prep_site_kpis AS (
 
 SELECT *
 FROM prep_site_kpis
+WHERE student_type IS NULL
