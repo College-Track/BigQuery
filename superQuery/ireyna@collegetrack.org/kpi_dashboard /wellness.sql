@@ -78,6 +78,4 @@ GROUP BY
     a.site_short
 )
 select *
-FROM aggregate_kpis_data 
---Growth KPIs and students completing Covitality KPI
---prep_all_wellness_kpis AS (
+FROM aggregate_kpis_data
