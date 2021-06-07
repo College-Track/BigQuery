@@ -60,11 +60,11 @@ grade
 ),
 
 join_projections AS (
-SELECT *
-FROM prep_grade_projections
+SELECT PGP.*
+FROM prep_grade_projections PGP
 UNION ALL
-SELECT *
-FROM prep_student_type_projections
+SELECT PSTP.*
+FROM prep_student_type_projections PSTP
 
 
 ),
