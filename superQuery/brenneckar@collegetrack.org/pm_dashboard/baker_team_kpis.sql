@@ -87,12 +87,15 @@ prep_non_program_kpis AS (
 ),
 prep_regional_kpis AS (
   SELECT
-    *
+   KPI_by_role.*,
+    Projections.site_short,
+    Projections.student_count
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
     LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
     AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
     AND KPI_by_role.site_or_region = Non_Program_Targets.region_kpi
+    LEFT JOIN join_projections Projections ON Projections.region_abrev = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN (
       'Mature Regional Staff',
@@ -103,8 +106,7 @@ prep_site_kpis AS (
   SELECT
     KPI_by_role.*,
     Projections.site_short,
-    Projections.student_count,
-    Projections.student_type
+    Projections.student_count
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
     LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
@@ -117,6 +119,5 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM prep_site_kpis
-WHERE student_type IS NULL
-AND student_group IS NOT NULL
+FROM prep_regional_kpis
+
