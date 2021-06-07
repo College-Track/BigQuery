@@ -63,7 +63,7 @@ SELECT
   SUM(CM.met_cs_goal) AS met_cs_goal,
   SUM(CM.met_college_app_goal) as met_college_app_goal,
   MAX(SC.senior_count) as senior_count,
-  MAX(Account.College_Track_High_School_Capacity_c) AS hs_capacity,
+  MAX(Account.college_track_high_school_capacity_v_2_c) AS hs_capacity,
   MAX(Account.College_Track_FY_HS_Planned_Enrollment_c) AS hs_budget_capacity,
   SUM(CM.met_gpa_goal_valid) AS met_gpa_goal_valid,
   SUM(CM.count_gpa) AS count_gpa
