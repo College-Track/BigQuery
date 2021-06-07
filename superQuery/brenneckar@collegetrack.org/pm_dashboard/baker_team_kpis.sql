@@ -1,3 +1,12 @@
+-- CREATE
+-- OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+--   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+-- ) AS -- CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis`
+-- -- OPTIONS
+-- --     (
+-- --     description="KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+-- --     )
+-- -- AS
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
@@ -91,7 +100,8 @@ prep_regional_kpis AS (
 prep_site_kpis AS (
   SELECT
     KPI_by_role.*,
-    Projections.student_count
+    Projections.student_count,
+    Projections.student_type
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
     LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
@@ -103,4 +113,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM join_projections
+FROM prep_site_kpis
