@@ -85,6 +85,20 @@ prep_non_program_kpis AS (
       'Non-Mature Regional Staff'
     )
 ),
+modify_regional_kpis AS (
+KPI_by_role.* (EXCEPT site_or_region),
+CASE WHEN student_group IS NOT NULL AND site_or_region = "Bay Area" THEN "NOR CAL"
+ELSE "Bay Area"
+END AS site_or_region
+FROM
+    `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
+WHERE
+    KPI_by_role.function IN (
+      'Mature Regional Staff',
+      'Non-Mature Regional Staff'
+    )    
+),
+
 prep_regional_kpis AS (
   SELECT
    KPI_by_role.*,
@@ -92,9 +106,9 @@ prep_regional_kpis AS (
     Projections.student_count
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
-    LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
-    AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
-    AND KPI_by_role.site_or_region = Non_Program_Targets.region_kpi
+    LEFT JOIN prep_kpi_targets KPI_Tagets ON KPI_by_role.role = KPI_Tagets.select_role
+    AND KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi
+    AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi
     LEFT JOIN join_projections Projections ON Projections.region_abrev = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN (
@@ -119,5 +133,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM prep_regional_kpis
-WHERE student_group IS NOT NULL
+FROM modify_regional_kpis
