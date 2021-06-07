@@ -139,4 +139,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM prep_regional_kpis
+FROM prep_non_program_kpis
