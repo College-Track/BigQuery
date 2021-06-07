@@ -1,4 +1,4 @@
-SELECT
+ SELECT
         Ct.student_c,
         CASE
             WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
@@ -6,7 +6,7 @@ SELECT
             ELSE 0
         END AS wellness_blue_red_num,
     --SUM(Attendance_Numerator_c) AS attended_wellness_sessions,#attended sessions from AT
-    attendance_numerator_c AS attended_wellness_sessions,
+    SUM(attendance_numerator_c) AS attended_wellness_sessions,
         site_short
     FROM
         `data-warehouse-289815.salesforce_clean.class_template` CT
