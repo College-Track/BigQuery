@@ -62,5 +62,5 @@ left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 GROUP BY 
     a.site_short
 )
-select a.*
+select *
 FROM aggregate_kpis_data 
