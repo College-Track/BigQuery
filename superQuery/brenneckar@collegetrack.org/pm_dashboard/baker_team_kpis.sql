@@ -120,4 +120,4 @@ prep_site_kpis AS (
 
 SELECT *
 FROM prep_regional_kpis
-
+WHERE student_group IS NOT NULL
