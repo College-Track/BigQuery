@@ -73,7 +73,9 @@ FROM prep_student_type_projections PSTP
 
 prep_non_program_kpis AS (
   SELECT
-    *
+    *,
+    NULL AS site_short,
+    NULL AS student_count
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
     LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
@@ -136,4 +138,4 @@ prep_site_kpis AS (
 )
 
 SELECT *
-FROM prep_regional_kpis
+FROM prep_non_program_kpis
