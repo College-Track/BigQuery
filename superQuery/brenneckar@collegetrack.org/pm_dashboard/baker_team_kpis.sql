@@ -73,7 +73,8 @@ FROM prep_student_type_projections PSTP
 
 prep_non_program_kpis AS (
   SELECT
-    *,
+    KPI_by_role.*,
+    Non_Program_Targets.*,
     NULL AS site_short,
     NULL AS student_count
   FROM
@@ -108,6 +109,7 @@ WHERE
 prep_regional_kpis AS (
   SELECT
    KPI_by_role.*,
+   KPI_Tagets.*,
     Projections.site_short,
     Projections.student_count
   FROM
@@ -125,18 +127,87 @@ prep_regional_kpis AS (
 prep_site_kpis AS (
   SELECT
     KPI_by_role.*,
+    KPI_Tagets.*,
     Projections.site_short,
     Projections.student_count
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
-    LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
-    AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
-    AND KPI_by_role.site_or_region = Non_Program_Targets.site_kpi
+    LEFT JOIN prep_kpi_targets KPI_Tagets ON KPI_by_role.role = KPI_Tagets.select_role
+    AND KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi
+    AND KPI_by_role.site_or_region = KPI_Tagets.site_kpi
     LEFT JOIN join_projections Projections ON Projections.site_short = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
  
-)
+),
 
-SELECT *
-FROM prep_non_program_kpis
+
+join_tables AS (
+  SELECT
+    PSK.*
+  FROM
+    prep_site_kpis PSK
+  UNION ALL
+  SELECT
+    PRK.*
+  FROM
+    prep_regional_kpis PRK
+--   UNION ALL
+--   SELECT
+--     PNPK.*
+--   FROM
+--     prep_non_program_kpis PNPK
+)
+SELECT
+  function,
+  role,
+  kpis_by_role,
+  site_or_region,
+  target_fy22,
+  Projections.site_short AS Site,
+  Projections.region_abrev AS Region,
+  CASE
+    WHEN target_submitted = true THEN True
+    ELSE false
+  END AS target_submitted,
+  CASE
+    WHEN function IN (
+      'Talent Acquisition',
+      'Talent Development',
+      'Employee Experience'
+    ) THEN 1
+    ELSE 0
+  END AS hr_people,
+  CASE
+    WHEN function IN (
+      'Finance',
+      'Strategic Initiatives',
+      'Org Performance',
+      'IT',
+      'Marketing',
+      'Program Development',
+      'Operations'
+    ) THEN 1
+    ELSE 0
+  END AS national,
+  CASE
+    WHEN function IN ('Partnerships', 'Fund Raising') THEN 1
+    ELSE 0
+  END AS development,
+  CASE
+    WHEN function IN ('Mature Regional Staff', 'Non-Mature Regional Staff') THEN 1
+    ELSE 0
+  END AS region_function,
+  CASE
+    WHEN function IN ('Mature Site Staff', 'Non-Mature Site Staff') THEN 1
+    ELSE 0
+  END AS program,
+  -- CASE
+  --   WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
+  --   THEN 'National'
+  --   ELSE site_kpi
+  -- END AS Site,
+FROM
+  join_tables
+  LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON Projections.site_short = site_or_region
+  WHERE kpis_by_role != "KPIs by role"
