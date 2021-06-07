@@ -69,7 +69,7 @@ GROUP BY
 )
 
 --Growth KPIs and students completing Covitality KPI
-prep_all_wellness_kpis AS (
+--prep_all_wellness_kpis AS (
 SELECT
     A.site_short,
     wellness_covi_assessment_completed_ay,
