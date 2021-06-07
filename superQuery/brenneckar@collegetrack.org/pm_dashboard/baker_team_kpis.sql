@@ -75,6 +75,7 @@ prep_non_program_kpis AS (
   SELECT
     KPI_by_role.*,
     Non_Program_Targets.*,
+    NULL AS region_abrev,
     NULL AS site_short,
     NULL AS student_count
   FROM
@@ -110,6 +111,7 @@ prep_regional_kpis AS (
   SELECT
    KPI_by_role.*,
    KPI_Tagets.*,
+   Projections.region_abrev,
     Projections.site_short,
     Projections.student_count
   FROM
@@ -128,6 +130,7 @@ prep_site_kpis AS (
   SELECT
     KPI_by_role.*,
     KPI_Tagets.*,
+    Projections.region_abrev,
     Projections.site_short,
     Projections.student_count
   FROM
@@ -164,6 +167,7 @@ SELECT
   kpis_by_role,
   site_or_region,
   target_fy22,
+  region_abrev,
   site_short,
   student_count,
   
