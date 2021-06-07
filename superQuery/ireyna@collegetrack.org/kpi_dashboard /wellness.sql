@@ -14,6 +14,7 @@ SELECT
         AND college_track_status_c = '11A'
     GROUP BY
             site_short
+),
 prep_attendance_data_for_avg AS (
 SELECT
     ct.student_c,
