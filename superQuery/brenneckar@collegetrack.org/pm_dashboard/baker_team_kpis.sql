@@ -86,7 +86,8 @@ prep_non_program_kpis AS (
     )
 ),
 modify_regional_kpis AS (
-KPI_by_role.* (EXCEPT site_or_region),
+SELECT
+* EXCEPT (site_or_region),
 CASE WHEN student_group IS NOT NULL AND site_or_region = "Bay Area" THEN "NOR CAL"
 ELSE "Bay Area"
 END AS site_or_region
