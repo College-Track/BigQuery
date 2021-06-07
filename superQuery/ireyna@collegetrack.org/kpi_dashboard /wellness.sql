@@ -241,15 +241,21 @@ GROUP BY
     student_c,
     site_short
 ),
-
+validate_sum_of_case_notes AS (
+SELECT 
+    SUM(validate_sum_wellness_case_note_2020_21) as sum_of_validated_case_notes,
+    site_short
+FROM validate_sum_case_note_data AS CSE 
+GROUP BY 
+    site_short
+),
 validate_sum_wellness_support_received AS (
 SELECT 
     ATTNDCE.site_short,
-    SUM(validate_attended_wellness_sessions + validate_sum_wellness_case_note_2020_21) AS validate_sum_wellness_support_received,
-    SUM(validate_sum_wellness_case_note_2020_21) as sum_of_validated_case_notes
+    SUM(validate_attended_wellness_sessions + sum_of_validated_case_notes) AS validate_sum_wellness_support_received,
     
 FROM validate_wellness_attendance_data AS ATTNDCE
-LEFT JOIN validate_sum_case_note_data AS CSE ON ATTNDCE.site_short = CSE.site_short
+LEFT JOIN validate_sum_of_case_notes AS CSE ON ATTNDCE.site_short = CSE.site_short
 GROUP BY 
     site_short
 ),
@@ -278,7 +284,7 @@ FROM combine_session_case_notes AS a
 --LEFT JOIN sum_attendance_data_for_avg AS b ON a.site_short=b.site_short
 --LEFT JOIN sum_case_note_data_for_avg AS c ON a.site_short=c.site_short
 LEFT JOIN validate_wellness_attendance_data AS d ON a.site_short=d.site_short
-LEFT JOIN validate_sum_case_note_data AS e ON a.site_short=e.site_short
+LEFT JOIN validate_sum_of_case_notes AS e ON a.site_short=e.site_short
 LEFT JOIN validate_sum_wellness_support_received AS f ON a.site_short = f.site_short
 --LEFT JOIN avg_session_case_notes AS g ON a.site_short = g.site_short
 GROUP BY  
@@ -288,6 +294,7 @@ GROUP BY
     sum_of_validated_case_notes ,
     validate_attended_wellness_sessions,
     a.site_short
+
 /*)
 select *
 FROM aggregate_kpis_data 
