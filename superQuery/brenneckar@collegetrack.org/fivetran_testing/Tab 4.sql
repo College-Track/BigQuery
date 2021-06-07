@@ -1,3 +1,3 @@
-SELECT ct_has_helped_me_improve_my_ability_to_identify_share_things_im_passionate_about, COUNT(*)
-FROM `data-studio-260217.surveys.fy21_hs_survey`
-GROUP BY ct_has_helped_me_improve_my_ability_to_identify_share_things_im_passionate_about
+SELECT college_track_high_school_capacity_v_2_c, Name
+FROM `data-warehouse-289815.salesforce.account`
+WHERE college_track_high_school_capacity_v_2_c IS NOT NULL
