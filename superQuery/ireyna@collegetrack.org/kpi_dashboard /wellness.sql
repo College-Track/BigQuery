@@ -23,7 +23,8 @@ with gather_wellness_attendance_data AS (
     GROUP BY
             Attendance_Numerator_c, 
             co_vitality_scorecard_color_c,
-            site_short
+            site_short,
+            cat.student_c
 )
 --aggregate_wellness_sessions_from_attendance AS (
 SELECT 
