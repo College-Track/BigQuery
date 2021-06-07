@@ -27,7 +27,7 @@ WITH prep_kpi_targets AS (
     END AS target_fy22,
   FROM
     `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target
-    WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
+    -- WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
     -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
     -- ON KPI_Target.select_role = KPI_Selection.role
     -- AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
