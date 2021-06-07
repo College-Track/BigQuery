@@ -7,7 +7,7 @@ with gather_wellness_attendance_data AS (
             ELSE 0
         END AS wellness_blue_red_num,
     --SUM(Attendance_Numerator_c) AS attended_wellness_sessions,#attended sessions from AT
-    attendance_numerator_c AS attended_wellness_sessions,
+    SUM(attendance_numerator_c) AS attended_wellness_sessions,
         site_short
     FROM
         `data-warehouse-289815.salesforce_clean.class_template` CT
@@ -25,13 +25,58 @@ with gather_wellness_attendance_data AS (
             co_vitality_scorecard_color_c,
             site_short,
             ct.student_c
-)
---aggregate_wellness_sessions_from_attendance AS (
+),
+#gather case load data
+gather_case_note_data AS (
 SELECT 
-    Site_short,
-    student_c,
-    SUM(attended_wellness_sessions) AS sum_attended_wellness_sessions
-FROM gather_wellness_attendance_data
+    CASE
+        WHEN id IS NOT NULL 
+        THEN 1
+        ELSE 0
+    END AS wellness_case_note_2020_21,
+    id AS case_note_id, #case note id
+    site_short
+    
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c`CSE  ON CAT.AT_Id = CSE.Academic_Semester_c
+WHERE Type_Counseling_c = TRUE
+    AND AY_name = 'AY 2020-21'
 GROUP BY
     site_short,
-    student_c
+    id
+),
+/*
+aggregate_wellness_session_data AS(
+SELECT
+    SUM(wellness_blue_red_num) AS wellness_blue_red_num,
+    AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop sessions
+    site_short
+FROM gather_wellness_attendance_data
+GROUP BY 
+    site_short
+)*/
+aggregate_kpis_data AS(
+SELECT
+    SUM(wellness_case_note_2020_21) AS wellness_case_notes, #wellness casenotes from 2020-21
+    SUM(wellness_blue_red_num) AS wellness_blue_red_num,
+    AVG(attended_wellness_sessions) AS avg_attended_sessions, #workshop session
+    a.site_short
+FROM gather_case_note_data as b
+left join gather_wellness_attendance_data as a on a.site_short=b.site_short
+left join aggregate_wellness_sessions_from_attendance as c on c.site_short=b.site_short
+GROUP BY 
+    a.site_short
+),
+
+--Growth KPIs and students completing Covitality KPI
+prep_all_wellness_kpis AS (
+SELECT
+    A.site_short,
+    wellness_covi_assessment_completed_ay,
+    wellness_survey_wellness_services_assisted_num,
+    wellness_survey_wellness_services_assisted_denom,
+    attended_wellness_sessions AS wellness_sum_attended_sessions,
+    
+FROM  students_that_completed_covi AS A
+LEFT JOIN aggregate_wellness_survey_data AS B
+ON A.site_short = B.site_short
