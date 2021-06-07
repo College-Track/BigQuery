@@ -167,8 +167,8 @@ SELECT
   kpis_by_role,
   site_or_region,
   target_fy22,
-  region_abrev,
-  site_short,
+  region_abrev AS Region,
+  site_short AS Site,
   student_count,
   
   CASE
