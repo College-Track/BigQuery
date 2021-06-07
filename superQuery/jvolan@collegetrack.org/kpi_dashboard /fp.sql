@@ -18,6 +18,41 @@ WITH gather_survey_data AS
     GROUP BY site_short
 ),
 
+get_at_data AS
+(
+    SELECT
+    AT_Id,
+    Contact_Id AS at_contact_id,
+    site_short AS at_site,
+--% of college students saying that they know how to apply for Emergency Fund in PAT advising rubric
+    CASE    
+        WHEN e_fund_c = 'EF_G' THEN 1
+        ELSE 0
+    END AS indicator_efund,
+
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE college_track_status_c = '15A'
+    AND(
+    (CURRENT_DATE() < '2021-07-01'
+    AND current_as_c = TRUE)
+    OR
+    (CURRENT_DATE() > '2021-07-01'
+    AND previous_as_c = TRUE))
+),
+
+/*get_first_year_loan_debt AS
+(
+    SELECT
+    AT_Id,
+    Contact_Id AS year_1_spring_contact_id,
+    site_short AS year_1_spring_AT_site,
+    CASE
+        WHEN 
+
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE college_track_status_c = '15A'
+*/
+
 gather_contact_data AS
 (
     SELECT
@@ -39,12 +74,18 @@ join_data AS
     site_short,
     fp_12_fafsa_complete_num AS fp_12_fasfa_num,
     gather_survey_data.ps_survey_scholarship_denom,
-    gather_survey_data.ps_survey_scholarship_num
+    gather_survey_data.ps_survey_scholarship_num,
+    get_at_data.indicator_efund,
+    
     
     FROM gather_contact_data
     LEFT JOIN gather_survey_data ON gather_survey_data.survey_site_short = site_short
+    LEFT JOIN get_at_data ON get_at_data.at_site = site_short
 )
   
     SELECT
     *
     FROM join_data
+    
+
+     
