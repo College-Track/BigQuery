@@ -164,8 +164,9 @@ SELECT
   kpis_by_role,
   site_or_region,
   target_fy22,
-  Projections.site_short AS Site,
-  Projections.region_abrev AS Region,
+  site_short,
+  student_count,
+  
   CASE
     WHEN target_submitted = true THEN True
     ELSE false
@@ -209,5 +210,4 @@ SELECT
   -- END AS Site,
 FROM
   join_tables
-  LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON Projections.site_short = site_or_region
   WHERE kpis_by_role != "KPIs by role"
