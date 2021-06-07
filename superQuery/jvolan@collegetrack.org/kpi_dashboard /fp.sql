@@ -21,14 +21,13 @@ WITH gather_survey_data AS
 get_at_data AS
 (
     SELECT
-    AT_Id,
-    Contact_Id AS at_contact_id,
     site_short AS at_site,
 --% of college students saying that they know how to apply for Emergency Fund in PAT advising rubric
+    SUM(
     CASE    
         WHEN e_fund_c = 'EF_G' THEN 1
         ELSE 0
-    END AS indicator_efund,
+    END) AS indicator_efund,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE college_track_status_c = '15A'
@@ -38,6 +37,7 @@ get_at_data AS
     OR
     (CURRENT_DATE() > '2021-07-01'
     AND previous_as_c = TRUE))
+    GROUP BY site_short
 ),
 
 /*get_first_year_loan_debt AS
@@ -86,6 +86,3 @@ join_data AS
     SELECT
     *
     FROM join_data
-    
-
-     
