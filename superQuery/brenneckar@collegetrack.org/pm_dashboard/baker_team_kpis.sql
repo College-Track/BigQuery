@@ -100,6 +100,7 @@ prep_regional_kpis AS (
 prep_site_kpis AS (
   SELECT
     KPI_by_role.*,
+    Projections.site_short,
     Projections.student_count,
     Projections.student_type
   FROM
