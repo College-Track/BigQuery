@@ -1,6 +1,6 @@
 with gather_wellness_attendance_data AS (
     SELECT
-        CAT.student_c,
+        Ct.student_c,
         CASE
             WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
             THEN 1
@@ -24,7 +24,7 @@ with gather_wellness_attendance_data AS (
             Attendance_Numerator_c, 
             co_vitality_scorecard_color_c,
             site_short,
-            cat.student_c
+            ctt.student_c
 )
 --aggregate_wellness_sessions_from_attendance AS (
 SELECT 
