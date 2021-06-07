@@ -1,6 +1,5 @@
 SELECT
   *
 FROM
-  `data-warehouse-289815.google_sheets.team_kpi_target`
+  `data-studio-260217.performance_mgt.expanded_role_kpi_selection`
 WHERE
-  select_kpi LIKE '%-Strategy Team satisfaction: %%'
