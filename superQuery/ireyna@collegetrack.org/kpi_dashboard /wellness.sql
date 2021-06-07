@@ -16,7 +16,7 @@ SELECT
             site_short,
             Attendance_Numerator_c
 ),
-prep_attedance_data_for_avg AS (
+prep_attendance_data_for_avg AS (
 SELECT
     ct.student_c,
     SUM(attendance_numerator_c) AS sum_attended_wellness_by_student,
@@ -77,4 +77,4 @@ LEFT JOIN prep_attendance_data_for_avg as c on a.site_short=c.site_short
 GROUP BY  a.site_short
 )
 select *
-FROM aggregate_kpis_data
+FROM aggregate_kpis_data 
