@@ -111,6 +111,7 @@ prep_site_kpis AS (
     LEFT JOIN join_projections Projections ON Projections.site_short = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
+    AND student_type NOT IN ('PS Student', 'HS Student')
 )
 
 SELECT *
