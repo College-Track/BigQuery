@@ -227,3 +227,5 @@ FROM identify_teams
 
 SELECT *
 FROM calculate_numerators
+WHERE Region IS NULL 
+AND Program = 1
