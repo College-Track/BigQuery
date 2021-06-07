@@ -39,7 +39,7 @@ WHERE Type_Counseling_c = TRUE
 GROUP BY
     site_short,
     id
-),
+)
 /*
 aggregate_wellness_session_data AS(
 SELECT
@@ -50,7 +50,7 @@ FROM gather_wellness_attendance_data
 GROUP BY 
     site_short
 )*/
-aggregate_kpis_data AS(
+--aggregate_kpis_data AS(
 SELECT
     SUM(wellness_case_note_2020_21) AS wellness_case_notes, #wellness casenotes from 2020-21
     SUM(wellness_blue_red_num) AS wellness_blue_red_num,
