@@ -29,9 +29,7 @@ with gather_wellness_attendance_data AS (
 --aggregate_wellness_sessions_from_attendance AS (
 SELECT 
     Site_short,
-    student_c,
     SUM(attended_wellness_sessions) AS sum_attended_wellness_sessions
 FROM gather_wellness_attendance_data
 GROUP BY
-    site_short,
-    student_c
+    site_short
