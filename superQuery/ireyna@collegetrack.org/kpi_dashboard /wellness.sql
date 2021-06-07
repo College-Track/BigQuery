@@ -65,3 +65,17 @@ FROM gather_case_note_data as b
 left join gather_wellness_attendance_data as a on a.site_short=b.site_short
 GROUP BY 
     a.site_short
+)
+
+--Growth KPIs and students completing Covitality KPI
+--prep_all_wellness_kpis AS (
+SELECT
+    A.site_short,
+    wellness_covi_assessment_completed_ay,
+    wellness_survey_wellness_services_assisted_num,
+    wellness_survey_wellness_services_assisted_denom,
+    attended_wellness_sessions AS wellness_sum_attended_sessions,
+    
+FROM  students_that_completed_covi AS A
+LEFT JOIN aggregate_wellness_survey_data AS B
+ON A.site_short = B.site_short
