@@ -171,7 +171,7 @@ SELECT
 gather_case_note_data AS (
 SELECT 
     CASE
-        WHEN id IS NOT NULL 
+        WHEN id IS NOT NULL #case note id
         THEN 1
         ELSE 0
     END AS wellness_case_note_2020_21, #wellness casenotes from 2020-21
@@ -224,7 +224,7 @@ LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short
 LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short
 WHERE wellness_blue_red_denom IS NOT NULL
 )
---Aggregate all KPIs - sessions and casenotes only for now
+
 
 --aggregate_kpis_data AS(
 SELECT
