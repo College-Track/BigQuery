@@ -1,4 +1,4 @@
-    SELECT 
+  SELECT 
         contact_id,
         site_short,
     
@@ -19,6 +19,5 @@
         ) AS accepted_enrolled_best_fit
       
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-        LEFT JOIN gather_attendance_data ON contact_id=student_c
     WHERE  college_track_status_c = '11A'
     AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0))
