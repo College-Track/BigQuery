@@ -229,14 +229,17 @@ WHERE wellness_blue_red_denom IS NOT NULL
 
 --aggregate_kpis_data AS(
 SELECT
-    A.site_short,
+    a.site_short,
     wellness_covi_assessment_completed_ay,
     wellness_avg_support
     
 FROM  students_that_completed_covi AS a
 LEFT JOIN aggregate_wellness_survey_data AS b ON b.site_short = a.site_short
 LEFT JOIN calculate_avg_wellness_services_per_blue_red_covi AS c ON c.site_short = a.site_short
-
+GROUP BY
+    site_short,
+    wellness_covi_assessment_completed_ay,
+    wellness_avg_support
 /*)
 select *
 FROM aggregate_kpis_data 
