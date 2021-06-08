@@ -103,13 +103,13 @@ SELECT
         WHEN accepted_best_fit IS NOT NULL 
         THEN 1
         ELSE 0
-    END) AS fp_accepted_best_fit_numerator,
+    END) AS fp_accepted_best_fit_denom,
     
     SUM(CASE 
         WHEN accepted_enrolled_best_fit IS NOT NULL
         THEN 1 
         ELSE 0
-    END) AS fp_enrolled_best_fit_denom,
+    END) AS fp_enrolled_best_fit_numerator,
     
 FROM gather_best_fit_data
 GROUP BY site_short
@@ -123,8 +123,8 @@ join_data AS
     gather_survey_data.ps_survey_scholarship_denom,
     gather_survey_data.ps_survey_scholarship_num,
     get_at_data.indicator_efund AS fp_efund_num,
-    fp_accepted_best_fit_numerator,
-    fp_enrolled_best_fit_denom
+    fp_accepted_best_fit_denom,
+    fp_enrolled_best_fit_numerator
     
     
     FROM gather_contact_data AS a
