@@ -79,7 +79,7 @@ SELECT
     contact_id,
     SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay --does sudent have more than 1 covi assessment?
     
-FROM students_that_completed_covi AS covi
+FROM completing_covi_data  AS covi
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact on covi.contact_id=contact.contact_id
 WHERE covi_assessment_completed_ay = 1
 AND grade_c = "12th Grade"
