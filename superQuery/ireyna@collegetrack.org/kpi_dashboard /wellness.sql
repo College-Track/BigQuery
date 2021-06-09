@@ -132,6 +132,7 @@ WHERE grade_c != '8th Grade'
     AND college_track_status_c = '11A'
     AND AY_NAME = "AY 2020-21"
     AND Term_c = "Fall"
+    AND grade_c != '8th Grade'
 GROUP BY 
     student_c,
     site_short,
@@ -151,18 +152,17 @@ GROUP BY site_short
 gather_wellness_attendance_data AS (
 SELECT
     SUM(attendance_numerator_c) AS sum_attended_wellness_sessions,
-    site_short,
-    FROM `data-warehouse-289815.salesforce_clean.class_template` CT
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
+    RB.site_short
+    
+    FROM gather_red_blue_covi_at AS RB
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT ON CT.student_c = RB.student_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.student_c = RB.student_c
     WHERE
         Attendance_Numerator_c > 0
         AND department_c = 'Wellness'
         AND dosage_types_c NOT LIKE '%NSO%'
         AND AY_NAME = "AY 2020-21"
-        AND grade_c != '8th Grade'
         AND Outcome_c != 'Cancelled'
-        AND college_track_status_c = '11A'
-        AND co_vitality_scorecard_color_c IN ('Blue','Red')
     GROUP BY
             site_short
 ),
@@ -177,14 +177,13 @@ SELECT
         ELSE 0
     END AS wellness_case_note_2020_21, #wellness casenotes from 2020-21
     id AS case_note_id, #case note id
-    site_short
-    
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
-LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c` CSE ON CAT.AT_Id = CSE.Academic_Semester_c
+    RB.site_short
+
+FROM gather_red_blue_covi_at AS RB
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON RB.student_c=CAT.student_c
+LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c` CSE ON RB.student_c = CSE.contact_c
 WHERE Type_Counseling_c = TRUE
     AND AY_name = 'AY 2020-21'
-    AND college_track_status_c = '11A'
-    AND co_vitality_scorecard_color_c IN ('Blue','Red')
 GROUP BY
     site_short,
     id
