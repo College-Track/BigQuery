@@ -164,12 +164,12 @@ SELECT
   region_abrev AS Region,
   site_short AS Site,
   student_count,
-  target_submitted,
+--   target_submitted,
   
---   CASE
---     WHEN target_submitted = true THEN "Submitted"
---     ELSE "Not Submitted"
---   END AS target_submitted,
+  CASE
+    WHEN target_fy22 IS NOT NULL THEN "Submitted"
+    ELSE "Not Submitted"
+  END AS target_submitted,
   CASE
     WHEN function IN (
       'Talent Acquisition',
