@@ -16,12 +16,31 @@ WHERE grade_c != '8th Grade'
 GROUP BY 
     student_c,
     site_short
-)
+),
 
 --Sum students that have a red or blue covitality color at some point during 2020-21AY
---sum_of_blue_red_covi AS (
+sum_of_blue_red_covi AS (
 SELECT
         site_short,
         SUM(wellness_blue_red_denom) AS sum_of_blue_red_covi_for_avg #students with blue/red Covitality scorecard colors for denominator
 FROM gather_red_blue_covi_at
 GROUP BY site_short
+)
+
+ --gather Wellness sessions attended during 2020-21
+--gather_wellness_attendance_data AS (
+SELECT
+    SUM(attendance_numerator_c) AS sum_attended_wellness_sessions,
+    RB.site_short
+    
+    FROM gather_red_blue_covi_at AS RB
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT ON CT.student_c = RB.student_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.student_c = RB.student_c
+    WHERE
+        Attendance_Numerator_c > 0
+        AND department_c = 'Wellness'
+        AND dosage_types_c NOT LIKE '%NSO%'
+        AND AY_NAME = "AY 2020-21"
+        AND Outcome_c != 'Cancelled'
+    GROUP BY
+            site_short
