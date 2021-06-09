@@ -1,6 +1,6 @@
 SELECT
     SUM(attendance_numerator_c) AS sum_attended_wellness_sessions,
-    site_short,student_c
+    site_short,CT.student_c
    
     FROM `data-warehouse-289815.salesforce_clean.class_template` CT 
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.contact_id = CT.student_c
