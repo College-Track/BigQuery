@@ -45,7 +45,7 @@ WHERE COVI.record_type_id ='0121M000001cmuDQAQ' --Covitality test record type --
 completing_covi_data AS ( --in wellness query
 SELECT 
     site_short,
-    covi.contact_id,
+    contact_id,
     MAX(CASE 
         WHEN test_record_id IS NOT NULL 
         THEN 1
@@ -76,7 +76,7 @@ GROUP BY
 --Identify students with more than 1 Covitality assessment
 --gather_students_with_more_than_1_covi AS (
 SELECT 
-    contact_id,
+    covi.contact_id,
     SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay --does sudent have more than 1 covi assessment?
     
 FROM completing_covi_data  AS covi
