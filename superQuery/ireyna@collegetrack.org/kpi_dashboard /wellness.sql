@@ -151,7 +151,7 @@ GROUP BY site_short
 gather_wellness_attendance_data AS (
 SELECT
     SUM(attendance_numerator_c) AS sum_attended_wellness_sessions,
-    site_short,academic_semester_c
+    site_short,
     FROM `data-warehouse-289815.salesforce_clean.class_template` CT
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
     WHERE
@@ -164,7 +164,7 @@ SELECT
         AND college_track_status_c = '11A'
         AND co_vitality_scorecard_color_c IN ('Blue','Red')
     GROUP BY
-            site_short, academic_semester_c
+            site_short
 ),
 
 --Prepare case note data for aggregation: red/blue covi as receiving 1:1 support by site. Will be used to add together with Wellness sessions attended
