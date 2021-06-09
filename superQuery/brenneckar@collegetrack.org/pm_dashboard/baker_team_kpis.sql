@@ -229,5 +229,5 @@ FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
 )
 
-SELECT *
+SELECT distinct *
 FROM correct_missing_site_region
