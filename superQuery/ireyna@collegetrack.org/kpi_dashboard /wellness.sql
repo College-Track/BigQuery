@@ -16,4 +16,3 @@ WHERE grade_c != '8th Grade'
 GROUP BY 
     student_c,
     site_short
-),
