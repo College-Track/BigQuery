@@ -13,6 +13,7 @@ WHERE grade_c != '8th Grade'
     AND AY_NAME = "AY 2020-21"
     AND Term_c = "Fall"
     AND grade_c != '8th Grade'
+    AND co_vitality_scorecard_color_c IN ('Blue','Red')
 GROUP BY 
     student_c,
     site_short
@@ -42,6 +43,5 @@ SELECT
         AND dosage_types_c NOT LIKE '%NSO%'
         AND AY_NAME = "AY 2020-21"
         AND Outcome_c != 'Cancelled'
-        AND wellness_blue_red_denom IS NOT NULL
     GROUP BY
             site_short
