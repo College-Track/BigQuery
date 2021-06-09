@@ -77,10 +77,10 @@ GROUP BY
 --gather_students_with_more_than_1_covi AS (
 SELECT 
     covi.contact_id,
-    SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay --does sudent have more than 1 covi assessment?
-    
+    SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay, --does sudent have more than 1 covi assessment?
+    covi.site_short
 FROM completing_covi_data  AS covi
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact on covi.contact_id=contact.contact_id
 WHERE covi_assessment_completed_ay = 1
 AND grade_c = "12th Grade"
-GROUP BY contact_id
+GROUP BY contact_id, site_short
