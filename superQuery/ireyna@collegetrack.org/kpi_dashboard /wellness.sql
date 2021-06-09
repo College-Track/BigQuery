@@ -42,6 +42,6 @@ SELECT
         AND dosage_types_c NOT LIKE '%NSO%'
         AND AY_NAME = "AY 2020-21"
         AND Outcome_c != 'Cancelled'
-        AND student_c IN (SELECT student_c FROM gather_red_blue_covi_at)
+        AND ct.student_c IN (SELECT student_c FROM gather_red_blue_covi_at)
     GROUP BY
             site_short, student_c
