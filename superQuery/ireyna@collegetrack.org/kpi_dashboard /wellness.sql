@@ -32,7 +32,7 @@ GROUP BY site_short
 --gather_wellness_attendance_data AS (
 SELECT
     SUM(attendance_numerator_c) AS sum_attended_wellness_sessions,
-    RB.site_short
+    RB.site_short,rb.student_c
     
     FROM gather_red_blue_covi_at AS RB
     LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT ON CT.student_c = RB.student_c
