@@ -1,9 +1,24 @@
 --KPI: Increase in median CoVitality raw score of students served by Wellness over the course of their high school career
 --12th grade only
 
+with gather_at_data AS
+(
+SELECT 
+    full_name_c,
+    at_id,
+    contact_id,
+    AY_Name,
+    site_short
 
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
+WHERE College_Track_Status_Name = 'Current CT HS Student'
+    AND 
+        (grade_c IN ('9th Grade','10th Grade','11th Grade')
+        OR 
+        (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0)))
+),
 --Pull Covi assessments completed within appropriate AYs (2019-20, 2020-21) --in wellness query
-WITH gather_covi_data AS (
+gather_covi_data AS (
 SELECT 
     contact_name_c AS contact_id_covi,
     contact_id, --from contact_at
