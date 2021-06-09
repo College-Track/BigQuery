@@ -57,15 +57,30 @@ GROUP BY
     contact_id,
     site_short,
     test_record_id
-)
+),
 
 --Isolate students that completed a Covitality assessment in 2020-21AY
---students_that_completed_covi AS (
+students_that_completed_covi AS (
 SELECT 
     COUNT(DISTINCT contact_id) AS covi_assessment_completed_ay, --in wellness query
     site_short
   
-FROM completing_covi_data
+FROM completing_covi_data 
 WHERE covi_assessment_completed_ay = 1
 GROUP BY 
     site_short
+)
+--Following queries are laying groundwork to take median of all students' first test, and compare median score of all students' last test
+--Look at 12th grade students with more than 1 Covi assessement
+
+--Identify students with more than 1 Covitality assessment
+--gather_students_with_more_than_1_covi AS (
+SELECT 
+    contact_id,
+    SUM(covi_assessment_completed_ay) AS sum_of_covi_tests_taken_ay --does sudent have more than 1 covi assessment?
+    
+FROM students_that_completed_covi AS covi
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact on covi.contact_id=contact.contact_id
+WHERE covi_assessment_completed_ay = 1
+AND grade_c = "12th Grade"
+GROUP BY contact_id
