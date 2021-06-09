@@ -13,8 +13,10 @@ WITH prep_kpi_targets AS (
     select_kpi,
     what_is_the_type_of_target_,
     CASE
-      WHEN KPI_Target.select_role IS NOT NULL THEN true
-      ELSE false
+      
+      WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
+      WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
+      ELSE "Not Submitted"
     END AS target_submitted,
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
@@ -168,11 +170,12 @@ SELECT
   region_abrev AS Region,
   site_short AS Site,
   student_count,
+  target_submitted,
   
-  CASE
-    WHEN target_submitted = true THEN True
-    ELSE false
-  END AS target_submitted,
+--   CASE
+--     WHEN target_submitted = true THEN "Submitted"
+--     ELSE "Not Submitted"
+--   END AS target_submitted,
   CASE
     WHEN function IN (
       'Talent Acquisition',
