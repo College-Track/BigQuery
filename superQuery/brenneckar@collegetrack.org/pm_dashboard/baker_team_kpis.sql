@@ -168,6 +168,7 @@ SELECT
   
   CASE
     WHEN target_fy22 IS NOT NULL THEN "Submitted"
+    WHEN site_or_region IN ("Sacramento", "Denver", "Watts") AND kpis_by_role = '% of students graduating from college within 6 years' THEN "Not Required"
     ELSE "Not Submitted"
   END AS target_submitted,
   CASE
