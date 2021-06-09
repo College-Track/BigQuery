@@ -32,7 +32,7 @@ GROUP BY site_short
 --gather_wellness_attendance_data AS (
 SELECT
     SUM(attendance_numerator_c) AS sum_attended_wellness_sessions,
-    site_short,CT.student_c
+    site_short,CAT.student_c
    
     FROM `data-warehouse-289815.salesforce_clean.class_template` CT 
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.contact_id = CT.student_c
@@ -42,6 +42,6 @@ SELECT
         AND dosage_types_c NOT LIKE '%NSO%'
         AND AY_NAME = "AY 2020-21"
         AND Outcome_c != 'Cancelled'
-        AND ct.student_c IN (SELECT student_c FROM gather_red_blue_covi_at)
+        AND cAt.student_c IN (SELECT student_c FROM gather_red_blue_covi_at)
     GROUP BY
             site_short, student_c
