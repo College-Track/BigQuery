@@ -42,5 +42,6 @@ SELECT
         AND dosage_types_c NOT LIKE '%NSO%'
         AND AY_NAME = "AY 2020-21"
         AND Outcome_c != 'Cancelled'
+        AND wellness_blue_red_denom IS NOT NULL
     GROUP BY
             site_short
