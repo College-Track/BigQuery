@@ -36,6 +36,7 @@ SELECT
     
     FROM gather_red_blue_covi_at AS RB
     LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` CT ON CT.student_c = RB.student_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.contact_id = CT.student_c
     WHERE
         Attendance_Numerator_c > 0
         AND department_c = 'Wellness'
