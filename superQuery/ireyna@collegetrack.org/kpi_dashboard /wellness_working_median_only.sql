@@ -1,7 +1,7 @@
 --KPI: Increase in median CoVitality raw score of students served by Wellness over the course of their high school career
 --12th grade only
 
-with gather_at_data AS
+with gather_at_data AS --in wellness query
 (
 SELECT 
     full_name_c,
@@ -46,11 +46,11 @@ completing_covi_data AS ( --in wellness query
 SELECT 
     site_short,
     contact_id,
-    CASE 
+    MAX(CASE 
         WHEN test_record_id IS NOT NULL 
         THEN 1
         ELSE 0
-        END AS covi_assessment_completed_ay
+        END) AS covi_assessment_completed_ay
 FROM gather_covi_data
 WHERE AY_Name = 'AY 2020-21'
 GROUP BY
