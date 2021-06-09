@@ -122,11 +122,11 @@ gather_red_blue_covi_at AS (
 SELECT
         student_c,
         site_short,
-        CASE
+        MAX(CASE
             WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
             THEN 1
             ELSE NULL
-        END AS wellness_blue_red_denom
+        END) AS wellness_blue_red_denom
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE grade_c != '8th Grade'
     AND college_track_status_c = '11A'
