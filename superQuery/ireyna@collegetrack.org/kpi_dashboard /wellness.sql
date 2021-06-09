@@ -44,4 +44,4 @@ SELECT
         AND AY_NAME = "AY 2020-21"
         AND Outcome_c != 'Cancelled'
     GROUP BY
-            site_shortm rb.student_c
+            site_short, rb.student_c
