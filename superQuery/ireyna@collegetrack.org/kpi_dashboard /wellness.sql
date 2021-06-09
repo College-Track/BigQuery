@@ -171,7 +171,7 @@ SELECT
 gather_case_note_data AS (
 SELECT 
     CASE
-        WHEN id IS NOT NULL #case note id
+        WHEN CSE.id IS NOT NULL #case note id
         THEN 1
         ELSE 0
     END AS wellness_case_note_2020_21, #wellness casenotes from 2020-21
