@@ -15,7 +15,7 @@ WITH prep_kpi_targets AS (
     CASE
       
       WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
-      WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
+    --   WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
       ELSE "Not Submitted"
     END AS target_submitted,
     CASE
