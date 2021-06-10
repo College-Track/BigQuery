@@ -172,7 +172,7 @@ SELECT
 --1 casenote = 1 session
 gather_case_note_data AS (
 SELECT 
-    COUNT (DISTINCT id) AS case_note_id, #case note id
+    COUNT (DISTINCT CSE.id) AS case_note_count, #case note id
     site_short
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
@@ -184,21 +184,11 @@ WHERE Type_Counseling_c = TRUE
     GROUP BY site_short
 ),
 
-/*--Sum case notes logged by site, for students with red or blue covitality scorecard color
-sum_of_case_notes AS (
-SELECT 
-    SUM(wellness_case_note_2020_21) as sum_of_wellness_case_notes,
-    site_short
-FROM gather_case_note_data 
-GROUP BY 
-    site_short
-  ),
-*/
 --Add 1:1 case notes and sessions attended by student to average out later
 combine_sessions_and_case_notes AS (
 SELECT 
     ATTNDCE.site_short,
-    SUM(sum_attended_wellness_sessions + case_note_id) AS sum_wellness_support_received
+    SUM(sum_attended_wellness_sessions + case_note_count) AS sum_wellness_support_received
 
 FROM gather_wellness_attendance_data AS ATTNDCE
 LEFT JOIN gather_case_note_data AS CSE ON ATTNDCE.site_short = CSE.site_short
@@ -218,23 +208,35 @@ FROM combine_sessions_and_case_notes AS a
 LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short
 LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short
 WHERE wellness_blue_red_denom IS NOT NULL
-)
+),
 
-
---aggregate_kpis_data AS(
+aggregate_kpis_data AS(
 SELECT
     a.site_short,
     wellness_covi_assessment_completed_ay,
     wellness_avg_support,
+    sum_attended_wellness_sessions,
+    case_note_count,
+    sum_of_blue_red_covi_for_avg,
     wellness_survey_wellness_services_assisted_denom,
     wellness_survey_wellness_services_assisted_num
 
 FROM  students_that_completed_covi AS a
 LEFT JOIN aggregate_wellness_survey_data AS b ON b.site_short = a.site_short
 LEFT JOIN calculate_avg_wellness_services_per_blue_red_covi AS c ON c.site_short = a.site_short
+LEFT JOIN gather_wellness_attendance_data AS d ON a.site_short = d.site_short --for total sessions
+LEFT JOIN gather_case_note_data AS e ON a.site_short=e.site_short --for total case notes
+LEFT JOIN sum_of_blue_red_covi AS f ON a.site_short=f.site_short --for stotal number of red/blue covi students
 GROUP BY
     site_short,
     wellness_covi_assessment_completed_ay,
     wellness_avg_support,
+    sum_attended_wellness_sessions,
+    case_note_count,
+    sum_of_blue_red_covi_for_avg,
     wellness_survey_wellness_services_assisted_denom,
     wellness_survey_wellness_services_assisted_num
+)
+
+SELECT *
+FROM aggregate_kpis_data
