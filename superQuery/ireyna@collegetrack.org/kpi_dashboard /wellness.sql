@@ -1,6 +1,6 @@
 with gather_red_blue_covi_at AS ( 
 SELECT
-        student_c,
+        contact_id,
         site_short,
         AY_Name,
         MAX(CASE
@@ -16,7 +16,7 @@ WHERE grade_c != '8th Grade'
     AND grade_c != '8th Grade'
     AND co_vitality_scorecard_color_c IN ('Blue','Red')
 GROUP BY 
-    student_c,
+    Contact_id,
     site_short,
     AY_Name
 ),
@@ -37,7 +37,7 @@ SELECT
     site_short
    
     FROM gather_red_blue_covi_at AS RB
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` AS CT ON RB.student_c = CT.contact_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` AS CT ON RB.contact_id = CT.student_c
     WHERE
         Attendance_Numerator_c > 0
         AND department_c = 'Wellness'
