@@ -12,4 +12,3 @@ SELECT
         AND Outcome_c != 'Cancelled'
     GROUP BY
             site_short, student_c
-),
