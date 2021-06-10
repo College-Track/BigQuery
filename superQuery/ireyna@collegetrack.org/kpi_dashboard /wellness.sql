@@ -132,7 +132,7 @@ FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 WHERE grade_c != '8th Grade'
     AND college_track_status_c = '11A'
     AND AY_NAME = "AY 2020-21"
-    --AND Term_c = "Fall"
+    AND Term_c = "Fall"
 GROUP BY 
     student_c,
     site_short,
