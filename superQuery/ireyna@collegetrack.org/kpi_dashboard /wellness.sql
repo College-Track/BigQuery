@@ -52,4 +52,4 @@ SELECT
 
 SELECT sum_attended_wellness_sessions, site_short 
 FROM gather_wellness_attendance_data
-GROUP BY site_short
+GROUP BY site_short,sum_attended_wellness_sessions
