@@ -41,6 +41,7 @@ SELECT
         AND department_c = 'Wellness'
         AND dosage_types_c NOT LIKE '%NSO%'
         AND Outcome_c != 'Cancelled'
+        AND AY_NAME = "AY 2020-21"
        AND CT.student_c IN (SELECT student_c FROM gather_red_blue_covi_at)
     GROUP BY
             site_short
