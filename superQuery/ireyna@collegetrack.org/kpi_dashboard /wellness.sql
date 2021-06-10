@@ -1,4 +1,3 @@
--Pulling students with red/blue covi from academic term (2020-21AY)
 with gather_red_blue_covi_at AS ( 
 SELECT
         student_c,
