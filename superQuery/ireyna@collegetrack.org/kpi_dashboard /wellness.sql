@@ -1,3 +1,4 @@
+--Pulling students with red/blue covi from academic term (2020-21AY)
 with gather_red_blue_covi_at AS ( 
 SELECT
         student_c,
@@ -44,6 +45,5 @@ SELECT
         AND dosage_types_c NOT LIKE '%NSO%'
         AND Outcome_c != 'Cancelled'
         AND AY_NAME = "AY 2020-21"
-       AND CT.student_c IN (SELECT student_c FROM gather_red_blue_covi_at)
     GROUP BY
             site_short
