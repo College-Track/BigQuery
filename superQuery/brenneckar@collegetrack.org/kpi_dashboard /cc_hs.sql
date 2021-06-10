@@ -170,8 +170,9 @@ gather_data_twelfth_grade AS (
         (SELECT student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq2
         WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred","Wait-listed")
+        AND Contact_Id=student_c
         group by student_c
-        ) AS accepted_enrolled_waitlisted,
+        ) AS accepted_enrolled_waitlisted
             
       
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
@@ -237,7 +238,7 @@ gather_twelfth_grade_metrics AS(
         CASE 
             WHEN accepted_enrolled_waitlisted IS NOT NULL THEN 1
             ELSE 0
-            END AS cc_hs_strong_college_situations,
+            END AS cc_hs_strong_college_situations
             
     FROM gather_data_twelfth_grade
 ),
