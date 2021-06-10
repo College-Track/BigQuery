@@ -7,6 +7,5 @@ LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c` CSE ON CAT.AT_Id = 
 WHERE Type_Counseling_c = TRUE
     AND AY_name = 'AY 2020-21'
     AND college_track_status_c = '11A'
-    AND co_vitality_scorecard_color_c IN ('Blue','Red')
-GROUP BY
-    site_short
+   AND contact_id IN (SELECT contact_id FROM `data-warehouse-289815.salesforce_clean.contact_at_template` where co_vitality_scorecard_color_c IN  ('Blue','Red') AND AY_name = "AY 2020-21" AND Term_c = "Fall")
+    GROUP BY site_short
