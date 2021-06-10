@@ -37,7 +37,7 @@ SELECT
     site_short
    
     FROM gather_red_blue_covi_at AS RB
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` AS CT ON RB.site_short = CT.site_short
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template` AS CT ON RB.student_c = CT.contact_c
     WHERE
         Attendance_Numerator_c > 0
         AND department_c = 'Wellness'
@@ -45,4 +45,4 @@ SELECT
         AND Outcome_c != 'Cancelled'
         AND AY_NAME = "AY 2020-21"
     GROUP BY
-            site_shor
+            site_short
