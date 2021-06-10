@@ -221,7 +221,7 @@ SELECT
     wellness_survey_wellness_services_assisted_denom,
     wellness_survey_wellness_services_assisted_num
 
-FROM  students_that_completed_covi AS a
+FROM students_that_completed_covi AS a
 LEFT JOIN aggregate_wellness_survey_data AS b ON b.site_short = a.site_short
 LEFT JOIN calculate_avg_wellness_services_per_blue_red_covi AS c ON c.site_short = a.site_short
 LEFT JOIN gather_wellness_attendance_data AS d ON a.site_short = d.site_short --for total sessions
