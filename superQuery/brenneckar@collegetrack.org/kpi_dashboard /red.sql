@@ -7,6 +7,7 @@ WITH gather_data AS (
         CASE
             WHEN (
                 Prev_AT_Cum_GPA >= 3.25
+                AND contact_official_test_prep_withdrawal IS NULL
                 AND composite_readiness_most_recent_c = '1. Ready'
                 AND college_track_status_c = '11A'
                 AND (
