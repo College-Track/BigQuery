@@ -2,7 +2,7 @@ WITH gather_contact_data AS (
     SELECT region_abrev,
            region_short,
            site_short,
-           contact_id,
+           Contact_Id,
 --            gender_c,
 --            ethnic_background_c,
 --            high_school_graduating_class_c,
@@ -29,30 +29,62 @@ WITH gather_contact_data AS (
 --            Readiness_English_Official_c,
 --            Readiness_Composite_Off_c,
 --            Citizen_c_c,
---            Academic_Year_4_Year_Degree_Earned_c,
+           Academic_Year_4_Year_Degree_Earned_c,
            college_track_status_c
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
+        WHERE college_track_status_c IN ('18a', '11A', '12A', '13A', '15A', '16A', '17A')
 ),
 
      gather_at_data AS (
-         SELECT Contact_id,
-                AT_id,
+         SELECT Contact_Id,
                 AY_Name,
                 AY_End_Date,
-                SUM(attended_workshops_c) AS attended_workshops_c,
-                (SELECT DISTINCT student_audit_status_c
-                 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` ST
-                 WHERE ST.AY_Name = A_T.AY_Name
-                   AND ST.term_c = 'Spring')
+                SUM(attended_workshops_c) AS attended_workshops_c
 
          FROM `data-warehouse-289815.salesforce_clean.contact_at_template` A_T
-         GROUP BY Contact_id, AT_id, AY_Name, AY_End_Date
-     )
-SELECT GCD.*,
-       GAD.AY_Name,
-       GAD.AY_End_Date,
-       GAD.attended_workshops_c
+         WHERE AY_End_Date <= CURRENT_DATE()
+         GROUP BY Contact_Id, AY_Name, AY_End_Date
+     ),
+     gather_spring_at_status AS (SELECT Contact_Id,
+                                        AY_Name,
+                                        student_audit_status_c,
+                                        AT_School_Name,
+                                        AT_school_type,
+                                        enrollment_status_c,
+                                        fit_type_at_c
+                                 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` A_T
+                                 WHERE term_c = 'Spring'),
+  join_data AS (SELECT GCD.*,
+                       GAD.* EXCEPT (Contact_Id),
+    GSAS.* EXCEPT (Contact_Id, AY_Name, student_audit_status_c),
+    CASE
+    WHEN Academic_Year_4_Year_Degree_Earned_c = GAD.AY_Name THEN "Active: Post-Secondary"
+    ELSE GSAS.student_audit_status_c
+END
+AS student_audit_status_c
+
 FROM gather_contact_data GCD
-         LEFT JOIN gather_at_data GAD ON GAD.Contact_id = GCD.contact_id
-WHERE college_track_status_c = '11A'
-LIMIT 100
+         LEFT JOIN gather_at_data GAD ON GAD.Contact_Id = GCD.Contact_Id
+         LEFT JOIN gather_spring_at_status GSAS ON GSAS.Contact_Id = GCD.Contact_Id AND GSAS.AY_Name = GAD.AY_Name
+
+),
+     create_list_of_ay AS
+         (SELECT DISTINCT AY_Name
+          FROM join_data
+             WHERE AY_Name IS NOT NULL
+         )
+
+
+SELECT  create_list_of_ay.AY_Name,
+                JD.*
+    FROM create_list_of_ay
+        LEFT JOIN join_data JD ON JD.AY_Name = create_list_of_ay.AY_Name
+
+WHERE Academic_Year_4_Year_Degree_Earned_c = 'AY 2016-17'
+AND JD.Contact_Id = '0034600001TQqR5AAL'
+LIMIT 1000
+--
+-- SELECT
+-- *
+-- FROM create_list_of_ay
+-- -- WHERE gather_at_data.Contact_Id ='0034600001TQqR5AAL'
