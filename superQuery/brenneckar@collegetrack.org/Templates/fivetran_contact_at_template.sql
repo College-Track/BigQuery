@@ -16,7 +16,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
     SELECT
       C.Id AS Contact_Id,
       C.GPA_Cumulative_c AS college_eligibility_gpa_11th_grade,
-    --   Test_opt_out.official_test_prep_withdrawal_c AS contact_official_test_prep_withdrawal,
+      Test_opt_out.official_test_prep_withdrawal_c AS contact_official_test_prep_withdrawal,
       -- want to rename to college_eligibility_gpa_11th_grade when ready
       C.*
     EXCEPT
@@ -345,7 +345,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
       LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_AT ON Prev_Prev_AT.id = Prev_AT.Previous_Academic_Semester_c
       LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Prev_Prev_Prev_AT ON Prev_Prev_Prev_AT.id = Prev_Prev_AT.Previous_Academic_Semester_c
       LEFT JOIN `data-warehouse-289815.salesforce.account` A_school ON C_AT.School_c = A_school.Id
-    --   LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Test_opt_out ON Test_opt_out.student_c = C.Id
+      LEFT JOIN `data-warehouse-289815.salesforce.academic_semester_c` Test_opt_out ON Test_opt_out.student_c = C.Id
     WHERE
       -- Filter out test records from the Contact object
       (C.SITE_c != '0011M00002GdtrEQAR') -- Filter out non-active student records from the Contact object
@@ -356,7 +356,7 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         OR RT.Name = 'Student: Applicant'
       )
       AND C.is_deleted = false
-    --   AND (Test_opt_out.grade_c = '12th Grade' AND Test_opt_out.term_c = 'Spring')
+      AND ((Test_opt_out.grade_c = '12th Grade' AND Test_opt_out.term_c = 'Spring') OR (Test_opt_out.id IS NULL))
   ),
   ValidStudentContact_new_fields AS (
     SELECT
