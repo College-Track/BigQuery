@@ -6,10 +6,23 @@ WITH gather_hs_data AS (
     -- % of seniors with GPA 3.25+
     -- The denominator for this is created in join_prep
     CASE
-      WHEN grade_c = '12th Grade'
+      WHEN (
+        grade_c = "12th Grade"
+        OR (
+          grade_c = 'Year 1'
+          AND indicator_years_since_hs_graduation_c = 0
+        )
+      )
       AND Prev_AT_Cum_GPA >= 3.25 THEN 1
       ELSE 0
     END AS above_325_gpa,
+    -- % of seniors with GPA 3.25+ (eleventh grade proxy)
+    -- The denominator for this is created in join_prep
+    CASE
+      WHEN grade_c = '11th Grade'
+      AND Prev_AT_Cum_GPA >= 3.25 THEN 1
+      ELSE 0
+    END AS above_325_gpa_eleventh_grade,
     -- % of entering 9th grade students who are male
     -- The denominator for this is created in join_prep
     CASE
@@ -19,7 +32,6 @@ WITH gather_hs_data AS (
     END as male_student,
     -- % of entering 9th grade students who are low-income AND first-gen
     -- The denominator for this is created in join_prep
-
     CASE
       WHEN (
         grade_c = '9th Grade'
@@ -40,27 +52,30 @@ WITH gather_hs_data AS (
     college_track_status_c = '11A'
 ),
 gather_ps_count_no_gap_year AS (
-SELECT
-DISTINCT 
-Contact_Id,
-site_short, 
-site_c,
-credit_accumulation_pace_c,
-current_enrollment_status_c,
-college_track_status_c
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE AT_Grade_c = 'Year 1'
-AND AT_Enrollment_Status_c != 'Approved Gap Year'
-AND indicator_years_since_hs_graduation_c <= 6
-AND indicator_completed_ct_hs_program_c = true
+  SELECT
+    DISTINCT Contact_Id,
+    site_short,
+    site_c,
+    credit_accumulation_pace_c,
+    current_enrollment_status_c,
+    college_track_status_c
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_at_template`
+  WHERE
+    AT_Grade_c = 'Year 1'
+    AND AT_Enrollment_Status_c != 'Approved Gap Year'
+    AND indicator_years_since_hs_graduation_c <= 6
+    AND indicator_completed_ct_hs_program_c = true
 ),
-
 prep_on_track_denom AS (
-SELECT site_short,COUNT(Contact_Id) AS on_track_student_count
-FROM gather_ps_count_no_gap_year
-GROUP BY site_short
+  SELECT
+    site_short,
+    COUNT(Contact_Id) AS on_track_student_count
+  FROM
+    gather_ps_count_no_gap_year
+  GROUP BY
+    site_short
 ),
-
 prep_on_track_data AS (
   SELECT
     Contact_Id,
@@ -110,6 +125,7 @@ prep_hs_metrics AS (
   SELECT
     GSD.site_short,
     SUM(above_325_gpa) AS SD_senior_above_325,
+    SUM(above_325_gpa_eleventh_grade) AS SD_above_325_gpa_eleventh_grade,
     SUM(male_student) AS SD_ninth_grade_male,
     SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income,
     SUM(above_80_attendance) AS SD_above_80_attendance,
@@ -130,7 +146,6 @@ prep_ps_metrics AS (
   GROUP BY
     site_short
 ),
-
 -- % of students growing toward average or above cialcial-emotional strengths
 -- This KPI is done over four CTEs (could probaly be made more efficient). The majority of the logic is done in the second CTE.
 gather_covi_data AS (
@@ -183,22 +198,24 @@ determine_covi_indicators AS (
     covi_growth IS NOT NULL
 ),
 aggregate_covi_data AS (
-SELECT
-  site_short,
-  SUM(covi_student_grew) AS SD_covi_student_grew,
-  COUNT(contact_name_c) AS SD_covi_denominator
-FROM
-  determine_covi_indicators
-GROUP BY
-  site_short
-  )
-
+  SELECT
+    site_short,
+    SUM(covi_student_grew) AS SD_covi_student_grew,
+    COUNT(contact_name_c) AS SD_covi_denominator
+  FROM
+    determine_covi_indicators
+  GROUP BY
+    site_short
+)
 SELECT
   HS_Data.*,
   PS_Data.*
-EXCEPT(site_short),
-aggregate_covi_data.* EXCEPT (site_short),
-POTD.on_track_student_count AS SD_on_track_student_count
+EXCEPT
+  (site_short),
+  aggregate_covi_data.*
+EXCEPT
+  (site_short),
+  POTD.on_track_student_count AS SD_on_track_student_count
 FROM
   prep_hs_metrics HS_Data
   LEFT JOIN prep_ps_metrics PS_Data ON PS_Data.site_short = HS_Data.site_short
