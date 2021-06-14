@@ -631,13 +631,13 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
       END AS gpa_required_date,
       
       CASE 
-        WHEN A.term_c = 'Fall' AND A.Name LIKE '%Semester%' THEN DATE_ADD(A.end_date_c, INTERVAL 210 DAY)
+        WHEN A.term_c = 'Fall' AND A.Name LIKE '%Semester%' THEN DATE_ADD(A.end_date_c, INTERVAL 212 DAY)
         WHEN A.term_c = 'Fall' AND A.Name LIKE '%Quarter%' THEN DATE_ADD(A.end_date_c, INTERVAL 150 DAY)
         WHEN A.term_c = 'Winter' THEN DATE_ADD(A.end_date_c, INTERVAL 120 DAY)
         
-        WHEN A.term_c = 'Spring' AND A.Name LIKE '%Quarter%' THEN DATE_ADD(A.end_date_c, INTERVAL 240 DAY)
-        WHEN A.term_c = 'Spring' AND A.Name LIKE '%Semester%' AND RT.Name = "High School Semester" THEN DATE_ADD(A.end_date_c, INTERVAL 240 DAY)
-        WHEN A.term_c = 'Spring' AND A.Name LIKE '%Semester%' AND RT.Name = "College/University Semester" THEN DATE_ADD(A.end_date_c, INTERVAL 270 DAY)
+        WHEN A.term_c = 'Spring' THEN DATE_ADD(A.end_date_c, INTERVAL 243 DAY)
+        -- WHEN A.term_c = 'Spring' AND A.Name LIKE '%Semester%' AND RT.Name = "High School Semester" THEN DATE_ADD(A.end_date_c, INTERVAL 243 DAY)
+        -- WHEN A.term_c = 'Spring' AND A.Name LIKE '%Semester%' AND RT.Name = "College/University Semester" THEN DATE_ADD(A.end_date_c, INTERVAL 243 DAY)
         
         WHEN A.term_c = 'Summer' THEN NULL
         
