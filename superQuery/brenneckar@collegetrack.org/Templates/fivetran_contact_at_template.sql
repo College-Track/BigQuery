@@ -622,7 +622,26 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
           OR advising_rubric_wellness_v_2_c = "Green"
         ) THEN "Green"
         ELSE "No Data"
-      END AS Overall_Rubric_Color
+      END AS Overall_Rubric_Color,
+      CASE 
+        WHEN term_c IN ('Fall', 'Winter') THEN DATE_ADD(end_date_c, INTERVAL 60 DAY)
+        WHEN term_c = 'Spring' AND RT.Name = "High School Semester" THEN DATE_ADD(end_date_c, INTERVAL 30 DAY)
+        WHEN term_c = 'Spring' AND RT.Name = "College/University Semester" THEN DATE_ADD(end_date_c, INTERVAL 60 DAY)
+        WHEN term_c = 'Summer' THEN NULL
+      END AS gpa_required_date,
+      
+      CASE 
+        WHEN term_c = 'Fall' AND A.Name LIKE '%Semester%' THEN DATE_ADD(end_date_c, INTERVAL 210 DAY)
+        WHEN term_c = 'Fall' AND A.Name LIKE '%Quarter%' THEN DATE_ADD(end_date_c, INTERVAL 150 DAY)
+        WHEN term_c = 'Winter' THEN DATE_ADD(end_date_c, INTERVAL 120 DAY)
+        
+        WHEN term_c = 'Spring' AND A.Name LIKE '%Quarter%' THEN DATE_ADD(end_date_c, INTERVAL 240 DAY)
+        WHEN term_c = 'Spring' AND A.Name LIKE '%Semester%' AND RT.Name = "High School Semester" THEN DATE_ADD(end_date_c, INTERVAL 180 DAY)
+        WHEN term_c = 'Spring' AND A.Name LIKE '%Semester%' AND RT.Name = "College/University Semester" THEN DATE_ADD(end_date_c, INTERVAL 210 DAY)
+        
+        WHEN term_c = 'Summer' THEN NULL
+        
+      END AS next_gpa_required_date
     FROM
       `data-warehouse-289815.salesforce.academic_semester_c` A
       LEFT JOIN `data-warehouse-289815.salesforce.record_type` RT ON A.record_type_id = RT.Id -- Left join from Contact on to Account for Site
@@ -655,6 +674,9 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         WHEN Clean_AT.Overall_Rubric_Color = "Green" THEN 3
         ELSE 4
       END AS Overall_Rubric_Color_sort,
+      CASE WHEN CURRENT_DATE() BETWEEN gpa_required_date AND next_gpa_required_date THEN "Current Valid GPA Term"
+      ELSE NULL
+      END AS current_valid_gpa_term
     FROM
       `data-warehouse-289815.salesforce_clean.contact_template` C
       LEFT JOIN Clean_AT ON C.Contact_Id = Clean_AT.student_c
