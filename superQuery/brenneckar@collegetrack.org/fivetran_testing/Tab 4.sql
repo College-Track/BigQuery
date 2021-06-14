@@ -1,3 +1,3 @@
-SELECT COUNT(  Contact_Id)
-FROM `data-warehouse-289815.salesforce_clean.contact_template`
--- WHERE college_track_status_c IN ('11A', '15A', '17A')
+SELECT AT_Name, AT_Record_Type_Name, gpa_required_date, next_gpa_required_date, current_valid_gpa_term, 
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+LIMIT 100
