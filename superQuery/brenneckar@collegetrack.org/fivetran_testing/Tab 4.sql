@@ -1,3 +1,3 @@
 SELECT DISTINCT GAS_Name, AT_Record_Type_Name, gpa_required_date, next_gpa_required_date, current_valid_gpa_term, current_ay_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE current_ay_c IS NOT NULL
+WHERE current_ay_c = True
