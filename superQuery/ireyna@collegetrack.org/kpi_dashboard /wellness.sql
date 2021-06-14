@@ -17,7 +17,9 @@ SELECT
     at_id,
     contact_id,
     AY_Name,
-    site_short
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE College_Track_Status_Name = 'Current CT HS Student'
@@ -40,6 +42,8 @@ SELECT
     engaged_living_raw_score_c,
     belief_in_others_raw_score_c,
     emotional_competence_raw_score_c,
+    GAD.Ethnic_background_c,
+    GAD.Gender_c
 
 FROM `data-warehouse-289815.salesforce_clean.test_clean` AS COVI
 LEFT JOIN gather_at_data AS GAD
@@ -60,25 +64,33 @@ SELECT
         WHEN test_record_id IS NOT NULL 
         THEN 1
         ELSE 0
-        END AS covi_assessment_completed_ay
+        END AS covi_assessment_completed_ay,
+    Ethnic_background_c,
+    Gender_c
 FROM gather_covi_data
 WHERE AY_Name = 'AY 2020-21'
 GROUP BY
     contact_id,
     site_short,
-    test_record_id
+    test_record_id,
+    Ethnic_background_c,
+    Gender_c
 ),
 
 --Isolate students that completed a Covitality assessment in 2020-21AY
 students_that_completed_covi AS (
 SELECT 
     COUNT(DISTINCT contact_id) AS wellness_covi_assessment_completed_ay,
-    site_short
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 
 FROM completing_covi_data
 WHERE covi_assessment_completed_ay = 1
 GROUP BY 
-    site_short
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 ),
 
 -- KPI: % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health
@@ -96,7 +108,9 @@ SELECT
             )
         THEN 1
         ELSE 0
-        END AS strongly_agree_wellness_services_assisted_them
+        END AS strongly_agree_wellness_services_assisted_them,
+        CT.Ethnic_background_c,
+        CT.Gender_c
 
 FROM `data-studio-260217.surveys.fy21_hs_survey` S
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CT ON CT.Contact_Id = S.contact_id
@@ -107,9 +121,14 @@ aggregate_wellness_survey_data AS (
 SELECT 
     COUNT (DISTINCT students_receiving_wellness_services) AS wellness_survey_wellness_services_assisted_denom,
     SUM(strongly_agree_wellness_services_assisted_them) AS wellness_survey_wellness_services_assisted_num,
-    site_short
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 FROM gather_wellness_survey_data 
-GROUP BY site_short
+GROUP BY 
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 ),
 
 
@@ -127,7 +146,10 @@ SELECT
             WHEN co_vitality_scorecard_color_c IN ('Blue','Red')
             THEN 1
             ELSE NULL
-        END) AS wellness_blue_red_denom
+        END) AS wellness_blue_red_denom,
+        
+        Ethnic_background_c,
+        Gender_c
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` 
 WHERE grade_c != '8th Grade'
     AND college_track_status_c = '11A'
@@ -136,23 +158,32 @@ WHERE grade_c != '8th Grade'
 GROUP BY 
     contact_Id,
     site_short,
-    co_vitality_scorecard_color_c
+    co_vitality_scorecard_color_c,
+    Ethnic_background_c,
+    Gender_c
 ),
 
 --Sum students that have a red or blue covitality color at some point during 2020-21AY
 sum_of_blue_red_covi AS (
 SELECT
         site_short,
-        SUM(wellness_blue_red_denom) AS sum_of_blue_red_covi_for_avg #students with blue/red Covitality scorecard colors for denominator
+        SUM(wellness_blue_red_denom) AS sum_of_blue_red_covi_for_avg, #students with blue/red Covitality scorecard colors for denominator
+        Ethnic_background_c,
+        Gender_c
 FROM gather_red_blue_covi_at
-GROUP BY site_short
+GROUP BY 
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 ),
 
  --gather Wellness sessions attended during 2020-21
 gather_wellness_attendance_data AS (
 SELECT
     SUM(attendance_numerator_c) AS sum_attended_wellness_sessions,
-    site_short
+    site_short,
+    CAT.Ethnic_background_c,
+    CAT.Gender_c
     FROM `data-warehouse-289815.salesforce_clean.class_template` CT
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` CAT ON CAT.AT_Id = CT.Academic_Semester_c
         WHERE
@@ -165,7 +196,9 @@ SELECT
         AND college_track_status_c = '11A'
         AND contact_id IN (SELECT contact_id FROM `data-warehouse-289815.salesforce_clean.contact_at_template` where co_vitality_scorecard_color_c IN  ('Blue','Red') AND AY_name = "AY 2020-21" AND Term_c = "Fall")
     GROUP BY
-            site_short
+            site_short,
+            Ethnic_background_c,
+            Gender_c
 ),
 
 --Prepare case note data for aggregation: red/blue covi as receiving 1:1 support by site. Will be used to add together with Wellness sessions attended
@@ -173,27 +206,36 @@ SELECT
 gather_case_note_data AS (
 SELECT 
     COUNT (DISTINCT CSE.id) AS case_note_count, #case note id
-    site_short
+    site_short,
+    CAT.Ethnic_background_c,
+    CAT.Gender_c
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
 LEFT JOIN `data-warehouse-289815.salesforce.progress_note_c` CSE ON CAT.AT_Id = CSE.Academic_Semester_c
 WHERE Type_Counseling_c = TRUE
     AND AY_name = 'AY 2020-21'
     AND college_track_status_c = '11A'
-   AND contact_id IN (SELECT contact_id FROM `data-warehouse-289815.salesforce_clean.contact_at_template` where co_vitality_scorecard_color_c IN  ('Blue','Red') AND AY_name = "AY 2020-21" AND Term_c = "Fall")
-    GROUP BY site_short
+    AND contact_id IN (SELECT contact_id FROM `data-warehouse-289815.salesforce_clean.contact_at_template` where co_vitality_scorecard_color_c IN  ('Blue','Red') AND AY_name = "AY 2020-21" AND Term_c = "Fall")
+GROUP BY 
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 ),
 
 --Add 1:1 case notes and sessions attended by student to average out later
 combine_sessions_and_case_notes AS (
 SELECT 
     ATTNDCE.site_short,
-    SUM(sum_attended_wellness_sessions + case_note_count) AS sum_wellness_support_received
+    SUM(sum_attended_wellness_sessions + case_note_count) AS sum_wellness_support_received,
+    ATTNDCE.Ethnic_background_c,
+    ATTNDCE.Gender_c
 
 FROM gather_wellness_attendance_data AS ATTNDCE
 LEFT JOIN gather_case_note_data AS CSE ON ATTNDCE.site_short = CSE.site_short
 GROUP BY 
-    site_short
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 ),
 
 calculate_avg_wellness_services_per_blue_red_covi AS (
@@ -204,6 +246,9 @@ SELECT
         THEN (sum_wellness_support_received/sum_of_blue_red_covi_for_avg)
         ELSE NULL 
         END AS wellness_avg_support, # of sessions or 1:1 / Students with reb,blue Covi scorecard color
+    a.Ethnic_background_c,
+    a.Gender_c
+    
 FROM combine_sessions_and_case_notes AS a
 LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short
 LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short
@@ -219,7 +264,9 @@ SELECT
     case_note_count,
     sum_of_blue_red_covi_for_avg,
     wellness_survey_wellness_services_assisted_denom,
-    wellness_survey_wellness_services_assisted_num
+    wellness_survey_wellness_services_assisted_num,
+    a.Ethnic_background_c,
+    a.Gender_c
 
 FROM students_that_completed_covi AS a
 LEFT JOIN aggregate_wellness_survey_data AS b ON b.site_short = a.site_short
@@ -235,7 +282,9 @@ GROUP BY
     case_note_count,
     sum_of_blue_red_covi_for_avg,
     wellness_survey_wellness_services_assisted_denom,
-    wellness_survey_wellness_services_assisted_num
+    wellness_survey_wellness_services_assisted_num,
+    Ethnic_background_c,
+    Gender_c
 )
 
 SELECT *
