@@ -2,7 +2,7 @@ WITH gather_ay_attendance AS (
   SELECT
     site_short,
     contact_id,
-    GAS_Name,
+    -- GAS_Name,
     SUM(attended_workshops_c) AS attended_workshops_c,
     SUM(enrolled_sessions_c) AS enrolled_sessions_c
   FROM
@@ -13,14 +13,14 @@ WITH gather_ay_attendance AS (
     AND college_track_status_c = '11A'
   GROUP BY
     site_short,
-    GAS_Name,
+    -- GAS_Name,
     contact_id
 ),
 prep_data AS (
   SELECT
   site_short,
   contact_Id,
-  GAS_Name,
+--   GAS_Name,
     CASE
       WHEN enrolled_sessions_c = 0 THEN NULL
       WHEN (attended_workshops_c / enrolled_sessions_c) >= 0.8 THEN 1
