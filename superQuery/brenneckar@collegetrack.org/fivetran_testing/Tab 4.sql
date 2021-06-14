@@ -30,6 +30,6 @@ prep_data AS (
   gather_ay_attendance GAA 
   )
 
-SELECT site_short, GAS_Name, SUM(above_80_attendance)
+SELECT site_short, GAS_Name, SUM(above_80_attendance), COUNT(Contact_Id)
 FROM prep_data
 GROUP BY site_short, GAS_Name
