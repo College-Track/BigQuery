@@ -11,7 +11,9 @@ AS
 WITH gather_contact_data AS (
 SELECT 
     contact_id,
-    site_short
+    site_short,
+    Ethnic_background_c,
+    Gender_c
 
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c 
 ),
@@ -41,7 +43,10 @@ gather_11th_aspiration_data AS (
             WHEN (c.grade_c = '11th Grade'
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
-            END) AS aspirations_denom_count
+            END) AS aspirations_denom_count,
+            
+        c.Ethnic_background_c,
+        c.Gender_c
             
     FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c
     LEFT JOIN`data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id=a.student_c
@@ -49,7 +54,9 @@ gather_11th_aspiration_data AS (
     AND c. grade_c = '11th Grade'
     GROUP BY
         contact_id,
-        site_short
+        site_short,
+        Ethnic_background_c,
+        Gender_c
 ),
 
 --CT students for 10th grade EFC KPI
@@ -70,7 +77,10 @@ SELECT
             WHEN (c.grade_c = "10th Grade" 
             AND college_track_status_c = '11A') THEN 1
             ELSE 0
-            END AS hs_EFC_10th_denom_count
+            END AS hs_EFC_10th_denom_count,
+            
+        Ethnic_background_c,
+        Gender_c
 
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c
 WHERE college_track_status_c = '11A'
@@ -97,15 +107,16 @@ gather_attendance_data AS (
     AND CAT.AY_Name = 'AY 2020-21'
     AND college_track_status_c = '11A'
     AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0))
-    GROUP BY c.student_c
+    GROUP BY 
+        c.student_c
 ),
 
 --Affordable college KPIs: Applying and Acceptance to Affordable Colleges and/or Best Fit/Good Fit schools only
 gather_data_twelfth_grade AS (
     SELECT 
-        contact_id,
+        CT.contact_id,
         attendance_rate,
-        site_short,
+        CT.site_short,
         
     --% students completing the financial aid submission and verification processes
         --May need to confirm which college applications should be included (e.g. accepted and enrolled/deferred). Currently pulling any college app
@@ -172,11 +183,14 @@ gather_data_twelfth_grade AS (
         WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred","Wait-listed")
         AND Contact_Id=student_c
         group by student_c
-        ) AS accepted_enrolled_waitlisted
+        ) AS accepted_enrolled_waitlisted,
+        
+        CT.Ethnic_background_c,
+        CT.Gender_c
             
       
-    FROM `data-warehouse-289815.salesforce_clean.contact_template`
-        LEFT JOIN gather_attendance_data ON contact_id=student_c
+    FROM `data-warehouse-289815.salesforce_clean.contact_template` AS CT
+        LEFT JOIN gather_attendance_data ON CT.contact_id=student_c
     WHERE  college_track_status_c = '11A'
     AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0))
 ),
@@ -190,9 +204,12 @@ gather_eleventh_grade_metrics AS (
         WHEN (aspirations_any_count >= 6 AND aspirations_affordable_count >= 3) 
         THEN 1
         ELSE 0
-        END AS cc_hs_aspirations_num_prep
+        END AS cc_hs_aspirations_num_prep,
+    Ethnic_background_c,
+    Gender_c
+    
     FROM gather_11th_aspiration_data
-    GROUP BY contact_id,site_short, aspirations_denom_count,aspirations_any_count,aspirations_affordable_count
+    GROUP BY contact_id,site_short, aspirations_denom_count,aspirations_any_count,aspirations_affordable_count,Ethnic_background_c,Gender_c
 ),
 
 --Prepping attendance data, FAFSA Verification KPI, Affordable college data for aggregation
@@ -234,11 +251,15 @@ gather_twelfth_grade_metrics AS(
             ELSE 0
             END AS cc_hs_enrolled_affordable, 
             
+    --% of 12th graders and families participating in 1+ college choice conversation
     --Students and families are prepared to enter strong college situations
         CASE 
             WHEN accepted_enrolled_waitlisted IS NOT NULL THEN 1
             ELSE 0
-            END AS cc_hs_strong_college_situations
+            END AS cc_hs_strong_college_situations,
+            
+    Ethnic_background_c,
+    Gender_c
             
     FROM gather_data_twelfth_grade
 ),
@@ -249,9 +270,14 @@ prep_tenth_grade_metrics AS (
     SELECT 
         site_short,
         SUM(hs_EFC_10th_count) AS cc_hs_EFC_10th_num,
-        SUM(hs_EFC_10th_denom_count) AS cc_hs_EFC_10th_denom
+        SUM(hs_EFC_10th_denom_count) AS cc_hs_EFC_10th_denom,
+        Ethnic_background_c,
+        Gender_c
     FROM gather_10th_efc_data
-    GROUP BY site_short
+    GROUP BY 
+        site_short,
+        Ethnic_background_c,
+        Gender_c
 ),
 
 --Aggregating 11th grade College Aspirations KPI
@@ -259,9 +285,14 @@ prep_eleventh_grade_metrics AS (
     SELECT 
         site_short,
         SUM(cc_hs_aspirations_num_prep) AS cc_hs_aspirations_num,
-        SUM(aspirations_denom_count) AS cc_hs_aspirations_denom
+        SUM(aspirations_denom_count) AS cc_hs_aspirations_denom,
+        Ethnic_background_c,
+        Gender_c
     FROM gather_eleventh_grade_metrics
-    GROUP BY site_short
+    GROUP BY 
+        site_short,
+        Ethnic_background_c,
+        Gender_c
 ),
 --Aggregating 12th grade KPIs: CC Attendance 80%, Affordable Colleges, Best Fit/Good Fit colleges, FAFSA verification
 prep_twelfth_grade_metrics AS (
@@ -274,17 +305,24 @@ prep_twelfth_grade_metrics AS (
         SUM(cc_hs_strong_college_situations) AS cc_hs_strong_college_situations,
         SUM(fafsa_verification_prep) AS cc_hs_financial_aid_submission_verification,
         SUM(cc_hs_enrolled_best_good_situational) AS cc_hs_enrolled_best_good_situational,
-        SUM(cc_hs_enrolled_affordable) AS cc_hs_enrolled_affordable
+        SUM(cc_hs_enrolled_affordable) AS cc_hs_enrolled_affordable,
+        Ethnic_background_c,
+        Gender_c
     FROM gather_twelfth_grade_metrics
-    GROUP BY site_short
+    GROUP BY 
+        site_short,
+        Ethnic_background_c,
+        Gender_c
 )
 
 #final kpi join
 SELECT 
     gd.site_short,
-    kpi_10th.* EXCEPT(site_short),
-    kpi_11th.* EXCEPT(site_short),
-    kpi_12th.* EXCEPT(site_short)
+    kpi_10th.* EXCEPT(site_short,Ethnic_background_c,Gender_c),
+    kpi_11th.* EXCEPT(site_short,Ethnic_background_c,Gender_c),
+    kpi_12th.* EXCEPT(site_short,Ethnic_background_c,Gender_c),
+    gd.Ethnic_background_c,
+    gd.Gender_c
     FROM gather_contact_data as gd
         LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short
         LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short
@@ -302,7 +340,9 @@ GROUP BY
     cc_hs_applied_best_good,
     cc_hs_accepted_best_good_situational,
     cc_hs_enrolled_best_good_situational, #projecting matriculation
-    cc_hs_enrolled_affordable #projecting matriculation
+    cc_hs_enrolled_affordable, #projecting matriculation
+    Ethnic_background_c,
+    Gender_c
     
 
 
