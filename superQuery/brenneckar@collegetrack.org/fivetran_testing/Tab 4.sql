@@ -1,3 +1,2 @@
-SELECT DISTINCT GAS_Name,  current_ay
-FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-WHERE current_ay = True
+SELECT site_short, hs_cohort_capacity, hs_student_count
+FROM `data-studio-260217.kpi_dashboard.team_kpi_table`
