@@ -20,7 +20,10 @@ prep_data AS (
   SELECT
   site_short,
   contact_Id,
---   GAS_Name,
+     GAS_Name,
+  attended_workshops_c,
+  enrolled_sessions_c,
+
     CASE
       WHEN enrolled_sessions_c = 0 THEN NULL
       WHEN (attended_workshops_c / enrolled_sessions_c) >= 0.8 THEN 1
@@ -34,5 +37,5 @@ prep_data AS (
 -- FROM prep_data
 -- GROUP BY site_short
 
-SELECT SUM(attended_workshops_c) AS attended_workshops_c, SUM(enrolled_sessions_c) AS enrolled_sessions_c
-FROM gather_ay_attendance
+SELECT *
+FROM prep_data
