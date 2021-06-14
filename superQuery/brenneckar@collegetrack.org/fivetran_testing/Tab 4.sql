@@ -2,6 +2,7 @@ WITH gather_ay_attendance AS (
   SELECT
     site_short,
     contact_id,
+    GAS_Name,
     SUM(attended_workshops_c) AS attended_workshops_c,
     SUM(enrolled_sessions_c) AS enrolled_sessions_c
   FROM
@@ -9,14 +10,17 @@ WITH gather_ay_attendance AS (
   WHERE
     AY_Name = "AY 2020-21"
     AND site_short = 'Aurora'
+    AND college_track_status_c = '11A'
   GROUP BY
     site_short,
+    GAS_Name,
     contact_id
 ),
 prep_data AS (
   SELECT
   site_short,
   contact_Id,
+  GAS_Name,
     CASE
       WHEN enrolled_sessions_c = 0 THEN NULL
       WHEN (attended_workshops_c / enrolled_sessions_c) >= 0.8 THEN 1
@@ -26,5 +30,6 @@ prep_data AS (
   gather_ay_attendance GAA 
   )
 
-SELECT *
+SELECT site_short, GAS_Name, SUM(above_80_attendance)
 FROM prep_data
+GROUP BY site_short, GAS_Name
