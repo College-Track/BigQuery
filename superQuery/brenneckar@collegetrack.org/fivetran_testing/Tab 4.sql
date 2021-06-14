@@ -1,2 +1,4 @@
-SELECT site_short, hs_cohort_capacity, hs_student_count
-FROM `data-studio-260217.kpi_dashboard.team_kpi_table`
+SELECT site_short, COUNT(Contact_Id)
+FROM `data-warehouse-289815.salesforce_clean.contact_template`
+WHERE site_short = 'Aurora'
+AND college_track_status_c = '11A'
