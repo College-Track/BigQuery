@@ -674,10 +674,10 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
         WHEN Clean_AT.Overall_Rubric_Color = "Yellow" THEN 2
         WHEN Clean_AT.Overall_Rubric_Color = "Green" THEN 3
         ELSE 4
-      END AS Overall_Rubric_Color_sort
-    --   CASE WHEN CURRENT_DATE() BETWEEN gpa_required_date AND next_gpa_required_date THEN TRUE
-    --   ELSE FALSE
-    --   END AS current_valid_gpa_term,
+      END AS Overall_Rubric_Color_sort,
+      CASE WHEN CURRENT_DATE() BETWEEN gpa_required_date AND next_gpa_required_date THEN TRUE
+      ELSE FALSE
+      END AS current_valid_gpa_term
     --   CASE WHEN CURRENT_DATE() BETWEEN Clean_AT.AY_Start_Date AND Clean_AT.AY_End_Date THEN TRUE
     --   ELSE FALSE
     --   END AS current_ay
