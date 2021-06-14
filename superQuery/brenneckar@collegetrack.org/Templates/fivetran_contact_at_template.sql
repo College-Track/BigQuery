@@ -244,6 +244,10 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_template` AS(
         ELSE credit_accumulation_pace_c
       END AS credit_accumulation_pace_c,
       -- Creating New Fields
+      CASE 
+        WHEN C.grade_c = "Year 1" AND C.indicator_years_since_hs_graduation_c = 0 THEN "12th Grade"
+        ELSE C.grade_c
+        END AS mod_grade,
       CASE
         WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" THEN "4-Year"
         WHEN A_school.Predominant_Degree_Awarded_c = "Predominantly associate's-degree granting" THEN "2-Year"
