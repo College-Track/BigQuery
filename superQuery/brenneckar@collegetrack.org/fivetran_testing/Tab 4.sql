@@ -44,5 +44,6 @@ SUM(attended_workshops_c), SUM(enrolled_sessions_c), SUM(above_80_attendance) AS
 FROM prep_data
 GROUP BY contact_Id
 )
-SELECT *
+SELECT GAS_Name, SUM(above_80_attendance)
 FROM prep_data
+GROUP BY GAS_Name
