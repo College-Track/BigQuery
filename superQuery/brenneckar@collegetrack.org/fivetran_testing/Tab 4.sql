@@ -37,6 +37,6 @@ prep_data AS (
 -- FROM prep_data
 -- GROUP BY site_short
 
-SELECT SUM(above_80_attendance)
+SELECT SUM(attended_workshops_c), SUM(enrolled_sessions_c), SUM(above_80_attendance)
 FROM prep_data
 -- GROUP BY GAS_Name
