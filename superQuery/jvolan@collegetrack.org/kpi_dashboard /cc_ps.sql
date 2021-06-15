@@ -297,6 +297,7 @@ cc_ps AS
     Ethnic_background_c
 )
     SELECT
+    site_short,
     sum(cc_ps_projected_grad_num),
     sum(cc_ps_projected_grad_denom),
     sum(cc_ps_2_yr_transfer_num),
