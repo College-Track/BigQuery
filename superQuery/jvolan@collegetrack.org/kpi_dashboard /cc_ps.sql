@@ -2,6 +2,8 @@ WITH get_contact_data AS
 (
     SELECT
     contact_Id,
+    Gender_c,
+    Ethnic_background_c,
     site_short,
 -- % of students graduating from college within 6 years (numerator)
 -- uses alumni who've already graduated in current AY + active PS w/ credit pace < 6 years and enrolled full-time. cohort based. year 6. 
@@ -109,6 +111,8 @@ get_at_data AS
 (
     SELECT
     AT_Id,
+    Gender_c AS at_gender,
+    Ethnic_background_c AS at_ethnic_background,
     Contact_Id AS at_contact_id,
     site_short AS at_site,
 --% of students completing FAFSA or equivalent
@@ -152,6 +156,8 @@ get_persist_at_data AS
 (
   SELECT
     contact_id AS persist_contact_id,
+    Gender_c AS persist_contact_gender,
+    Ethnic_background_c AS persist_contact_ethnic_background,
 --indicator to flag which students were enrolled in any college last fall. used to created denominator later
     MAX(CASE
         WHEN
@@ -174,13 +180,18 @@ get_persist_at_data AS
         OR
         (AY_Name = 'AY 2021-22'
         AND term_c = 'Fall'))
-    GROUP BY contact_id
+    GROUP BY contact_id, 
+    Gender_c,
+    Ethnic_background_c
 ),
 --actually comparing the # terms vs. # of terms meeting persistence defintion, per student
 persist_calc AS
 (
     SELECT
     persist_contact_id,
+    persist_contact_gender,
+    persist_contact_ethnic_background,
+    
     MAX(include_in_reporting_group) AS cc_persist_denom,
   -- if # terms = # of terms meeting persistence defintion, student will be in numerator
     MAX(
@@ -191,13 +202,17 @@ persist_calc AS
     FROM get_persist_at_data
 -- filter out any students who weren't enrolled last fall. denominator
     WHERE include_in_reporting_group = 1
-    GROUP BY persist_contact_id
+    GROUP BY persist_contact_id,
+    persist_contact_gender,
+    persist_contact_ethnic_background
 ),
 --trending alumni survey measures, using FY20 survey data that's been uploaded into BigQuery
 get_fy20_alumni_survey_data AS
 (
     SELECT
     Contact_Id AS alum_contact_id,
+    gender AS alum_gender,
+    ethnicity AS alum_ethnic_background,
 --% of graduates with meaningful employment
     CASE    
         WHEN i_feel_my_current_job_is_meaningful IN ('Strongly Agree', "Agree") THEN 1
@@ -247,14 +262,16 @@ join_data AS
     get_fy20_alumni_survey_data.fy20_alumni_survey_employed_grad_6_months_denom,
 
     FROM get_contact_data
-    LEFT JOIN get_at_data ON at_contact_id = contact_id
-    LEFT JOIN persist_calc ON persist_calc.persist_contact_id = contact_id
-    LEFT JOIN get_fy20_alumni_survey_data ON get_fy20_alumni_survey_data.alum_contact_id = contact_id
+    LEFT JOIN get_at_data ON at_contact_id = contact_id AND at_gender = Gender_c AND at_ethnic_background = Ethnic_background_c
+    LEFT JOIN persist_calc ON persist_calc.persist_contact_id = contact_id AND persist_contact_gender = Gender_c AND persist_contact_ethnic_background = Ethnic_background_c
+    LEFT JOIN get_fy20_alumni_survey_data ON get_fy20_alumni_survey_data.alum_contact_id = contact_id AND alum_gender = Gender_c AND alum_ethnic_background = Ethnic_background_c
 ),
 cc_ps AS
 (
     SELECT
     site_short,
+    Gender_c,
+    Ethnic_background_c,
     sum(cc_ps_projected_grad_num) AS cc_ps_projected_grad_num,
     sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom,
     sum(x_2_yr_transfer_num) AS cc_ps_2_yr_transfer_num,
@@ -275,10 +292,31 @@ cc_ps AS
     sum(fy20_alumni_survey_employed_grad_6_months_denom) AS cc_ps_employed_grad_6_months_denom,
     
     FROM join_data
-    GROUP BY site_short
+    GROUP BY site_short,
+    Gender_c,
+    Ethnic_background_c
 )
     SELECT
-    *
+    sum(cc_ps_projected_grad_num),
+    sum(cc_ps_projected_grad_denom),
+    sum(cc_ps_2_yr_transfer_num),
+    sum(cc_ps_2_yr_transfer_denom),
+    sum(cc_ps_grad_internship_num),
+    sum(cc_ps_grad_internship_denom),
+    sum(cc_ps_gpa_2_5_num),
+    sum(cc_ps_loans_30k),
+    sum(cc_ps_fasfa_complete),
+    sum(cc_ps_well_balanced_lifestyle),
+    sum(cc_ps_tech_interpersonal_skills),
+    sum(cc_ps_persist_num),
+    sum(cc_persist_denom),
+    sum(cc_ps_meaningful_num),
+    sum(cc_ps_gainful_num),
+    sum(cc_ps_meaningful_gainful_denom),
+    sum(cc_ps_employed_grad_6_months_num),
+    sum(cc_ps_employed_grad_6_months_denom),
     FROM 
-    cc_ps
+    cc_ps 
+    GROUP BY
+    site_short
     
