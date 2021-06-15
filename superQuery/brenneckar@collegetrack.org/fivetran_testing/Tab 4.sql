@@ -39,7 +39,7 @@ prep_data AS (
 -- GROUP BY site_short
 
 SELECT
--- GAS_Name, 
+contact_Id, 
 SUM(attended_workshops_c), SUM(enrolled_sessions_c), SUM(above_80_attendance)
 FROM prep_data
--- GROUP BY GAS_Name
+GROUP BY contact_Id
