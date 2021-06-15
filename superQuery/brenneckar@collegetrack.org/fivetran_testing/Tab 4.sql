@@ -43,9 +43,11 @@ prep_data AS (
 
 , test AS (SELECT
 contact_Id, 
+GAS_Name,
 SUM(attended_workshops_c) AS attended_workshops_c, SUM(enrolled_sessions_c) AS enrolled_sessions_c, SUM(above_80_attendance) AS above_80_attendance, SUM(student_had_attendance) AS student_had_attendance
 FROM prep_data
-GROUP BY contact_Id
+GROUP BY contact_Id,
+GAS_Name
 )
 SELECT  *
 FROM test
