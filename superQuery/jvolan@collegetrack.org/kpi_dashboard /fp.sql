@@ -143,6 +143,7 @@ join_data AS
 )
   
     SELECT
+    site_short,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
     SUM(ps_survey_scholarship_denom),
     SUM(ps_survey_scholarship_num),
