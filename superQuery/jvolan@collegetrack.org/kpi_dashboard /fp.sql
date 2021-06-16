@@ -145,6 +145,7 @@ join_data AS
     SELECT
     *
     FROM join_data
+
     
 /*    SELECT
     site_short,
