@@ -310,6 +310,6 @@ FROM
     aggregate_dream_kpi AS d
     LEFT JOIN aggregate_attendance_kpi AS attendance_kpi ON d.site_short = attendance_kpi.site_short AND d.Ethnic_background_c = attendance_kpi.Ethnic_background_c AND d.gender_c=attendance_kpi.gender_c
     LEFT JOIN aggregate_mse_kpis AS mse_kpi ON d.site_short = mse_kpi.site_short AND d.Ethnic_background_c = mse_kpi.Ethnic_background_c AND d.gender_c=mse_kpi.gender_c
-    LEFT JOIN aggregate_mse_reporting_group AS mse_grp ON mse_grp.site_short = d.site_short AND mse_grp.Ethnic_background_c = d.Ethnic_background_c AND mse_grp.gender_c=d.gender_c
+    LEFT JOIN aggregate_mse_reporting_group AS mse_grp ON mse_grp.site_short = mse_kpi.site_short AND mse_grp.Ethnic_background_c = mse_kpi.Ethnic_background_c AND mse_grp.gender_c=mse_kpi.gender_c
     LEFT JOIN gather_survey_data AS GSD ON GSD.site_short = d.site_short AND d.Ethnic_background_c = GSD.Ethnic_background_c AND d.gender_c=GSD.gender_c
     LEFT JOIN aggregate_covi_data AS ACD ON ACD.site_short = d.site_short AND d.Ethnic_background_c = ACD.Ethnic_background_c AND d.gender_c=ACD.gender_c
