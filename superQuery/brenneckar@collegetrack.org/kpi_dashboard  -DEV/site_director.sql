@@ -247,7 +247,8 @@ EXCEPT(site_short,Ethnic_background_c,
     Gender_c),
 aggregate_covi_data.* EXCEPT (site_short,Ethnic_background_c,
     Gender_c),
-POTD.on_track_student_count AS SD_on_track_student_count
+POTD.on_track_student_count AS SD_on_track_student_count,
+GCM.hs_cohort_capacity
 FROM
   prep_hs_metrics HS_Data
   LEFT JOIN prep_ps_metrics PS_Data ON PS_Data.site_short = HS_Data.site_short AND PS_Data.Gender_c = HS_Data.Gender_c AND HS_Data.Ethnic_background_c = PS_Data.Ethnic_background_c
