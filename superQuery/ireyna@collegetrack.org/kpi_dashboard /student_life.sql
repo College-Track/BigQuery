@@ -1,5 +1,5 @@
 SELECT
-        --student_c,
+        student_c,
         site_short,
         /*SUM(
             CASE
@@ -15,7 +15,7 @@ SELECT
     GAS_Name IN ('Spring 2019-20 (Semester)', 'Summer 2019-20 (Semester)')
     AND grade_c != '8th Grade'
     GROUP BY
-   -- student_c,
+    student_c,
     site_short,
     Ethnic_background_c,
     Gender_c
