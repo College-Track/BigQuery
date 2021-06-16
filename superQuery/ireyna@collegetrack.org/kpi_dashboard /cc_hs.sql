@@ -324,9 +324,9 @@ SELECT
     gd.Ethnic_background_c,
     gd.Gender_c
     FROM gather_contact_data as gd
-        LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short
-        LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short
-        LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short
+        LEFT JOIN prep_tenth_grade_metrics AS kpi_10th ON gd.site_short = kpi_10th.site_short AND gd.Ethnic_background_c=kpi_10th.Ethnic_background_c AND gd.gender_c=kpi_10th.Gender_c
+        LEFT JOIN prep_eleventh_grade_metrics AS kpi_11th ON gd.site_short = kpi_11th.site_short AND gd.Ethnic_background_c=kpi_11th.Ethnic_background_c AND gd.Gender_c=kpi_11th.Gender_c
+        LEFT JOIN prep_twelfth_grade_metrics AS kpi_12th ON gd.site_short = kpi_12th.site_short AND gd.Ethnic_background_c=kpi_12th.Ethnic_background_c AND gd.Gender_c=kpi_12th.Gender_c
 GROUP BY
     site_short, 
     cc_hs_EFC_10th_num,
