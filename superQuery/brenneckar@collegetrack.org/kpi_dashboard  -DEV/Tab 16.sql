@@ -1,3 +1,3 @@
 SELECT hs_cohort_capacity, hs_student_count, Gender_c, Ethnic_background_c, hs_senior_student_count
-FROM `data-studio-260217.kpi_dashboard_dev.team_kpi_table`
+FROM `data-studio-260217.kpi_dashboard_dev.site_directors`
 WHERE site_short = 'Watts'
