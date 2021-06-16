@@ -126,9 +126,9 @@ bf_ethnic_background
 join_data AS
 (
     SELECT
-    a.site_short,
-    a.contact_gender,
-    a.contact_ethnic_background,
+    a.site_short AS fp_site_short,
+    a.contact_gender AS fp_gender,
+    a.contact_ethnic_background AS fp_ethnic_background,
     fp_12_efc_num AS fp_12_efc_num,
     gsd.ps_survey_scholarship_denom,
     gsd.ps_survey_scholarship_num,
@@ -141,10 +141,14 @@ join_data AS
     LEFT JOIN gather_survey_data AS gsd ON gsd.survey_site_short = a.site_short AND gsd.survey_gender = a.contact_gender AND gsd.survey_ethnic_background = a.contact_ethnic_background
     LEFT JOIN get_at_data AS cat ON cat.at_site = a.site_short AND cat.at_gender = a.contact_gender AND cat.at_ethnic_background = a.contact_ethnic_background
     LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.bf_site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
-)
+),
 
+fp AS
+(
  SELECT
-    site_short,
+    fp_site_short,
+    fp_gender,
+    fp_ethnic_background,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
     SUM(ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
     SUM(ps_survey_scholarship_num) AS ps_survey_scholarship_num,
@@ -152,6 +156,18 @@ join_data AS
     SUM(fp_accepted_best_fit_denom) AS fp_accepted_best_fit_denom,
     SUM(fp_enrolled_best_fit_numerator) AS fp_enrolled_best_fit_numerator
     FROM join_data
-    WHERE site_short NOT IN ('The Durant Center', 'Ward 8', 'Crenshaw')
-    GROUP BY site_short
-    
+    WHERE fp_site_short NOT IN ('The Durant Center', 'Ward 8', 'Crenshaw')
+    GROUP BY fp_site_short,
+    fp_gender,
+    fp_ethnic_background
+)
+   
+    SELECT
+    SUM(fp_12_efc_num) AS fp_12_efc_num,
+    SUM(ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
+    SUM(ps_survey_scholarship_num) AS ps_survey_scholarship_num,
+    SUM(fp_efund_num) AS fp_efund_num,
+    SUM(fp_accepted_best_fit_denom) AS fp_accepted_best_fit_denom,
+    SUM(fp_enrolled_best_fit_numerator) AS fp_enrolled_best_fit_numerator
+    FROM fp
+    GROUP BY fp_site_short
