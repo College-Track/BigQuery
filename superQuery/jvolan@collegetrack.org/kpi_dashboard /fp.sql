@@ -141,8 +141,12 @@ join_data AS
     LEFT JOIN get_at_data AS cat ON cat.at_site = a.site_short AND cat.at_gender = a.contact_gender AND cat.at_ethnic_background = a.contact_ethnic_background
     LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
 )
-  
+ 
     SELECT
+    *
+    FROM join_data
+    
+/*    SELECT
     site_short,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
     SUM(ps_survey_scholarship_denom),
@@ -152,6 +156,6 @@ join_data AS
     SUM(fp_enrolled_best_fit_numerator)
     FROM join_data
     GROUP BY site_short
-    
+ */  
 
      
