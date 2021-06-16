@@ -42,17 +42,6 @@ WITH gather_hs_data AS (
     college_track_status_c = '11A'
 ),
 
-gather_capacity_metrics  AS (
-  SELECT
-    C.site_short,
-    MAX(Account.college_track_high_school_capacity_v_2_c) AS hs_cohort_capacity,
-  FROM
-    `data-warehouse-289815.salesforce_clean.contact_template` C
-    LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = C.site_c
-    WHERE college_track_status_c = "11A"
-  GROUP BY
-    site_short
-),
 
 
 gather_ps_count_no_gap_year AS (
@@ -248,13 +237,13 @@ EXCEPT(site_short,Ethnic_background_c,
 aggregate_covi_data.* EXCEPT (site_short,Ethnic_background_c,
     Gender_c),
 POTD.on_track_student_count AS SD_on_track_student_count,
-GCM.hs_cohort_capacity
+-- GCM.hs_cohort_capacity
 FROM
   prep_hs_metrics HS_Data
   LEFT JOIN prep_ps_metrics PS_Data ON PS_Data.site_short = HS_Data.site_short AND PS_Data.Gender_c = HS_Data.Gender_c AND HS_Data.Ethnic_background_c = PS_Data.Ethnic_background_c
   LEFT JOIN aggregate_covi_data ON aggregate_covi_data.site_short = HS_Data.site_short AND aggregate_covi_data.Gender_c = HS_Data.Gender_c AND aggregate_covi_data.Ethnic_background_c = HS_Data.Ethnic_background_c
   LEFT JOIN prep_on_track_denom POTD ON POTD.site_short = HS_Data.site_short AND POTD.Gender_c = HS_Data.Gender_c AND POTD.Ethnic_background_c = HS_Data.Ethnic_background_c
-  LEFT JOIN gather_capacity_metrics GCM ON GCM.site_short = HS_Data.site_short
+--   LEFT JOIN gather_capacity_metrics GCM ON GCM.site_short = HS_Data.site_short
  )
  
  SELECT *
