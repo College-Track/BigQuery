@@ -105,38 +105,32 @@ SELECT
     
 FROM gather_best_fit_data
 
-),
+)
 
-join_data AS
-(
     SELECT
     a.site_short,
     a.contact_gender,
     a.contact_ethnic_background,
-    fp_12_efc_num AS fp_12_efc_num,
-    gsd.ps_survey_scholarship_denom,
-    gsd.ps_survey_scholarship_num,
-    cat.indicator_efund AS fp_efund_num,
-    fp_accepted_best_fit_denom,
-    fp_enrolled_best_fit_numerator
+    SUM(fp_12_efc_num) AS fp_12_efc_num,
+    SUM(gsd.ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
+    SUM(gsd.ps_survey_scholarship_num) AS ps_survey_scholarship_num,
+    SUM(cat.indicator_efund) AS fp_efund_num,
+    SUM(fp_accepted_best_fit_denom) AS fp_accepted_best_fit_denom,
+    SUM(fp_enrolled_best_fit_numerator) AS fp_enrolled_best_fit_numerator
     
     
     FROM gather_contact_data AS a
     LEFT JOIN gather_survey_data AS gsd ON gsd.survey_site_short = site_short AND gsd.survey_gender = a.contact_gender AND gsd.survey_ethnic_background = a.contact_ethnic_background
     LEFT JOIN get_at_data AS cat ON cat.at_site = a.site_short AND cat.at_gender = a.contact_gender AND cat.at_ethnic_background = a.contact_ethnic_background
     LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
-)
+    GROUP BY a.site_short,
+    a.contact_gender,
+    a.contact_ethnic_background
+
+
+    
  
-    SELECT
-    site_short,
-    SUM(fp_12_efc_num) AS fp_12_efc_num,
-    SUM(ps_survey_scholarship_denom),
-    SUM(ps_survey_scholarship_num),
-    SUM(fp_efund_num) AS fp_efund_num,
-    SUM(fp_accepted_best_fit_denom),
-    SUM(fp_enrolled_best_fit_numerator)
-    FROM join_data
-    GROUP BY site_short
+   
 
 
      
