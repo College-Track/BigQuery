@@ -1,12 +1,3 @@
-/*
-CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.wellness` 
-OPTIONS
-    (
-    description= "Aggregating Wellness metrics for the Data Studio KPI dashboard"
-    )
-AS
-*/
-
 WITH 
 
 --Gather contact and academic term data to join with COVI data to set reporting groups
@@ -29,7 +20,7 @@ WHERE College_Track_Status_Name = 'Current CT HS Student'
         (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0)))
 ),
 
---Pull Covi assessments completed within appropriate AYs (2019-20, 2020-21)
+--Pull Covi assessments completed within appropriate AYs (2020-21)
 gather_covi_data AS (
 SELECT 
     contact_name_c AS contact_id_covi,
@@ -253,9 +244,9 @@ FROM combine_sessions_and_case_notes AS a
 LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short
 LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short
 WHERE wellness_blue_red_denom IS NOT NULL
-),
+)
 
-aggregate_kpis_data AS(
+--aggregate_kpis_data AS(
 SELECT
     a.site_short,
     wellness_covi_assessment_completed_ay,
@@ -285,7 +276,3 @@ GROUP BY
     wellness_survey_wellness_services_assisted_num,
     Ethnic_background_c,
     Gender_c
-)
-
-SELECT *
-FROM aggregate_kpis_data
