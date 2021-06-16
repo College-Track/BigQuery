@@ -269,11 +269,11 @@ SELECT
     a.Gender_c
 
 FROM students_that_completed_covi AS a
-LEFT JOIN aggregate_wellness_survey_data AS b ON b.site_short = a.site_short
-LEFT JOIN calculate_avg_wellness_services_per_blue_red_covi AS c ON c.site_short = a.site_short
-LEFT JOIN gather_wellness_attendance_data AS d ON a.site_short = d.site_short --for total sessions
-LEFT JOIN gather_case_note_data AS e ON a.site_short=e.site_short --for total case notes
-LEFT JOIN sum_of_blue_red_covi AS f ON a.site_short=f.site_short --for stotal number of red/blue covi students
+LEFT JOIN aggregate_wellness_survey_data AS b ON b.site_short = a.site_short AND a.ethnic_background_c = b.ethnic_background_c AND a.Gender_c=b.Gender_c
+LEFT JOIN calculate_avg_wellness_services_per_blue_red_covi AS c ON c.site_short = a.site_short AND a.ethnic_background_c = c.ethnic_background_c AND a.Gender_c=c.Gender_c
+LEFT JOIN gather_wellness_attendance_data AS d ON a.site_short = d.site_short AND a.ethnic_background_c = d.ethnic_background_c AND a.Gender_c=d.Gender_c--for total sessions 
+LEFT JOIN gather_case_note_data AS e ON a.site_short=e.site_short AND a.ethnic_background_c = e.ethnic_background_c AND a.Gender_c=e.Gender_c --for total case notes
+LEFT JOIN sum_of_blue_red_covi AS f ON a.site_short=f.site_short AND a.ethnic_background_c = f.ethnic_background_c AND a.Gender_c=f.Gender_c --for stotal number of red/blue covi students
 GROUP BY
     site_short,
     wellness_covi_assessment_completed_ay,
