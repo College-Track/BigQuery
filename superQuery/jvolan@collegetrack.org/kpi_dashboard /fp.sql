@@ -2,6 +2,8 @@ WITH gather_survey_data AS
 (
     SELECT
     site_short AS survey_site_short,
+    Gender_c AS survey_gender,
+    Ethnic_background_c AS survey_ethnic_background,
     SUM(
     CASE
         WHEN contact_id IS NOT NULL THEN 1
@@ -15,13 +17,17 @@ WITH gather_survey_data AS
     
     FROM  `data-studio-260217.surveys.fy21_ps_survey_wide_prepped`
     WHERE i_am_able_to_receive_my_scholarship_funds_from_college_track IS NOT NULL
-    GROUP BY site_short
+    GROUP BY site_short,
+    Gender_c,
+    Ethnic_background_c
 ),
 
 get_at_data AS
 (
     SELECT
     site_short AS at_site,
+    Gender_c AS at_gender,
+    Ethnic_background_c AS at_ethnic_background,
 --% of college students saying that they know how to apply for Emergency Fund in PAT advising rubric
     SUM(
     CASE    
@@ -38,27 +44,18 @@ get_at_data AS
     OR
     (CURRENT_DATE() > '2021-07-01'
     AND previous_as_c = TRUE))
-    GROUP BY site_short
+    GROUP BY site_short,
+    Gender_c,
+    Ethnic_background_c
 ),
-
-/*get_first_year_loan_debt AS
-(
-    SELECT
-    AT_Id,
-    Contact_Id AS year_1_spring_contact_id,
-    site_short AS year_1_spring_AT_site,
-    CASE
-        WHEN 
-
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE college_track_status_c = '15A'
-*/
 
 gather_contact_data AS
 (
 --% of high school seniors with EFC by end of March. Right now we are not accounting for the timebound part as we don't currently have a way to track when it was completed. 
     SELECT
     site_short,
+    Gender_c AS contact_gender,
+    Ethnic_background_c AS contact_ethnic_background,
     SUM(
     CASE
         WHEN fa_req_expected_financial_contribution_c IS NOT NULL THEN 1
@@ -67,7 +64,9 @@ gather_contact_data AS
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE college_track_status_c = '11A'
     AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0))
-    GROUP BY site_short
+    GROUP BY site_short,
+    Gender_c,
+    Ethnic_background_c
 ),
 
 --For KPI % of students admitted to Best-Fit College choose to enroll at Best-Fit College
@@ -75,6 +74,8 @@ gather_best_fit_data AS (
     SELECT 
         contact_id,
         site_short,
+        Gender_c AS bf_gender,
+        Ethnic_background_c AS bf_ethnic_background,
     
     --Students accepted to Best Fit
         (SELECT student_c
@@ -101,6 +102,8 @@ gather_best_fit_data AS (
 prep_best_fit_enrollment_kpi AS (
 SELECT
     site_short,
+    bf_gender,
+    bf_ethnic_background,
     SUM(CASE  
         WHEN accepted_best_fit IS NOT NULL 
         THEN 1
@@ -114,13 +117,17 @@ SELECT
     END) AS fp_enrolled_best_fit_numerator,
     
 FROM gather_best_fit_data
-GROUP BY site_short
+GROUP BY site_short,
+bf_gender,
+bf_ethnic_background
 ),
 
 join_data AS
 (
     SELECT
     a.site_short,
+    a.contact_gender,
+    a.contact_ethnic_background,
     fp_12_efc_num AS fp_12_efc_num,
     gather_survey_data.ps_survey_scholarship_denom,
     gather_survey_data.ps_survey_scholarship_num,
@@ -130,14 +137,20 @@ join_data AS
     
     
     FROM gather_contact_data AS a
-    LEFT JOIN gather_survey_data ON gather_survey_data.survey_site_short = site_short
-    LEFT JOIN get_at_data ON get_at_data.at_site = site_short
-    LEFT JOIN prep_best_fit_enrollment_kpi AS prep_best_fit_enrollment_kpi ON prep_best_fit_enrollment_kpi.site_short=a.site_short
+    LEFT JOIN gather_survey_data ON gather_survey_data.survey_site_short = site_short AND gather_survey_data.survey_gender = a.contact_gender AND gather_survey_data.survey_ethnic_background = a.contact_ethnic_background
+    LEFT JOIN get_at_data ON get_at_data.at_site = a.site_short AND get_at_data.at_gender = a.contact_gender AND get_at_data.at_ethnic_background = a.contact_ethnic_background
+    LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
 )
   
     SELECT
-    *
+    SUM(fp_12_efc_num) AS fp_12_efc_num,
+    SUM(ps_survey_scholarship_denom),
+    SUM(ps_survey_scholarship_num),
+    SUM(fp_efund_num) AS fp_efund_num,
+    SUM(fp_accepted_best_fit_denom),
+    SUM(fp_enrolled_best_fit_numerator)
     FROM join_data
+    GROUP BY site_short
     
 
      
