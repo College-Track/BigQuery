@@ -163,6 +163,7 @@ fp AS
 )
    
     SELECT
+    fp_site_short,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
     SUM(ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
     SUM(ps_survey_scholarship_num) AS ps_survey_scholarship_num,
