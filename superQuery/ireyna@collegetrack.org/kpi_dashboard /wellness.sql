@@ -1,3 +1,12 @@
+/*
+CREATE OR REPLACE TABLE `data-studio-260217.kpi_dashboard.wellness` 
+OPTIONS
+    (
+    description= "Aggregating Wellness metrics for the Data Studio KPI dashboard"
+    )
+AS
+*/
+
 WITH 
 
 --Gather contact and academic term data to join with COVI data to set reporting groups
@@ -232,11 +241,11 @@ GROUP BY
 calculate_avg_wellness_services_per_blue_red_covi AS (
 SELECT 
     a.site_short,
-    CASE 
+    MAX(CASE 
         WHEN wellness_blue_red_denom IS NOT NULL
         THEN (sum_wellness_support_received/sum_of_blue_red_covi_for_avg)
         ELSE NULL 
-        END AS wellness_avg_support, # of sessions or 1:1 / Students with reb,blue Covi scorecard color
+        END) AS wellness_avg_support, # of sessions or 1:1 / Students with reb,blue Covi scorecard color
     a.Ethnic_background_c,
     a.Gender_c
     
@@ -244,9 +253,13 @@ FROM combine_sessions_and_case_notes AS a
 LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short
 LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short
 WHERE wellness_blue_red_denom IS NOT NULL
-)
+GROUP BY
+    site_short,
+    Ethnic_background_c,
+    Gender_c
+),
 
---aggregate_kpis_data AS(
+aggregate_kpis_data AS(
 SELECT
     a.site_short,
     wellness_covi_assessment_completed_ay,
@@ -276,3 +289,7 @@ GROUP BY
     wellness_survey_wellness_services_assisted_num,
     Ethnic_background_c,
     Gender_c
+)
+
+SELECT *
+FROM aggregate_kpis_data
