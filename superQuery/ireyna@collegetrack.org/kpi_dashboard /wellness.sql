@@ -273,13 +273,13 @@ GROUP BY
 aggregate_kpis_data AS(
 SELECT
     a.site_short,
-    wellness_covi_assessment_completed_ay,
+    MAX(wellness_covi_assessment_completed_ay) AS wellness_covi_assessment_completed_ay,
     wellness_avg_support,
-    sum_attended_wellness_sessions,
-    case_note_count,
-    sum_of_blue_red_covi_for_avg,
-    wellness_survey_wellness_services_assisted_denom,
-    wellness_survey_wellness_services_assisted_num,
+    MAX(sum_attended_wellness_sessions) AS sum_attended_wellness_sessions,
+    MAX(case_note_count) AS case_note_count,
+    MAX(sum_of_blue_red_covi_for_avg) AS sum_of_blue_red_covi_for_avg,
+    MAX(wellness_survey_wellness_services_assisted_denom) AS wellness_survey_wellness_services_assisted_denom,
+    MAX(wellness_survey_wellness_services_assisted_num) AS wellness_survey_wellness_services_assisted_num,
     a.Ethnic_background_c,
     a.Gender_c
 
@@ -291,13 +291,7 @@ LEFT JOIN gather_case_note_data AS e ON a.site_short=e.site_short AND a.ethnic_b
 LEFT JOIN sum_of_blue_red_covi AS f ON a.site_short=f.site_short AND a.ethnic_background_c = f.ethnic_background_c AND a.Gender_c=f.Gender_c --for stotal number of red/blue covi students
 GROUP BY
     site_short,
-    wellness_covi_assessment_completed_ay,
     wellness_avg_support,
-    sum_attended_wellness_sessions,
-    case_note_count,
-    sum_of_blue_red_covi_for_avg,
-    wellness_survey_wellness_services_assisted_denom,
-    wellness_survey_wellness_services_assisted_num,
     Ethnic_background_c,
     Gender_c
 )
