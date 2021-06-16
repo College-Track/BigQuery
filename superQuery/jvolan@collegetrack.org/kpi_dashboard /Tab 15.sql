@@ -143,9 +143,9 @@ join_data AS
     LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.bf_site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
 ),
 
-fp AS
-(
- SELECT
+fp AS 
+(    
+    SELECT
     fp_site_short,
     fp_gender,
     fp_ethnic_background,
@@ -161,14 +161,7 @@ fp AS
     fp_gender,
     fp_ethnic_background
 )
-   
+    
     SELECT
-    fp_site_short,
-    SUM(fp_12_efc_num) AS fp_12_efc_num,
-    SUM(ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
-    SUM(ps_survey_scholarship_num) AS ps_survey_scholarship_num,
-    SUM(fp_efund_num) AS fp_efund_num,
-    SUM(fp_accepted_best_fit_denom) AS fp_accepted_best_fit_denom,
-    SUM(fp_enrolled_best_fit_numerator) AS fp_enrolled_best_fit_numerator
+    *
     FROM fp
-    GROUP BY fp_site_short
