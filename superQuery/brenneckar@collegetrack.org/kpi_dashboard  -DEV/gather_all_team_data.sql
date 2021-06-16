@@ -36,6 +36,7 @@ join_team_kpis AS (
 gather_capacity_metrics  AS (
   SELECT
     C.site_short,
+    COUNT(Contact_Id) AS hs_capacity_numerator,
     MAX(Account.college_track_high_school_capacity_v_2_c) AS hs_cohort_capacity,
   FROM
     `data-warehouse-289815.salesforce_clean.contact_template` C
@@ -47,6 +48,7 @@ gather_capacity_metrics  AS (
 
 SELECT
   join_team_kpis.*,
+  GCM.hs_capacity_numerator,
   GCM.hs_cohort_capacity
 FROM
   join_team_kpis
