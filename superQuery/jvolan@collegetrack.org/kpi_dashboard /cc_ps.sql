@@ -297,27 +297,8 @@ cc_ps AS
     Ethnic_background_c
 )
     SELECT
-    site_short,
-    sum(cc_ps_projected_grad_num),
-    sum(cc_ps_projected_grad_denom),
-    sum(cc_ps_2_yr_transfer_num),
-    sum(cc_ps_2_yr_transfer_denom),
-    sum(cc_ps_grad_internship_num),
-    sum(cc_ps_grad_internship_denom),
-    sum(cc_ps_gpa_2_5_num),
-    sum(cc_ps_loans_30k),
-    sum(cc_ps_fasfa_complete),
-    sum(cc_ps_well_balanced_lifestyle),
-    sum(cc_ps_tech_interpersonal_skills),
-    sum(cc_ps_persist_num),
-    sum(cc_persist_denom),
-    sum(cc_ps_meaningful_num),
-    sum(cc_ps_gainful_num),
-    sum(cc_ps_meaningful_gainful_denom),
-    sum(cc_ps_employed_grad_6_months_num),
-    sum(cc_ps_employed_grad_6_months_denom),
+    *
     FROM 
     cc_ps 
-    GROUP BY
-    site_short
+    
     
