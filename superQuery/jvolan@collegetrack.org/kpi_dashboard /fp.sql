@@ -1,6 +1,4 @@
-WITH gather_survey_data AS
-(
-    SELECT
+SELECT
     site_short AS survey_site_short,
     Gender_c AS survey_gender,
     Ethnic_background_c AS survey_ethnic_background,
