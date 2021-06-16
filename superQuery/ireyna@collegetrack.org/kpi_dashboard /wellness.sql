@@ -241,11 +241,11 @@ GROUP BY
 calculate_avg_wellness_services_per_blue_red_covi AS (
 SELECT 
     a.site_short,
-    MAX(CASE 
+    CASE 
         WHEN wellness_blue_red_denom IS NOT NULL
         THEN (sum_wellness_support_received/sum_of_blue_red_covi_for_avg)
         ELSE NULL 
-        END) AS wellness_avg_support, # of sessions or 1:1 / Students with reb,blue Covi scorecard color
+        END AS wellness_avg_support, # of sessions or 1:1 / Students with reb,blue Covi scorecard color
     a.Ethnic_background_c,
     a.Gender_c
     
@@ -253,8 +253,19 @@ FROM combine_sessions_and_case_notes AS a
 LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short
 LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short
 WHERE wellness_blue_red_denom IS NOT NULL
-GROUP BY
+
+),
+prep_avg_wellness_services AS (
+SELECT 
     site_short,
+    wellness_avg_support, # of sessions or 1:1 / Students with reb,blue Covi scorecard color
+    Ethnic_background_c,
+    Gender_c
+    
+FROM calculate_avg_wellness_services_per_blue_red_covi AS a
+GROUP BY
+    a.site_short,
+    wellness_avg_support,
     Ethnic_background_c,
     Gender_c
 ),
@@ -274,7 +285,7 @@ SELECT
 
 FROM students_that_completed_covi AS a
 LEFT JOIN aggregate_wellness_survey_data AS b ON b.site_short = a.site_short AND a.ethnic_background_c = b.ethnic_background_c AND a.Gender_c=b.Gender_c
-LEFT JOIN calculate_avg_wellness_services_per_blue_red_covi AS c ON c.site_short = a.site_short AND a.ethnic_background_c = c.ethnic_background_c AND a.Gender_c=c.Gender_c
+LEFT JOIN prep_avg_wellness_services AS c ON c.site_short = a.site_short AND a.ethnic_background_c = c.ethnic_background_c AND a.Gender_c=c.Gender_c
 LEFT JOIN gather_wellness_attendance_data AS d ON a.site_short = d.site_short AND a.ethnic_background_c = d.ethnic_background_c AND a.Gender_c=d.Gender_c--for total sessions 
 LEFT JOIN gather_case_note_data AS e ON a.site_short=e.site_short AND a.ethnic_background_c = e.ethnic_background_c AND a.Gender_c=e.Gender_c --for total case notes
 LEFT JOIN sum_of_blue_red_covi AS f ON a.site_short=f.site_short AND a.ethnic_background_c = f.ethnic_background_c AND a.Gender_c=f.Gender_c --for stotal number of red/blue covi students
