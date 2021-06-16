@@ -143,11 +143,6 @@ join_data AS
 )
  
     SELECT
-    *
-    FROM join_data
-
-    
-/*    SELECT
     site_short,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
     SUM(ps_survey_scholarship_denom),
@@ -157,6 +152,6 @@ join_data AS
     SUM(fp_enrolled_best_fit_numerator)
     FROM join_data
     GROUP BY site_short
- */  
+
 
      
