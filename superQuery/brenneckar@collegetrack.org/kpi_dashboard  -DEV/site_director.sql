@@ -132,7 +132,7 @@ prep_hs_metrics AS (
     SUM(first_gen_and_low_income) AS SD_ninth_grade_first_gen_low_income,
     SUM(above_80_attendance) AS SD_above_80_attendance,
     SUM(summer_experience) AS SD_summer_experience,
-    MAX(Account.College_Track_High_School_Capacity_c) AS hs_cohort_capacity,
+    -- MAX(Account.College_Track_High_School_Capacity_c) AS hs_cohort_capacity,
   FROM
     join_hs_data GSD
     LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = GSD.site_c
