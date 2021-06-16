@@ -1,11 +1,11 @@
 SELECT
         --student_c,
         site_short,
-        SUM(
+        /*SUM(
             CASE
             WHEN student_audit_status_c = 'Current CT HS Student' THEN 1
             ELSE 0
-        END) AS current_at_count,
+        END) AS current_at_count,*/
         Ethnic_background_c,
         Gender_c
     FROM
