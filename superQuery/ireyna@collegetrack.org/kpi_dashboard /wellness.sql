@@ -250,8 +250,8 @@ SELECT
     a.Gender_c
     
 FROM combine_sessions_and_case_notes AS a
-LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short
-LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short
+LEFT JOIN sum_of_blue_red_covi AS b ON a.site_short=b.site_short AND a.ethnic_background_c=b.ethnic_background_c AND a.Gender_c=b.Gender_c
+LEFT JOIN gather_red_blue_covi_at AS C ON a.site_short=c.site_short AND a.ethnic_background_c=c.ethnic_background_c AND c.Gender_c=b.Gender_c
 WHERE wellness_blue_red_denom IS NOT NULL
 
 ),
