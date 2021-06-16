@@ -146,6 +146,8 @@ cc_ps AS
 (
     SELECT
     site_short,
+    contact_gender,
+    contact_ethnic_background,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
     SUM(ps_survey_scholarship_denom),
     SUM(ps_survey_scholarship_num),
@@ -153,7 +155,9 @@ cc_ps AS
     SUM(fp_accepted_best_fit_denom),
     SUM(fp_enrolled_best_fit_numerator)
     FROM join_data
-    GROUP BY site_short
+    GROUP BY site_short,
+    contact_gender,
+    contact_ethnic_background
 )
 
     SELECT
