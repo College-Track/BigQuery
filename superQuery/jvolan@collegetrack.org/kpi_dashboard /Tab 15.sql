@@ -146,11 +146,11 @@ join_data AS
  SELECT
     site_short,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
-    SUM(ps_survey_scholarship_denom),
-    SUM(ps_survey_scholarship_num),
+    SUM(ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
+    SUM(ps_survey_scholarship_num) AS ps_survey_scholarship_num,
     SUM(fp_efund_num) AS fp_efund_num,
-    SUM(fp_accepted_best_fit_denom),
-    SUM(fp_enrolled_best_fit_numerator)
+    SUM(fp_accepted_best_fit_denom) AS fp_accepted_best_fit_denom,
+    SUM(fp_enrolled_best_fit_numerator) AS fp_enrolled_best_fit_numerator
     FROM join_data
     WHERE site_short NOT IN ('The Durant Center', 'Ward 8', 'Crenshaw')
     GROUP BY site_short
