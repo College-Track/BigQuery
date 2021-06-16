@@ -137,7 +137,7 @@ join_data AS
     
     
     FROM gather_contact_data AS a
-    LEFT JOIN gather_survey_data AS gsd ON gsd.survey_site_short = site_short AND gsd.survey_gender = a.contact_gender AND gsd.survey_ethnic_background = a.contact_ethnic_background
+    LEFT JOIN gather_survey_data AS gsd ON gsd.survey_site_short = a.site_short AND gsd.survey_gender = a.contact_gender AND gsd.survey_ethnic_background = a.contact_ethnic_background
     LEFT JOIN get_at_data AS cat ON cat.at_site = a.site_short AND cat.at_gender = a.contact_gender AND cat.at_ethnic_background = a.contact_ethnic_background
     LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
 ),
