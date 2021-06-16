@@ -152,4 +152,6 @@ join_data AS
     SUM(fp_accepted_best_fit_denom),
     SUM(fp_enrolled_best_fit_numerator)
     FROM join_data
+    WHERE site_short NOT IN ('The Durant Center', 'Ward 8', 'Crenshaw')
     GROUP BY site_short
+    
