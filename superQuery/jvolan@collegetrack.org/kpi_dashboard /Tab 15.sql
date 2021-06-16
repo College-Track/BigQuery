@@ -1,167 +1,299 @@
-WITH gather_survey_data AS
+WITH get_contact_data AS
 (
     SELECT
-    site_short AS survey_site_short,
-    Gender_c AS survey_gender,
-    Ethnic_background_c AS survey_ethnic_background,
-    SUM(
-    CASE
-        WHEN contact_id IS NOT NULL THEN 1
-        ELSE 0
-    END) AS ps_survey_scholarship_denom,
-    SUM(
-    CASE
-        WHEN i_am_able_to_receive_my_scholarship_funds_from_college_track IN ('StronglyAgree', 'Strongly Agree', 'Agree') THEN 1
-        ELSE 0
-    END) AS ps_survey_scholarship_num
-    
-    FROM  `data-studio-260217.surveys.fy21_ps_survey_wide_prepped`
-    WHERE i_am_able_to_receive_my_scholarship_funds_from_college_track IS NOT NULL
-    GROUP BY site_short,
+    contact_Id,
     Gender_c,
-    Ethnic_background_c
+    Ethnic_background_c,
+    site_short,
+-- % of students graduating from college within 6 years (numerator)
+-- uses alumni who've already graduated in current AY + active PS w/ credit pace < 6 years and enrolled full-time. cohort based. year 6. 
+--will need to re-work for final as grade switches over 9/1 each year
+    CASE
+      WHEN
+        grade_c = 'Year 6'
+        AND indicator_completed_ct_hs_program_c = true
+        AND
+        (
+         (college_track_status_c = '15A'
+         AND Credit_Accumulation_Pace_c NOT IN ("6+ Years", 'Credit Data Missing')
+         AND credits_accumulated_most_recent_c >= 80
+         AND Current_Enrollment_Status_c = "Full-time"
+         AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting"
+         )
+        OR
+         college_track_status_c = '17A') THEN 1
+        ELSE 0
+        END AS cc_ps_projected_grad_num,
+-- % of students graduating from college within 6 years (denominator)
+-- cohort based, year 6
+    CASE
+        WHEN
+        (grade_c = 'Year 6'
+        AND indicator_completed_ct_hs_program_c = true) THEN 1
+        ELSE 0
+    END AS cc_ps_projected_grad_denom,
+--% of 2yr students transferring to a 4yr within 3 years
+--cohort based, trending is students in year 3. final calc is done in fall of year 4.  Will need to be reworked for final
+--numerator for trending shows which of the 2-year starters, currently in year 2 have already enrolled in a 4-year.
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND college_track_status_c = '15A'
+        AND grade_c = 'Year 3'
+        AND school_type = '4-Year'
+        AND current_enrollment_status_c IN ("Full-time","Part-time")
+        AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")) THEN 1
+        ELSE 0
+        END AS x_2_yr_transfer_num,
+--denom for trending, currently in year 2 started at 2-year school or lower. Will need to be reworked for final
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND grade_c = 'Year 3'
+        AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")) THEN 1
+        ELSE 0
+        END AS x_2_yr_transfer_denom,
+        
+--% of students graduating with 1+ internships
+--Hardcoded AY will need to be updated next year
+--trending used both alumni who've already graduated in AY + students anticipated to graduate in AY
+--numerator
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND 
+        ps_internships_c > 0
+        AND
+        ((anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+         AND college_track_status_c = '15A'
+         AND Credit_Accumulation_Pace_c NOT IN ("6+ Years", 'Credit Data Missing')
+         AND credits_accumulated_most_recent_c >= 80
+         AND Current_Enrollment_Status_c = "Full-time"
+         AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting")
+        OR
+        academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
+        ELSE 0
+    END AS cc_ps_grad_internship_num,
+--denominator
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND
+        ((anticipated_date_of_graduation_ay_c = 'AY 2020-21'
+         AND college_track_status_c = '15A'
+         AND Credit_Accumulation_Pace_c NOT IN ("6+ Years", 'Credit Data Missing')
+         AND credits_accumulated_most_recent_c >= 80
+         AND Current_Enrollment_Status_c = "Full-time"
+         AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting")
+        OR
+        academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
+        ELSE 0
+    END AS cc_ps_grad_internship_denom,
+    
+--% of students with a 2.5+ cumulative GPA
+--Will need to be reworked for final if we want to ensure we're pulling GPA from uniform point in time
+    CASE
+        WHEN
+        (indicator_completed_ct_hs_program_c = true
+        AND college_track_status_c = '15A'
+        AND Prev_AT_Cum_GPA >= 2.5) THEN 1
+        ELSE 0
+    END AS cc_ps_gpa_2_5_num,
+
+    FROM `data-warehouse-289815.salesforce_clean.contact_template`
+--needed widest reporting group to ensure I had all students I need to evaluate if they were in one of my custom denoms. Added in more detail filter logic into case statements above.
+    WHERE indicator_completed_ct_hs_program_c = true
 ),
 
+-- adv rubric data from current AT
+--numerators needed only, denom is all active PS students for these
 get_at_data AS
 (
     SELECT
-    site_short AS at_site,
+    AT_Id,
     Gender_c AS at_gender,
     Ethnic_background_c AS at_ethnic_background,
---% of college students saying that they know how to apply for Emergency Fund in PAT advising rubric
-    SUM(
+    Contact_Id AS at_contact_id,
+    site_short AS at_site,
+--% of students completing FAFSA or equivalent
     CASE    
-        WHEN e_fund_c = 'EF_G' THEN 1
+        WHEN filing_status_c = 'FS_G' THEN 1
         ELSE 0
-    END) AS indicator_efund,
+    END AS indicator_fafsa_complete,
+--% of students on-track to have less than $30K loan debt
+    CASE
+        WHEN 
+        loans_c IN ('LN_G','LN_Y') THEN 1
+        ELSE 0
+    END AS indicator_loans_less_30k_loans,
+--% of students attaining a well-balanced lifestyle    
+    CASE
+        WHEN Overall_Rubric_Color = 'Green' THEN 1
+        ELSE 0
+    END AS indicator_well_balanced,
+--% of students understand that technical and interpersonal skills are needed to create opportunities now and in the future
+    CASE
+        WHEN advising_rubric_career_readiness_v_2_c = 'Green'
+        AND 
+        (academic_networking_50_cred_c = 'AN1_G'
+        OR academic_networking_over_50_credits_c = 'AN2_G') THEN 1
+        ELSE 0
+    END AS indicator_tech_interpersonal_skills,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE college_track_status_c = '15A'
--- dates are used as part of filter here to handle the switch from spring AT to summer. 
     AND(
     (CURRENT_DATE() < '2021-07-01'
     AND current_as_c = TRUE)
     OR
     (CURRENT_DATE() > '2021-07-01'
     AND previous_as_c = TRUE))
-    GROUP BY site_short,
-    Gender_c,
-    Ethnic_background_c
 ),
 
-gather_contact_data AS
+--% of students who persist into the following year (all college students)
+--first pulling in all ATs for time period I want (last fall to next fall)
+get_persist_at_data AS
 (
---% of high school seniors with EFC by end of March. Right now we are not accounting for the timebound part as we don't currently have a way to track when it was completed. 
-    SELECT
-    site_short,
-    Gender_c AS contact_gender,
-    Ethnic_background_c AS contact_ethnic_background,
-    SUM(
-    CASE
-        WHEN (college_track_status_c = '11A'
-        AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0))
-        AND fa_req_expected_financial_contribution_c IS NOT NULL) THEN 1
+  SELECT
+    contact_id AS persist_contact_id,
+    Gender_c AS persist_contact_gender,
+    Ethnic_background_c AS persist_contact_ethnic_background,
+--indicator to flag which students were enrolled in any college last fall. used to created denominator later
+    MAX(CASE
+        WHEN
+        (enrolled_in_any_college_c = true
+        AND college_track_status_c = '15A'
+        AND AY_Name = 'AY 2020-21'
+        AND term_c = 'Fall') THEN 1
         ELSE 0
-    END) AS fp_12_efc_num
-    FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    WHERE college_track_status_c IN ('11A', '12A', '15A')
-    GROUP BY site_short,
+    END) AS include_in_reporting_group,
+--counting the # of ATs for each student in this window
+    COUNT(AT_Id) AS at_count,
+--for those same records, counting # of ATs for each student in which they met term to term persistence definition
+    SUM(indicator_persisted_at_c) AS persist_count
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+--Start date for PAT must be prior today to be included. To exclude future PATs upon creation, until they become current AT. want to ignore summer too.
+    WHERE start_date_c < CURRENT_DATE()
+        AND((AY_Name = 'AY 2020-21'
+        AND term_c <> 'Summer')
+        OR
+        (AY_Name = 'AY 2021-22'
+        AND term_c = 'Fall'))
+    GROUP BY contact_id, 
     Gender_c,
     Ethnic_background_c
 ),
-
---For KPI % of students admitted to Best-Fit College choose to enroll at Best-Fit College
-gather_best_fit_data AS (
-    SELECT 
-        contact_id,
-        site_short,
-        Gender_c AS bf_gender,
-        Ethnic_background_c AS bf_ethnic_background,
+--actually comparing the # terms vs. # of terms meeting persistence defintion, per student
+persist_calc AS
+(
+    SELECT
+    persist_contact_id,
+    persist_contact_gender,
+    persist_contact_ethnic_background,
     
-    --Students accepted to Best Fit
-        (SELECT student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq1
-        WHERE (admission_status_c = "Accepted" AND College_Fit_Type_Applied_c = "Best Fit")
-        AND Contact_Id=student_c
-        group by student_c
-        ) AS accepted_best_fit,
-        
-    --Students enrolled in Best Fit
-        (SELECT student_c
-        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS subq2
-        WHERE admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred") AND fit_type_enrolled_c = "Best Fit"
-        AND Contact_Id=student_c
-        group by student_c
-        ) AS accepted_enrolled_best_fit
-      
-    FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    WHERE  college_track_status_c = '11A'
-    AND (grade_c = "12th Grade" OR (grade_c='Year 1' AND indicator_years_since_hs_graduation_c = 0))
-),
-
---Define numerator and denominator for KPI % of students admitted to Best-Fit College enroll at Best-Fit College
-prep_best_fit_enrollment_kpi AS (
-SELECT
-    site_short AS bf_site_short,
-    bf_gender,
-    bf_ethnic_background,
-    SUM(CASE  
-        WHEN accepted_best_fit IS NOT NULL 
-        THEN 1
+    MAX(include_in_reporting_group) AS cc_persist_denom,
+  -- if # terms = # of terms meeting persistence defintion, student will be in numerator
+    MAX(
+    CASE
+        WHEN at_count = persist_count THEN 1
         ELSE 0
-    END) AS fp_accepted_best_fit_denom,
-    
-    SUM(CASE 
-        WHEN accepted_enrolled_best_fit IS NOT NULL
-        THEN 1 
-        ELSE 0
-    END) AS fp_enrolled_best_fit_numerator,
-    
-FROM gather_best_fit_data
-GROUP BY site_short,
-bf_gender,
-bf_ethnic_background
+    END) AS indicator_persisted
+    FROM get_persist_at_data
+-- filter out any students who weren't enrolled last fall. denominator
+    WHERE include_in_reporting_group = 1
+    GROUP BY persist_contact_id,
+    persist_contact_gender,
+    persist_contact_ethnic_background
 ),
+--trending alumni survey measures, using FY20 survey data that's been uploaded into BigQuery
+get_fy20_alumni_survey_data AS
+(
+    SELECT
+    Contact_Id AS alum_contact_id,
+    gender AS alum_gender,
+    ethnicity AS alum_ethnic_background,
+--% of graduates with meaningful employment
+    CASE    
+        WHEN i_feel_my_current_job_is_meaningful IN ('Strongly Agree', "Agree") THEN 1
+        ELSE 0
+    END AS fy20_alumni_survey_meaningful_num,
+--% of graduates meeting gainful employment standard
+    CASE
+        WHEN 
+        (indicator_annual_loan_repayment_amount_current_loan_debt_125 / indicator_income_proxy) <=.08 THEN 1
+        ELSE 0
+    END AS fy20_alumni_survey_gainful_num,
+--meaningful & gainful denom - all survey respondents
+    CASE    
+        WHEN Contact_Id IS NOT NULL THEN 1
+        ELSE 0
+    END AS fy20_alumni_survey_meaningful_gainful_denom,
+--% of graduates with full-time employment or enrolled in graduate school within 6 months of graduation 
+    CASE
+        WHEN (survey_year = 'FD20'
+        AND indicator_ft_job_or_grad_school_within_6_months	= 1) THEN 1
+        ELSE 0
+    END AS fy20_alumni_survey_employed_grad_6_months_num,
+-- denom is all recent grad survey respondets (ie FD survey)
+    CASE
+        WHEN survey_year = 'FD20' THEN 1
+        ELSE 0
+    END AS fy20_alumni_survey_employed_grad_6_months_denom,
 
+    FROM `data-warehouse-289815.surveys.fy20_alumni_survey`
+-- BH had one college student graduate in spring and then somehow got access / took fy20 alum survey. 
+    WHERE ct_site !='College Track Boyle Heights'
+),
 join_data AS
 (
     SELECT
-    a.site_short AS fp_site_short,
-    a.contact_gender AS fp_gender,
-    a.contact_ethnic_background AS fp_ethnic_background,
-    fp_12_efc_num AS fp_12_efc_num,
-    gsd.ps_survey_scholarship_denom,
-    gsd.ps_survey_scholarship_num,
-    cat.indicator_efund AS fp_efund_num,
-    fp_accepted_best_fit_denom,
-    fp_enrolled_best_fit_numerator
-    
-    
-    FROM gather_contact_data AS a
-    LEFT JOIN gather_survey_data AS gsd ON gsd.survey_site_short = a.site_short AND gsd.survey_gender = a.contact_gender AND gsd.survey_ethnic_background = a.contact_ethnic_background
-    LEFT JOIN get_at_data AS cat ON cat.at_site = a.site_short AND cat.at_gender = a.contact_gender AND cat.at_ethnic_background = a.contact_ethnic_background
-    LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.bf_site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
-),
+    get_contact_data.*,
+    get_at_data.indicator_fafsa_complete,
+    get_at_data.indicator_loans_less_30k_loans,
+    get_at_data.indicator_well_balanced,
+    get_at_data.indicator_tech_interpersonal_skills,
+    persist_calc.indicator_persisted,
+    persist_calc.cc_persist_denom,
+    get_fy20_alumni_survey_data.fy20_alumni_survey_meaningful_num,
+    get_fy20_alumni_survey_data.fy20_alumni_survey_gainful_num,
+    get_fy20_alumni_survey_data.fy20_alumni_survey_meaningful_gainful_denom,
+    get_fy20_alumni_survey_data.fy20_alumni_survey_employed_grad_6_months_num,
+    get_fy20_alumni_survey_data.fy20_alumni_survey_employed_grad_6_months_denom,
 
-fp AS 
-(    
+    FROM get_contact_data
+    LEFT JOIN get_at_data ON at_contact_id = contact_id AND at_gender = Gender_c AND at_ethnic_background = Ethnic_background_c
+    LEFT JOIN persist_calc ON persist_calc.persist_contact_id = contact_id AND persist_contact_gender = Gender_c AND persist_contact_ethnic_background = Ethnic_background_c
+    LEFT JOIN get_fy20_alumni_survey_data ON get_fy20_alumni_survey_data.alum_contact_id = contact_id AND alum_gender = Gender_c AND alum_ethnic_background = Ethnic_background_c
+),
+cc_ps AS
+(
     SELECT
-    fp_site_short,
-    fp_gender,
-    fp_ethnic_background,
-    SUM(fp_12_efc_num) AS fp_12_efc_num,
-    SUM(ps_survey_scholarship_denom) AS ps_survey_scholarship_denom,
-    SUM(ps_survey_scholarship_num) AS ps_survey_scholarship_num,
-    SUM(fp_efund_num) AS fp_efund_num,
-    SUM(fp_accepted_best_fit_denom) AS fp_accepted_best_fit_denom,
-    SUM(fp_enrolled_best_fit_numerator) AS fp_enrolled_best_fit_numerator
-    FROM join_data
-    WHERE fp_site_short NOT IN ('The Durant Center', 'Ward 8', 'Crenshaw')
-    GROUP BY fp_site_short,
-    fp_gender,
-    fp_ethnic_background
-)
+    site_short,
+    sum(cc_ps_projected_grad_num) AS cc_ps_projected_grad_num,
+    sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom,
+    sum(x_2_yr_transfer_num) AS cc_ps_2_yr_transfer_num,
+    sum(x_2_yr_transfer_denom) AS cc_ps_2_yr_transfer_denom,
+    sum(cc_ps_grad_internship_num) AS cc_ps_grad_internship_num,
+    sum(cc_ps_grad_internship_denom) AS cc_ps_grad_internship_denom,
+    sum(cc_ps_gpa_2_5_num) AS cc_ps_gpa_2_5_num,
+    sum(indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
+    sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
+    sum(indicator_well_balanced) AS cc_ps_well_balanced_lifestyle,
+    sum(indicator_tech_interpersonal_skills) AS cc_ps_tech_interpersonal_skills,
+    sum(indicator_persisted) AS cc_ps_persist_num,
+    sum(cc_persist_denom) AS cc_persist_denom,
+    sum(fy20_alumni_survey_meaningful_num) AS cc_ps_meaningful_num,
+    sum(fy20_alumni_survey_gainful_num) AS cc_ps_gainful_num,
+    sum(fy20_alumni_survey_meaningful_gainful_denom) AS cc_ps_meaningful_gainful_denom,
+    sum(fy20_alumni_survey_employed_grad_6_months_num) AS cc_ps_employed_grad_6_months_num,
+    sum(fy20_alumni_survey_employed_grad_6_months_denom) AS cc_ps_employed_grad_6_months_denom,
     
+    FROM join_data
+    GROUP BY site_short
+)
+
     SELECT
     *
-    FROM fp
+    FROM cc_ps
+    
