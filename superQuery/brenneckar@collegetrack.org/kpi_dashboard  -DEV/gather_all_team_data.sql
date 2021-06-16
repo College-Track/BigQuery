@@ -32,8 +32,22 @@ join_team_kpis AS (
     -- LEFT JOIN `data-studio-260217.kpi_dashboard.wellness` WLLNSS ON WLLNSS.site_short = JP.site_short
     -- LEFT JOIN `data-studio-260217.kpi_dashboard.fp` FP ON FP.site_short = JP.site_short
 
+),
+gather_capacity_metrics  AS (
+  SELECT
+    C.site_short,
+    MAX(Account.college_track_high_school_capacity_v_2_c) AS hs_cohort_capacity,
+  FROM
+    `data-warehouse-289815.salesforce_clean.contact_template` C
+    LEFT JOIN `data-warehouse-289815.salesforce.account` Account ON Account.Id = C.site_c
+    WHERE college_track_status_c = "11A"
+  GROUP BY
+    site_short
 )
+
 SELECT
-  *
+  join_team_kpis.*,
+  GCM.hs_cohort_capacity
 FROM
   join_team_kpis
+  LEFT JOIN gather_capacity_metrics GCM ON GCM.site_short = join_team_kpis.site_short
