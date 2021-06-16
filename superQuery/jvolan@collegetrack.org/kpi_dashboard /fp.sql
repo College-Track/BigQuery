@@ -140,8 +140,10 @@ join_data AS
     LEFT JOIN gather_survey_data AS gsd ON gsd.survey_site_short = site_short AND gsd.survey_gender = a.contact_gender AND gsd.survey_ethnic_background = a.contact_ethnic_background
     LEFT JOIN get_at_data AS cat ON cat.at_site = a.site_short AND cat.at_gender = a.contact_gender AND cat.at_ethnic_background = a.contact_ethnic_background
     LEFT JOIN prep_best_fit_enrollment_kpi AS bfp ON bfp.site_short=a.site_short AND bfp.bf_gender = a.contact_gender AND bfp.bf_ethnic_background = a.contact_ethnic_background
-)
- 
+),
+
+cc_ps AS
+(
     SELECT
     site_short,
     SUM(fp_12_efc_num) AS fp_12_efc_num,
@@ -152,6 +154,8 @@ join_data AS
     SUM(fp_enrolled_best_fit_numerator)
     FROM join_data
     GROUP BY site_short
+)
 
-
-     
+    SELECT
+    *
+    FROM cc_ps
