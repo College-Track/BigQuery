@@ -1,4 +1,5 @@
-    contact_id,
+SELECT
+        contact_id,
         site_short,
         co_vitality_scorecard_color_c,
    MAX(CASE
