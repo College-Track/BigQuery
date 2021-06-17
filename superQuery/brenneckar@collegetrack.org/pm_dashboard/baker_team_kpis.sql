@@ -1,8 +1,8 @@
-CREATE
-OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
-  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
-)
-AS 
+-- CREATE
+-- OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+--   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+-- )
+-- AS 
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
@@ -25,7 +25,7 @@ WITH prep_kpi_targets AS (
     END AS target_fy22,
   FROM
     `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target
-    WHERE email_kpi != 'test@collegetrack.org'
+    -- WHERE email_kpi != 'test@collegetrack.org'
     -- WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
     -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
     -- ON KPI_Target.select_role = KPI_Selection.role
