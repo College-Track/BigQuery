@@ -8,7 +8,7 @@ WITH get_AT_data AS
     College_Track_Status_Name
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE college_track_status_c IN ('11A','12A','15A','16A','17A')
+    WHERE college_track_status_c IN ('11A','12A','15A','16A','17A','18A')
 ),
 
 get_tasks_missing_student AS
