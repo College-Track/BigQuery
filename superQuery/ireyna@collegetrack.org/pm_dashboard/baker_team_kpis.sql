@@ -1,4 +1,3 @@
-prep_grade_projections AS (
 SELECT region_abrev, site_short,
 grade AS student_type,
 SUM(student_count) AS student_count
