@@ -1,8 +1,8 @@
--- CREATE
--- OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
---   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
--- )
--- AS 
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+)
+AS 
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
@@ -14,7 +14,7 @@ WITH prep_kpi_targets AS (
     CASE
       
       WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
-    --   WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
+      WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
       ELSE "Not Submitted"
     END AS target_submitted,
     CASE
@@ -234,5 +234,11 @@ FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
 )
 
-SELECT distinct *
+SELECT distinct *,
+CASE WHEN target_submitted = 'Submitted' THEN 1
+ELSE 0
+END AS count_of_submitted_targets,
+CASE WHEN target_submitted != "Not Required" THEN 1
+ELSE 0
+END AS count_of_targets
 FROM correct_missing_site_region
