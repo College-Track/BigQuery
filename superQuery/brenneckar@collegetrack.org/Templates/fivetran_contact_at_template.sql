@@ -726,3 +726,122 @@ OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS
     determine_prev_prev_at DPPA
     LEFT JOIN determine_previous_attendance_rate DPAR ON DPPA.AT_Id = DPAR.AT_Id
     )
+    ;
+-- Script 3: AY Template
+CREATE
+OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_ay_template` AS(    
+
+WITH gather_contact_data AS (
+    SELECT
+        Contact_Id,
+        academic_year_4_year_degree_earned_c,
+        college_track_status_c,
+        AY.end_date_c AS academic_year_4_year_degree_earned_end_date
+    FROM `data-warehouse-289815.salesforce_clean.contact_template` CT
+         LEFT JOIN `data-warehouse-289815.salesforce.academic_year_c` AY
+                   ON CT.academic_year_4_year_degree_earned_c = AY.name
+    WHERE college_track_status_c IN ('18a', '11A', '12A', '13A', '15A', '16A', '17A')
+),
+     gather_at_data AS (
+         SELECT
+             Contact_Id,
+             AY_Name,
+             AY_End_Date,
+             SUM(attended_workshops_c) AS AY_attended_workshops,
+             SUM(enrolled_sessions_c) AS AY_enrolled_sessions
+
+         FROM `data-warehouse-289815.salesforce_clean.contact_at_template` A_T
+         WHERE A_T.AY_Start_Date <= CURRENT_DATE()
+         GROUP BY Contact_Id, AY_Name, AY_End_Date
+     ),
+     gather_spring_at_status AS (SELECT
+                                     Contact_Id,
+                                     AY_Name,
+                                     CASE
+                                         WHEN GAS_Name LIKE '%Spring 2020-21%' THEN College_Track_Status_Name
+                                         ELSE student_audit_status_c
+                                         END AS student_audit_status_c,
+                                     AT_School_Name AS AY_School_Name,
+                                     AT_school_type AS AY_School_type,
+                                     enrollment_status_c AS AY_enrollment_status,
+                                     fit_type_at_c AS AY_fit_type,
+                                     AT_Grade_c AS AY_Grade,
+                                     AT_Cumulative_GPA_bucket AS AY_Cumulative_GPA_bucket,
+                                     AT_Cumulative_GPA AS AY_Cumulative_GPA,
+                                     AT_Term_GPA AS AY_Term_GPA,
+                                     AT_Term_GPA_bucket AS AY_Term_GPA_bucket
+                                 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` A_T
+                                 WHERE term_c = 'Spring'),
+     join_data AS (SELECT
+                       GCD.*,
+                       GAD.* EXCEPT (Contact_Id,
+                       AY_Name,
+                       AY_End_Date),
+                       GSAS.* EXCEPT (Contact_Id,
+                       AY_Name,
+                       student_audit_status_c),
+                       (SELECT MAX(AY_End_Date) FROM gather_at_data) AS current_ay_end_date,
+                       CASE
+                           WHEN academic_year_4_year_degree_earned_c = GAD.AY_Name THEN "Active: Post-Secondary"
+                           ELSE GSAS.student_audit_status_c
+                           END
+                           AS student_audit_status_c,
+                       GAD.AY_Name,
+                       GAD.AY_End_Date
+
+                   FROM gather_contact_data GCD
+                        LEFT JOIN gather_at_data GAD ON GAD.Contact_Id = GCD.Contact_Id
+                        LEFT JOIN gather_spring_at_status GSAS
+                                  ON GSAS.Contact_Id = GCD.Contact_Id AND GSAS.AY_Name = GAD.AY_Name
+     ),
+     create_list_of_ay AS
+         (SELECT DISTINCT AY_Name, AY_End_Date,
+          FROM join_data
+          WHERE AY_Name IS NOT NULL
+         ),
+     prep_alumni_terms AS (
+         SELECT *
+         FROM join_data JD
+         WHERE academic_year_4_year_degree_earned_end_date = AY_End_Date
+     ),
+
+
+     fill_alumni_terms AS (SELECT
+                               PAT.* EXCEPT (AY_Name,
+                               AY_End_Date),
+                               CLAY.AY_Name,
+                               CLAY.AY_End_Date
+
+                           FROM prep_alumni_terms PAT
+                                JOIN create_list_of_ay CLAY
+                                     ON CLAY.AY_End_Date BETWEEN PAT.academic_year_4_year_degree_earned_end_date AND PAT.current_ay_end_date
+     ),
+     combined_student_data AS (
+         (SELECT *
+          FROM join_data
+          WHERE academic_year_4_year_degree_earned_end_date IS NULL)
+         UNION ALL
+         (SELECT *
+          FROM fill_alumni_terms)
+     ),
+     format_combined_data AS (
+         SELECT * EXCEPT (student_audit_status_c),
+                CASE
+                    WHEN academic_year_4_year_degree_earned_end_date < AY_End_Date THEN "CT Alumni"
+                    ELSE student_audit_status_c
+                    END AS ct_status_end_of_ay
+         FROM combined_student_data
+         ORDER BY Contact_Id, AY_End_Date
+     )
+
+
+SELECT * EXCEPT (academic_year_4_year_degree_earned_c,
+       college_track_status_c,
+       academic_year_4_year_degree_earned_end_date,
+       current_ay_end_date)
+FROM format_combined_data
+
+
+
+
+)
