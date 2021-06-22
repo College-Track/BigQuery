@@ -72,6 +72,7 @@ bb_raw AS
     bb_d_e_fy.BB_Disbursement_Amount,
     bb_d_e_fy.BB_Earnings_Amount,
     bb_d_e_fy.finance_reporting_date,
+    bb_d_e_fy.academic_year_c,
     bb_d_e_fy.earning_type_c,
     bb_d_e_fy.name,
     bb_d_e_fy.transaction_status_c, 
