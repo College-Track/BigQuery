@@ -55,6 +55,6 @@ persist_calc AS
     site_short,
     sum(indicator_persisted) AS indicator_persisted,
     sum(cc_persist_denom) AS reporting_group_denominator,
-    (sum(indicator_persisted) / sum(cc_persist_denom)) AS persist_percent
+    (sum(indicator_persisted) / sum(cc_persist_denom)*100) AS persist_percent
     FROM persist_calc
     GROUP BY site_short
