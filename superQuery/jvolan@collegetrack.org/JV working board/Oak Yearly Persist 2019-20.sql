@@ -17,6 +17,7 @@ SELECT
         WHEN
         student_audit_status_c = 'CT Alumni' 
         OR indicator_persisted_at_c = 1 THEN 1
+        ELSE 0
     END) AS indicator_persisted_at
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
