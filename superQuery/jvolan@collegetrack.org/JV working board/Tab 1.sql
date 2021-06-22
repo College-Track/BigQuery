@@ -35,6 +35,7 @@ WITH get_persist_at_data AS
 
     SELECT
     persist_contact_id,
+    site_short,
     MAX(include_in_reporting_group) AS cc_persist_denom,
   -- if # terms = # of terms meeting persistence defintion, student will be in numerator
     MAX(
@@ -45,4 +46,5 @@ WITH get_persist_at_data AS
     FROM get_persist_at_data
 -- filter out any students who weren't enrolled last fall. denominator
     WHERE include_in_reporting_group = 1
-    GROUP BY persist_contact_id
+    GROUP BY persist_contact_id,
+    site_short
