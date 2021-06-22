@@ -2,8 +2,7 @@ WITH get_persist_at_data AS
 (
   SELECT
     contact_id AS persist_contact_id,
-    Gender_c AS persist_contact_gender,
-    Ethnic_background_c AS persist_contact_ethnic_background,
+    site_short,
 --indicator to flag which students were enrolled in any college last fall. used to created denominator later
     MAX(CASE
         WHEN
@@ -31,16 +30,14 @@ WITH get_persist_at_data AS
         (AY_Name = 'AY 2021-22'
         AND term_c = 'Fall'))
     GROUP BY contact_id,
-    Gender_c,
-    Ethnic_background_c
-)
+    site_short
+),
 --actually comparing the # terms vs. # of terms meeting persistence defintion, per student
-
+persist_calc AS
+(
     SELECT
     persist_contact_id,
-    persist_contact_gender,
-    persist_contact_ethnic_background,
-
+    site_short,
     MAX(include_in_reporting_group) AS cc_persist_denom,
   -- if # terms = # of terms meeting persistence defintion, student will be in numerator
     MAX(
@@ -52,5 +49,11 @@ WITH get_persist_at_data AS
 -- filter out any students who weren't enrolled last fall. denominator
     WHERE include_in_reporting_group = 1
     GROUP BY persist_contact_id,
-    persist_contact_gender,
-    persist_contact_ethnic_background
+    site_short
+)
+    SELECT
+    site_short,
+    sum(indicator_persisted) AS indicator_persisted,
+    sum(cc_persist_denom) AS reporting_group_denominator,
+    FROM persist_calc
+    GROUP BY site_short
