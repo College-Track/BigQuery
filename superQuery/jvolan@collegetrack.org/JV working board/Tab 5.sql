@@ -66,5 +66,10 @@ persist_calc AS
 )
     SELECT
     persist_contact_id,
+    site_short,
+    full_name_c,
+    high_school_graduating_class_c,
+    indicator_persisted,
+    
     FROM persist_calc
     WHERE indicator_persisted = 0
