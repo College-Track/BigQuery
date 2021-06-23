@@ -1,6 +1,5 @@
     SELECT
     count(Contact_Id),
-    site_short,
     CASE
         WHEN
         (anticipated_date_of_graduation_ay_c = 'AY 2020-21'
@@ -16,5 +15,5 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE indicator_completed_ct_hs_program_c = true
     AND academic_year_4_year_degree_earned_c = 'AY 2020-21'
-    GROUP BY site_short, 
+    GROUP BY 
     ps_alum_bucket
