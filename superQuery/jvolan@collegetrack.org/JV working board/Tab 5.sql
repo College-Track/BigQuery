@@ -73,3 +73,4 @@ persist_calc AS
     
     FROM persist_calc
     WHERE indicator_persisted = 0
+    AND site_short = 'Oakland'
