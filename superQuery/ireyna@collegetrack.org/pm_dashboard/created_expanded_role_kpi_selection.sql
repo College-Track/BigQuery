@@ -8,7 +8,7 @@ INSERT INTO region_sites_classification
 VALUES 
 ('Mature Site Staff', 'Aurora'),
 ('Mature Site Staff', 'Denver'),
-('Mature Site Staff', 'Boyle_Heights'),
+('Mature Site Staff', 'Boyle Heights'),
 ('Mature Site Staff', 'East Palo Alto'),
 ('Mature Site Staff', 'New Orleans'),
 ('Mature Site Staff', 'Sacramento'),
