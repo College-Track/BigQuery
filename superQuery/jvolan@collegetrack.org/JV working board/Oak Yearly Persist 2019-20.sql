@@ -17,7 +17,6 @@ get_persist_at_data AS
 (
   SELECT
     CAT.site_short,
-    CAT.high_school_graduating_class_c,
     CAT.contact_id AS persist_contact_id,
     COUNT(AT_Id) AS at_count,
 --for those same records, counting # of ATs for each student in which they met term to term persistence definition
@@ -38,8 +37,7 @@ get_persist_at_data AS
     (AY_Name = 'AY 2020-21'
     AND term_c = 'Fall')
     GROUP BY CAT.contact_id,
-    CAT.site_short,
-    CAT.high_school_graduating_class_c
+    CAT.site_short
 ),
 
 --actually comparing the # terms vs. # of terms meeting persistence defintion, per student
@@ -48,7 +46,6 @@ persist_calc AS
     SELECT
     persist_contact_id,
     site_short,
-    high_school_graduating_class_c,
     MAX(include_in_reporting_group) AS cc_persist_denom,
   -- if # terms = # of terms meeting persistence defintion, student will be in numerator
     MAX(
@@ -59,18 +56,15 @@ persist_calc AS
     FROM get_persist_at_data
     WHERE include_in_reporting_group = 1
     GROUP BY persist_contact_id, 
-    site_short,
-    high_school_graduating_class_c
+    site_short
 )
     SELECT
     site_short,
-    high_school_graduating_class_c,
     sum(indicator_persisted) AS indicator_persisted,
     sum(cc_persist_denom) AS denominator_reporting_group,
     (sum(indicator_persisted)/sum(cc_persist_denom)) as percent_persisted
     FROM persist_calc
-    GROUP BY site_short,
-    high_school_graduating_class_c
+    GROUP BY site_short
 
     
     
