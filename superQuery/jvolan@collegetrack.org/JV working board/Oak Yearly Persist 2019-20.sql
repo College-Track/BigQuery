@@ -64,6 +64,7 @@ persist_calc AS
 )
     SELECT
     site_short,
+    high_school_graduating_class_c,
     sum(indicator_persisted) AS indicator_persisted,
     sum(cc_persist_denom) AS denominator_reporting_group,
     (sum(indicator_persisted)/sum(cc_persist_denom)) as percent_persisted
