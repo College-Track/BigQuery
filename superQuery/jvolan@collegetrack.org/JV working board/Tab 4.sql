@@ -1,8 +1,4 @@
     SELECT
-    contact_Id,
-    Gender_c,
-    Ethnic_background_c,
-    site_short,
     CASE
         WHEN
         (anticipated_date_of_graduation_ay_c = 'AY 2020-21'
@@ -17,3 +13,4 @@
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE indicator_completed_ct_hs_program_c = true
+    GROUP BY ps_alum_bucket
