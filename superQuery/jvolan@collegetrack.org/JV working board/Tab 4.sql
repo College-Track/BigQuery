@@ -1,4 +1,5 @@
     SELECT
+    count(Contact_Id),
     CASE
         WHEN
         (anticipated_date_of_graduation_ay_c = 'AY 2020-21'
