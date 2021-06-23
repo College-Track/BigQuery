@@ -26,8 +26,7 @@ WITH get_persist_at_data AS
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 --Start date for PAT must be prior today to be included. To exclude future PATs upon creation, until they become current AT. want to ignore summer too.
-    WHERE site_short = 'Oakland'
-    AND
+    WHERE 
     (AY_Name = 'AY 2019-20'
     AND term_c <> 'Summer')
     OR
