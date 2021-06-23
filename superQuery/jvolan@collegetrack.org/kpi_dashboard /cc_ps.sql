@@ -6,7 +6,7 @@ WITH get_contact_data AS
     Ethnic_background_c,
     site_short,
 -- % of students graduating from college within 6 years (numerator)
--- uses alumni who've already graduated in current AY + active PS w/ credit pace < 6 years and enrolled full-time. cohort based. year 6. 
+-- uses alumni who've already graduated in current AY + active PS w/ credit pace < 6 years and enrolled full-time. cohort based. year 6.
 --will need to re-work for final as grade switches over 9/1 each year
     CASE
       WHEN
@@ -53,7 +53,7 @@ WITH get_contact_data AS
         AND college_first_enrolled_school_type_c IN ("Predominantly associate's-degree granting","Predominantly certificate-degree granting")) THEN 1
         ELSE 0
         END AS x_2_yr_transfer_denom,
-        
+
 --% of students graduating with 1+ internships
 --Hardcoded AY will need to be updated next year
 --trending used both alumni who've already graduated in AY + students anticipated to graduate in AY
@@ -61,7 +61,7 @@ WITH get_contact_data AS
     CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
-        AND 
+        AND
         ps_internships_c > 0
         AND
         ((anticipated_date_of_graduation_ay_c = 'AY 2020-21'
@@ -89,7 +89,7 @@ WITH get_contact_data AS
         academic_year_4_year_degree_earned_c = 'AY 2020-21')) THEN 1
         ELSE 0
     END AS cc_ps_grad_internship_denom,
-    
+
 --% of students with a 2.5+ cumulative GPA
 --Will need to be reworked for final if we want to ensure we're pulling GPA from uniform point in time
     CASE
@@ -116,17 +116,17 @@ get_at_data AS
     Contact_Id AS at_contact_id,
     site_short AS at_site,
 --% of students completing FAFSA or equivalent
-    CASE    
+    CASE
         WHEN filing_status_c = 'FS_G' THEN 1
         ELSE 0
     END AS indicator_fafsa_complete,
 --% of students on-track to have less than $30K loan debt
     CASE
-        WHEN 
+        WHEN
         loans_c IN ('LN_G','LN_Y') THEN 1
         ELSE 0
     END AS indicator_loans_less_30k_loans,
---% of students attaining a well-balanced lifestyle    
+--% of students attaining a well-balanced lifestyle
     CASE
         WHEN Overall_Rubric_Color = 'Green' THEN 1
         ELSE 0
@@ -134,7 +134,7 @@ get_at_data AS
 --% of students understand that technical and interpersonal skills are needed to create opportunities now and in the future
     CASE
         WHEN advising_rubric_career_readiness_v_2_c = 'Green'
-        AND 
+        AND
         (academic_networking_50_cred_c = 'AN1_G'
         OR academic_networking_over_50_credits_c = 'AN2_G') THEN 1
         ELSE 0
@@ -152,37 +152,55 @@ get_at_data AS
 
 --% of students who persist into the following year (all college students)
 --first pulling in all ATs for time period I want (last fall to next fall)
+
+
+set_reporting_group AS
+(
+    SELECT
+    contact_id,
+    CASE
+--students who were active post-secondary & enrolled in any college during fall term
+        WHEN
+        (enrolled_in_any_college_c = true
+        AND student_audit_status_c = 'Active: Post-Secondary') THEN 1
+        ELSE 0
+    END AS include_in_reporting_group
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE AY_Name = 'AY 2019-20'
+    AND term_c = 'Fall'
+),
+
 get_persist_at_data AS
 (
   SELECT
-    contact_id AS persist_contact_id,
-    Gender_c AS persist_contact_gender,
-    Ethnic_background_c AS persist_contact_ethnic_background,
---indicator to flag which students were enrolled in any college last fall. used to created denominator later
-    MAX(CASE
-        WHEN
-        (enrolled_in_any_college_c = true
-        AND college_track_status_c = '15A'
-        AND AY_Name = 'AY 2020-21'
-        AND term_c = 'Fall') THEN 1
-        ELSE 0
-    END) AS include_in_reporting_group,
---counting the # of ATs for each student in this window
+    CAT.contact_id AS persist_contact_id,
+    CAT.site_short AS persist_site_short,
+    CAT.Gender_c AS persist_contact_gender,
+    CAT.Ethnic_background_c AS persist_contact_ethnic_background,
+--count number of PATs for each student 
     COUNT(AT_Id) AS at_count,
 --for those same records, counting # of ATs for each student in which they met term to term persistence definition
-    SUM(indicator_persisted_at_c) AS persist_count
+    SUM(CASE
+        WHEN
+        student_audit_status_c = 'CT Alumni' 
+        OR indicator_persisted_at_c = 1 THEN 1
+        ELSE 0
+    END) AS persist_count,
+    MAX(set_reporting_group.include_in_reporting_group) AS include_in_reporting_group,
     
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
---Start date for PAT must be prior today to be included. To exclude future PATs upon creation, until they become current AT. want to ignore summer too.
-    WHERE start_date_c < CURRENT_DATE()
-        AND((AY_Name = 'AY 2020-21'
-        AND term_c <> 'Summer')
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+    LEFT JOIN set_reporting_group ON set_reporting_group.contact_id = CAT.Contact_Id
+--evaluating the remaining terms in 2019-20 besides summer as well as the following fall
+    WHERE 
+        (AY_Name = 'AY 2019-20'
+        AND term_c IN ('Winter','Spring'))
         OR
-        (AY_Name = 'AY 2021-22'
-        AND term_c = 'Fall'))
-    GROUP BY contact_id, 
-    Gender_c,
-    Ethnic_background_c
+        (AY_Name = 'AY 2020-21'
+        AND term_c = 'Fall')
+    GROUP BY CAT.contact_id,
+    CAT.Gender_c,
+    CAT.Ethnic_background_c,
+    CAT.site_short
 ),
 --actually comparing the # terms vs. # of terms meeting persistence defintion, per student
 persist_calc AS
@@ -191,7 +209,7 @@ persist_calc AS
     persist_contact_id,
     persist_contact_gender,
     persist_contact_ethnic_background,
-    
+
     MAX(include_in_reporting_group) AS cc_persist_denom,
   -- if # terms = # of terms meeting persistence defintion, student will be in numerator
     MAX(
@@ -214,22 +232,22 @@ get_fy20_alumni_survey_data AS
     gender AS alum_gender,
     ethnicity AS alum_ethnic_background,
 --% of graduates with meaningful employment
-    CASE    
+    CASE
         WHEN i_feel_my_current_job_is_meaningful IN ('Strongly Agree', "Agree") THEN 1
         ELSE 0
     END AS fy20_alumni_survey_meaningful_num,
 --% of graduates meeting gainful employment standard
     CASE
-        WHEN 
+        WHEN
         (indicator_annual_loan_repayment_amount_current_loan_debt_125 / indicator_income_proxy) <=.08 THEN 1
         ELSE 0
     END AS fy20_alumni_survey_gainful_num,
 --meaningful & gainful denom - all survey respondents
-    CASE    
+    CASE
         WHEN Contact_Id IS NOT NULL THEN 1
         ELSE 0
     END AS fy20_alumni_survey_meaningful_gainful_denom,
---% of graduates with full-time employment or enrolled in graduate school within 6 months of graduation 
+--% of graduates with full-time employment or enrolled in graduate school within 6 months of graduation
     CASE
         WHEN (survey_year = 'FD20'
         AND indicator_ft_job_or_grad_school_within_6_months	= 1) THEN 1
@@ -242,7 +260,7 @@ get_fy20_alumni_survey_data AS
     END AS fy20_alumni_survey_employed_grad_6_months_denom,
 
     FROM `data-warehouse-289815.surveys.fy20_alumni_survey`
--- BH had one college student graduate in spring and then somehow got access / took fy20 alum survey. 
+-- BH had one college student graduate in spring and then somehow got access / took fy20 alum survey.
     WHERE ct_site !='College Track Boyle Heights'
 ),
 join_data AS
@@ -266,6 +284,7 @@ join_data AS
     LEFT JOIN persist_calc ON persist_calc.persist_contact_id = contact_id AND persist_contact_gender = Gender_c AND persist_contact_ethnic_background = Ethnic_background_c
     LEFT JOIN get_fy20_alumni_survey_data ON get_fy20_alumni_survey_data.alum_contact_id = contact_id AND alum_gender = Gender_c AND alum_ethnic_background = Ethnic_background_c
 ),
+
 cc_ps AS
 (
     SELECT
@@ -290,7 +309,7 @@ cc_ps AS
     sum(fy20_alumni_survey_meaningful_gainful_denom) AS cc_ps_meaningful_gainful_denom,
     sum(fy20_alumni_survey_employed_grad_6_months_num) AS cc_ps_employed_grad_6_months_num,
     sum(fy20_alumni_survey_employed_grad_6_months_denom) AS cc_ps_employed_grad_6_months_denom,
-    
+
     FROM join_data
     GROUP BY site_short,
     Gender_c,
@@ -298,7 +317,5 @@ cc_ps AS
 )
     SELECT
     *
-    FROM 
-    cc_ps 
-    
-    
+    FROM
+    cc_ps
