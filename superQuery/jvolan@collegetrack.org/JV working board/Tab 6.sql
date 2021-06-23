@@ -288,31 +288,12 @@ cc_ps AS
 (
     SELECT
     site_short,
-    Gender_c,
-    Ethnic_background_c,
-    sum(cc_ps_projected_grad_num) AS cc_ps_projected_grad_num,
-    sum(cc_ps_projected_grad_denom) AS cc_ps_projected_grad_denom,
-    sum(x_2_yr_transfer_num) AS cc_ps_2_yr_transfer_num,
-    sum(x_2_yr_transfer_denom) AS cc_ps_2_yr_transfer_denom,
-    sum(cc_ps_grad_internship_num) AS cc_ps_grad_internship_num,
-    sum(cc_ps_grad_internship_denom) AS cc_ps_grad_internship_denom,
-    sum(cc_ps_gpa_2_5_num) AS cc_ps_gpa_2_5_num,
-    sum(indicator_loans_less_30k_loans) AS cc_ps_loans_30k,
-    sum(indicator_fafsa_complete) AS cc_ps_fasfa_complete,
-    sum(indicator_well_balanced) AS cc_ps_well_balanced_lifestyle,
-    sum(indicator_tech_interpersonal_skills) AS cc_ps_tech_interpersonal_skills,
     sum(indicator_persisted) AS cc_ps_persist_num,
     sum(cc_persist_denom) AS cc_persist_denom,
-    sum(fy20_alumni_survey_meaningful_num) AS cc_ps_meaningful_num,
-    sum(fy20_alumni_survey_gainful_num) AS cc_ps_gainful_num,
-    sum(fy20_alumni_survey_meaningful_gainful_denom) AS cc_ps_meaningful_gainful_denom,
-    sum(fy20_alumni_survey_employed_grad_6_months_num) AS cc_ps_employed_grad_6_months_num,
-    sum(fy20_alumni_survey_employed_grad_6_months_denom) AS cc_ps_employed_grad_6_months_denom,
 
     FROM join_data
-    GROUP BY site_short,
-    Gender_c,
-    Ethnic_background_c
+    GROUP BY site_short
+    
 )
     SELECT
     *
