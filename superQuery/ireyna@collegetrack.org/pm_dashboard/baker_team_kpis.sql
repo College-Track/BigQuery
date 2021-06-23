@@ -229,5 +229,11 @@ FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
 )
 
-SELECT distinct *
+SELECT distinct *,
+CASE WHEN target_submitted = 'Submitted' THEN 1
+ELSE 0
+END AS count_of_submitted_targets,
+CASE WHEN target_submitted != "Not Required" THEN 1
+ELSE 0
+END AS count_of_targets
 FROM correct_missing_site_region
