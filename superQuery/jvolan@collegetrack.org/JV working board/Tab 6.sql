@@ -193,7 +193,7 @@ get_persist_at_data AS
 --Start date for PAT must be prior today to be included. To exclude future PATs upon creation, until they become current AT. want to ignore summer too.
     WHERE start_date_c < CURRENT_DATE()
         AND((AY_Name = 'AY 2020-21'
-        AND term_c <> 'Summer')
+        AND term_c IN ('Winter','Spring'))
         OR
         (AY_Name = 'AY 2021-22'
         AND term_c = 'Fall'))
