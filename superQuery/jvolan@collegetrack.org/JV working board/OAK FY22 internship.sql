@@ -32,3 +32,4 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE indicator_completed_ct_hs_program_c = true
     AND site_short = 'Oakland'
+    GROUP BY site_short
