@@ -1,6 +1,6 @@
     SELECT
     site_short,
-    MAX(CASE
+    SUM(CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
         AND
@@ -15,7 +15,7 @@
         ELSE 0
     END) AS fy22_oak_cc_ps_grad_internship_num,
 --denominator
-    MAX(CASE
+    SUM(CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
         AND
