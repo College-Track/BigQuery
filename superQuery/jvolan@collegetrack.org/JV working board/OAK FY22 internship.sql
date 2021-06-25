@@ -1,7 +1,6 @@
     SELECT
-    Contact_Id,
     site_short,
-    CASE
+    MAX(CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
         AND
@@ -14,9 +13,9 @@
          AND Current_Enrollment_Status_c = "Full-time"
          AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting")) THEN 1
         ELSE 0
-    END AS fy22_oak_cc_ps_grad_internship_num,
+    END) AS fy22_oak_cc_ps_grad_internship_num,
 --denominator
-    CASE
+    MAX(CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
         AND
@@ -27,7 +26,7 @@
          AND Current_Enrollment_Status_c = "Full-time"
          AND Current_School_Type_c_degree = "Predominantly bachelor's-degree granting")) THEN 1
         ELSE 0
-    END AS fy22_oak_cc_ps_grad_internship_denom,
+    END) AS fy22_oak_cc_ps_grad_internship_denom,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE indicator_completed_ct_hs_program_c = true
