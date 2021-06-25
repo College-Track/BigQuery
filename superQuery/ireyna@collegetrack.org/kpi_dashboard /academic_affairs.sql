@@ -1,4 +1,4 @@
-  SELECT
+ SELECT
     Contact_Id,
     site_short,
       Ethnic_background_c,
@@ -50,4 +50,3 @@
   WHERE
     current_as_c = true
     AND college_track_status_c IN ('11A')
-),
