@@ -1,7 +1,15 @@
+
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+)
+AS 
+
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
     region_kpi,
+    select_role,
     CASE 
         WHEN site_kpi = "Boyle_Heights" THEN "Boyle Heights"
         WHEN site_kpi = "East_Palo_Alto" THEN "East Palo Alto"
@@ -11,8 +19,11 @@ WITH prep_kpi_targets AS (
         WHEN site_kpi = "Ward_8" THEN "Ward 8"
         ELSE site_kpi
     END AS site_kpi,
-    select_role,
-    select_kpi,
+    CASE 
+        WHEN select_kpi = 'Student Survey - % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
+        THEN 'Student Survey - % of students served by Wellness who "agree" or "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
+        ELSE select_kpi
+    END AS select_kpi,
     what_is_the_type_of_target_,
     CASE
       
