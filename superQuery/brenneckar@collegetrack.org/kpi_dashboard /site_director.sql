@@ -120,7 +120,7 @@ gather_ay_attendance AS (
     `data-warehouse-289815.salesforce_clean.contact_at_template`
   WHERE
     AY_Name = "AY 2020-21"
-    AND college_track_status_c = '11A'
+  AND college_track_status_c = '11A'
   GROUP BY
     Contact_Id
 ),
@@ -259,6 +259,7 @@ FROM
   LEFT JOIN prep_on_track_denom POTD ON POTD.site_short = HS_Data.site_short AND POTD.Gender_c = HS_Data.Gender_c AND POTD.Ethnic_background_c = HS_Data.Ethnic_background_c
 --   LEFT JOIN gather_capacity_metrics GCM ON GCM.site_short = HS_Data.site_short
  )
+
 
  SELECT site_short, SUM(SD_above_80_attendance)
  FROM join_metrics
