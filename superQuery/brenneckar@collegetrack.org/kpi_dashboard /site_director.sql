@@ -259,6 +259,6 @@ FROM
 --   LEFT JOIN gather_capacity_metrics GCM ON GCM.site_short = HS_Data.site_short
  )
 
- SELECT SUM(above_80_attendance)
+ SELECT SUM(SD_above_80_attendance)
  FROM join_metrics
  GROUP BY site_short
