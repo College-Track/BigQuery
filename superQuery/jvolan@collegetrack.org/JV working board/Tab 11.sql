@@ -27,9 +27,4 @@
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE college_track_status_c = '15A'
-    AND(
-    (CURRENT_DATE() < '2021-07-01'
-    AND current_as_c = TRUE)
-    OR
-    (CURRENT_DATE() > '2021-07-01'
-    AND previous_as_c = TRUE))
+    AND previous_as_c = TRUE
