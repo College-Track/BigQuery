@@ -18,3 +18,4 @@
 --needed widest reporting group to ensure I had all students I need to evaluate if they were in one of my custom denoms. Added in more detail filter logic into case statements above.
     WHERE indicator_completed_ct_hs_program_c = true
     AND college_track_status_c ='15A'
+    AND most_recent_valid_cumulative_gpa IS NULL
