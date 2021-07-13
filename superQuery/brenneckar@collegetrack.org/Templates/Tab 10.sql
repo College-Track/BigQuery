@@ -1,4 +1,4 @@
-SELECT CAT.*,
+SELECT CAT.Contact_Id
       C.most_recent_valid_term_gpa,
       C.most_recent_valid_cumulative_gpa
 
