@@ -14,6 +14,8 @@ SELECT
     Contact_Id AS a_contact_id,
     AT_Name,
     AT_Cumulative_GPA,
+    gpa_required_date,
+    next_gpa_required_date
     
     FROM  `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE GAS_Name IN ('Fall 2020-21 (Semester)','Fall 2020-21 (Quarter)')
