@@ -1,10 +1,3 @@
-WITH gather_data AS (SELECT subject, who_id, description, C.site_short
-FROM `data-warehouse-289815.salesforce.task` T
-LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON C.Contact_Id = who_id
-WHERE subject LIKE '%CT Corporate Residency Summer%' AND C.region_short = 'Colorado'
-AND T.is_deleted = false
-)
-
-SELECT subject, count(distinct(who_id)) AS student_count
-FROM gather_data
-GROUP BY subject
+SELECT *
+FROM `data-warehouse-289815.salesforce_clean.contact_ay_template`
+WHERE AY_Name IN ('AY 2018-19', 'AY 2019-20')
