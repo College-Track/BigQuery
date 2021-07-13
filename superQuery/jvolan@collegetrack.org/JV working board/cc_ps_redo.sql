@@ -53,3 +53,4 @@ get_at_data AS
 
     FROM get_contact_data
     LEFT JOIN get_at_data ON at_contact_id = contact_id 
+    WHERE x_2_yr_transfer_denom = 1
