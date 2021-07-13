@@ -2,10 +2,12 @@ WITH gather_data AS (
   SELECT
     Contact_Id,
     site_short,
+      Ethnic_background_c,
+      Gender_c,
     -- % of students with a 3.25 GPA
     -- Will need to make this more dynamic to account for GPA lag
     CASE
-      WHEN Prev_AT_Cum_GPA >= 3.25 THEN 1
+      WHEN most_recent_valid_cumulative_gpa >= 3.25 THEN 1
       ELSE 0
     END AS above_325_gpa,
     -- % of seniors who are composite ready
@@ -33,7 +35,7 @@ WITH gather_data AS (
     CASE
       WHEN Readiness_10_th_Composite_c IN('2. Near Ready', '3. Not Ready')
       AND contact_official_test_prep_withdrawal IS NULL
-      AND grade_c NOT IN ('9th Grade', '10th Grade') THEN 1
+      AND grade_c NOT IN ('9th Grade', '10th Grade', '11th Grade') THEN 1
       ELSE 0
     END AS tenth_grade_test_not_ready,
     CASE
@@ -94,13 +96,21 @@ gather_survey_data AS (
       WHEN i_feel_prepared_to_engage_in_academic_stretch_opportunities = "Strongly Agree" THEN 1
       WHEN i_feel_prepared_to_engage_in_academic_stretch_opportunities = 'Agree' THEN 1
       ELSE 0
-    END AS i_feel_prepared_to_engage_in_academic_stretch_opportunities
+    END AS i_feel_prepared_to_engage_in_academic_stretch_opportunities,
+    -- % of students that self-perceive growth in executive functioning skill
+      CASE
+      WHEN (i_have_new_or_improved_critical_thinking_skills IN ("Strongly Agree","Agree")  AND
+            i_have_new_or_improved_study_habits_skills IN ("Strongly Agree","Agree") )THEN 1
+      ELSE 0
+    END AS aa_self_perceived_growth_in_executive_functioning_skill
   FROM
     `data-studio-260217.surveys.fy21_hs_survey` S
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` CT ON CT.Contact_Id = S.contact_id
 )
 SELECT
   GD.site_short,
+    GD.Ethnic_background_c,
+    GD.Gender_c,
   SUM(above_325_gpa) AS aa_above_325_gpa,
   SUM(composite_ready) AS aa_composite_ready,
   SUM(composite_ready_eleventh_grade) AS aa_composite_ready_eleventh_grade,
@@ -110,10 +120,13 @@ SELECT
   SUM(i_am_in_control_of_my_academic_performance) AS aa_i_am_in_control_of_my_academic_performance,
   SUM(
     i_feel_prepared_to_engage_in_academic_stretch_opportunities
-  ) AS aa_i_feel_prepared_to_engage_in_academic_stretch_opportunities
+  ) AS aa_i_feel_prepared_to_engage_in_academic_stretch_opportunities,
+SUM(aa_self_perceived_growth_in_executive_functioning_skill) AS aa_self_perceived_growth_in_executive_functioning_skill
 FROM
   gather_data GD
   LEFT JOIN aa_attendance_kpi AA ON GD.Contact_Id = AA.student_c
   LEFT JOIN gather_survey_data GSD ON GSD.contact_id = GD.contact_id
 GROUP BY
-  site_short
+  site_short,
+         Ethnic_background_c,
+         Gender_c
