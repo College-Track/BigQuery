@@ -48,7 +48,7 @@ get_at_data AS
 )
 
  SELECT
-    get_contact_data.*,
+    *,
     get_at_data.x_2_yr_transfer_num,
 
     FROM get_contact_data
