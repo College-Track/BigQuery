@@ -4,3 +4,4 @@ SELECT CAT.Contact_Id,
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
 LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON CAT.Contact_Id = C.Contact_Id
+WHERE CAT.Contact_id = '0034600001FWEWoAAP'
