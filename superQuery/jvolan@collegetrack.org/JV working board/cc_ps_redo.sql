@@ -44,7 +44,6 @@ get_at_data AS
     OR
     (CURRENT_DATE() > '2021-07-01'
     AND previous_as_c = TRUE))
-    LIMIT 1
 )
 
  SELECT
