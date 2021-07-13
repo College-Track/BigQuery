@@ -1,9 +1,9 @@
 with gather_contact AS
 (
  SELECT
+    most_recent_valid_cumulative_gpa,
     Contact_Id,
     high_school_graduating_class_c,
-    most_recent_valid_cumulative_gpa,
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE indicator_completed_ct_hs_program_c = true
     AND college_track_status_c ='15A'
