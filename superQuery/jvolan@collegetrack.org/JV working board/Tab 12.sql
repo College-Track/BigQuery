@@ -3,6 +3,7 @@
     Gender_c,
     Ethnic_background_c,
     site_short,
+    high_school_graduating_class_c,
     most_recent_valid_cumulative_gpa,
     CASE
         WHEN
