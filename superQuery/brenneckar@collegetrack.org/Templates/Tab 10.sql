@@ -6,7 +6,7 @@ with gather_contact AS
     high_school_graduating_class_c,
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE indicator_completed_ct_hs_program_c = true
-    AND college_track_status_c =‘15A’
+    AND college_track_status_c ='15A'
 ),
 gather_at AS
 (
