@@ -28,7 +28,9 @@ SELECT
     )
     
     SELECT 
-    *
+    *,
+    gather_at.AT_Name,
+    gather_at.AT_Cumulative_GPA
     FROM gather_contact
     LEFT JOIN gather_at ON gather_at.a_contact_id = Contact_Id
 
