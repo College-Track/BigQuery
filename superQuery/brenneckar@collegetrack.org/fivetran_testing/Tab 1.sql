@@ -4,6 +4,7 @@ WHERE AY_Name IN ('AY 2018-19', 'AY 2019-20')
 AND site_short IN ('San Francisco', "Oakland", 'East Palo Alto')
 GROUP BY Contact_Id, AY_Name
 )
-SELECT COUNT(Contact_Id)
+SELECT AY_Name, COUNT(Contact_Id)
 FROM gather_data 
 WHERE attended_workshops_c > 0
+GROUP BY AY_Name
