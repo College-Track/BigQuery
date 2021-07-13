@@ -3,6 +3,7 @@
     Gender_c,
     Ethnic_background_c,
     site_short,
+    most_recent_valid_cumulative_gpa,
     CASE
         WHEN
         (indicator_completed_ct_hs_program_c = true
