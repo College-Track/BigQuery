@@ -1,4 +1,4 @@
-SELECT C.Contact_id,
+SELECT distinct C.Contact_id,
       CAT.AT_Term_GPA AS most_recent_valid_term_gpa,
       CAT.AT_Cumulative_GPA AS most_recent_valid_cumulative_gpa
 
