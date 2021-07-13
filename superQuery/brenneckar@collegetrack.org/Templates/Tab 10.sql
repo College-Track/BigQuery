@@ -24,4 +24,5 @@ SELECT
     *
     FROM gather_at
     LEFT JOIN gather_contact ON gather_contact.contact_id = gather_at.a_contact_id
-    WHERE most_recent_valid_cumulative_gpa != AT_Cumulative_GPA
+    WHERE most_recent_valid_cumulative_gpa IS NULL
+    AND AT_Cumulative_GPA IS NOT NULL
