@@ -29,10 +29,8 @@ SELECT
     AND college_track_status_c ='15A'
 )
     
-    SELECT 
-    *,
-    gather_at.AT_Name,
-    gather_at.AT_Cumulative_GPA
-    FROM gather_contact
-    LEFT JOIN gather_at ON gather_at.a_contact_id = Contact_Id
+    SELECT
+    *
+    FROM gather_at
+    LEFT JOIN gather_contact ON gather_contact.contact_id = a_contact_Id
 
