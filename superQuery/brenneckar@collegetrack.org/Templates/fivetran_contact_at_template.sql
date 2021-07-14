@@ -868,17 +868,17 @@ LEFT JOIN get_valid_gpa_terms CAT ON C.Contact_Id = CAT.Contact_Id
 
 );
 
--- -- Script 5: Refresh Contact At Template
--- CREATE
--- OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS(
--- SELECT CAT.*,
---       C.most_recent_valid_term_gpa,
---       C.most_recent_valid_cumulative_gpa
+-- Script 5: Refresh Contact At Template
+CREATE
+OR REPLACE TABLE `data-warehouse-289815.salesforce_clean.contact_at_template` AS(
+SELECT CAT.*,
+      C.most_recent_valid_term_gpa,
+      C.most_recent_valid_cumulative_gpa
 
--- FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
--- LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON CAT.Contact_Id = C.Contact_Id
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template` CAT
+LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON CAT.Contact_Id = C.Contact_Id
 
--- )
+)
 
 
 
