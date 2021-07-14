@@ -797,9 +797,9 @@ WITH gather_contact_data AS (
                            END
                            AS student_audit_status_c,
                        GAD.AY_Name,
-                       GAD.AY_End_Date,
-                       GFSA.AY_fall_spring_attended_workshops,
-                       GFSA.AY_fall_spring_enrolled_sessions
+                       GAD.AY_End_Date
+                    --   GFSA.AY_fall_spring_attended_workshops,
+                    --   GFSA.AY_fall_spring_enrolled_sessions
 
                    FROM gather_contact_data GCD
                         LEFT JOIN gather_at_data GAD ON GAD.Contact_Id = GCD.Contact_Id
