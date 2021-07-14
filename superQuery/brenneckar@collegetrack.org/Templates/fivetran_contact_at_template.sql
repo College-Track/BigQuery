@@ -754,6 +754,16 @@ WITH gather_contact_data AS (
          WHERE A_T.AY_Start_Date <= CURRENT_DATE()
          GROUP BY Contact_Id, AY_Name, AY_End_Date
      ),
+     gather_fall_spring_attendance AS (
+     SELECT Contact_Id,
+     AY_Name,
+     SUM(attended_workshops_c) AS AY_fall_spring_attended_workshops,
+     SUM(enrolled_sessions_c) AS AY_fall_spring_enrolled_sessions
+     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` A_T
+         WHERE A_T.AY_Start_Date <= CURRENT_DATE()
+         AND term_c IN ("Fall", "Spring")
+         GROUP BY Contact_Id, AY_Name
+     ),
      gather_spring_at_status AS (SELECT
                                      Contact_Id,
                                      AY_Name,
@@ -787,12 +797,15 @@ WITH gather_contact_data AS (
                            END
                            AS student_audit_status_c,
                        GAD.AY_Name,
-                       GAD.AY_End_Date
+                       GAD.AY_End_Date,
+                       GFSA.AY_fall_spring_attended_workshops,
+                       GFSA.AY_fall_spring_enrolled_sessions
 
                    FROM gather_contact_data GCD
                         LEFT JOIN gather_at_data GAD ON GAD.Contact_Id = GCD.Contact_Id
                         LEFT JOIN gather_spring_at_status GSAS
                                   ON GSAS.Contact_Id = GCD.Contact_Id AND GSAS.AY_Name = GAD.AY_Name
+                                  LEFT JOIN gather_fall_spring_attendance GFSA ON GCD.Contact_Id = GFSA.Contact_Id AND GFSA.AY_Name = GAD.AY_Name
      ),
      create_list_of_ay AS
          (SELECT DISTINCT AY_Name, AY_End_Date,
