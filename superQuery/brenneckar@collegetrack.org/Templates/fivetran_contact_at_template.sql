@@ -861,7 +861,14 @@ SELECT * EXCEPT (academic_year_4_year_degree_earned_c,
        WHEN AY_End_Date = '2021-08-31' AND ct_status_end_of_ay = 'Active: Post-Secondary' AND AY_enrollment_status IN ('Full-time', 'Part-time') AND AY_School_type IN ('2-Year','4-Year')  THEN 'Post Secondary'
        WHEN AY_End_Date != '2021-08-31' AND ct_status_end_of_ay = 'Active: Post-Secondary'THEN 'Post Secondary'
        ELSE NULL
-       END AS AY_student_served
+       END AS AY_student_served,
+       CASE WHEN AY_fall_spring_attended_workshops > 0 THEN 1
+       ELSE 0
+       END AS AY_annual_retention_denom,
+       CASE WHEN AY_fall_spring_attended_workshops > 0  AND ct_status_end_of_ay IN ('Current CT HS Student', "Leave of Absence") THEN 1
+       ELSE 0
+       END AS AY_annual_retention_numerator
+      
 FROM format_combined_data
 
 
