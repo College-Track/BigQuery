@@ -773,7 +773,7 @@ WITH gather_contact_data AS (
                                          END AS student_audit_status_c,
                                      AT_School_Name AS AY_School_Name,
                                      AT_school_type AS AY_School_type,
-                                     enrollment_status_c AS AY_enrollment_status,
+                                     AT_Enrollment_Status_c AS AY_enrollment_status,
                                      fit_type_at_c AS AY_fit_type,
                                      AT_Grade_c AS AY_Grade,
                                      AT_Cumulative_GPA_bucket AS AY_Cumulative_GPA_bucket,
@@ -822,16 +822,19 @@ WITH gather_contact_data AS (
 
      fill_alumni_terms AS (SELECT
                                PAT.* EXCEPT (AY_Name,
-                               AY_End_Date),
+                               AY_End_Date,
+                               AY_Grade),
                                CLAY.AY_Name,
-                               CLAY.AY_End_Date
+                               CLAY.AY_End_Date,
+                               "Alumni" AS AY_Grade
 
                            FROM prep_alumni_terms PAT
                                 JOIN create_list_of_ay CLAY
                                      ON CLAY.AY_End_Date BETWEEN PAT.academic_year_4_year_degree_earned_end_date AND PAT.current_ay_end_date
      ),
      combined_student_data AS (
-         (SELECT *
+         (SELECT * EXCEPT(AY_Grade),
+         AY_Grade
           FROM join_data
           WHERE academic_year_4_year_degree_earned_end_date IS NULL)
          UNION ALL
@@ -852,7 +855,13 @@ WITH gather_contact_data AS (
 SELECT * EXCEPT (academic_year_4_year_degree_earned_c,
        college_track_status_c,
        academic_year_4_year_degree_earned_end_date,
-       current_ay_end_date)
+       current_ay_end_date),
+       CASE WHEN ct_status_end_of_ay = 'CT Alumni' THEN "Alumni"
+       WHEN ct_status_end_of_ay = 'Current CT HS Student' AND AY_fall_spring_attended_workshops > 0 AND AY_Grade != '8th Grade' THEN "High School"
+       WHEN AY_End_Date = '2021-08-31' AND ct_status_end_of_ay = 'Active: Post-Secondary' AND AY_enrollment_status IN ('Full-time', 'Part-time') AND AY_School_type IN ('2-Year','4-Year')  THEN 'Post Secondary'
+       WHEN AY_End_Date != '2021-08-31' AND ct_status_end_of_ay = 'Active: Post-Secondary'THEN 'Post Secondary'
+       ELSE NULL
+       END AS AY_student_served
 FROM format_combined_data
 
 
