@@ -865,7 +865,7 @@ SELECT * EXCEPT (academic_year_4_year_degree_earned_c,
        CASE WHEN AY_fall_spring_attended_workshops > 0 THEN 1
        ELSE 0
        END AS AY_annual_retention_denom,
-       CASE WHEN AY_fall_spring_attended_workshops > 0  AND ct_status_end_of_ay IN ('Current CT HS Student', "Leave of Absence") THEN 1
+       CASE WHEN AY_fall_spring_attended_workshops > 0  AND ct_status_end_of_ay IN ('Current CT HS Student', "Leave of Absence") AND AY_Grade != '8th Grade' THEN 1
        ELSE 0
        END AS AY_annual_retention_numerator
       
