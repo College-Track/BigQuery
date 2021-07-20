@@ -18,7 +18,7 @@ WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
 CASE 
         WHEN function = "Mature Site Staff" THEN "Mature_Site_Staff" 
-        WHEN function = "Non-Mature Site Staff" THEN "Non_Mature_Site_Sraff"
+        WHEN function = "Non-Mature Site Staff" THEN "Non-Mature_Site_Sraff"
         ELSE NULL 
         END AS function
 FROM `data-studio-260217.performance_mgt.role_kpi_selection` #clean list of KPIs by Role
@@ -89,6 +89,7 @@ WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi
 )
 
+#identify KPIs that are shared, and pull in the KPI target submitted 
 SELECT site_kpi,target_fy22,team_kpi,function, site_targets_by_role.kpis_by_role,role 
 FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
