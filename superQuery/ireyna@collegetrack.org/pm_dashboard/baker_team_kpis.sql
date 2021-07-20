@@ -19,9 +19,15 @@ WITH prep_kpi_targets AS (
         WHEN site_kpi = "Ward_8" THEN "Ward 8"
         ELSE site_kpi
     END AS site_kpi,
-    CASE 
+    CASE
         WHEN select_kpi = 'Student Survey - % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
         THEN 'Student Survey - % of students served by Wellness who "agree" or "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
+        WHEN select_kpi = '% of high school seniors who matriculate to Good, Best, or Situational Best Fit colleges'
+        THEN '% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges'
+        WHEN select_kpi = '% of college students graduating from college within 6 years'
+        THEN '% of students graduating from college within 6 years'
+        WHEN select_kpi = ' # of business days to close the month'
+        THEN ' # of business days to close the month'
         ELSE select_kpi
     END AS select_kpi,
     what_is_the_type_of_target_,
