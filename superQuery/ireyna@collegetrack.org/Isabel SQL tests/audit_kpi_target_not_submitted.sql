@@ -156,14 +156,6 @@ SELECT function, --e.g. mature site staff
     role,
     kpis_by_role,
     target_submitted,
-    site_region_team
+    site_or_region, --e.g. Finance, Watts
 FROM prep_submitted_region_targets
 WHERE target_submitted = "Not Submitted"
-
-
-
-
---join region data
-
-
---join national data
