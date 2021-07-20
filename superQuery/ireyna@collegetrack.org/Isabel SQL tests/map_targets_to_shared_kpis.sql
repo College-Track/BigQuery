@@ -74,10 +74,10 @@ FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi <> "0"
-GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22, site_kpi
+GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,site_kpi
 )
 
-SELECT target_fy22,team_kpi,kpis_by_role
+SELECT site_kpi,target_fy22,team_kpi,kpis_by_role
 FROM site_targets_by_role
 WHERE target_fy22 IS NOT NULL
-GROUP BY  target_fy22,team_kpi,kpis_by_role
+GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi
