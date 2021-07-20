@@ -48,10 +48,25 @@ FROM kpi_targets_submitted
 WHERE target_fy22 IS NOT NULL
     AND site_kpi <> "0"
 GROUP BY  target_fy22,team_kpi,select_kpi,site_kpi
-)
+),
+
+map_targets_shared_kpis AS (
 #identify KPIs that are shared, and pull in the KPI target submitted for roles with same KPs (on same team)
-SELECT site_kpi,target_fy22,team_kpi,function, site_targets_by_role.select_kpi,role 
+SELECT site_kpi,target_fy22,team_kpI, site_targets_by_role.select_kpi,role 
 FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
 AND site_targets_by_role.select_kpi = gather_all_kpis.kpis_by_role
-group by site_kpi,target_fy22,team_kpi,function,role ,select_kpi
+group by site_kpi,target_fy22,team_kpi,role ,select_kpi
+)
+
+SELECT a.*
+FROM map_targets_shared_kpis AS a
+JOIN 
+    (SELECT site_kpi,select_kpi, COUNT(*)
+    FROM map_targets_shared_kpis 
+    GROUP BY site_kpi,select_kpi
+    HAVING COUNT(*) > 1) b
+ON a.site_kpi = b.site_kpi
+AND a.select_kpi = b.select_kpi
+ORDER BY a.site_kpi
+    
