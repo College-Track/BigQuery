@@ -1,3 +1,17 @@
+#map targets to shared KPIs across teams (Sites only so far)
+#for sites
+#for regional
+#for non-program roles
+
+/*
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis`
+OPTIONS
+    (
+    description= "This table maps submitted targets to KPIs shared across roles within Teams/Functions"
+    )
+AS
+*/
+
 WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
 CASE 
@@ -44,7 +58,7 @@ AND disregard_entry_op_hard_coded IS NULL
 --prep_national_targets_by_role AS (
 SELECT target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, all_kpis.kpis_by_role,email_kpi,region_kpi
 FROM gather_all_kpis all_kpis
-LEFT JOIN kpi_targets_submitted 
+FULL JOIN kpi_targets_submitted 
 ON all_kpis.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi = "0"
     AND region_kpi ="0"
