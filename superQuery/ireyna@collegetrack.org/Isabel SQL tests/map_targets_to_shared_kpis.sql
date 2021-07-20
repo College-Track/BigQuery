@@ -1,4 +1,3 @@
-kpi_targets_submitted AS (
 SELECT
     team_kpi, 
     select_role,
