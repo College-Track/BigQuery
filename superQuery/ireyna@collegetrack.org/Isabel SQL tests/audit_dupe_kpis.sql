@@ -73,7 +73,7 @@ AND a.select_kpi = b.select_kpi
 ORDER BY a.site_kpi
 )
 
-SELECT dupe.site_kpi,target_fy22, select_kpi,role 
+SELECT dupe.site_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role 
     
 FROM dupe_kpi_target_submissions AS dupe
 LEFT JOIN map_targets_shared_kpis shared_kpis 
