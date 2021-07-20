@@ -80,7 +80,7 @@ site_targets_by_role AS (
 SELECT site_kpi,target_fy22,team_kpi,kpis_by_role
 FROM prep_site_targets_by_role
 WHERE target_fy22 IS NOT NULL
-WHERE site_kpi <> "0"
+AND site_kpi <> "0"
 GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi
 )
 
