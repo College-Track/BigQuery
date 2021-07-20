@@ -122,7 +122,7 @@ SELECT
 WHERE region_function = 0
     AND program = 0
 GROUP BY 
-   function,
+    function,
     kpis_submitted.role,
     kpis_submitted.kpis_by_role,
     shared_kpi_targets.target_fy22,
@@ -130,10 +130,23 @@ GROUP BY
     shared_kpi_targets.site_region_team --e.g. Finance, Watts
 )
 
-
 SELECT *
+FROM prep_submitted_national_targets
+WHERE target_submitted = "Not Submitted"
+
+UNION ALL
+
+SELECT * EXCEPT (role_shared_kpi_table,shared_kpi,original_target_Submitted_value,kpis_by_role,mature_non_mature)
 FROM prep_submitted_site_targets
 WHERE target_submitted = "Not Submitted"
+
+UNION ALL
+
+SELECT * EXCEPT (kpis_by_role,mature_non_mature)
+FROM prep_submitted_region_targets
+WHERE target_submitted = "Not Submitted"
+
+
 
 
 --join region data
