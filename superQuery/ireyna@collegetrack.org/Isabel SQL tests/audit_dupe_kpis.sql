@@ -57,8 +57,10 @@ FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
 AND site_targets_by_role.select_kpi = gather_all_kpis.kpis_by_role
 group by site_kpi,target_fy22,team_kpi,role ,select_kpi
-)
+),
 
+#identify duplicate targets submitted for same KPI
+dupe_kpi_target_submissions AS (
 SELECT a.*
 FROM map_targets_shared_kpis AS a
 JOIN 
@@ -69,4 +71,12 @@ JOIN
 ON a.site_kpi = b.site_kpi
 AND a.select_kpi = b.select_kpi
 ORDER BY a.site_kpi
+)
+
+SELECT dupe.*
+FROM dupe_kpi_target_submissions AS dupe
+LEFT JOIN map_targets_shared_kpis shared_kpis 
+    ON dupe.site_kpi = shared_kpis.site_kpi
+    AND dupe.select_kpi = shared_kpis.select_kpi
+WHERE dupe.select_kpi <> shared_kpis.select_kpi
     
