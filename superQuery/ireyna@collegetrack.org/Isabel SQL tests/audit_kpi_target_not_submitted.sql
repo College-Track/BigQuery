@@ -56,7 +56,6 @@ SELECT
     shared_kpi_targets.role AS role_shared_kpi_table,
     shared_kpi_targets.kpis_by_role AS shared_kpi,
     target_submitted AS original_target_Submitted_value,
-    site_or_region,
     shared_kpi_targets.site_region_team --e.g. Finance, Watts
      
  FROM `data-studio-260217.performance_mgt.fy22_team_kpis` kpis_submitted
@@ -147,8 +146,7 @@ SELECT function, --e.g. mature site staff
     role,
     kpis_by_role,
     target_submitted,
-    site_region_team --e.g. Finance, Watts
-    
+    site_or_region --e.g. Finance, Watts
 FROM prep_submitted_site_targets
 WHERE target_submitted = "Not Submitted"
 
