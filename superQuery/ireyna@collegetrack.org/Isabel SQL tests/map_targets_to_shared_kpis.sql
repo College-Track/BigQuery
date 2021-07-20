@@ -42,8 +42,26 @@ WHERE email_kpi <> "test@collegetrack.org"
 AND disregard_entry_op_hard_coded IS NULL
 ),
 
+/*
 targets_by_role AS (
 SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,
+    /*CASE WHEN 
+        GAK.function = kpi_targets_submitted.team_kpi AND
+        GAK.kpis_by_role = kpi_targets_submitted.select_kpi AND 
+        submission_id IS NULL
+        THEN target_fy22
+        ELSE 0
+    END AS mapped_targets --omit this line too
+FROM gather_all_kpis GAK
+LEFT JOIN kpi_targets_submitted 
+ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
+--WHERE GAFR.select_role != GAK.role
+GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22
+)
+*/
+
+site_targets_by_role AS (
+SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,site_kpi
     /*CASE WHEN 
         GAK.function = kpi_targets_submitted.team_kpi AND
         GAK.kpis_by_role = kpi_targets_submitted.select_kpi AND 
@@ -54,7 +72,7 @@ SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_sub
 FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
---WHERE GAFR.select_role != GAK.role
+WHERE site_kpi <> 0
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22
 )
 
