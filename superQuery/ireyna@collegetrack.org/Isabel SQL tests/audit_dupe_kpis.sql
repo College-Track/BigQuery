@@ -1,3 +1,12 @@
+#flag duplicate KPI entries with inconsistent targets
+/*
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_dupe_kpi_targets`
+OPTIONS
+    (
+    description= "This table flags different targets for KPIs shared amongst same team. Targets should be the same "
+    )
+AS
+*/
 WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
 CASE 
@@ -99,7 +108,7 @@ ORDER BY a.region_kpi
 )
 
 #inconsistent Site targets for same KPI
-inconsistent_site_kpi_targets AS (
+--inconsistent_site_kpi_targets AS (
 SELECT dupe.site_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role 
 FROM dupe_site_kpi_target_submissions AS dupe
 LEFT JOIN map_site_targets_shared_kpis shared_kpis 
