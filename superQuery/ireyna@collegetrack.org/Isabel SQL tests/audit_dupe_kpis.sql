@@ -19,7 +19,7 @@ CASE
         WHEN function = "Talent Acquisition" THEN "Talent_Acquisition"
         WHEN function = "Talent Development" THEN "Talent_Development"
         WHEN function = "Strategic Initiatives" THEN "Strategic_Initiatives"
-        ELSE NULL 
+        ELSE function 
         END AS function
 FROM `data-studio-260217.performance_mgt.role_kpi_selection` #clean list of KPIs by Role
 ORDER BY function, role
