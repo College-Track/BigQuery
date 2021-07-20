@@ -24,7 +24,7 @@ create_list_of_unseleted_kpis_by_role AS (
 SELECT GAFR.function, GAFR.role, GAK.kpis_by_role
 FROM gather_unique_function_role GAFR
 LEFT JOIN gather_all_kpis GAK ON GAK.role = GAFR.role
-WHERE GAFR.role != GAK.role
+--WHERE GAFR.role != GAK.role
 
 /*
 create_list_of_unseleted_kpis_by_function AS (
