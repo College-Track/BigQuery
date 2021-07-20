@@ -26,7 +26,7 @@ WITH prep_kpi_targets AS (
         THEN '% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges'
         WHEN select_kpi = '% of college students graduating from college within 6 years'
         THEN '% of students graduating from college within 6 years'
-        WHEN select_kpi = ' # of business days to close the month'
+        WHEN select_kpi = ' # of business days to close the month '
         THEN ' # of business days to close the month'
         ELSE select_kpi
     END AS select_kpi,
