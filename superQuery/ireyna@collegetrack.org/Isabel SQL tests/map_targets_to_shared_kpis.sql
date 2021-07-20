@@ -58,7 +58,7 @@ AND disregard_entry_op_hard_coded IS NULL
 prep_national_targets_by_role AS (
 SELECT target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, all_kpis.kpis_by_role,email_kpi,region_kpi
 FROM gather_all_kpis all_kpis
-LEFT JOIN kpi_targets_submitted 
+FULL JOIN kpi_targets_submitted --LEFT JOIN
 ON all_kpis.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi = "0"
     AND region_kpi ="0"
@@ -69,7 +69,7 @@ GROUP BY team_kpi,select_role,kpis_by_role,select_kpi,target_fy22,email_kpi,regi
 national_targets_by_role AS (
 SELECT team_kpi,region_kpi,target_fy22,kpis_by_role,email_kpi
 FROM prep_national_targets_by_role
---WHERE target_fy22 IS NOT NULL
+WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,email_kpi, region_kpi
 ),
 
@@ -85,7 +85,7 @@ group by team_kpi,target_fy22,region_kpi,role ,kpis_by_role,email_kpi
 prep_site_targets_by_role AS (
 SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,site_kpi,email_kpi
 FROM gather_all_kpis GAK
-LEFT JOIN kpi_targets_submitted 
+FULL JOIN kpi_targets_submitted --LEFT JOIN
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi <> "0"
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,site_kpi,email_kpi
@@ -95,7 +95,7 @@ GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,tar
 site_targets_by_role AS (
 SELECT site_kpi,target_fy22,team_kpi,kpis_by_role,email_kpi
 FROM prep_site_targets_by_role
---WHERE target_fy22 IS NOT NULL
+WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi,email_kpi
 ),
 
@@ -112,7 +112,7 @@ group by site_kpi,target_fy22,team_kpi,role ,kpis_by_role,email_kpi
 prep_regional_targets_by_role AS (
 SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,region_kpi,email_kpi
 FROM gather_all_kpis GAK
-LEFT JOIN kpi_targets_submitted 
+FULL JOIN kpi_targets_submitted --LEFT JOIN
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE region_kpi <> "0"
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,region_kpi,email_kpi
@@ -122,7 +122,7 @@ GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,tar
 regional_targets_by_role AS (
 SELECT region_kpi,target_fy22,team_kpi,kpis_by_role,email_kpi
 FROM prep_regional_targets_by_role
---WHERE target_fy22 IS NOT NULL
+WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,region_kpi,email_kpi
 ),
 
