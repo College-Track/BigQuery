@@ -109,6 +109,51 @@ AND a.select_kpi = b.select_kpi
 ORDER BY a.region_kpi
 ),
 
+#Targets submitted based on Role, National Function and KPI (shared KPI)
+national_targets_by_role AS (
+SELECT team_kpi,target_fy22,select_kpi,email_kpi
+FROM kpi_targets_submitted 
+WHERE target_fy22 IS NOT NULL
+    AND site_kpi = "0"
+    AND region_kpi ="0"
+GROUP BY  target_fy22,team_kpi,select_kpi,email_kpi
+),
+
+map_national_targets_shared_kpis AS (
+#identify KPIs that are shared within National teams, and pull in the KPI target submitted for roles with same KPs (on same team)
+SELECT target_fy22,team_kpi,select_kpi,role,email_kpi
+FROM gather_all_kpis
+LEFT JOIN national_targets_by_role ON gather_all_kpis.function = national_targets_by_role.team_kpi 
+AND national_targets_by_role.select_kpi = gather_all_kpis.kpis_by_role
+group by target_fy22,team_kpi,role ,select_kpi,email_kpi
+),
+
+#identify duplicate targets submitted for same KPI in National teams
+dupe_national_kpi_target_submissions AS (
+SELECT a.*
+FROM map_national_targets_shared_kpis AS a
+JOIN 
+    (SELECT team_kpi,select_kpi, COUNT(*)
+    FROM map_national_targets_shared_kpis 
+    GROUP BY team_kpi,select_kpi
+    HAVING COUNT(*) > 1) b
+ON a.team_kpi = b.team_kpi
+AND a.select_kpi = b.select_kpi
+ORDER BY a.team_kpi
+),
+
+#inconsistent National targets for same KPI
+inconsistent_national_kpi_targets AS (
+SELECT dupe.team_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role, dupe.email_kpi
+FROM dupe_national_kpi_target_submissions AS dupe
+LEFT JOIN map_national_targets_shared_kpis shared_kpis 
+    ON dupe.team_kpi = shared_kpis.team_kpi
+    AND dupe.select_kpi = shared_kpis.select_kpi
+WHERE dupe.team_kpi = shared_kpis.team_kpi
+    AND dupe.target_fy22 <> shared_kpis.target_fy22
+GROUP BY target_fy22, select_kpi,role ,dupe.email_kpi,dupe.team_kpi
+),
+
 #inconsistent Site targets for same KPI
 inconsistent_site_kpi_targets AS (
 SELECT dupe.site_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role, dupe.email_kpi
@@ -133,6 +178,9 @@ WHERE regional_dupe.team_kpi = shared_kpis.team_kpi
 GROUP BY regional_dupe.region_kpi,target_fy22, select_kpi,role , email_kpi
 )
 
+SELECT national_dupes.*
+FROM inconsistent_national_kpi_targets AS national_dupes
+UNION ALL
 SELECT site_dupes.*
 FROM inconsistent_site_kpi_targets AS site_dupes
 UNION ALL
