@@ -1,14 +1,15 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_audit_kpi_targets_no_submissions`
 OPTIONS
     (
     description= "This table pulls in targets not submitted by staff"
     )
 AS
-
+*/
 
 WITH 
-#update function/site names/regional names to join
+
+--update function/site names/regional names to enable JOIN downstream
 clean_shared_kpi_targets_table AS (
     SELECT * EXCEPT (mature_non_mature, site_region_team),
     CASE 
@@ -36,8 +37,8 @@ clean_shared_kpi_targets_table AS (
 FROM `data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis` 
 ),
 
---Combine submitted KPI targets with shared KPI targets to isolate KPIs not yet submitted
-prep_submitted_kpis AS (
+--Site KPIs only: Combine submitted KPI targets from Form, with shared KPIs & targets to flag KPIs not yet submitted
+prep_submitted_site_targets AS (
 SELECT 
     site_or_region,
     function, --e.g. mature site staff
@@ -62,10 +63,49 @@ SELECT
     AND kpis_submitted.kpis_by_role = shared_kpi_targets.kpis_by_role
 
 WHERE program = 1
+),
+
+--Regional KPIs only: Combine submitted KPI targets from Form, with shared KPIs & targets to flag KPIs not yet submitted
+prep_submitted_region_targets AS (
+SELECT 
+    site_or_region,
+    function, --e.g. mature site staff
+    shared_kpi_targets.mature_non_mature,
+    kpis_submitted.role,
+    kpis_submitted.kpis_by_role,
+    shared_kpi_targets.target_fy22,
+    shared_kpi_targets.site_region_team, --e.g. Finance, Watts
+    CASE 
+        WHEN shared_kpi_targets.target_fy22 IS NOT NULL AND target_submitted = "Not Submitted" 
+        THEN "Submitted"
+        ELSE target_submitted
+    END AS target_submitted
+     
+ FROM `data-studio-260217.performance_mgt.fy22_team_kpis` kpis_submitted
+ LEFT JOIN clean_shared_kpi_targets_table AS shared_kpi_targets
+    ON kpis_submitted.function = shared_kpi_targets.mature_non_mature
+    AND kpis_submitted.site_or_region = shared_kpi_targets.site_region_team
+    AND kpis_submitted.kpis_by_role = shared_kpi_targets.kpis_by_role
+
+WHERE region_function = 1
+GROUP BY 
+    site_or_region,
+    function, --e.g. mature site staff
+    shared_kpi_targets.mature_non_mature,
+    kpis_submitted.role,
+    kpis_submitted.kpis_by_role,
+    shared_kpi_targets.target_fy22,
+    kpis_submitted.target_submitted,
+    shared_kpi_targets.site_region_team --e.g. Finance, Watts
+
 )
 
+
+
+
+
 SELECT *
-FROM prep_submitted_kpis
+FROM prep_submitted_site_targets
 WHERE target_submitted = "Not Submitted"
 
 
