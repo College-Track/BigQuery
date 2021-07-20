@@ -3,14 +3,14 @@
 #for regional
 #for non-program roles
 
-/*
-CREATE OR REPLACE TABLE 'data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis'
+
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis`
 OPTIONS
     (
     description= "This table maps targets to KPIs shared across roles within Teams/Functions"
     )
 AS
-*/ 
+
 
 --SELECT *
 --FROM `data-warehouse-289815.google_sheets.team_kpi_target`
@@ -68,13 +68,6 @@ GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,tar
 
 prep_site_targets_by_role AS (
 SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,site_kpi
-    /*CASE WHEN 
-        GAK.function = kpi_targets_submitted.team_kpi AND
-        GAK.kpis_by_role = kpi_targets_submitted.select_kpi AND 
-        submission_id IS NULL
-        THEN target_fy22
-        ELSE 0
-    END AS mapped_targets*/
 FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
@@ -82,6 +75,7 @@ WHERE site_kpi <> "0"
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,site_kpi
 ),
 
+#Targets submitted based on Role, Site and KPI (shared KPI)
 site_targets_by_role AS (
 SELECT site_kpi,target_fy22,team_kpi,kpis_by_role
 FROM prep_site_targets_by_role
@@ -89,13 +83,9 @@ WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi
 )
 
-#identify KPIs that are shared, and pull in the KPI target submitted 
-SELECT site_kpi,target_fy22,team_kpi,function, site_targets_by_role.kpis_by_role,role 
+#identify KPIs that are shared, and pull in the KPI target submitted for roles with same KPs (on same team)
+SELECT site_kpi,target_fy22,team_kpi,function, site_targets_by_role.kpis_by_role,role ,
 FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
 AND site_targets_by_role.kpis_by_role = gather_all_kpis.kpis_by_role
-    --AND gather_all_kpis.kpis_by_role = site_targets_by_role.KPIS_BY_ROLE
---  WHERE gather_all_kpis.function = site_targets_by_role.team_kpi
---  AND gather_all_kpis.Role = site_targets_by_role.select_role
---  AND gather_all_kpis.kpis_by_role = site_targets_by_role.select_kpi
 group by site_kpi,target_fy22,team_kpi,function,role ,kpis_by_role
