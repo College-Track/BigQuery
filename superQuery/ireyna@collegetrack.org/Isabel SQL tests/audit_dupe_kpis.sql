@@ -105,10 +105,10 @@ JOIN
 ON a.region_kpi = b.region_kpi
 AND a.select_kpi = b.select_kpi
 ORDER BY a.region_kpi
-)
+),
 
 #inconsistent Site targets for same KPI
---inconsistent_site_kpi_targets AS (
+inconsistent_site_kpi_targets AS (
 SELECT dupe.site_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role, dupe.email_kpi
 FROM dupe_site_kpi_target_submissions AS dupe
 LEFT JOIN map_site_targets_shared_kpis shared_kpis 
@@ -117,3 +117,22 @@ LEFT JOIN map_site_targets_shared_kpis shared_kpis
 WHERE dupe.team_kpi = shared_kpis.team_kpi
     AND dupe.target_fy22 <> shared_kpis.target_fy22
 GROUP BY dupe.site_kpi,target_fy22, select_kpi,role ,dupe.email_kpi
+),
+
+#inconsistent Regional targets for same KPI
+inconsistent_regional_kpi_targets AS (
+SELECT regional_dupe.REGION_KPI, regional_dupe.target_fy22, regional_dupe.select_kpi, regional_dupe.role,regional_dupe.email_kpi
+FROM dupe_regional_kpi_target_submissions AS regional_dupe
+LEFT JOIN map_regional_targets_shared_kpis AS shared_kpis
+    ON regional_dupe.region_kpi = shared_kpis.region_kpi
+    AND regional_dupe.select_kpi = shared_kpis.select_kpi
+WHERE regional_dupe.team_kpi = shared_kpis.team_kpi
+    AND regional_dupe.target_fy22 <> shared_kpis.target_fy22
+GROUP BY regional_dupe.region_kpi,target_fy22, select_kpi,role , email_kpi
+)
+
+SELECT site_dupes.*
+FROM inconsistent_site_kpi_targets AS site_dupes
+UNION ALL
+SELECT regional_dupes.*
+FROM inconsistent_regional_kpi_targets AS regional_dupes
