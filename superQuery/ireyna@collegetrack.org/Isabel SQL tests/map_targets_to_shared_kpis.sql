@@ -69,7 +69,7 @@ GROUP BY team_kpi,select_role,kpis_by_role,select_kpi,target_fy22,email_kpi,regi
 national_targets_by_role AS (
 SELECT team_kpi,region_kpi,target_fy22,kpis_by_role,email_kpi
 FROM prep_national_targets_by_role
-WHERE target_fy22 IS NOT NULL
+--WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,email_kpi, region_kpi
 ),
 
@@ -95,7 +95,7 @@ GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,tar
 site_targets_by_role AS (
 SELECT site_kpi,target_fy22,team_kpi,kpis_by_role,email_kpi
 FROM prep_site_targets_by_role
-WHERE target_fy22 IS NOT NULL
+--WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi,email_kpi
 ),
 
@@ -122,7 +122,7 @@ GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,tar
 regional_targets_by_role AS (
 SELECT region_kpi,target_fy22,team_kpi,kpis_by_role,email_kpi
 FROM prep_regional_targets_by_role
-WHERE target_fy22 IS NOT NULL
+--WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,region_kpi,email_kpi
 ),
 
