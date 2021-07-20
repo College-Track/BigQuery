@@ -70,6 +70,8 @@ JOIN
     HAVING COUNT(*) > 1) b
 ON a.site_kpi = b.site_kpi
 AND a.select_kpi = b.select_kpi
+
+group by site_kpi,target_fy22,team_kpi,role ,select_kpi
 ORDER BY a.site_kpi
 )
 
