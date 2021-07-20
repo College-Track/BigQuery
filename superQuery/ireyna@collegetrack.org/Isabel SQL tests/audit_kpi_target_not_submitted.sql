@@ -45,7 +45,8 @@ SELECT
     kpis_submitted.role,
     kpis_submitted.kpis_by_role,
     shared_kpi_targets.target_fy22,
-    shared_kpi_targets.site_region_team, --e.g. Finance, Watts
+    site_or_region,
+    
      CASE 
         WHEN shared_kpi_targets.target_fy22 IS NOT NULL AND target_submitted = "Not Submitted" 
         THEN "Submitted"
@@ -56,7 +57,7 @@ SELECT
     shared_kpi_targets.kpis_by_role AS shared_kpi,
     target_submitted AS original_target_Submitted_value,
     site_or_region,
-    
+    shared_kpi_targets.site_region_team --e.g. Finance, Watts
      
  FROM `data-studio-260217.performance_mgt.fy22_team_kpis` kpis_submitted
  LEFT JOIN clean_shared_kpi_targets_table AS shared_kpi_targets
