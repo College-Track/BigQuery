@@ -21,7 +21,12 @@ ORDER BY function, role
 ),
 
 gather_unique_function_role AS (
-SELECT DISTINCT function function, role, kpis_by_role 
+SELECT DISTINCT function function, role, kpis_by_role,
+CASE 
+        WHEN function = "Mature Site Staff" THEN "Mature_Site_Staff" 
+        WHEN function = "Non-Mature Site Staff" THEN "Non_Mature_Site_Sraff"
+        ELSE NULL 
+        END AS function
 FROM gather_all_kpis
 ),
 
@@ -62,12 +67,7 @@ GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,tar
 */
 
 prep_site_targets_by_role AS (
-SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,site_kpi,
-    CASE 
-        WHEN function = "Mature Site Staff" THEN "Mature_Site_Staff" 
-        WHEN function = "Non-Mature Site Staff" THEN "Non_Mature_Site_Sraff"
-        ELSE NULL 
-        END AS function
+SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,site_kpi
     /*CASE WHEN 
         GAK.function = kpi_targets_submitted.team_kpi AND
         GAK.kpis_by_role = kpi_targets_submitted.select_kpi AND 
