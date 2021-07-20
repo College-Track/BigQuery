@@ -49,7 +49,10 @@ join_data AS (
     CASE
       WHEN CA.attendance_rate < 0.65 THEN 1
       ELSE 0
-    END AS below_65_attendance
+    END AS below_65_attendance,
+    CASE WHEN Attendance_Denominator_c > 0 THEN 1
+    ELSE 0 
+    END AS student_count
   FROM
     gather_data GD
     LEFT JOIN calc_attendance CA ON CA.academic_semester_c = GD.AT_Id
@@ -70,7 +73,7 @@ SELECT
   sort_Most_Recent_GPA_Cumulative_bucket,
   site_sort,
   sort_covitality,
-  COUNT(Contact_Id) AS student_count,
+  SUM(student_count) AS student_count,
   SUM(above_80_attendance) AS above_80_attendance,
   SUM(below_65_attendance) AS below_65_attendance
   
