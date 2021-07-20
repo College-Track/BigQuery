@@ -16,3 +16,4 @@ LEFT JOIN `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` GAF
 ON GAK.role = GAFR.select_role 
 --WHERE GAFR.select_role != GAK.role
 WHERE submission_id IS NULL
+GROUP BY team_kpi,select_role,kpis_by_role
