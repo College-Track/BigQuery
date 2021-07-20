@@ -29,7 +29,9 @@ SELECT
     select_role,
     select_kpi,
     site_kpi,
+    region_kpi,
     submission_id,
+    email_kpi,
 CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
@@ -50,7 +52,7 @@ WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,select_kpi,site_kpi
 ),
 
-map_targets_shared_kpis AS (
+map_site_targets_shared_kpis AS (
 #identify KPIs that are shared, and pull in the KPI target submitted for roles with same KPs (on same team)
 SELECT site_kpi,target_fy22,team_kpI, site_targets_by_role.select_kpi,role 
 FROM gather_all_kpis
@@ -60,26 +62,76 @@ group by site_kpi,target_fy22,team_kpi,role ,select_kpi
 ),
 
 #identify duplicate targets submitted for same KPI
-dupe_kpi_target_submissions AS (
+dupe_site_kpi_target_submissions AS (
 SELECT a.*
-FROM map_targets_shared_kpis AS a
+FROM map_site_targets_shared_kpis AS a
 JOIN 
     (SELECT site_kpi,select_kpi, COUNT(*)
-    FROM map_targets_shared_kpis 
+    FROM map_site_targets_shared_kpis 
     GROUP BY site_kpi,select_kpi
     HAVING COUNT(*) > 1) b
 ON a.site_kpi = b.site_kpi
 AND a.select_kpi = b.select_kpi
 ORDER BY a.site_kpi
-)
+),
 
+#Targets submitted based on Role, Region and KPI (shared KPI)
+regional_targets_by_role AS (
+SELECT region_kpi,target_fy22,team_kpi,select_kpi,email_kpi
+FROM kpi_targets_submitted 
+WHERE target_fy22 IS NOT NULL
+    AND region_kpi <> "0"
+GROUP BY  target_fy22,team_kpi,select_kpi,region_kpi,email_kpi
+),
+
+map_regional_targets_shared_kpis AS (
+#identify KPIs that are shared within regional teams, and pull in the KPI target submitted for roles with same KPs (on same team)
+SELECT region_kpi,target_fy22,team_kpi, select_kpi,role ,email_kpi
+FROM gather_all_kpis
+LEFT JOIN regional_targets_by_role ON gather_all_kpis.function = regional_targets_by_role.team_kpi 
+AND regional_targets_by_role.select_kpi = gather_all_kpis.kpis_by_role
+group by region_kpi,target_fy22,team_kpi,role ,select_kpi,email_kpi
+),
+
+#identify duplicate targets submitted for same KPI in Regional teams
+dupe_regional_kpi_target_submissions AS (
+SELECT a.*
+FROM map_regional_targets_shared_kpis AS a
+JOIN 
+    (SELECT region_kpi,select_kpi, COUNT(*)
+    FROM map_regional_targets_shared_kpis 
+    GROUP BY region_kpi,select_kpi
+    HAVING COUNT(*) > 1) b
+ON a.region_kpi = b.region_kpi
+AND a.select_kpi = b.select_kpi
+ORDER BY a.region_kpi
+),
+
+#inconsistent Site targets for same KPI
+inconsistent_site_kpi_targets AS (
 SELECT dupe.site_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role 
-    
-FROM dupe_kpi_target_submissions AS dupe
-LEFT JOIN map_targets_shared_kpis shared_kpis 
+FROM dupe_site_kpi_target_submissions AS dupe
+LEFT JOIN map_site_targets_shared_kpis shared_kpis 
     ON dupe.site_kpi = shared_kpis.site_kpi
     AND dupe.select_kpi = shared_kpis.select_kpi
 WHERE dupe.team_kpi = shared_kpis.team_kpi
     AND dupe.target_fy22 <> shared_kpis.target_fy22
 GROUP BY dupe.site_kpi,target_fy22, select_kpi,role 
-    
+)
+
+#inconsistent Regional targets for same KPI
+--inconsistent_regional_kpi_targets AS (
+SELECT regional_dupe.REGION_KPI, regional_dupe.target_fy22, regional_dupe.select_kpi, regional_dupe.role,regional_dupe.email_kpi
+FROM dupe_regional_kpi_target_submissions AS regional_dupe
+LEFT JOIN map_regional_targets_shared_kpis AS shared_kpis
+    ON regional_dupe.region_kpi = shared_kpis.region_kpi
+    AND regional_dupe.select_kpi = shared_kpis.select_kpi
+WHERE regional_dupe.team_kpi = shared_kpis.team_kpi
+    AND regional_dupe.target_fy22 <> shared_kpis.target_fy22
+GROUP BY regional_dupe.region_kpi,target_fy22, select_kpi,role , email_kpi
+
+/*
+SELECT site_dupee.*, regional_dupes.*
+FROM inconsistent_site_kpi_targets AS site_dupes
+FULL JOIN inconsistent_regional_kpi_targets AS regional_dupes
+*/
