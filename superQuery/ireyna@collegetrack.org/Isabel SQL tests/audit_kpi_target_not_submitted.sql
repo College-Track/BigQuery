@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE TABLE 'data-studio-260217.performance_mgt.fy22_audit_kpi_targets_no_submissions'
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_audit_kpi_targets_no_submissions`
 OPTIONS
     (
     description= "This table pulls in targets not submitted by staff"
@@ -45,7 +45,7 @@ SELECT
     kpis_submitted.role,
     shared_kpi_targets.role AS role_shared_kpi_table,
     kpis_submitted.kpis_by_role,
-    shared_kpi_targets.kpis_by_role,
+    shared_kpi_targets.kpis_by_role AS shared_kpi,
     shared_kpi_targets.target_fy22,
     target_submitted AS original_target_Submitted_value,
     shared_kpi_targets.site_region_team, --e.g. Finance, Watts
