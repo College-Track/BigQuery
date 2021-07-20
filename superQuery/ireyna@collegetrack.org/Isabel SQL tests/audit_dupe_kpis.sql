@@ -45,11 +45,11 @@ AND disregard_entry_op_hard_coded IS NULL
 
 #Targets submitted based on Role, Site and KPI (shared KPI)
 site_targets_by_role AS (
-SELECT site_kpi,target_fy22,team_kpi,select_kpi
+SELECT site_kpi,target_fy22,team_kpi,select_kpi,email_kpi
 FROM kpi_targets_submitted 
 WHERE target_fy22 IS NOT NULL
     AND site_kpi <> "0"
-GROUP BY  target_fy22,team_kpi,select_kpi,site_kpi
+GROUP BY  target_fy22,team_kpi,select_kpi,site_kpi,email_kpi
 ),
 
 map_site_targets_shared_kpis AS (
