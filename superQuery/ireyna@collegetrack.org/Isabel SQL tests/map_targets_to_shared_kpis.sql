@@ -87,7 +87,7 @@ GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi
 SELECT site_kpi,target_fy22,team_kpi,gather_all_kpis.kpis_by_role
 FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
-    AND gather_all_kpis.kpis_by_role = site_targets_by_role.KPIS_BY_ROLE
+    --AND gather_all_kpis.kpis_by_role = site_targets_by_role.KPIS_BY_ROLE
 --  WHERE gather_all_kpis.function = site_targets_by_role.team_kpi
 --  AND gather_all_kpis.Role = site_targets_by_role.select_role
 --  AND gather_all_kpis.kpis_by_role = site_targets_by_role.select_kpi
