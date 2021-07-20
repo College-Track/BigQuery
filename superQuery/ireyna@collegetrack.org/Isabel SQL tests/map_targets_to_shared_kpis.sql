@@ -15,18 +15,18 @@ AS
 --SELECT *
 --FROM `data-warehouse-289815.google_sheets.team_kpi_target`
 WITH gather_all_kpis AS (
-SELECT function, role, kpis_by_role
+SELECT role, kpis_by_role,
+CASE 
+        WHEN function = "Mature Site Staff" THEN "Mature_Site_Staff" 
+        WHEN function = "Non-Mature Site Staff" THEN "Non_Mature_Site_Sraff"
+        ELSE NULL 
+        END AS function
 FROM `data-studio-260217.performance_mgt.role_kpi_selection` #clean list of KPIs by Role
 ORDER BY function, role
 ),
 
 gather_unique_function_role AS (
 SELECT DISTINCT function function, role, kpis_by_role,
-CASE 
-        WHEN function = "Mature Site Staff" THEN "Mature_Site_Staff" 
-        WHEN function = "Non-Mature Site Staff" THEN "Non_Mature_Site_Sraff"
-        ELSE NULL 
-        END AS function
 FROM gather_all_kpis
 ),
 
