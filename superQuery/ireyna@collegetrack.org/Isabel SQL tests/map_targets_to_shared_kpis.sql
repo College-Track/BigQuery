@@ -42,13 +42,13 @@ FROM `data-warehouse-289815.google_sheets.team_kpi_target` kpi_targets
 
 --create_list_of_unseleted_kpis_by_role AS (
 SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,
-    CASE WHEN 
+    /*CASE WHEN 
         GAK.function = kpi_targets_submitted.team_kpi AND
         GAK.kpis_by_role = kpi_targets_submitted.select_kpi AND 
         submission_id IS NULL
         THEN target_fy22
         ELSE 0
-    END AS mapped_targets
+    END AS mapped_targets*/
 FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
