@@ -27,7 +27,7 @@ WITH prep_kpi_targets AS (
         WHEN select_kpi = '% of college students graduating from college within 6 years'
         THEN '% of students graduating from college within 6 years'
         WHEN select_kpi = ' # of business days to close the month '
-        THEN ' # of business days to close the month'
+        THEN '# of business days to close the month'
         ELSE select_kpi
     END AS select_kpi,
     what_is_the_type_of_target_,
