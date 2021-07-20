@@ -80,7 +80,6 @@ site_targets_by_role AS (
 SELECT site_kpi,target_fy22,team_kpi,kpis_by_role
 FROM prep_site_targets_by_role
 WHERE target_fy22 IS NOT NULL
-AND site_kpi IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi
 )
 
@@ -89,4 +88,5 @@ SELECT site_kpi,target_fy22,team_kpi,function, site_targets_by_role.kpis_by_role
 FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
 AND site_targets_by_role.kpis_by_role = gather_all_kpis.kpis_by_role
+WHERE site_kpi <> "0"
 group by site_kpi,target_fy22,team_kpi,function,role ,kpis_by_role
