@@ -40,21 +40,23 @@ FROM `data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis`
 --Site KPIs only: Combine submitted KPI targets from Form, with shared KPIs & targets to flag KPIs not yet submitted
 prep_submitted_site_targets AS (
 SELECT 
-    site_or_region,
+
     function, --e.g. mature site staff
-    shared_kpi_targets.mature_non_mature,
     kpis_submitted.role,
-    shared_kpi_targets.role AS role_shared_kpi_table,
     kpis_submitted.kpis_by_role,
-    shared_kpi_targets.kpis_by_role AS shared_kpi,
     shared_kpi_targets.target_fy22,
-    target_submitted AS original_target_Submitted_value,
     shared_kpi_targets.site_region_team, --e.g. Finance, Watts
-    CASE 
+     CASE 
         WHEN shared_kpi_targets.target_fy22 IS NOT NULL AND target_submitted = "Not Submitted" 
         THEN "Submitted"
         ELSE target_submitted
-    END AS target_submitted
+    END AS target_submitted,
+    shared_kpi_targets.mature_non_mature,
+    shared_kpi_targets.role AS role_shared_kpi_table,
+    shared_kpi_targets.kpis_by_role AS shared_kpi,
+    target_submitted AS original_target_Submitted_value,
+    site_or_region,
+    
      
  FROM `data-studio-260217.performance_mgt.fy22_team_kpis` kpis_submitted
  LEFT JOIN clean_shared_kpi_targets_table AS shared_kpi_targets
@@ -68,9 +70,7 @@ WHERE program = 1
 --Regional KPIs only: Combine submitted KPI targets from Form, with shared KPIs & targets to flag KPIs not yet submitted
 prep_submitted_region_targets AS (
 SELECT 
-    site_or_region,
     function, --e.g. mature site staff
-    shared_kpi_targets.mature_non_mature,
     kpis_submitted.role,
     kpis_submitted.kpis_by_role,
     shared_kpi_targets.target_fy22,
@@ -79,8 +79,10 @@ SELECT
         WHEN shared_kpi_targets.target_fy22 IS NOT NULL AND target_submitted = "Not Submitted" 
         THEN "Submitted"
         ELSE target_submitted
-    END AS target_submitted
-     
+    END AS target_submitted,
+    shared_kpi_targets.mature_non_mature,
+    site_or_region
+ 
  FROM `data-studio-260217.performance_mgt.fy22_team_kpis` kpis_submitted
  LEFT JOIN clean_shared_kpi_targets_table AS shared_kpi_targets
     ON kpis_submitted.function = shared_kpi_targets.mature_non_mature
@@ -130,19 +132,32 @@ GROUP BY
     shared_kpi_targets.site_region_team --e.g. Finance, Watts
 )
 
-SELECT *
+SELECT function,
+    role,
+    kpis_by_role,
+    target_fy22,
+    site_region_team
 FROM prep_submitted_national_targets
 WHERE target_submitted = "Not Submitted"
 
 UNION ALL
 
-SELECT * EXCEPT (role_shared_kpi_table,shared_kpi,original_target_Submitted_value,kpis_by_role,mature_non_mature)
+SELECT function, --e.g. mature site staff
+    role,
+    kpis_by_role,
+    target_fy22,
+    site_region_team --e.g. Finance, Watts
+    
 FROM prep_submitted_site_targets
 WHERE target_submitted = "Not Submitted"
 
 UNION ALL
 
-SELECT * EXCEPT (kpis_by_role,mature_non_mature)
+SELECT function, --e.g. mature site staff
+    role,
+    kpis_by_role,
+    target_fy22,
+    site_region_team
 FROM prep_submitted_region_targets
 WHERE target_submitted = "Not Submitted"
 
