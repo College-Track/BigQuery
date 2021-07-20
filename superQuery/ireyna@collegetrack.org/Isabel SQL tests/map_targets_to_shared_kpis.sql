@@ -77,6 +77,6 @@ GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,tar
 )
 
 SELECT target_fy22,team_kpi,kpis_by_role
-FROM targets_by_role
+FROM site_targets_by_role
 WHERE target_fy22 IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role
