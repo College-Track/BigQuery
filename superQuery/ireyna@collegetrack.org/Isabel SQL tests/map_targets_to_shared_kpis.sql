@@ -37,8 +37,9 @@ CASE
       WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
     END AS target_fy22,
-FROM `data-warehouse-289815.google_sheets.team_kpi_target` kpi_targets
+FROM `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` kpi_targets
 WHERE email_kpi <> "test@collegetrack.org"
+AND disregard_entry_op_hard_coded = 1 
 ),
 
 targets_by_role AS (
