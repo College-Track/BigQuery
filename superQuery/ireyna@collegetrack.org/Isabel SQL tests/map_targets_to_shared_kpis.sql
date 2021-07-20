@@ -80,10 +80,11 @@ site_targets_by_role AS (
 SELECT site_kpi,target_fy22,team_kpi,kpis_by_role
 FROM prep_site_targets_by_role
 WHERE target_fy22 IS NOT NULL
+AND site_kpi IS NOT NULL
 GROUP BY  target_fy22,team_kpi,kpis_by_role,site_kpi
 )
 
-#identify KPIs that are shared, and pull in the KPI target submitted for roles with same KPs (on same team)
+#identify Site KPIs that are shared, and pull in the KPI target submitted for roles with same KPs (on same team)
 SELECT site_kpi,target_fy22,team_kpi,function, site_targets_by_role.kpis_by_role,role ,
 FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
