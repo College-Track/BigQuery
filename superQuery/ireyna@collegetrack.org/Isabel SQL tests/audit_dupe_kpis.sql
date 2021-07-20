@@ -1,12 +1,12 @@
 #flag duplicate KPI entries with inconsistent targets
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_dupe_kpi_targets`
 OPTIONS
     (
     description= "This table flags different targets for KPIs shared amongst same team. Targets should be the same "
     )
 AS
-*/
+
 WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
 CASE 
@@ -14,6 +14,10 @@ CASE
         WHEN function = "Non-Mature Site Staff" THEN "Non-Mature_Site_Staff"
         WHEN function = "Mature Regional Staff" THEN "Mature_Regional_Staff" 
         WHEN function = "Non-Mature Regional Staff" THEN "Non-Mature_Regional_Staff"
+        WHEN function = "Org Performance" THEN "Org_Performance"
+        WHEN function = "Employee Experience" THEN "Employee_Experience"
+        WHEN function = "Talent Acquisition" THEN "Talent_Acquisition"
+        WHEN function = "Strategic Initiatives" THEN "Strategic_Initiatives"
         ELSE NULL 
         END AS function
 FROM `data-studio-260217.performance_mgt.role_kpi_selection` #clean list of KPIs by Role
