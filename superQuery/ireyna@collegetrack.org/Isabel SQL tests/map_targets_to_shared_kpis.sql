@@ -51,6 +51,6 @@ SELECT kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kp
     END AS mapped_targets
 FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
-ON GAK.role = kpi_targets_submitted.select_role 
+ON GAK.function = kpi_targets_submitted.team_kpi
 --WHERE GAFR.select_role != GAK.role
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22
