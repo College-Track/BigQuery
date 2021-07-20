@@ -1,12 +1,3 @@
-#flag duplicate KPI entries with inconsistent targets
-/*
-CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_dupe_kpi_targets`
-OPTIONS
-    (
-    description= "This table flags different targets for KPIs shared amongst same team. Targets should be the same "
-    )
-AS
-*/
 WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
 CASE 
@@ -54,11 +45,11 @@ GROUP BY  target_fy22,team_kpi,select_kpi,site_kpi
 
 map_site_targets_shared_kpis AS (
 #identify KPIs that are shared, and pull in the KPI target submitted for roles with same KPs (on same team)
-SELECT site_kpi,target_fy22,team_kpI, site_targets_by_role.select_kpi,role 
+SELECT site_kpi,target_fy22,team_kpI, site_targets_by_role.select_kpi,role ,email_kpi
 FROM gather_all_kpis
 LEFT JOIN site_targets_by_role ON gather_all_kpis.function = site_targets_by_role.team_kpi 
 AND site_targets_by_role.select_kpi = gather_all_kpis.kpis_by_role
-group by site_kpi,target_fy22,team_kpi,role ,select_kpi
+group by site_kpi,target_fy22,team_kpi,role ,select_kpi,email_kpi
 ),
 
 #identify duplicate targets submitted for same KPI
@@ -105,7 +96,7 @@ JOIN
 ON a.region_kpi = b.region_kpi
 AND a.select_kpi = b.select_kpi
 ORDER BY a.region_kpi
-),
+)
 
 #inconsistent Site targets for same KPI
 inconsistent_site_kpi_targets AS (
@@ -117,21 +108,3 @@ LEFT JOIN map_site_targets_shared_kpis shared_kpis
 WHERE dupe.team_kpi = shared_kpis.team_kpi
     AND dupe.target_fy22 <> shared_kpis.target_fy22
 GROUP BY dupe.site_kpi,target_fy22, select_kpi,role 
-)
-
-#inconsistent Regional targets for same KPI
---inconsistent_regional_kpi_targets AS (
-SELECT regional_dupe.REGION_KPI, regional_dupe.target_fy22, regional_dupe.select_kpi, regional_dupe.role,regional_dupe.email_kpi
-FROM dupe_regional_kpi_target_submissions AS regional_dupe
-LEFT JOIN map_regional_targets_shared_kpis AS shared_kpis
-    ON regional_dupe.region_kpi = shared_kpis.region_kpi
-    AND regional_dupe.select_kpi = shared_kpis.select_kpi
-WHERE regional_dupe.team_kpi = shared_kpis.team_kpi
-    AND regional_dupe.target_fy22 <> shared_kpis.target_fy22
-GROUP BY regional_dupe.region_kpi,target_fy22, select_kpi,role , email_kpi
-
-/*
-SELECT site_dupee.*, regional_dupes.*
-FROM inconsistent_site_kpi_targets AS site_dupes
-FULL JOIN inconsistent_regional_kpi_targets AS regional_dupes
-*/
