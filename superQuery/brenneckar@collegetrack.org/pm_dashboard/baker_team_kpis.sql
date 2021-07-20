@@ -1,3 +1,10 @@
+
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+)
+AS 
+
 WITH prep_kpi_targets AS (
   SELECT
     team_kpi,
@@ -27,7 +34,7 @@ WITH prep_kpi_targets AS (
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
-      WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
+      WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
     END AS target_fy22,
   FROM
