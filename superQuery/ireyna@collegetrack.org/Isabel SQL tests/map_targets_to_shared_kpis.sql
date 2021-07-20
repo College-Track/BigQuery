@@ -38,9 +38,9 @@ CASE
       ELSE NULL
     END AS target_fy22,
 FROM `data-warehouse-289815.google_sheets.team_kpi_target` kpi_targets
-)
+),
 
---create_list_of_unseleted_kpis_by_role AS (
+targets_by_role AS (
 SELECT submission_id,target_fy22,kpi_targets_submitted.team_kpi, kpi_targets_submitted.select_role, GAK.kpis_by_role,
     /*CASE WHEN 
         GAK.function = kpi_targets_submitted.team_kpi AND
@@ -53,4 +53,9 @@ FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 --WHERE GAFR.select_role != GAK.role
-GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22
+GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22)
+
+SELECT target_fy22,team_kpi,kpis_by_role
+FROM targets_by_role
+WHERE target_fy22 IS NOT NULL
+GROUP BY  target_fy22,team_kpi,kpis_by_role
