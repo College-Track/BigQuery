@@ -135,7 +135,7 @@ GROUP BY
 SELECT function,
     role,
     kpis_by_role,
-    target_fy22,
+    target_submitted,
     site_region_team
 FROM prep_submitted_national_targets
 WHERE target_submitted = "Not Submitted"
@@ -145,7 +145,7 @@ UNION ALL
 SELECT function, --e.g. mature site staff
     role,
     kpis_by_role,
-    target_fy22,
+    target_submitted,
     site_region_team --e.g. Finance, Watts
     
 FROM prep_submitted_site_targets
@@ -156,7 +156,7 @@ UNION ALL
 SELECT function, --e.g. mature site staff
     role,
     kpis_by_role,
-    target_fy22,
+    target_submitted,
     site_region_team
 FROM prep_submitted_region_targets
 WHERE target_submitted = "Not Submitted"
