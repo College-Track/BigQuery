@@ -75,7 +75,7 @@ GROUP BY  target_fy22,team_kpi,kpis_by_role,email_kpi, region_kpi
 
 #identify Site KPIs that are shared across different roles, and pull in the KPI target submitted for roles with same KPs (on same team)
 national_targets_shared_by_role AS (
-SELECT team_kpi,target_fy22,region_kpi, national_targets_by_role.kpis_by_role,role,email_kpi
+SELECT team_kpi,target_fy22,region_kpi AS site_or_region, national_targets_by_role.kpis_by_role,role,email_kpi
 FROM gather_all_kpis
 LEFT JOIN national_targets_by_role ON gather_all_kpis.function = national_targets_by_role.team_kpi 
 AND national_targets_by_role.kpis_by_role = gather_all_kpis.kpis_by_role
