@@ -97,11 +97,38 @@ GROUP BY
     shared_kpi_targets.target_fy22,
     kpis_submitted.target_submitted,
     shared_kpi_targets.site_region_team --e.g. Finance, Watts
+),
 
+--National KPIs only: Combine submitted KPI targets from Form, with shared KPIs & targets to flag KPIs not yet submitted
+prep_submitted_national_targets AS (
+SELECT 
+    function,
+    kpis_submitted.role,
+    kpis_submitted.kpis_by_role,
+    shared_kpi_targets.target_fy22,
+    shared_kpi_targets.site_region_team, --e.g. Finance, Watts
+    CASE 
+        WHEN shared_kpi_targets.target_fy22 IS NOT NULL AND target_submitted = "Not Submitted" 
+        THEN "Submitted"
+        ELSE target_submitted
+    END AS target_submitted
+     
+ FROM `data-studio-260217.performance_mgt.fy22_team_kpis` kpis_submitted
+ LEFT JOIN clean_shared_kpi_targets_table AS shared_kpi_targets
+    ON kpis_submitted.function = shared_kpi_targets.site_region_team
+    
+    AND kpis_submitted.kpis_by_role = shared_kpi_targets.kpis_by_role
+
+WHERE region_function = 0
+    AND program = 0
+GROUP BY 
+   function,
+    kpis_submitted.role,
+    kpis_submitted.kpis_by_role,
+    shared_kpi_targets.target_fy22,
+    kpis_submitted.target_submitted,
+    shared_kpi_targets.site_region_team --e.g. Finance, Watts
 )
-
-
-
 
 
 SELECT *
