@@ -3,14 +3,14 @@
 #for regional
 #for non-program roles
 
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis`
 OPTIONS
     (
     description= "This table maps submitted targets to KPIs shared across roles within Teams/Functions"
     )
 AS
-*/
+
 
 WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
