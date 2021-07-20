@@ -38,6 +38,7 @@ CASE
       ELSE NULL
     END AS target_fy22,
 FROM `data-warehouse-289815.google_sheets.team_kpi_target` kpi_targets
+WHERE email_kpi <> "test@collegetrack.org"
 ),
 
 targets_by_role AS (
@@ -53,7 +54,8 @@ FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 --WHERE GAFR.select_role != GAK.role
-GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22)
+GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22
+)
 
 SELECT target_fy22,team_kpi,kpis_by_role
 FROM targets_by_role
