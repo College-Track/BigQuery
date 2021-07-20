@@ -19,7 +19,7 @@ WITH prep_kpi_targets AS (
         WHEN site_kpi = "Ward_8" THEN "Ward 8"
         ELSE site_kpi
     END AS site_kpi,
-    CASE
+     CASE
         WHEN select_kpi = 'Student Survey - % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
             THEN 'Student Survey - % of students served by Wellness who "agree" or "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
         WHEN select_kpi = '% of high school seniors who matriculate to Good, Best, or Situational Best Fit colleges'
@@ -40,7 +40,7 @@ WITH prep_kpi_targets AS (
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
-      WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
+      WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
     END AS target_fy22,
   FROM
