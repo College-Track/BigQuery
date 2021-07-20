@@ -1,16 +1,16 @@
-#map targets to shared KPIs across teams 
+#map targets to shared KPIs across teams (Sites only so far)
 #for sites
 #for regional
 #for non-program roles
 
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis`
 OPTIONS
     (
     description= "This table maps targets to KPIs shared across roles within Teams/Functions"
     )
 AS
-
+*/
 
 --SELECT *
 --FROM `data-warehouse-289815.google_sheets.team_kpi_target`
