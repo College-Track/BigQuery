@@ -109,11 +109,11 @@ ORDER BY a.region_kpi
 
 #inconsistent Site targets for same KPI
 --inconsistent_site_kpi_targets AS (
-SELECT dupe.site_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role 
+SELECT dupe.site_kpi,dupe.target_fy22, dupe.select_kpi,dupe.role, email_kpi
 FROM dupe_site_kpi_target_submissions AS dupe
 LEFT JOIN map_site_targets_shared_kpis shared_kpis 
     ON dupe.site_kpi = shared_kpis.site_kpi
     AND dupe.select_kpi = shared_kpis.select_kpi
 WHERE dupe.team_kpi = shared_kpis.team_kpi
     AND dupe.target_fy22 <> shared_kpis.target_fy22
-GROUP BY dupe.site_kpi,target_fy22, select_kpi,role 
+GROUP BY dupe.site_kpi,target_fy22, select_kpi,role ,email_kpi
