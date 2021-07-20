@@ -777,9 +777,11 @@ WITH gather_contact_data AS (
                                      fit_type_at_c AS AY_fit_type,
                                      AT_Grade_c AS AY_Grade,
                                      AT_Cumulative_GPA_bucket AS AY_Cumulative_GPA_bucket,
+                                     sort_AT_Cumulative_GPA AS sort_AY_Cumulative_GPA,
                                      AT_Cumulative_GPA AS AY_Cumulative_GPA,
                                      AT_Term_GPA AS AY_Term_GPA,
-                                     AT_Term_GPA_bucket AS AY_Term_GPA_bucket
+                                     AT_Term_GPA_bucket AS AY_Term_GPA_bucket,
+                                     sort_AT_Term_GPA_bucket AS sort_AY_Term_GPA_bucket
                                  FROM `data-warehouse-289815.salesforce_clean.contact_at_template` A_T
                                  WHERE term_c = 'Spring'),
      join_data AS (SELECT
