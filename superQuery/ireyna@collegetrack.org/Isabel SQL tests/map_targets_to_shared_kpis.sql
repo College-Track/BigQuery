@@ -30,6 +30,7 @@ SELECT
     team_kpi, 
     select_role,
     select_kpi,
+    site_kpi,
     submission_id,
 CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
