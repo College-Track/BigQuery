@@ -1,4 +1,3 @@
-WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
 CASE 
         WHEN function = "Mature Site Staff" THEN "Mature_Site_Staff" 
