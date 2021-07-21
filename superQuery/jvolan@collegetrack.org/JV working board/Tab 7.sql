@@ -4,6 +4,8 @@
     workshop_display_name_c,
     dosage_types_c,
     (sessions_c * duration_c) AS at_total_mins,
+    540 AS acceleration_min,
+    675 AS acceleration_rec,
     sessions_c,
     duration_c,
     first_session_date_c,
