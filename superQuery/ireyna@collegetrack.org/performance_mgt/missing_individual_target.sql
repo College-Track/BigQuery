@@ -17,13 +17,13 @@ SELECT
     staff_list.region,
     what_is_the_type_of_target_,
     add_from_your_team_s_kpi_list,
-    what_will_your_self_created_kpi_be_this_year_,
     CASE
       WHEN enter_the_target_numeric_kpi_list IS NOT NULL THEN enter_the_target_numeric_kpi_list
       WHEN enter_the_target_percent_kpi_list iS NOT NULL THEN enter_the_target_percent_kpi_list
       --WHEN what_is_the_type_of_target_kpi_list = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
     END AS target_fy22_kpi_list,
+    what_will_your_self_created_kpi_be_this_year_,
     CASE
       WHEN enter_the_target_percent_self_created IS NOT NULL THEN enter_the_target_percent_self_created
       WHEN enter_the_target_numeric_self_created iS NOT NULL THEN enter_the_target_numeric_self_created
@@ -31,6 +31,7 @@ SELECT
       ELSE NULL
     END AS target_fy22_kpi_self_created,
     
-FROM `data-warehouse-289815.google_sheets.staff_list` AS staff_list
-LEFT JOIN `data-warehouse-289815.google_sheets.individual_kpi_target` AS kpi_targets_submitted
+
+FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS kpi_targets_submitted
+LEFT JOIN  `data-warehouse-289815.google_sheets.staff_list` AS staff_list
     ON kpi_targets_submitted.enter_your_college_track_email_address = staff_list.email_address
