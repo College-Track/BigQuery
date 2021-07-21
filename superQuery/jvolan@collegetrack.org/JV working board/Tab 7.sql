@@ -29,8 +29,10 @@ gather_workshop_data AS
     SELECT
     site_c,
     dosage_types_c,
-    MAX(sessions_c),
-    MAX(at_total_mins),
+    MAX(sessions_c) AS total_sessions,
+    MAX(at_total_mins) AS at_total_mins,
+    MAX(Total_duration_min) AS Total_duration_min,
+    MAX(Total_duration_max) AS Total_duration_max,
     MAX(CASE
         WHEN Total_duration_min > at_total_mins THEN 'Less than min required dosage'
         WHEN Total_duration_max < at_total_mins THEN 'More than max required dosage'
