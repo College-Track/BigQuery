@@ -45,6 +45,7 @@ no_individual_kpi_email AS (
 SELECT 
     staff_list.first_name,
     staff_list.last_name,
+    staff_list.full_name,
     staff_list.email_address,
     enter_your_college_track_email_address,
     staff_list.team,
@@ -63,6 +64,7 @@ no_inidivudal_kpi_full_name AS (
 SELECT 
     staff_list.first_name,
     staff_list.last_name,
+    staff_list.full_name,
     staff_list.email_address,
     great_select_your_name,
     staff_list.team,
