@@ -1,4 +1,3 @@
-
 SELECT
     staff_list.first_name,
     staff_list.last_name,
@@ -13,7 +12,17 @@ SELECT
       WHEN enter_the_target_percent_kpi_list IS NOT NULL THEN enter_the_target_percent_kpi_list
       WHEN what_is_the_type_of_target_kpi_list = "I am not adding another KPI from my team's list" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
-    END AS target_fy22_kpi_list,
+    END AS target_fy22_kpi_list_1,
+    CASE
+      WHEN enter_the_target_percent_kpi_list_2 IS NOT NULL THEN enter_the_target_percent_kpi_list_2
+      WHEN what_is_the_type_of_target_kpi_list_2 = "I am not adding another KPI from my team's list" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
+      ELSE NULL
+    END AS target_fy22_kpi_list_2,
+    CASE
+      WHEN enter_the_target_percent_kpi_list_3 IS NOT NULL THEN enter_the_target_percent_kpi_list_3
+      WHEN what_is_the_type_of_target_kpi_list_3 = "I am not adding another KPI from my team's list" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
+      ELSE NULL
+    END AS target_fy22_kpi_list_3,
     what_will_your_self_created_kpi_be_this_year_,
     CASE
       WHEN enter_the_target_percent_self_created IS NOT NULL THEN enter_the_target_percent_self_created
@@ -24,3 +33,5 @@ SELECT
     
 
 FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS kpi_targets_submitted
+LEFT JOIN  `data-warehouse-289815.google_sheets.staff_list` AS staff_list
+    ON kpi_targets_submitted.enter_your_college_track_email_address = staff_list.email_address
