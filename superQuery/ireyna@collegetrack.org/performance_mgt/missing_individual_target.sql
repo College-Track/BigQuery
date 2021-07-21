@@ -1,3 +1,6 @@
+WITH 
+
+submitted_individual_kpis AS (
 SELECT
     LOWER(enter_your_college_track_email_address) AS enter_your_college_track_email_address,
     great_select_your_name,
@@ -25,3 +28,21 @@ SELECT
       ELSE NULL
     END AS target_fy22_kpi_self_created
 FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS kpi_targets_submitted
+)
+
+SELECT 
+    staff_list.first_name,
+    staff_list.last_name,
+    staff_list.email_address,
+    submitted_1.enter_your_college_track_email_address,
+    staff_list.team,
+    staff_list.program_area,
+    staff_list.site,
+    staff_list.region
+FROM  `data-warehouse-289815.google_sheets.staff_list` staff_list
+LEFT JOIN  submitted_individual_kpis AS submitted_1
+    ON email_address = submitted_1.enter_your_college_track_email_address
+LEFT JOIN submitted_individual_kpis AS submitted_2  
+    ON full_name = submitted_2.great_select_your_name
+WHERE submitted_1.enter_your_college_track_email_address IS NULL
+    OR submitted_2.great_select_your_name IS NULL
