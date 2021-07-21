@@ -80,7 +80,7 @@ FROM  `data-warehouse-289815.google_sheets.staff_list` staff_list
 LEFT JOIN  submitted_individual_kpis
     ON email_address = enter_your_college_track_email_address
 WHERE enter_your_college_track_email_address IS NULL
-AND staff_list.full_name  IN (SELECT great_select_your_name  --if staff member is NOT listed as missing in no_individual_kpi_full_name table, then do NOT pull them in as missing here
+AND staff_list.full_name NOT IN (SELECT great_select_your_name  --if staff member is NOT listed as missing in no_individual_kpi_full_name table, then do NOT pull them in as missing here
                                 FROM no_individual_kpi_full_name)
 
 )
