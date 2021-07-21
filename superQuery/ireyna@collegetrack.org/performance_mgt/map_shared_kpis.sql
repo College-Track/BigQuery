@@ -49,13 +49,7 @@ CASE
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
       WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_
       ELSE NULL
-    END AS target_fy22,
-CASE
-    WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
-    WHEN select_kpi = "% of students engaged in career exploration, readiness events or internships" THEN "Not Required"
-    WHEN select_kpi = "% of students growing toward average or above social-emotional strengths" THEN "Not Required"
-    ELSE NULL
-  END AS not_required
+    END AS target_fy22
 FROM `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` kpi_targets
 WHERE email_kpi <> "test@collegetrack.org"
 AND disregard_entry_op_hard_coded IS NULL
@@ -68,7 +62,6 @@ LEFT JOIN kpi_targets_submitted
 ON all_kpis.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi = "0"
     AND region_kpi ="0"
-    AND not_required <> "Not Required"
 GROUP BY team_kpi,select_role,kpis_by_role,select_kpi,target_fy22,email_kpi,region_kpi
 ),
 
@@ -95,7 +88,6 @@ FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi <> "0"
-AND not_required <> "Not Required"
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,site_kpi,email_kpi
 ),
 
@@ -123,7 +115,6 @@ FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE region_kpi <> "0"
-AND not_required <> "Not Required"
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,region_kpi,email_kpi
 ),
 
