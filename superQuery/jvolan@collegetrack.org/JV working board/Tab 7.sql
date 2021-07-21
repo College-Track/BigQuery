@@ -1,6 +1,5 @@
 
     SELECT
-    workshop_display_name_c,
     dosage_types_c,
     first_session_date_c,
     last_session_date_c,
