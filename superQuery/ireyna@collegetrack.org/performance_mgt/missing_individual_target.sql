@@ -1,11 +1,11 @@
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_kpi_audit_no_individual_kpi`
 OPTIONS
     (
     description= "This table pulls in staff that have not submitted using the Individual KPI Form"
     )
 AS 
-*/
+
 
 WITH 
 
@@ -80,9 +80,7 @@ FROM  `data-warehouse-289815.google_sheets.staff_list` staff_list
 LEFT JOIN  submitted_individual_kpis
     ON email_address = enter_your_college_track_email_address
 WHERE enter_your_college_track_email_address IS NULL
-AND staff_list.full_name NOT IN (SELECT great_select_your_name  --if staff member is NOT listed as missing in no_individual_kpi_full_name table, then do NOT pull them in as missing here
-                                FROM no_individual_kpi_full_name)
-
+AND full_name  IN (SELECT full_name FROM no_individual_kpi_full_name) --if staff member is NOT listed as missing in no_individual_kpi_full_name table, then do NOT pull them in as missing here
 )
 
 SELECT * 
