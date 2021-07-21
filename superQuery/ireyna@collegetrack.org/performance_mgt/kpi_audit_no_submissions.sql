@@ -1,11 +1,11 @@
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_audit_kpi_targets_no_submissions`
 OPTIONS
     (
     description= "This table pulls in targets not submitted by staff"
     )
 AS
-*/
+
 
 WITH 
 
