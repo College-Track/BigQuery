@@ -10,7 +10,7 @@ SELECT
     AND Shared_kpis.kpis_by_role = raw_submitted_kpis.select_kpi
  WHERE target_fy22  > 100 
  OR target_fy22  < 1
-    AND region_kpi IS NOT NULL
+    AND mature_non_mature IN ('Mature_Regional_Staff','Mature_Regional_Staff')
     AND site_kpi = "0"
     AND what_is_the_type_of_target_ = 'Numeric (but not percent)'
     AND raw_submitted_kpis.email_kpi <> "test@collegetrack.org"
