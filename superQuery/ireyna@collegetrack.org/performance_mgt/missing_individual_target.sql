@@ -1,11 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_kpi_audit_no_individual_kpi`
 OPTIONS
     (
     description= "This table pulls in staff that have not submitted using the Individual KPI Form"
     )
 AS 
-
+*/
 
 WITH 
 
