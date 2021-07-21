@@ -15,6 +15,7 @@ SELECT
     AND raw_submitted_kpis.email_kpi <> "test@collegetrack.org"
 GROUP BY 
     site_region_team,
+    team_kpi,
     Role,
     kpis_by_role,
    what_is_the_type_of_target_,
