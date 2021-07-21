@@ -27,7 +27,7 @@ SELECT
     CASE
       WHEN enter_the_target_percent_self_created IS NOT NULL THEN enter_the_target_percent_self_created
       WHEN enter_the_target_numeric_self_created iS NOT NULL THEN enter_the_target_numeric_self_created
-      WHEN what_is_the_type_of_target_kpi_list = "I am not adding a self-created KPI" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
+      WHEN what_is_the_type_of_target_self_created = "I am not adding a self-created KPI" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
     END AS target_fy22_kpi_self_created,
     
