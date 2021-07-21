@@ -76,6 +76,7 @@ LEFT JOIN kpi_targets_submitted
 ON all_kpis.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi = "0"
     AND region_kpi ="0"
+    AND target_submitted <> "Not Required"
 GROUP BY team_kpi,select_role,kpis_by_role,select_kpi,target_fy22,email_kpi,region_kpi
 ),
 
@@ -102,6 +103,7 @@ FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE site_kpi <> "0"
+    AND target_submitted <> "Not Required"
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,site_kpi,email_kpi
 ),
 
@@ -129,6 +131,7 @@ FROM gather_all_kpis GAK
 LEFT JOIN kpi_targets_submitted 
 ON GAK.kpis_by_role = kpi_targets_submitted.select_kpi
 WHERE region_kpi <> "0"
+    AND target_submitted <> "Not Required"
 GROUP BY team_kpi,select_role,kpis_by_role,function,select_kpi,submission_id,target_fy22,region_kpi,email_kpi
 ),
 
