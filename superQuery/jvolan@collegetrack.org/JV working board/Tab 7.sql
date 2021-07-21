@@ -7,4 +7,4 @@
     sessions_c,
     
     From `data-warehouse-289815.salesforce_clean.class_template`
-    WHERE global_academic_semester_c = 'Spring 2020-21 (Semester)'
+    WHERE global_academic_semester_c = 'a3646000000dMXoAAM'
