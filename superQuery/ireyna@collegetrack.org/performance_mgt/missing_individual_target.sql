@@ -1,3 +1,12 @@
+/*
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_kpi_audit_no_individual_kpi`
+OPTIONS
+    (
+    description= "This table pulls in staff that have not submitted using the Individual KPI Form"
+    )
+AS 
+*/
+
 WITH 
 
 submitted_individual_kpis AS (
@@ -28,21 +37,48 @@ SELECT
       ELSE NULL
     END AS target_fy22_kpi_self_created
 FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS kpi_targets_submitted
-)
+),
+
+--Identify missing KPI submission using email address
+no_individual_kpi_email AS (
 
 SELECT 
     staff_list.first_name,
     staff_list.last_name,
     staff_list.email_address,
-    submitted_1.enter_your_college_track_email_address,
+    enter_your_college_track_email_address,
     staff_list.team,
     staff_list.program_area,
     staff_list.site,
     staff_list.region
 FROM  `data-warehouse-289815.google_sheets.staff_list` staff_list
-LEFT JOIN  submitted_individual_kpis AS submitted_1
-    ON email_address = submitted_1.enter_your_college_track_email_address
-LEFT JOIN submitted_individual_kpis AS submitted_2  
-    ON full_name = submitted_2.great_select_your_name
-WHERE submitted_1.enter_your_college_track_email_address IS NULL
-    OR submitted_2.great_select_your_name IS NULL
+LEFT JOIN  submitted_individual_kpis 
+    ON email_address = enter_your_college_track_email_address
+WHERE enter_your_college_track_email_address IS NULL
+    
+),
+
+--Identify missing KPI submission using full name
+no_inidivudal_kpi_full_name AS (
+SELECT 
+    staff_list.first_name,
+    staff_list.last_name,
+    staff_list.email_address,
+    great_select_your_name,
+    staff_list.team,
+    staff_list.program_area,
+    staff_list.site,
+    staff_list.region
+FROM  `data-warehouse-289815.google_sheets.staff_list` staff_list
+LEFT JOIN submitted_individual_kpis  
+    ON full_name = great_select_your_name
+WHERE great_select_your_name IS NULL
+)
+
+SELECT * 
+FROM no_individual_kpi_email 
+
+UNION ALL
+
+SELECT *
+FROM no_inidivudal_kpi_full_name
