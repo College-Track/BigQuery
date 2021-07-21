@@ -1,3 +1,9 @@
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.audit_kpi_weird_targets`
+OPTIONS
+    (
+    description= "This table pulls in targets that do not make sense for a numeric, percent or T/F target"
+    )
+AS 
  
  WITH 
  --Next 3 queries: Flag entries for % targets over 100%
