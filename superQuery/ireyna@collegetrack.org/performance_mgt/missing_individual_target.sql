@@ -1,3 +1,12 @@
+/*
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_kpi_audit_no_individual_kpi`
+OPTIONS
+    (
+    description= "This table pulls in staff that have not submitted using the Individual KPI Form"
+    )
+AS 
+*/
+
 WITH 
 
 submitted_individual_kpis AS (
@@ -73,8 +82,9 @@ LEFT JOIN  submitted_individual_kpis
     ON email_address = enter_your_college_track_email_address
 WHERE enter_your_college_track_email_address IS NULL
 AND full_name IN (SELECT full_name FROM no_individual_kpi_full_name) --if staff member is NOT listed as missing in no_individual_kpi_full_name table, then do NOT pull them in as missing here
-)
+),
 
+missing_individual_kpis_union AS (
 SELECT * 
 FROM no_individual_kpi_email 
 
@@ -82,3 +92,7 @@ UNION ALL
 
 SELECT *
 FROM no_individual_kpi_full_name
+)
+
+SELECT DISTINCT *
+FROM missing_individual_kpis_union
