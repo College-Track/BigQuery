@@ -25,19 +25,21 @@ gather_workshop_data AS
     WHERE global_academic_semester_c = 'a3646000000dMXoAAM'
     AND dosage_types_c IN ('Acceleration','Test Prep','Tutoring','Student Life')
 )
-
     SELECT
     site_c,
     dosage_types_c,
-    MAX(sessions_c) AS total_sessions,
-    MAX(at_total_mins) AS at_total_mins,
-    MAX(Total_duration_min) AS Total_duration_min,
-    MAX(Total_duration_max) AS Total_duration_max,
-    MAX(CASE
+    CASE
         WHEN Total_duration_min > at_total_mins THEN 'Less than min required dosage'
         WHEN Total_duration_max < at_total_mins THEN 'More than max required dosage'
         ELSE 'Dosage meets expectations'
-    END) AS meeting_dosage_bucket
+    END AS meeting_dosage_bucket,
+    CASE
+        WHEN 
+        (Total_duration_min > at_total_mins 
+        OR Total_duration_max < at_total_mins) THEN 0
+        ELSE 1
+    END AS meeting_dosage_yn
         
     FROM gather_workshop_data
-    GROUP BY site_c, dosage_types_c
+
+  
