@@ -7,3 +7,4 @@ SELECT *
     AND region_kpi = "0"
     AND site_kpi = "0"
     AND what_is_the_type_of_target_ = 'Numeric (but not percent)'
+    AND email_kpi <> "test@collegetrack.org"
