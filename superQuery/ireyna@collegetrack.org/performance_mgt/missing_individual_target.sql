@@ -15,13 +15,16 @@ SELECT
     staff_list.program_area,
     staff_list.site,
     staff_list.region,
+    what_is_the_type_of_target_,
     add_from_your_team_s_kpi_list,
+    what_will_your_self_created_kpi_be_this_year_,
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
       WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
-    END AS target_fy22
+    END AS target_fy22,
+    
     
 FROM `data-warehouse-289815.google_sheets.staff_list` AS staff_list
 LEFT JOIN `data-warehouse-289815.google_sheets.individual_kpi_target` AS kpi_targets_submitted
