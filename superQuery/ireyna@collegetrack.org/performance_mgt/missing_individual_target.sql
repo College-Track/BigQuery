@@ -15,6 +15,7 @@ SELECT
     staff_list.program_area,
     staff_list.site,
     staff_list.region,
+    add_from_your_team_s_kpi_list,
     CASE
       WHEN enter_the_target_numeric_ IS NOT NULL THEN enter_the_target_numeric_
       WHEN enter_the_target_percent_ iS NOT NULL THEN enter_the_target_percent_
