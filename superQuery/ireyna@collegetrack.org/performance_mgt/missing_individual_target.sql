@@ -38,13 +38,40 @@ SELECT
       ELSE NULL
     END AS target_fy22_kpi_self_created
 FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS kpi_targets_submitted
-)
+),
+
+--Identify missing KPI submission using full name
+no_individual_kpi_full_name AS (
 
 SELECT 
     staff_list.first_name,
     staff_list.last_name,
+    staff_list.full_name,
+    great_select_your_name,
     staff_list.email_address,
     enter_your_college_track_email_address,
+    thanks_select_your_team_program_area,
+    staff_list.team,
+    staff_list.program_area,
+    staff_list.site,
+    staff_list.region
+FROM  `data-warehouse-289815.google_sheets.staff_list` staff_list
+LEFT JOIN  submitted_individual_kpis 
+    ON program_area = thanks_select_your_team_program_area
+    AND full_name = great_select_your_name
+WHERE great_select_your_name IS NULL
+),
+
+--Identify missing KPI submission using email address
+no_individual_kpi_email AS (
+SELECT 
+    staff_list.first_name,
+    staff_list.last_name,
+    staff_list.full_name,
+    great_select_your_name,
+    staff_list.email_address,
+    enter_your_college_track_email_address,
+    thanks_select_your_team_program_area,
     staff_list.team,
     staff_list.program_area,
     staff_list.site,
@@ -53,3 +80,15 @@ FROM  `data-warehouse-289815.google_sheets.staff_list` staff_list
 LEFT JOIN  submitted_individual_kpis
     ON email_address = enter_your_college_track_email_address
 WHERE enter_your_college_track_email_address IS NULL
+AND staff_list.full_name NOT IN (SELECT great_select_your_name  --if staff member is NOT listed as missing in no_individual_kpi_full_name table, then do NOT pull them in as missing here
+                                FROM no_individual_kpi_full_name)
+
+)
+
+SELECT * 
+FROM no_individual_kpi_email 
+
+UNION ALL
+
+SELECT *
+FROM no_individual_kpi_full_name
