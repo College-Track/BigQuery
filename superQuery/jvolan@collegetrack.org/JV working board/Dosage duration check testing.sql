@@ -5,14 +5,25 @@ with get_key AS
     Dosage_type,
     CASE
         WHEN 
-        --placeholder to show how I'll do the senior advisory spring vs. fall diference. besides that total_duration_mins should be same during course of year for all others
-        (EXTRACT(MONTH FROM CURRENT_DATE()) IN (1,2,3,4,5,6,7)
+        --placeholder to show how I'll do the senior advisory spring vs. fall diference. besides that total_duration_mins should be same during course of year for all others. 
+        --tested it and it works. just swap dosage type & get months how you want it when new fields are in production
+        (EXTRACT(MONTH FROM CURRENT_DATE()) IN (1,2,3,4,5,6)
         AND Dosage_type = "Tutoring") THEN (Total_duration_min / 2)
         ELSE Total_duration_min
     END AS Total_duration_min,
     academic_year,
     FROM `data-studio-260217.workshop_dosage_duration_tracker.fy22_dosage_expectations_key` 
     WHERE academic_year = 'AY 2021-22'
+),
+
+get_site_names AS
+(
+    SELECT
+    id AS a_id,
+    name,
+        
+    FROM `data-warehouse-289815.salesforce.account`
+    WHERE record_type_id = '01246000000RNnKAA'
 ),
 
 gather_workshop_data AS
@@ -30,9 +41,11 @@ gather_workshop_data AS
     last_session_date_c,
     get_key.Dosage_type,
     get_key.Total_duration_min,
+    get_site_names.name,
 
     From `data-warehouse-289815.salesforce.class_c`
     LEFT JOIN get_key ON get_key.Dosage_type = dosage_types_c
+    LEFT JOIN get_site_names ON a_id = id
     WHERE global_academic_semester_c = 'a3646000000dMXoAAM'
     AND dosage_types_c IN ('Acceleration','Test Prep','Tutoring','Student Life')
 )
