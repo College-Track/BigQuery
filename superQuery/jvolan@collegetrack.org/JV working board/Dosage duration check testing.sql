@@ -20,7 +20,7 @@ get_site_names AS
 (
     SELECT
     id AS a_id,
-    name,
+    REGEXP_REPLACE(name,'College Track',"") AS name,
         
     FROM `data-warehouse-289815.salesforce.account`
     WHERE record_type_id = '01246000000RNnKAAW'
