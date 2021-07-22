@@ -6,7 +6,7 @@ with get_key AS
     CASE
         WHEN 
         --placeholder to show how I'll do the senior advisory spring vs. fall diference. besides that total_duration_mins should be same during course of year for all others
-        (EXTRACT(MONTH FROM CURRENT_DATE()) IN (1,2,3,4,5,6)
+        (EXTRACT(MONTH FROM CURRENT_DATE()) IN (1,2,3,4,5,6,7)
         AND Dosage_type = "Tutoring") THEN (Total_duration_min / 2)
         ELSE Total_duration_min
     END AS Total_duration_min,
