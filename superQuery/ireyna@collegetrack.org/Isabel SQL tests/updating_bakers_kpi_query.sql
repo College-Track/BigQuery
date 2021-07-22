@@ -1,3 +1,4 @@
+--Updating baker's query for fy22_team_kpis to map submitted targets to roles that share the same KPI
 /*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
@@ -7,7 +8,6 @@ AS
 */
 WITH prep_kpi_targets AS (
   SELECT
-    team_kpi,
     select_role,
     CASE 
         WHEN site_kpi = "Boyle_Heights" THEN "Boyle Heights"
@@ -23,7 +23,15 @@ WITH prep_kpi_targets AS (
         WHEN region_kpi = "NOR_CAL" THEN "NOR CAL"
         ELSE region_kpi
     END AS region_kpi,
-     CASE
+    CASE
+        WHEN team_kpi = "Org_Performance" THEN "Org Performance"
+        WHEN team_kpi = "Employee_Experience" THEN "Employee Experience"
+        WHEN team_kpi = "Talent_Acquisition" THEN "Talent Acquisition"
+        WHEN team_kpi = "Talent_Development" THEN "Talent Development"
+        WHEN team_kpi = "Strategic_Initiatives" THEN "Strategic Initiatives"
+        ELSE team_kpi
+    END AS team_kpi,
+    CASE
         WHEN select_kpi = 'Student Survey - % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
             THEN 'Student Survey - % of students served by Wellness who "agree" or "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
         WHEN select_kpi = '% of high school seniors who matriculate to Good, Best, or Situational Best Fit colleges'
