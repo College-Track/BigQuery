@@ -5,6 +5,7 @@ with get_key AS
     Dosage_type,
     CASE
         WHEN 
+        --placeholder to show how I'll do the senior advisory spring vs. fall diference. besides that total_duration_mins should be same during course of year for all others
         (EXTRACT(MONTH FROM CURRENT_DATE()) IN (1,2,3,4,5,6)
         AND Dosage_type = "Tutoring") THEN (Total_duration_min / 2)
         ELSE Total_duration_min
@@ -46,6 +47,7 @@ gather_workshop_data AS
     duration_c,
     first_session_date_c,
     last_session_date_c,
+    Total_duration_min,
     CASE
       WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
