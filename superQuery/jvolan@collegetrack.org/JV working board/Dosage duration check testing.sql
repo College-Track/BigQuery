@@ -41,7 +41,7 @@ gather_workshop_data AS
     last_session_date_c,
     get_key.Dosage_type,
     get_key.Total_duration_min,
-    get_site_names.name,
+    get_site_names.name AS site_name,
 
     From `data-warehouse-289815.salesforce.class_c`
     LEFT JOIN get_key ON get_key.Dosage_type = dosage_types_c
@@ -51,7 +51,7 @@ gather_workshop_data AS
 )
 
     SELECT
-    site_c,
+    site_name,    
     department_c,
     dosage_types_c,
     workshop_display_name_c,
