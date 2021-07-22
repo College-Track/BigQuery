@@ -2,7 +2,14 @@ with get_key AS
 (  
 --finalize dosage req based on convo with BR. add AY column
     SELECT
-    *
+    Dosage_type,
+    CASE
+        WHEN 
+        (EXTRACT(MONTH FROM CURRENT_DATE()) IN (1,2,3,4,5,6)
+        AND Dosage_type = "Tutoring") THEN (Total_duration_min / 2)
+        ELSE Total_duration_min
+    END AS Total_duration_min,
+    academic_year,
     FROM `data-studio-260217.workshop_dosage_duration_tracker.fy22_dosage_expectations_key` 
     WHERE academic_year = 'AY 2021-22'
 ),
@@ -22,8 +29,7 @@ gather_workshop_data AS
     last_session_date_c,
     get_key.Dosage_type,
     get_key.Total_duration_min,
-    get_key.Total_duration_max
-    
+
     From `data-warehouse-289815.salesforce.class_c`
     LEFT JOIN get_key ON get_key.Dosage_type = dosage_types_c
     WHERE global_academic_semester_c = 'a3646000000dMXoAAM'
@@ -41,14 +47,7 @@ gather_workshop_data AS
     first_session_date_c,
     last_session_date_c,
     CASE
-        WHEN Total_duration_min > at_total_mins THEN 'Less than min required dosage'
-        WHEN Total_duration_max < at_total_mins THEN 'More than max required dosage'
-        ELSE 'Dosage meets expectations'
-    END AS meeting_dosage_bucket,
-    CASE
-        WHEN 
-        (Total_duration_min > at_total_mins 
-        OR Total_duration_max < at_total_mins) THEN 0
+      WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
     END AS meeting_dosage_yn
         
