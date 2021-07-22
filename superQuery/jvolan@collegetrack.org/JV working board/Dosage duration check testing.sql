@@ -16,20 +16,10 @@ with get_key AS
     WHERE academic_year = 'AY 2021-22'
 ),
 
-get_site_names AS
-(
-    SELECT
-    id AS a_id,
-    TRIM(REGEXP_REPLACE(name,'College Track',"")) AS name,
-        
-    FROM `data-warehouse-289815.salesforce.account`
-    WHERE record_type_id = '01246000000RNnKAAW'
-),
-
 gather_workshop_data AS
 (
     SELECT
-    site_c,
+    cl.site_c,
     department_c,
     workshop_display_name_c,
     id AS w_id,
@@ -41,17 +31,17 @@ gather_workshop_data AS
     last_session_date_c,
     get_key.Dosage_type,
     get_key.Total_duration_min,
-    get_site_names.name AS site_name,
+    c.site_short
 
-    From `data-warehouse-289815.salesforce.class_c`
+    From `data-warehouse-289815.salesforce.class_c`cl
     LEFT JOIN get_key ON get_key.Dosage_type = dosage_types_c
-    LEFT JOIN get_site_names ON a_id = site_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.site_c = cl.site_c
     WHERE global_academic_semester_c = 'a3646000000dMXoAAM'
     AND dosage_types_c IN ('Acceleration','Test Prep','Tutoring','Student Life')
 )
 
     SELECT
-    site_name,    
+    site_short,
     department_c,
     dosage_types_c,
     workshop_display_name_c,
