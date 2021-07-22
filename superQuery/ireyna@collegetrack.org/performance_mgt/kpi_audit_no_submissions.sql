@@ -21,6 +21,7 @@ clean_shared_kpi_targets_table AS (
         WHEN site_region_team = "Ward_8" THEN "Ward 8"
         WHEN site_region_team = "Bay_Area" THEN "Bay Area"
         WHEN site_region_team = "Org_Performance" THEN "Org Performance"
+        WHEN site_region_team = "Fund_Raising" THEN "Fund Raising"
         WHEN site_region_team = "Employee_Experience" THEN "Employee Experience"
         WHEN site_region_team = "Talent_Acquisition" THEN "Talent Acquisition"
         WHEN site_region_team = "Talent_Development" THEN "Talent Development"
