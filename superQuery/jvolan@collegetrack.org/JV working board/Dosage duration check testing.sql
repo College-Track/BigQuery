@@ -11,6 +11,7 @@ gather_workshop_data AS
 (
     SELECT
     site_c,
+    department_c,
     workshop_display_name_c,
     id AS w_id,
     dosage_types_c,
@@ -31,6 +32,7 @@ gather_workshop_data AS
 
     SELECT
     site_c,
+    department_c,
     dosage_types_c,
     workshop_display_name_c,
     w_id,
