@@ -45,7 +45,7 @@ gather_workshop_data AS
 
     From `data-warehouse-289815.salesforce.class_c`
     LEFT JOIN get_key ON get_key.Dosage_type = dosage_types_c
-    LEFT JOIN get_site_names ON a_id = id
+    LEFT JOIN get_site_names ON a_id = site_c
     WHERE global_academic_semester_c = 'a3646000000dMXoAAM'
     AND dosage_types_c IN ('Acceleration','Test Prep','Tutoring','Student Life')
 )
