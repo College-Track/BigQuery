@@ -23,6 +23,7 @@ CASE
         WHEN function = "Employee Experience" THEN "Employee_Experience"
         WHEN function = "Talent Acquisition" THEN "Talent_Acquisition"
         WHEN function = "Talent Development" THEN "Talent_Development"
+        WHEN function = "Fund Raising" THEN "Fund_Raising"
         WHEN function = "Strategic Initiatives" THEN "Strategic_Initiatives"
         ELSE function 
         END AS function
