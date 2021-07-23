@@ -29,6 +29,10 @@ WITH prep_kpi_targets AS (
         WHEN team_kpi = "Talent_Acquisition" THEN "Talent Acquisition"
         WHEN team_kpi = "Talent_Development" THEN "Talent Development"
         WHEN team_kpi = "Strategic_Initiatives" THEN "Strategic Initiatives"
+        WHEN team_kpi = "Mature_Site_Staff" THEN "Mature Site Staff" 
+        WHEN team_kpi = "Non-Mature_Site_Staff" THEN "Non-Mature Site Staff"
+        WHEN team_kpi = "Mature_Regional_Staff" THEN "Mature Regional Staff" 
+        WHEN team_kpi = "Non-Mature_Regional_Staff" THEN "Non-Mature Regional Staff"
         ELSE team_kpi
     END AS team_kpi,
     CASE
