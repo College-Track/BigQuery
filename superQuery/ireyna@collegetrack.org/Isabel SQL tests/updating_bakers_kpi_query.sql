@@ -43,8 +43,8 @@ WITH prep_kpi_targets AS (
             THEN '% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges'
         WHEN select_kpi = '% of students graduating from college within 6 years'
             THEN '% of college students graduating from college within 6 years' 
-        WHEN select_kpi like '% # of business days to close the month%'
-            THEN '# of business days to close the month'
+        WHEN select_kpi = 'Average score on role-specific Development Operations Services Quality Assessment survey, capturing satisfaction of supports and usefulness of tools and training'
+            THEN 'Average score on Development Operations Services Quality Assessment survey, capturing satisfaction of supports and usefulness of tools and training'
         ELSE select_kpi
     END AS select_kpi,
     what_is_the_type_of_target_,
