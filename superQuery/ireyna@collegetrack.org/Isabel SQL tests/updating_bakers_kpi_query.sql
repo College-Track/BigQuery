@@ -1,8 +1,8 @@
  SELECT
     CASE 
-        WHEN disregard_entry_op_hard_coded IS NULL THEN 0
-        ELSE disregard_entry_op_hard_coded
-    END AS disregard_entry_op_hard_coded,
+        WHEN indicator_disregard_entry_op_hard_coded IS NULL THEN 0
+        ELSE indicator_disregard_entry_op_hard_coded	
+    END AS indicator_disregard_entry_op_hard_coded,
     select_role,
     CASE 
         WHEN site_kpi = "Boyle_Heights" THEN "Boyle Heights"
@@ -60,4 +60,4 @@
   FROM
     `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` KPI_Target
     WHERE email_kpi != 'test@collegetrack.org'
-    AND disregard_entry_op_hard_coded <> 1
+    AND indicator_disregard_entry_op_hard_coded	 <> 1
