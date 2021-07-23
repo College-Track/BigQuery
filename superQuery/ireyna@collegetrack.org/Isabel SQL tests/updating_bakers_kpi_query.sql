@@ -45,7 +45,7 @@ WITH prep_kpi_targets AS (
             THEN '% of college students graduating from college within 6 years' 
         WHEN select_kpi like '% # of business days to close the month%'
             THEN '# of business days to close the month'
-        WHEN select_kpi = 'Average score on Development Operations Services Quality Assessment survey, capturing satisfaction of supports and usefulness of tools and training'
+        WHEN select_kpi like '%Average score on Development Operations Services Quality Assessment survey, capturing satisfaction of supports and usefulness of tools and training'
             THEN 'Average score on role-specific Development Operations Services Quality Assessment survey, capturing satisfaction of supports and usefulness of tools and training'
         ELSE select_kpi
     END AS select_kpi,
