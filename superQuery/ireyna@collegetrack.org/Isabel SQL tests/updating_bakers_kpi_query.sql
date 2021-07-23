@@ -116,6 +116,7 @@ FROM prep_student_type_projections PSTP
 
 prep_non_program_kpis AS (
   SELECT
+    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     Non_Program_Targets.*,
     CAST(NULL AS STRING) AS region_abrev,
@@ -153,6 +154,7 @@ WHERE
 
 prep_regional_kpis AS (
   SELECT
+   indicator_disregard_entry_op_hard_coded,
    KPI_by_role.*,
    KPI_Tagets.*,
    Projections.region_abrev,
@@ -174,6 +176,7 @@ prep_regional_kpis AS (
 ),
 prep_site_kpis AS (
   SELECT
+    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     KPI_Tagets.*,
     Projections.region_abrev,
