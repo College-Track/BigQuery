@@ -260,17 +260,21 @@ GROUP BY
   region_abrev,
   site_short,
   student_count,
-  target_submitted,
+  hr_people,
   national,
   development,
   region_function,
-  program
+  program,
+  target_submitted,
+  kpis_by_role
+  
 ),
 
 calculate_numerators AS (
 SELECT *,
 target_fy22 * student_count AS target_numerator
 FROM identify_teams
+
 
 ),
 
