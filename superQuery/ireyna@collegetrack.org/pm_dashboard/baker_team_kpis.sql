@@ -1,4 +1,3 @@
-
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
