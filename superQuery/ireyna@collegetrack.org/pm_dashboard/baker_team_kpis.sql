@@ -7,7 +7,10 @@ AS
 
 WITH prep_kpi_targets AS (
   SELECT
-    team_kpi,
+    CASE 
+        WHEN indicator_disregard_entry_op_hard_coded IS NULL THEN 0
+        ELSE indicator_disregard_entry_op_hard_coded	
+    END AS indicator_disregard_entry_op_hard_coded,
     select_role,
     CASE 
         WHEN site_kpi = "Boyle_Heights" THEN "Boyle Heights"
@@ -23,7 +26,20 @@ WITH prep_kpi_targets AS (
         WHEN region_kpi = "NOR_CAL" THEN "NOR CAL"
         ELSE region_kpi
     END AS region_kpi,
-     CASE
+    CASE
+        WHEN team_kpi = "Org_Performance" THEN "Org Performance"
+        WHEN team_kpi = "Employee_Experience" THEN "Employee Experience"
+        WHEN team_kpi = "Talent_Acquisition" THEN "Talent Acquisition"
+        WHEN team_kpi = "Talent_Development" THEN "Talent Development"
+        WHEN team_kpi = "Strategic_Initiatives" THEN "Strategic Initiatives"
+        WHEN team_kpi = "Fund_Raising" THEN "Fund Raising"
+        WHEN team_kpi = "Mature_Site_Staff" THEN "Mature Site Staff" 
+        WHEN team_kpi = "Non-Mature_Site_Staff" THEN "Non-Mature Site Staff"
+        WHEN team_kpi = "Mature_Regional_Staff" THEN "Mature Regional Staff" 
+        WHEN team_kpi = "Non-Mature_Regional_Staff" THEN "Non-Mature Regional Staff"
+        ELSE team_kpi
+    END AS team_kpi,
+    CASE
         WHEN select_kpi = 'Student Survey - % of students served by Wellness who "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
             THEN 'Student Survey - % of students served by Wellness who "agree" or "strongly agree" wellness services assisted them in managing their stress, helping them engage in self-care practices and/or enhancing their mental health'
         WHEN select_kpi = '% of high school seniors who matriculate to Good, Best, or Situational Best Fit colleges'
@@ -32,13 +48,13 @@ WITH prep_kpi_targets AS (
             THEN '% of college students graduating from college within 6 years' 
         WHEN select_kpi like '% # of business days to close the month%'
             THEN '# of business days to close the month'
+        WHEN select_kpi = 'Average score on Development Operations Services Quality Assessment survey, capturing satisfaction of supports and usefulness of tools and training'
+            THEN 'Average score on role-specific Development Operations Services Quality Assessment survey, capturing satisfaction of supports and usefulness of tools and training'
         ELSE select_kpi
     END AS select_kpi,
     what_is_the_type_of_target_,
     CASE
-      
       WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
-    --   WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
       ELSE "Not Submitted"
     END AS target_submitted,
     CASE
@@ -48,16 +64,8 @@ WITH prep_kpi_targets AS (
       ELSE NULL
     END AS target_fy22,
   FROM
-    `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target
+    `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` KPI_Target
     WHERE email_kpi != 'test@collegetrack.org'
-    -- WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
-    -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
-    -- ON KPI_Target.select_role = KPI_Selection.role
-    -- AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
-    -- AND KPI_Target.site_kpi = KPI_Selection.site_or_region
-    -- -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
-    -- ON c.kpi = KPI_Selection.kpis_by_role
-    -- AND c.role = KPI_Selection.role
 ),
 
 prep_student_type_projections AS (
@@ -103,8 +111,9 @@ prep_non_program_kpis AS (
     NULL AS student_count
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
-    LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.role = Non_Program_Targets.select_role
+    LEFT JOIN prep_kpi_targets Non_Program_Targets ON KPI_by_role.function = Non_Program_Targets.team_kpi --KPI_by_role.role = Non_Program_Targets.select_role
     AND KPI_by_role.kpis_by_role = Non_Program_Targets.select_kpi
+    AND indicator_disregard_entry_op_hard_coded	 <> 1
   WHERE
     KPI_by_role.function NOT IN (
       'Non-Mature Site Staff',
@@ -139,9 +148,11 @@ prep_regional_kpis AS (
     Projections.student_count
   FROM
     modify_regional_kpis KPI_by_role
-    LEFT JOIN prep_kpi_targets KPI_Tagets ON KPI_by_role.role = KPI_Tagets.select_role
-    AND KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi
-    AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi
+    LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
+    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
+    AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi --map Region to Region
+    AND KPI_by_role.function = KPI_Tagets.team_kpi --map teams/functions (mature regional staff, non-mature regional staff)
+    AND indicator_disregard_entry_op_hard_coded	 <> 1
     LEFT JOIN join_projections Projections ON Projections.region_abrev = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN (
@@ -158,10 +169,15 @@ prep_site_kpis AS (
     Projections.student_count
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
-    LEFT JOIN prep_kpi_targets KPI_Tagets ON KPI_by_role.role = KPI_Tagets.select_role
-    AND KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi
-    AND KPI_by_role.site_or_region = KPI_Tagets.site_kpi
-    LEFT JOIN join_projections Projections ON Projections.site_short = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
+    LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
+    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
+    AND KPI_by_role.site_or_region = KPI_Tagets.site_kpi --map Site to Site
+    AND KPI_by_role.function = KPI_Tagets.team_kpi --added to test shared_kpis. Map to team/function (mature site, non-mature site)
+    AND indicator_disregard_entry_op_hard_coded	 <> 1
+    LEFT JOIN join_projections Projections 
+        ON Projections.site_short = KPI_by_role.site_or_region 
+        AND Projections.student_type = KPI_by_role.student_group
+        
   WHERE
     KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
  
