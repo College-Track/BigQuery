@@ -1,10 +1,10 @@
-/*
+
 CREATE
-OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
-  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_kpis_targets` OPTIONS (
+  description = "KPIs submitted by Team for FY22. This does not include Roles, only Teams to roll up appropriately"
 )
 AS 
-*/
+
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
