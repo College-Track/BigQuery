@@ -155,9 +155,9 @@ prep_regional_kpis AS (
   FROM
     modify_regional_kpis KPI_by_role
     LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
-    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi
+    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
     AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi --map Region to Region
-    AND KPI_by_role.function = KPI_Tagets.team_kpi --added to test shared_kpis. Map teams/functions (mature regional staff, non-mature regional staff)
+    AND KPI_by_role.function = KPI_Tagets.team_kpi --map teams/functions (mature regional staff, non-mature regional staff)
     LEFT JOIN join_projections Projections ON Projections.region_abrev = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN (
@@ -175,13 +175,13 @@ prep_site_kpis AS (
   FROM
     `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_by_role
     LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
-    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi
-    AND KPI_by_role.site_or_region = KPI_Tagets.site_kpi
+    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
+    AND KPI_by_role.site_or_region = KPI_Tagets.site_kpi --map Site to Site
+    AND KPI_by_role.function = KPI_Tagets.team_kpi --added to test shared_kpis. Map to team/function (mature site, non-mature site)
     LEFT JOIN join_projections Projections 
         ON Projections.site_short = KPI_by_role.site_or_region 
         AND Projections.student_type = KPI_by_role.student_group
-        AND KPI_by_role.function = KPI_Tagets.team_kpi --added to test shared_kpis. Map team/function (mature site, non-mature site)
-        AND KPI_by_role.site_or_region = KPI_Tagets.site_kpi --map Site to Site
+        
   WHERE
     KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
  
