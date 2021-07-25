@@ -333,25 +333,12 @@ FROM fy22_target_percent
 ),
 
 FINAL_JOIN AS (
-SELECT * EXCEPT (fy22_target_percent_test),
+SELECT FUNCTION,region, kpis_by_role,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
-    Region,
-    Site,
-    function,
-    region_function,
-    role,
-    kpis_by_role,
-    site_or_region,
-    target_submitted,
-    target_fy22,
-    student_count,
-    national,
-    program,
-    hr_people,
-    development
+    function,region, kpis_by_role
 )
 
 SELECT distinct *,
@@ -361,4 +348,8 @@ END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets
-FROM FINAL_JOIN
+FROM PREP_FINAL_JOIN
+LEFT JOIN FINAL_JOIN
+    ON PREP_FINAL_JOIN.REGION = FINAL_JOIN.REGION
+    AND PREP_FINAL_JOIN.function = FINAL_JOIN.function
+    AND PREP_FINAL_JOIN.kpis_by_role = FINAL_JOIN.kpis_by_role
