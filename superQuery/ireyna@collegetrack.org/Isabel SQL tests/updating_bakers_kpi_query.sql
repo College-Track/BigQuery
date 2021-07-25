@@ -320,6 +320,21 @@ GROUP BY
     region_function
     
 ),
+fy_22_target_cal AS (
+SELECT
+    site,
+    Region,
+    kpis_by_role,
+    CASE WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
+        ELSE SUM(target_fy22)/COUNT(role)
+    END AS ir_test_2
+FROM calculate_national_numerators
+GROUP BY
+    site,
+    Region,
+    kpis_by_role
+ ),  
+ 
 correct_missing_site_region AS (
 SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
@@ -342,11 +357,14 @@ SELECT
         ELSE target_denom
     END AS target_denom,
     CASE 
-        WHEN Region IS NULL AND calculate_national_numerators.site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
+        WHEN calculate_national_numerators.Region IS NULL AND calculate_national_numerators.site_or_region IS NOT NULL THEN Projections.region_abrev 
+        ELSE calculate_national_numerators.Region
     END AS Region,
     CASE 
-        WHEN Site IS NULL AND calculate_national_numerators.site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
-    END AS Site
+        WHEN calculate_national_numerators.Site IS NULL AND calculate_national_numerators.site_or_region IS NOT NULL THEN Projections.site_short 
+        ELSE calculate_national_numerators.Site
+    END AS Site,
+    ir_test_2
 FROM calculate_national_numerators 
 LEFT JOIN modify_regional_kpis 
     ON calculate_national_numerators.site = modify_regional_kpis.site_or_region
@@ -354,16 +372,10 @@ LEFT JOIN modify_regional_kpis
     AND calculate_national_numerators.kpis_by_role = modify_regional_kpis.kpis_by_role
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections 
     ON calculate_national_numerators.site_or_region = Projections.site_short
-
-
-
-/*SELECT CN.* EXCEPT(Region, Site),
-CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
-END AS Region,
-CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
-END AS Site,
-FROM prep_calculate_numerators AS CN --calculate_numerators CN
-LEFT JOIN */
+LEFT JOIN fy_22_target_cal
+    ON calculate_national_numerators.site = fy_22_target_cal.site
+    AND calculate_national_numerators.region = fy_22_target_cal.kpis_by_role
+    AND calculate_national_numerators.kpis_by_role = fy_22_target_cal.region
 )
 
 
@@ -374,9 +386,6 @@ END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets,
-CASE WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
-ELSE SUM(target_fy22)/COUNT(role)
-END AS ir_test_2
 FROM national_fy22_target_rollup --correct_missing_site_region
 GROUP BY
     target_submitted,
@@ -389,5 +398,5 @@ GROUP BY
     kpis_by_role,
     target_denom,
     national,
-    region_function
-    
+    region_function,
+    ir_test_2
