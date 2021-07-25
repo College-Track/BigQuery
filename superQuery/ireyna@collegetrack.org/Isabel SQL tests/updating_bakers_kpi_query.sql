@@ -367,7 +367,7 @@ LEFT JOIN */
 )
 
 
-SELECT distinct *,
+SELECT distinct * EXCEPT (region,site),
 CASE WHEN target_submitted = 'Submitted' THEN 1
 ELSE 0
 END AS count_of_submitted_targets,
@@ -387,8 +387,6 @@ GROUP BY
     role,
     function,
     kpis_by_role,
-    region,
-    site,
     target_denom,
     national,
     region_function
