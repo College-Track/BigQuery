@@ -282,7 +282,8 @@ FROM identify_teams
 
 ),
 
-correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
+correct_missing_site_region AS (
+SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
@@ -318,7 +319,7 @@ GROUP BY
 
 FINAL_JOIN AS (
 SELECT *
-FROM correct_missing_site_region
+FROM fy22_target_percent
 )
 
 SELECT distinct *,
