@@ -332,5 +332,8 @@ ELSE 0
 END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
-END AS count_of_targets
+END AS count_of_targets,
+CASE WHEN fy22_target_percent_test = 0 THEN NULL
+    ELSE fy22_target_percent_test
+    END AS fy22_target_percent_test
 FROM FINAL_JOIN
