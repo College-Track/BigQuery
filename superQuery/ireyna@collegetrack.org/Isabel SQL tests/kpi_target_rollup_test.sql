@@ -341,9 +341,8 @@ GROUP BY
     function,region, kpis_by_role
 )
 
-SELECT distinct *,
-sum_of_numerator,
-student_count_sum,
+SELECT distinct PREP_FINAL_JOIN.*,
+FINAL_JOIN.*,
 CASE WHEN target_submitted = 'Submitted' THEN 1
 ELSE 0
 END AS count_of_submitted_targets,
