@@ -285,7 +285,24 @@ GROUP BY
 
 calculate_national_numerators AS (
 SELECT 
-*,
+    function,
+    role,
+    kpis_by_role,
+    site_or_region,
+    target_fy22,
+    Region,
+    Site,
+    student_count,
+    target_submitted,
+    hr_people,
+    national,
+    development,
+    region_function,
+    program,
+CASE 
+        WHEN target_numerator = 0 THEN NULL
+        ELSE target_numerator
+    END AS target_numerator,
 SUM(student_count) AS target_denom
 FROM calculate_numerators
 GROUP BY 
@@ -324,6 +341,10 @@ SELECT
     site,
     region,
     target_numerator/target_denom AS fy22_target_rollup,
+      CASE 
+        WHEN target_denom = 0 THEN NULL
+        ELSE target_denom
+    END AS target_denom,
     CASE 
         WHEN Region IS NULL AND calculate_national_numerators.site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
     END AS Region,
