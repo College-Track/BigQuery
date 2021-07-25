@@ -333,12 +333,12 @@ FROM fy22_target_percent
 ),
 
 PREP_FINAL_JOIN_2 AS (
-SELECT FUNCTION,region, kpis_by_role,
+SELECT FUNCTION,region, site,kpis_by_role,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
-    function,region, kpis_by_role
+    function,region, site, kpis_by_role
 ),
 
 FINAL_JOIN AS (
@@ -350,6 +350,8 @@ LEFT JOIN PREP_FINAL_JOIN_2
     ON PREP_FINAL_JOIN_1.REGION = PREP_FINAL_JOIN_2.REGION
     AND PREP_FINAL_JOIN_1.function = PREP_FINAL_JOIN_2.function
     AND PREP_FINAL_JOIN_1.kpis_by_role = PREP_FINAL_JOIN_2.kpis_by_role
+WHERE PREP_FINAL_JOIN_1.kpis_by_role = PREP_FINAL_JOIN_2.kpis_by_role
+    AND PREP_FINAL_JOIN_1.site = PREP_FINAL_JOIN_2.site
 )
 
 SELECT distinct FINAL_JOIN.*,
