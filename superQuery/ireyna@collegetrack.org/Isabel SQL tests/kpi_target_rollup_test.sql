@@ -342,6 +342,8 @@ GROUP BY
 )
 
 SELECT distinct *,
+sum_of_numerator,
+student_count_sum,
 CASE WHEN target_submitted = 'Submitted' THEN 1
 ELSE 0
 END AS count_of_submitted_targets,
