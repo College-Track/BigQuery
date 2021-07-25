@@ -283,11 +283,21 @@ FROM identify_teams
 ),
 
 correct_missing_site_region AS (
-SELECT CN.* EXCEPT(Region, Site),
+SELECT CN.* EXCEPT(Region, Site, target_numerator,student_count),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
 END AS Site,
+
+--added by IR
+CASE WHEN CN.student_count = 0 THEN NULL
+    ELSE CN.student_count
+    END AS student_count,
+CASE WHEN target_numerator = 0 THEN NULL 
+    ELSE target_numerator
+    END AS target_numerator
+    
+--
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
 ),
@@ -297,11 +307,7 @@ SELECT * EXCEPT (target_numerator),
     CASE 
         WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
         ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_test,
-    CASE 
-        WHEN target_numerator = 0 THEN NULL
-        ELSE target_numerator
-    END AS target_numerator
+    END AS fy22_target_percent_test
 FROM correct_missing_site_region
 GROUP BY
     Region,
@@ -332,8 +338,5 @@ ELSE 0
 END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
-END AS count_of_targets,
-CASE WHEN fy22_target_percent_test = 0 THEN NULL
-    ELSE fy22_target_percent_test
-    END AS fy22_target_percent_test
+END AS count_of_targets
 FROM FINAL_JOIN
