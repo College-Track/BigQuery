@@ -378,7 +378,7 @@ LEFT JOIN fy_22_target_cal
 )
 
 
-SELECT distinct * EXCEPT (region,site),
+SELECT distinct * ,
 CASE WHEN target_submitted = 'Submitted' THEN 1
 ELSE 0
 END AS count_of_submitted_targets,
@@ -387,6 +387,8 @@ ELSE 0
 END AS count_of_targets,
 FROM national_fy22_target_rollup --correct_missing_site_region
 GROUP BY
+    region,
+    site,
     target_submitted,
     target_numerator,
     student_count,
