@@ -336,8 +336,6 @@ SELECT
     modify_regional_kpis.function,
     modify_regional_kpis.role,
     modify_regional_kpis.kpis_by_role,
-    site,
-    region,
     target_numerator/target_denom AS fy22_target_rollup,
       CASE 
         WHEN target_denom = 0 THEN NULL
@@ -382,6 +380,7 @@ END AS ir_test_2
 FROM national_fy22_target_rollup --correct_missing_site_region
 GROUP BY
     target_submitted,
+    target_numerator,
     student_count,
     target_fy22,
     fy22_target_rollup,
@@ -390,5 +389,7 @@ GROUP BY
     kpis_by_role,
     region,
     site,
-    target_denom
+    target_denom,
+    national,
+    region_function
     
