@@ -347,10 +347,9 @@ LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON C
 
 national_fy22_target_rollup AS (
 SELECT
-    calculate_national_numerators.* EXCEPT(Region, Site,role,function,target_denom,site_or_region,kpis_by_role),
+    calculate_national_numerators.* EXCEPT(Region, Site,role,function,target_denom,site_or_region),
     modify_regional_kpis.function,
     modify_regional_kpis.role,
-    modify_regional_kpis.kpis_by_role,
     target_numerator/target_denom AS fy22_target_rollup,
       CASE 
         WHEN target_denom = 0 THEN NULL
