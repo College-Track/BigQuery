@@ -223,7 +223,7 @@ SELECT
   target_fy22,
   region_abrev AS Region,
   site_short AS Site,
-  student_count AS student_count_ir,
+  student_count,
 --   target_submitted,
   
   CASE
@@ -277,42 +277,28 @@ FROM
 
 calculate_numerators AS (
 SELECT *,
-target_fy22 * student_count_ir AS target_numerator
+target_fy22 * student_count AS target_numerator
 FROM identify_teams
 
 ),
 
-correct_missing_site_region AS (
-SELECT CN.* EXCEPT(Region, Site,target_numerator),
+correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
 END AS Site,
-
---added by IR
-CASE WHEN target_numerator = 0 THEN NULL ELSE target_numerator END AS target_numerator,
-CASE WHEN Projections.student_count = 0 THEN NULL ELSE Projections.student_count END AS student_count_ir_2
---
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
-)
+),
 
-SELECT distinct * EXCEPT (student_count_ir),
-CASE WHEN target_submitted = 'Submitted' THEN 1
-ELSE 0
-END AS count_of_submitted_targets,
-CASE WHEN target_submitted != "Not Required" THEN 1
-ELSE 0
-END AS count_of_targets,
-
---added by ir
-CASE 
-    WHEN SUM(student_count_ir_2) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count_ir_2),2)
-    ELSE SUM(target_fy22)/COUNT(role)
-END AS target_percent_ir_test,
+fy22_target_percent AS (
+SELECT *,
+    CASE 
+        WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
+        ELSE SUM(target_fy22)/COUNT(role)
+    END AS fy22_target_percent_test
 FROM correct_missing_site_region
-
-GROUP BY 
+GROUP BY
     Region,
     Site,
     function,
@@ -322,10 +308,24 @@ GROUP BY
     site_or_region,
     target_submitted,
     target_fy22,
-    student_count_ir_2,
+    student_count,
     target_numerator,
     national,
     program,
     hr_people,
     development
+),
 
+FINAL_JOIN AS (
+SELECT *
+FROM correct_missing_site_region
+)
+
+SELECT distinct *,
+CASE WHEN target_submitted = 'Submitted' THEN 1
+ELSE 0
+END AS count_of_submitted_targets,
+CASE WHEN target_submitted != "Not Required" THEN 1
+ELSE 0
+END AS count_of_targets
+FROM FINAL_JOIN
