@@ -282,7 +282,8 @@ FROM identify_teams
 
 ),
 
-correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
+correct_missing_site_region AS (
+SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
@@ -297,5 +298,28 @@ ELSE 0
 END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
-END AS count_of_targets
+END AS count_of_targets,
+
+--added by ir
+CASE WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
+ELSE SUM(target_fy22)/COUNT(role)
+END AS target_percent_ir_test
 FROM correct_missing_site_region
+
+GROUP BY 
+    Region,
+    Site,
+    function,
+    region_function,
+    role,
+    kpis_by_role,
+    site_or_region,
+    target_submitted,
+    target_fy22,
+    student_count,
+    target_numerator,
+    national,
+    program,
+    hr_people,
+    development
+
