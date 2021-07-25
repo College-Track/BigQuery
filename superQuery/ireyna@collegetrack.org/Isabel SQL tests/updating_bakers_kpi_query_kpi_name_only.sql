@@ -282,13 +282,30 @@ FROM identify_teams
 
 ),
 
+fy22_target_percent AS (
+SELECT region,kpis_by_role,student_count,
+    CASE 
+        WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
+        ELSE SUM(target_fy22)/COUNT(role)
+    END AS fy22_target_percent_test,
+SUM(target_numerator) AS sum_target_numerator_only
+FROM calculate_numerators
+group by  region,kpis_by_role,student_count
+),
+
+
 correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
-CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
+CASE WHEN CN.Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE CN.region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
 END AS Site,
+    fy22_target_percent_test,
+    sum_target_numerator_only
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
+LEFT JOIN fy22_target_percent 
+    ON CN.site_or_region = fy22_target_percent.REGION
+    AND CN.kpis_by_role = fy22_target_percent.kpis_by_role
 )
 
 SELECT distinct *,
