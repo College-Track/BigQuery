@@ -327,30 +327,37 @@ GROUP BY
     development
 ),
 
-PREP_FINAL_JOIN AS (
+PREP_FINAL_JOIN_1 AS (
 SELECT *
 FROM fy22_target_percent
 ),
 
-FINAL_JOIN AS (
+PREP_FINAL_JOIN_2 AS (
 SELECT FUNCTION,region, kpis_by_role,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
     function,region, kpis_by_role
+),
+
+FINAL_JOIN AS (
+SELECT PREP_FINAL_JOIN_1.*,
+    sum_of_numerator,
+    student_count_sum
+FROM PREP_FINAL_JOIN_1
+LEFT JOIN PREP_FINAL_JOIN_2
+    ON PREP_FINAL_JOIN_1.REGION = PREP_FINAL_JOIN_2.REGION
+    AND PREP_FINAL_JOIN_1.function = PREP_FINAL_JOIN_2.function
+    AND PREP_FINAL_JOIN_1.kpis_by_role = PREP_FINAL_JOIN_2.kpis_by_role
 )
 
-SELECT distinct PREP_FINAL_JOIN.*,
-FINAL_JOIN.*,
+SELECT distinct FINAL_JOIN.*,
 CASE WHEN target_submitted = 'Submitted' THEN 1
 ELSE 0
 END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets
-FROM PREP_FINAL_JOIN
-LEFT JOIN FINAL_JOIN
-    ON PREP_FINAL_JOIN.REGION = FINAL_JOIN.REGION
-    AND PREP_FINAL_JOIN.function = FINAL_JOIN.function
-    AND PREP_FINAL_JOIN.kpis_by_role = FINAL_JOIN.kpis_by_role
+FROM FINAL_JOIN
+
