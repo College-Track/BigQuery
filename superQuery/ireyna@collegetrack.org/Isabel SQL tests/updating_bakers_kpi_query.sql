@@ -1,4 +1,3 @@
---Updating baker's query for fy22_team_kpis to map submitted targets to roles that share the same KPI
 /*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
@@ -55,9 +54,7 @@ WITH prep_kpi_targets AS (
     END AS select_kpi,
     what_is_the_type_of_target_,
     CASE
-      
       WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
-    --   WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
       ELSE "Not Submitted"
     END AS target_submitted,
     CASE
@@ -69,15 +66,6 @@ WITH prep_kpi_targets AS (
   FROM
     `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` KPI_Target
     WHERE email_kpi != 'test@collegetrack.org'
-    -- AND indicator_disregard_entry_op_hard_coded	 <> 1
-    -- WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
-    -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
-    -- ON KPI_Target.select_role = KPI_Selection.role
-    -- AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
-    -- AND KPI_Target.site_kpi = KPI_Selection.site_or_region
-    -- -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
-    -- ON c.kpi = KPI_Selection.kpis_by_role
-    -- AND c.role = KPI_Selection.role
 ),
 
 prep_student_type_projections AS (
@@ -116,7 +104,6 @@ FROM prep_student_type_projections PSTP
 
 prep_non_program_kpis AS (
   SELECT
-    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     Non_Program_Targets.*,
     CAST(NULL AS STRING) AS region_abrev,
@@ -154,7 +141,6 @@ WHERE
 
 prep_regional_kpis AS (
   SELECT
-   indicator_disregard_entry_op_hard_coded,
    KPI_by_role.*,
    KPI_Tagets.*,
    Projections.region_abrev,
@@ -163,11 +149,13 @@ prep_regional_kpis AS (
   FROM
     modify_regional_kpis KPI_by_role
     LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
-    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
-    AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi --map Region to Region
-    AND KPI_by_role.function = KPI_Tagets.team_kpi --map teams/functions (mature regional staff, non-mature regional staff)
-    AND indicator_disregard_entry_op_hard_coded	 <> 1
-    LEFT JOIN join_projections Projections ON Projections.region_abrev = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
+        ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
+        AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi --map Region to Region
+        AND KPI_by_role.function = KPI_Tagets.team_kpi --map teams/functions (mature regional staff, non-mature regional staff)
+        AND indicator_disregard_entry_op_hard_coded	 <> 1
+    LEFT JOIN join_projections Projections 
+        ON Projections.region_abrev = KPI_by_role.site_or_region 
+        AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN (
       'Mature Regional Staff',
@@ -176,7 +164,6 @@ prep_regional_kpis AS (
 ),
 prep_site_kpis AS (
   SELECT
-    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     KPI_Tagets.*,
     Projections.region_abrev,
@@ -265,31 +252,103 @@ SELECT
     WHEN function IN ('Mature Site Staff', 'Non-Mature Site Staff') THEN 1
     ELSE 0
   END AS program,
-  -- CASE
-  --   WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
-  --   THEN 'National'
-  --   ELSE site_kpi
-  -- END AS Site,
 FROM
   join_tables
   WHERE kpis_by_role != "KPIs by role"
 ),
 
-calculate_numerators AS (
+prep_calculate_numerators AS (
 SELECT *,
-target_fy22 * student_count AS target_numerator
+target_fy22 * student_count AS prep_target_numerator
 FROM identify_teams
-
 ),
 
-correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
+calculate_numerators AS (
+SELECT * EXCEPT (prep_target_numerator), SUM(prep_target_numerator) AS target_numerator
+FROM prep_calculate_numerators
+GROUP BY 
+    function,
+    role,
+    kpis_by_role,
+    site_or_region,
+    target_fy22,
+    Region,
+    Site,
+    student_count,
+    target_submitted,
+    hr_people,
+    national,
+    development,
+    region_function,
+    program
+),
+
+calculate_national_numerators AS (
+SELECT 
+*,
+SUM(student_count) AS target_denom
+FROM calculate_numerators
+GROUP BY 
+    target_numerator,
+    function,
+    role,
+    kpis_by_role,
+    site_or_region,
+    target_fy22,
+    Region,
+    Site,
+    student_count,
+    target_submitted,
+    hr_people,
+    national,
+    development,
+    region_function,
+    program
+),
+correct_missing_site_region AS (
+SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
 END AS Site,
-FROM calculate_numerators CN
+FROM prep_calculate_numerators AS CN --calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
+),
+
+national_fy22_target_rollup AS (
+SELECT
+    calculate_national_numerators.* EXCEPT(Region, Site),
+    modify_regional_kpis.function,
+    modify_regional_kpis.role,
+    modify_regional_kpis.kpis_by_role,
+    site,
+    region,
+    target_numerator/target_denom AS fy22_target_rollup,
+    CASE 
+        WHEN Region IS NULL AND calculate_national_numerators.site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
+    END AS Region,
+    CASE 
+        WHEN Site IS NULL AND calculate_national_numerators.site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
+    END AS Site
+FROM calculate_national_numerators 
+LEFT JOIN modify_regional_kpis 
+    ON calculate_national_numerators.site = modify_regional_kpis.site_or_region
+    AND calculate_national_numerators.region = modify_regional_kpis.site_or_region
+    AND calculate_national_numerators.kpis_by_role = modify_regional_kpis.kpis_by_role
+LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections 
+    ON calculate_national_numerators.site_or_region = Projections.site_short
+
+
+
+/*SELECT CN.* EXCEPT(Region, Site),
+CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
+END AS Region,
+CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
+END AS Site,
+FROM prep_calculate_numerators AS CN --calculate_numerators CN
+LEFT JOIN */
 )
+
 
 SELECT distinct *,
 CASE WHEN target_submitted = 'Submitted' THEN 1
@@ -298,4 +357,4 @@ END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets
-FROM correct_missing_site_region
+FROM national_fy22_target_rollup --correct_missing_site_region
