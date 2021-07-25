@@ -1,10 +1,11 @@
-
+--Updating baker's query for fy22_team_kpis to map submitted targets to roles that share the same KPI
+/*
 CREATE
-OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_kpis_targets` OPTIONS (
-  description = "KPIs submitted by Team for FY22. This does not include Roles, only Teams to roll up appropriately"
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-
+*/
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -54,7 +55,9 @@ WITH prep_kpi_targets AS (
     END AS select_kpi,
     what_is_the_type_of_target_,
     CASE
+      
       WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
+    --   WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
       ELSE "Not Submitted"
     END AS target_submitted,
     CASE
@@ -66,6 +69,15 @@ WITH prep_kpi_targets AS (
   FROM
     `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` KPI_Target
     WHERE email_kpi != 'test@collegetrack.org'
+    -- AND indicator_disregard_entry_op_hard_coded	 <> 1
+    -- WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
+    -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
+    -- ON KPI_Target.select_role = KPI_Selection.role
+    -- AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
+    -- AND KPI_Target.site_kpi = KPI_Selection.site_or_region
+    -- -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
+    -- ON c.kpi = KPI_Selection.kpis_by_role
+    -- AND c.role = KPI_Selection.role
 ),
 
 prep_student_type_projections AS (
@@ -104,6 +116,7 @@ FROM prep_student_type_projections PSTP
 
 prep_non_program_kpis AS (
   SELECT
+    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     Non_Program_Targets.*,
     CAST(NULL AS STRING) AS region_abrev,
@@ -141,6 +154,7 @@ WHERE
 
 prep_regional_kpis AS (
   SELECT
+   indicator_disregard_entry_op_hard_coded,
    KPI_by_role.*,
    KPI_Tagets.*,
    Projections.region_abrev,
@@ -162,6 +176,7 @@ prep_regional_kpis AS (
 ),
 prep_site_kpis AS (
   SELECT
+    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     KPI_Tagets.*,
     Projections.region_abrev,
@@ -202,8 +217,9 @@ join_tables AS (
 identify_teams AS (
 SELECT
   function,
-  site_or_region,
+  role,
   kpis_by_role,
+  site_or_region,
   target_fy22,
   region_abrev AS Region,
   site_short AS Site,
@@ -249,32 +265,20 @@ SELECT
     WHEN function IN ('Mature Site Staff', 'Non-Mature Site Staff') THEN 1
     ELSE 0
   END AS program,
+  -- CASE
+  --   WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
+  --   THEN 'National'
+  --   ELSE site_kpi
+  -- END AS Site,
 FROM
   join_tables
   WHERE kpis_by_role != "KPIs by role"
- 
-GROUP BY 
-  function,
-  site_or_region,
-  target_fy22,
-  region_abrev,
-  site_short,
-  student_count,
-  hr_people,
-  national,
-  development,
-  region_function,
-  program,
-  target_submitted,
-  kpis_by_role
-  
 ),
 
 calculate_numerators AS (
 SELECT *,
 target_fy22 * student_count AS target_numerator
 FROM identify_teams
-
 
 ),
 
