@@ -294,11 +294,8 @@ SELECT
     Site,
     student_count,
     target_submitted,
-    hr_people,
     national,
-    development,
     region_function,
-    program,
 CASE 
         WHEN target_numerator = 0 THEN NULL
         ELSE target_numerator
@@ -316,11 +313,12 @@ GROUP BY
     Site,
     student_count,
     target_submitted,
-    hr_people,
+    --hr_people,
     national,
-    development,
-    region_function,
-    program
+    --development,
+    --program
+    region_function
+    
 ),
 correct_missing_site_region AS (
 SELECT CN.* EXCEPT(Region, Site),
@@ -334,7 +332,7 @@ LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON C
 
 national_fy22_target_rollup AS (
 SELECT
-    calculate_national_numerators.* EXCEPT(Region, Site),
+    calculate_national_numerators.* EXCEPT(Region, Site,role,function,kpis_by_role,target_denom,site_or_region),
     modify_regional_kpis.function,
     modify_regional_kpis.role,
     modify_regional_kpis.kpis_by_role,
@@ -377,5 +375,20 @@ ELSE 0
 END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
-END AS count_of_targets
+END AS count_of_targets,
+CASE WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
+ELSE SUM(target_fy22)/COUNT(role)
+END AS ir_test_2
 FROM national_fy22_target_rollup --correct_missing_site_region
+GROUP BY
+    target_submitted,
+    student_count,
+    target_fy22,
+    fy22_target_rollup,
+    role,
+    function,
+    kpis_by_role,
+    region,
+    site,
+    target_denom
+    
