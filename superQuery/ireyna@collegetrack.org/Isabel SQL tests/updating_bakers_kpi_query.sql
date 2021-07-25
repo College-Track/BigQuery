@@ -293,11 +293,15 @@ LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON C
 ),
 
 fy22_target_percent AS (
-SELECT *,
+SELECT * EXCEPT (target_numerator),
     CASE 
         WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
         ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_test
+    END AS fy22_target_percent_test,
+    CASE 
+        WHEN target_numerator = 0 THEN NULL
+        ELSE target_numerator
+    END AS target_numerator
 FROM correct_missing_site_region
 GROUP BY
     Region,
