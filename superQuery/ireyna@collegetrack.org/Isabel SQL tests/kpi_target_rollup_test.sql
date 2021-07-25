@@ -300,16 +300,7 @@ CASE WHEN target_numerator = 0 THEN NULL
 --
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
-),
-
-fy22_target_percent AS (
-SELECT * EXCEPT (target_numerator),
-    CASE 
-        WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
-        ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_test
-FROM correct_missing_site_region
-GROUP BY
+GROUP BY 
     Region,
     Site,
     function,
@@ -327,38 +318,31 @@ GROUP BY
     development
 ),
 
+fy22_target_percent AS (
+SELECT region,kpis_by_role,student_count,
+    CASE 
+        WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
+        ELSE SUM(target_fy22)/COUNT(role)
+    END AS fy22_target_percent_test
+FROM correct_missing_site_region
+group by  region,kpis_by_role,student_count
+
+),
+
 PREP_FINAL_JOIN_1 AS (
 SELECT *
 FROM fy22_target_percent
-),
+GROUP BY 
+    Region,
+    kpis_by_role,
+    fy22_target_percent_test,
+    student_count
+)
 
-PREP_FINAL_JOIN_2 AS (
+--PREP_FINAL_JOIN_2 AS (
 SELECT region, kpis_by_role,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
    region, kpis_by_role
-),
-
-FINAL_JOIN AS (
-SELECT PREP_FINAL_JOIN_1.*,
-    sum_of_numerator,
-    student_count_sum
-FROM PREP_FINAL_JOIN_1
-LEFT JOIN PREP_FINAL_JOIN_2
-    ON PREP_FINAL_JOIN_1.REGION = PREP_FINAL_JOIN_2.REGION
-    AND PREP_FINAL_JOIN_1.kpis_by_role = PREP_FINAL_JOIN_2.kpis_by_rolE
-WHERE PREP_FINAL_JOIN_1.kpis_by_role = PREP_FINAL_JOIN_2.kpis_by_role
-    AND PREP_FINAL_JOIN_1.region = PREP_FINAL_JOIN_2.region
-)
-
-SELECT distinct FINAL_JOIN.*,
-CASE WHEN target_submitted = 'Submitted' THEN 1
-ELSE 0
-END AS count_of_submitted_targets,
-CASE WHEN target_submitted != "Not Required" THEN 1
-ELSE 0
-END AS count_of_targets
-FROM FINAL_JOIN
-
