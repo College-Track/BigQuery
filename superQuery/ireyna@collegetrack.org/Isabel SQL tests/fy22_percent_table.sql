@@ -327,6 +327,7 @@ SELECT region,kpis_by_role,target_fy22,student_count,target_numerator,
     END AS fy22_target_percent_numerator ,--this takes kpitarget * projected # of students (numerator of weighted goal)
     SUM(student_count) AS student_count_sum
 FROM correct_missing_site_region
+WHERE PROGRAM = 1
 group by  region,kpis_by_role,target_fy22,student_count,target_numerator
 
 ),
