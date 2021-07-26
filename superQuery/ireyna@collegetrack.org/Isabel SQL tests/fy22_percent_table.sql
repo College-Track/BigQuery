@@ -357,9 +357,9 @@ GROUP BY
     fy22_target_percent.student_count_sum
 )
 
-SELECT region, kpis_by_role,target_fy22,target_numerator,fy22_target_percent_numerator,
-    sum_of_numerator,
-   student_count_sum
+SELECT distinct * EXCEPT (student_count)--region, kpis_by_role,target_fy22,target_numerator,fy22_target_percent_numerator,
+    --sum_of_numerator,
+   --student_count_sum
 FROM PREP_FINAL_JOIN
 WHERE region = "CO"
 AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
