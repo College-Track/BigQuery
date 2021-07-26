@@ -350,7 +350,8 @@ SELECT distinct
     fy22_target_percent.* ,
     --sum_of_numerator
     correct_missing_site_region.target_fy22,
-    correct_missing_site_region.student_count
+    correct_missing_site_region.student_count,
+    correct_missing_site_region.site,
 FROM fy22_target_percent
 LEFT JOIN correct_missing_site_region 
     ON fy22_target_percent.kpis_by_role = correct_missing_site_region.kpis_by_role 
@@ -365,6 +366,7 @@ GROUP BY
     student_count,
     target_numerator,
     student_count,
+    site,
     function
     --sum_of_numerator,
     --fy22_target_percent.student_count_sum
@@ -374,6 +376,8 @@ SELECT distinct * --region, kpis_by_role,target_fy22,target_numerator,fy22_targe
     --sum_of_numerator,
    --student_count_sum
 FROM PREP_FINAL_JOIN
+WHERE region = "CO"
+AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
 GROUP BY 
    target_fy22,
    region, 
@@ -381,6 +385,7 @@ GROUP BY
    --target_numerator,
    fy22_target_percent_test,
    student_count,
+   site,
    function
    --sum_of_numerator,
    --student_count_sum
