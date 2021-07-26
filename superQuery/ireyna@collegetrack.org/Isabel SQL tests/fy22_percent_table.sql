@@ -319,13 +319,13 @@ GROUP BY
 ),
 
 fy22_target_percent AS (
-SELECT site,region,kpis_by_role,student_count,
+SELECT site,region,kpis_by_role,target_fy22,student_count,
     CASE 
         WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
         ELSE SUM(target_fy22)/COUNT(role)
     END AS fy22_target_percent_test
 FROM correct_missing_site_region
-group by  site,region,kpis_by_role,student_count
+group by  site,region,kpis_by_role,target_fy22,student_count
 
 ),
 
@@ -333,6 +333,7 @@ PREP_FINAL_JOIN_1 AS (
 SELECT *
 FROM fy22_target_percent
 GROUP BY 
+    target_fy22,
     Site,
     Region,
     kpis_by_role,
