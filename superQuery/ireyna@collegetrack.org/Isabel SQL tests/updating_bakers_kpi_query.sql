@@ -226,7 +226,7 @@ SELECT
   student_count,
 --   target_submitted,
   
-   CASE
+  CASE
     WHEN target_fy22 IS NOT NULL THEN "Submitted"
     WHEN site_or_region IN ("Sacramento", "Denver", "Watts") AND kpis_by_role = '% of students graduating from college within 6 years' THEN "Not Required"
     WHEN kpis_by_role = "% of students engaged in career exploration, readiness events or internships" THEN "Not Required"
@@ -234,7 +234,7 @@ SELECT
     WHEN role IN ('Mental Health and Wellness Director','SL/MH&W Director') AND site_or_region IN ('San Francisco','Sacramento','Aurora','Denver') THEN "Not Required"
     WHEN role IN ('College Access Director (Fellow)','College Access Director (Non-Mature)') AND site_or_region IN ('Crenshaw','The Durant Center','East Palo Alto') THEN "Not Required"
     WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
-    WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"
+    WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
     ELSE "Not Submitted"
   END AS target_submitted,
   CASE
@@ -281,10 +281,7 @@ FROM
 
 calculate_numerators AS (
 SELECT *,
-CASE 
-    WHEN target_submitted = 'Not Required' THEN NULL
-    ELSE target_fy22 * student_count
-END AS target_numerator
+target_fy22 * student_count AS target_numerator
 FROM identify_teams
 
 ),
@@ -297,12 +294,18 @@ CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_shor
 END AS Site,
 
 --added by IR
-CASE WHEN CN.student_count = 0 THEN NULL
+/*CASE WHEN CN.student_count = 0 THEN NULL
     ELSE CN.student_count
     END AS student_count,
 CASE WHEN target_numerator = 0 THEN NULL 
     ELSE target_numerator
-    END AS target_numerator
+    END AS target_numerator,*/
+CASE WHEN target_submitted = 'Not Required' THEN NULL
+ELSE CN.student_count
+END AS student_count,
+CASE WHEN target_submitted = 'Not Required' THEN NULL
+ELSE target_numerator
+END AS target_numerator
     
 --
 FROM calculate_numerators CN
@@ -347,3 +350,5 @@ CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets
 FROM FINAL_JOIN
+
+
