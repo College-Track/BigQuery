@@ -28,12 +28,12 @@ WITH prep_kpi_targets AS (
         ELSE region_kpi
     END AS region_kpi,
     CASE
-        WHEN team_kpi = "Org_Performance" THEN "Org Performance"
+        /*WHEN team_kpi = "Org_Performance" THEN "Org Performance"
         WHEN team_kpi = "Employee_Experience" THEN "Employee Experience"
         WHEN team_kpi = "Talent_Acquisition" THEN "Talent Acquisition"
         WHEN team_kpi = "Talent_Development" THEN "Talent Development"
         WHEN team_kpi = "Strategic_Initiatives" THEN "Strategic Initiatives"
-        WHEN team_kpi = "Fund_Raising" THEN "Fund Raising"
+        WHEN team_kpi = "Fund_Raising" THEN "Fund Raising"*/
         WHEN team_kpi = "Mature_Site_Staff" THEN "Mature Site Staff" 
         WHEN team_kpi = "Non-Mature_Site_Staff" THEN "Non-Mature Site Staff"
         WHEN team_kpi = "Mature_Regional_Staff" THEN "Mature Regional Staff" 
@@ -88,9 +88,10 @@ student_type,
 SUM(student_count) AS student_count,
 
 FROM `data-studio-260217.performance_mgt.fy22_projections`
-GROUP BY site_short, 
-region_abrev,
-student_type
+GROUP BY 
+    site_short, 
+    region_abrev,
+    student_type
 
 ),
 
@@ -330,7 +331,7 @@ group by  site,region,kpis_by_role,target_fy22,student_count
 ),
 
 PREP_FINAL_JOIN_1 AS (
-SELECT *
+SELECT distinct *
 FROM fy22_target_percent
 GROUP BY 
     target_fy22,
