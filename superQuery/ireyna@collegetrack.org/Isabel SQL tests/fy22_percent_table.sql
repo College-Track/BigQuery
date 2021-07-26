@@ -340,7 +340,7 @@ GROUP BY
     student_count
 )
 
-SELECT region, kpis_by_role,
+SELECT site,region, kpis_by_role,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
