@@ -281,7 +281,10 @@ FROM
 
 calculate_numerators AS (
 SELECT *,
-target_fy22 * student_count AS target_numerator
+CASE 
+    WHEN target_submitted = 'Not Required' THEN NULL
+    ELSE target_fy22 * student_count
+END AS target_numerator
 FROM identify_teams
 
 ),
