@@ -334,8 +334,6 @@ SELECT
     --SUM(student_count) AS student_count_sum
 FROM correct_missing_site_region
 WHERE PROGRAM = 1
-and region = "CO"
-and kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
 group by  
 region,
 kpis_by_role,
@@ -345,14 +343,6 @@ function
 --target_numerator
 
 ),
-
---sum_numerator_sum_student AS (
---SELECT region, kpis_by_role,target_fy22,fy22_target_percent_test,
---    --SUM(fy22_target_percent_numerator) AS sum_of_numerator,
---FROM fy22_target_percent
---GROUP BY 
---   target_fy22,region, kpis_by_role,fy22_target_percent_test
---),
 
 
 PREP_FINAL_JOIN AS (
@@ -384,8 +374,6 @@ SELECT distinct * --region, kpis_by_role,target_fy22,target_numerator,fy22_targe
     --sum_of_numerator,
    --student_count_sum
 FROM PREP_FINAL_JOIN
-WHERE region = "CO"
-AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
 GROUP BY 
    target_fy22,
    region, 
