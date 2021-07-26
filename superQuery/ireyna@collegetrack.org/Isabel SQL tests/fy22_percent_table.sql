@@ -330,6 +330,16 @@ group by  site,region,kpis_by_role,target_fy22,student_count
 
 ),
 
+sum_numerator_sum_student AS (
+SELECT site,region, kpis_by_role,target_fy22,
+    SUM(fy22_target_percent_test) AS sum_of_numerator,
+    SUM(student_count) AS student_count_sum
+FROM fy22_target_percent
+GROUP BY 
+   target_fy22,site,region, kpis_by_role
+),
+
+
 PREP_FINAL_JOIN_1 AS (
 SELECT distinct *
 FROM fy22_target_percent
@@ -346,5 +356,7 @@ SELECT site,region, kpis_by_role,target_fy22,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
+WHERE region = "CO"
+AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
 GROUP BY 
    target_fy22,site,region, kpis_by_role
