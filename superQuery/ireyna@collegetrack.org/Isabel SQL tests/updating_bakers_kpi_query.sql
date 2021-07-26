@@ -1,11 +1,11 @@
 --Updating baker's query for fy22_team_kpis to map submitted targets to roles that share the same KPI
-
+/*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-
+*/
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -55,9 +55,7 @@ WITH prep_kpi_targets AS (
     END AS select_kpi,
     what_is_the_type_of_target_,
     CASE
-      
       WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
-    --   WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
       ELSE "Not Submitted"
     END AS target_submitted,
     CASE
@@ -69,15 +67,6 @@ WITH prep_kpi_targets AS (
   FROM
     `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` KPI_Target
     WHERE email_kpi != 'test@collegetrack.org'
-    -- AND indicator_disregard_entry_op_hard_coded	 <> 1
-    -- WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
-    -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
-    -- ON KPI_Target.select_role = KPI_Selection.role
-    -- AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
-    -- AND KPI_Target.site_kpi = KPI_Selection.site_or_region
-    -- -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
-    -- ON c.kpi = KPI_Selection.kpis_by_role
-    -- AND c.role = KPI_Selection.role
 ),
 
 prep_student_type_projections AS (
@@ -116,7 +105,6 @@ FROM prep_student_type_projections PSTP
 
 prep_non_program_kpis AS (
   SELECT
-    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     Non_Program_Targets.*,
     CAST(NULL AS STRING) AS region_abrev,
@@ -154,7 +142,6 @@ WHERE
 
 prep_regional_kpis AS (
   SELECT
-   indicator_disregard_entry_op_hard_coded,
    KPI_by_role.*,
    KPI_Tagets.*,
    Projections.region_abrev,
@@ -176,7 +163,6 @@ prep_regional_kpis AS (
 ),
 prep_site_kpis AS (
   SELECT
-    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     KPI_Tagets.*,
     Projections.region_abrev,
@@ -234,7 +220,7 @@ SELECT
     WHEN role IN ('Mental Health and Wellness Director','SL/MH&W Director') AND site_or_region IN ('San Francisco','Sacramento','Aurora','Denver') THEN "Not Required"
     WHEN role IN ('College Access Director (Fellow)','College Access Director (Non-Mature)') AND site_or_region IN ('Crenshaw','The Durant Center','East Palo Alto') THEN "Not Required"
     WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
-    WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
+    WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"
     ELSE "Not Submitted"
   END AS target_submitted,
   CASE
@@ -287,59 +273,22 @@ FROM identify_teams
 ),
 
 correct_missing_site_region AS (
-SELECT CN.* EXCEPT(Region, Site, target_numerator,student_count),
+SELECT CN.* EXCEPT(Region, Site,student_count, target_numerator), --student_count, target_numerator added by IR
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
 END AS Site,
 
 --added by IR
-/*CASE WHEN CN.student_count = 0 THEN NULL
-    ELSE CN.student_count
-    END AS student_count,
-CASE WHEN target_numerator = 0 THEN NULL 
-    ELSE target_numerator
-    END AS target_numerator,*/
 CASE WHEN target_submitted = 'Not Required' THEN NULL
-ELSE CN.student_count
+ELSE cn.student_count
 END AS student_count,
 CASE WHEN target_submitted = 'Not Required' THEN NULL
 ELSE target_numerator
 END AS target_numerator
-    
---
+
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
-),
-
-fy22_target_percent AS (
-SELECT * EXCEPT (target_numerator),
-    CASE 
-        WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
-        ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_test
-FROM correct_missing_site_region
-GROUP BY
-    Region,
-    Site,
-    function,
-    region_function,
-    role,
-    kpis_by_role,
-    site_or_region,
-    target_submitted,
-    target_fy22,
-    student_count,
-    target_numerator,
-    national,
-    program,
-    hr_people,
-    development
-),
-
-FINAL_JOIN AS (
-SELECT *
-FROM fy22_target_percent
 )
 
 SELECT distinct *,
@@ -349,6 +298,4 @@ END AS count_of_submitted_targets,
 CASE WHEN target_submitted != "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets
-FROM FINAL_JOIN
-
-
+FROM correct_missing_site_region
