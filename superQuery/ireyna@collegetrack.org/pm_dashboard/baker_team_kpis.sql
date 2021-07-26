@@ -1,3 +1,10 @@
+
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+  description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+)
+AS 
+
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -260,7 +267,8 @@ FROM identify_teams
 
 ),
 
-correct_missing_site_region AS (SELECT CN.* EXCEPT(Region, Site),
+correct_missing_site_region AS (
+SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
