@@ -141,15 +141,15 @@ WHERE
 ),
 
 prep_regional_kpis AS (
-  SELECT
+ SELECT
    KPI_by_role.*,
    KPI_Tagets.*,
    Projections.region_abrev,
     Projections.site_short,
     Projections.student_count
-  FROM
+ FROM
     modify_regional_kpis KPI_by_role
-    LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
+LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
     ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
     AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi --map Region to Region
     AND KPI_by_role.function = KPI_Tagets.team_kpi --map teams/functions (mature regional staff, non-mature regional staff)
