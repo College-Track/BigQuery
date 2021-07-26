@@ -331,12 +331,12 @@ group by  site,region,kpis_by_role,target_fy22,student_count,target_numerator
 ),
 
 sum_numerator_sum_student AS (
-SELECT site,region, kpis_by_role,target_fy22,fy22_target_percent_numerator,
+SELECT region, kpis_by_role,target_fy22,fy22_target_percent_numerator,
     SUM(fy22_target_percent_numerator) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
-   target_fy22,site,region, kpis_by_role,fy22_target_percent_numerator
+   target_fy22,region, kpis_by_role,fy22_target_percent_numerator
 ),
 
 
