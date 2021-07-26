@@ -340,24 +340,31 @@ GROUP BY
 ),
 
 
-PREP_FINAL_JOIN_1 AS (
-SELECT distinct *
+PREP_FINAL_JOIN AS (
+SELECT distinct 
+    fy22_target_percent.* ,
+    sum_of_numerator,
+    student_count_sum
 FROM fy22_target_percent
+LEFT JOIN sum_numerator_sum_student ON fy22_target_percent.kpis_by_role = sum_numerator_sum_student.kpis_by_role AND fy22_target_percent.region = sum_numerator_sum_student.region
 GROUP BY 
-    target_fy22,
-    Site,
-    Region,
-    kpis_by_role,
-    fy22_target_percent_numerator,
+    fy22_target_percent.target_fy22,
+    fy22_target_percent.Site,
+    fy22_target_percent.Region,
+    fy22_target_percent.kpis_by_role,
+    fy22_target_percent.fy22_target_percent_numerator,
     student_count,
-    target_numerator
+    target_numerator,
+    sum_of_numerator,
+    student_count_sum
 )
 
 SELECT region, kpis_by_role,target_fy22,target_numerator,fy22_target_percent_numerator,
-    SUM(fy22_target_percent_numerator) AS sum_of_numerator,
-    SUM(student_count) AS student_count_sum
-FROM fy22_target_percent
+    sum_of_numerator,
+   student_count_sum
+FROM PREP_FINAL_JOIN
 WHERE region = "CO"
 AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
 GROUP BY 
-   target_fy22,region, kpis_by_role,target_numerator,fy22_target_percent_numerator
+   target_fy22,region, kpis_by_role,target_numerator,fy22_target_percent_numerator,sum_of_numerator,
+   student_count_sum
