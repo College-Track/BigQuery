@@ -376,8 +376,8 @@ SELECT distinct * --region, kpis_by_role,target_fy22,target_numerator,fy22_targe
     --sum_of_numerator,
    --student_count_sum
 FROM PREP_FINAL_JOIN
-WHERE region = "CO"
-AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
+--WHERE region = "CO"
+--AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
 GROUP BY 
    target_fy22,
    region, 
