@@ -345,4 +345,4 @@ SELECT site,region, kpis_by_role,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
-   region, kpis_by_role
+   site,region, kpis_by_role
