@@ -324,19 +324,19 @@ SELECT site,region,kpis_by_role,target_fy22,student_count,target_numerator,
     CASE 
         WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
         ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_test
+    END AS fy22_target_percent_numerator --this takes kpitarget * projected # of students (numerator of weighted goal)
 FROM correct_missing_site_region
 group by  site,region,kpis_by_role,target_fy22,student_count,target_numerator
 
 ),
 
 sum_numerator_sum_student AS (
-SELECT site,region, kpis_by_role,target_fy22,fy22_target_percent_test,
-    SUM(fy22_target_percent_test) AS sum_of_numerator,
+SELECT site,region, kpis_by_role,target_fy22,fy22_target_percent_numerator,
+    SUM(fy22_target_percent_numerator) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
-   target_fy22,site,region, kpis_by_role,fy22_target_percent_test
+   target_fy22,site,region, kpis_by_role,fy22_target_percent_numerator
 ),
 
 
@@ -348,16 +348,16 @@ GROUP BY
     Site,
     Region,
     kpis_by_role,
-    fy22_target_percent_test,
+    fy22_target_percent_numerator,
     student_count,
     target_numerator
 )
 
-SELECT site,region, kpis_by_role,target_fy22,target_numerator,fy22_target_percent_test,
-    SUM(fy22_target_percent_test) AS sum_of_numerator,
+SELECT region, kpis_by_role,target_fy22,target_numerator,fy22_target_percent_numerator,
+    SUM(fy22_target_percent_numerator) AS sum_of_numerator,
     SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 WHERE region = "CO"
 AND kpis_by_role = "% of students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges"
 GROUP BY 
-   target_fy22,site,region, kpis_by_role,target_numerator,fy22_target_percent_test
+   target_fy22,region, kpis_by_role,target_numerator,fy22_target_percent_numerator
