@@ -324,7 +324,8 @@ SELECT site,region,kpis_by_role,target_fy22,student_count,target_numerator,
     CASE 
         WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
         ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_numerator --this takes kpitarget * projected # of students (numerator of weighted goal)
+    END AS fy22_target_percent_numerator ,--this takes kpitarget * projected # of students (numerator of weighted goal)
+    SUM(student_count) AS student_count_sum
 FROM correct_missing_site_region
 group by  site,region,kpis_by_role,target_fy22,student_count,target_numerator
 
@@ -333,7 +334,6 @@ group by  site,region,kpis_by_role,target_fy22,student_count,target_numerator
 sum_numerator_sum_student AS (
 SELECT region, kpis_by_role,target_fy22,fy22_target_percent_numerator,
     SUM(fy22_target_percent_numerator) AS sum_of_numerator,
-    SUM(student_count) AS student_count_sum
 FROM fy22_target_percent
 GROUP BY 
    target_fy22,region, kpis_by_role,fy22_target_percent_numerator
@@ -343,8 +343,7 @@ GROUP BY
 PREP_FINAL_JOIN AS (
 SELECT distinct 
     fy22_target_percent.* ,
-    sum_of_numerator,
-    student_count_sum
+    sum_of_numerator
 FROM fy22_target_percent
 LEFT JOIN sum_numerator_sum_student ON fy22_target_percent.kpis_by_role = sum_numerator_sum_student.kpis_by_role AND fy22_target_percent.region = sum_numerator_sum_student.region
 GROUP BY 
@@ -356,7 +355,7 @@ GROUP BY
     student_count,
     target_numerator,
     sum_of_numerator,
-    student_count_sum
+    fy22_target_percent.student_count_sum
 )
 
 SELECT region, kpis_by_role,target_fy22,target_numerator,fy22_target_percent_numerator,
