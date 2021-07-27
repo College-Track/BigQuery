@@ -217,9 +217,9 @@ SELECT
     WHEN kpis_by_role = "% of students engaged in career exploration, readiness events or internships" THEN "Not Required"
     WHEN kpis_by_role = "% of students growing toward average or above social-emotional strengths" THEN "Not Required"
     WHEN role IN ('Mental Health and Wellness Director','SL/MH&W Director') AND site_or_region IN ('San Francisco','Sacramento','Aurora','Denver') THEN "Not Required"
-    WHEN role IN ('College Access Director (Fellow)','College Access Director (Non-Mature)') AND site_or_region IN ('Crenshaw','The Durant Center','East Palo Alto') THEN "Not Required"
+    WHEN role IN ('College Access Director (Fellow)','College Access Director (Non-Mature)') AND site_or_region IN ('Crenshaw','The Durant Center','Ward 8','East Palo Alto') THEN "Not Required"
     WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
-    --WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"
+    WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"
     ELSE "Not Submitted"
   END AS target_submitted,
   CASE
@@ -272,20 +272,11 @@ FROM identify_teams
 ),
 
 correct_missing_site_region AS (
-SELECT CN.* EXCEPT(Region, Site,student_count, target_numerator), --student_count, target_numerator added by IR
+SELECT CN.* EXCEPT(Region, Site),
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
 END AS Site,
-
---added by IR
-CASE WHEN target_submitted = 'Not Required' THEN NULL
-ELSE cn.student_count
-END AS student_count,
-CASE WHEN target_submitted = 'Not Required' THEN NULL
-ELSE target_numerator
-END AS target_numerator
-
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
 )
