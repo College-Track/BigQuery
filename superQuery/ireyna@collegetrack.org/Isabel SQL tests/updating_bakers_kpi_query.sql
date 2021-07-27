@@ -300,5 +300,3 @@ ELSE 0
 END AS count_of_targets
 FROM correct_missing_site_region
 
-WHERE role = 'Mental Health and Wellness Director'
-
