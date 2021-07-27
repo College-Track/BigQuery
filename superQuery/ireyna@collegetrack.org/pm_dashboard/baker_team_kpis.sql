@@ -294,7 +294,7 @@ SELECT distinct *,
 CASE WHEN target_submitted = 'Submitted' THEN 1
 ELSE 0
 END AS count_of_submitted_targets,
-CASE WHEN target_submitted != "Not Required" THEN 1
+CASE WHEN target_submitted != "Not Submitted" THEN 1 -- "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets
 FROM correct_missing_site_region
