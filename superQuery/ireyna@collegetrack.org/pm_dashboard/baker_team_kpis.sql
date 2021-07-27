@@ -1,10 +1,10 @@
-/*
+
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-*/
+
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -213,13 +213,13 @@ SELECT
   
   CASE
     WHEN target_fy22 IS NOT NULL THEN "Submitted"
-    WHEN site_or_region IN ("Sacramento", "Denver", "Watts") AND kpis_by_role = '% of students graduating from college within 6 years' THEN "Not Required"
+    /*WHEN site_or_region IN ("Sacramento", "Denver", "Watts") AND kpis_by_role = '% of students graduating from college within 6 years' THEN "Not Required"
     WHEN kpis_by_role = "% of students engaged in career exploration, readiness events or internships" THEN "Not Required"
     WHEN kpis_by_role = "% of students growing toward average or above social-emotional strengths" THEN "Not Required"
     WHEN role IN ('Mental Health and Wellness Director','SL/MH&W Director (Non-Mature)','SL/MH&W Director') AND site_or_region IN ('San Francisco','Sacramento','Aurora','Denver','Boyle Heights') THEN "Not Required"
     WHEN role IN ('College Access Director (Fellow)','College Access Director (Non-Mature)') AND site_or_region IN ('Crenshaw','The Durant Center','Ward 8','East Palo Alto') THEN "Not Required"
     WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
-    --WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"
+    --WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"*/
     ELSE "Not Submitted"
   END AS target_submitted,
   CASE
@@ -279,10 +279,10 @@ CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_shor
 END AS Site,
 
 --added by IR
-CASE WHEN target_submitted = 'Not Required' THEN NULL
+CASE WHEN target_submitted = 'Not Submitted' THEN NULL
 ELSE cn.student_count
 END AS student_count,
-CASE WHEN target_submitted = 'Not Required' THEN NULL
+CASE WHEN target_submitted = 'Not Submitted' THEN NULL
 ELSE target_numerator
 END AS target_numerator
 
