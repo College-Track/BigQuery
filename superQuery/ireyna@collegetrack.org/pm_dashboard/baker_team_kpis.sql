@@ -219,7 +219,7 @@ SELECT
     WHEN role IN ('Mental Health and Wellness Director','SL/MH&W Director (Non-Mature)','SL/MH&W Director') AND site_or_region IN ('San Francisco','Sacramento','Aurora','Denver','Boyle Heights') THEN "Not Required"
     WHEN role IN ('College Access Director (Fellow)','College Access Director (Non-Mature)') AND site_or_region IN ('Crenshaw','The Durant Center','Ward 8','East Palo Alto') THEN "Not Required"
     WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
-    WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"
+    --WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"
     ELSE "Not Submitted"
   END AS target_submitted,
   CASE
