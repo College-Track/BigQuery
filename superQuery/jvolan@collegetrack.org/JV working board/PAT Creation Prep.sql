@@ -1,4 +1,4 @@
-SELECT
+    SELECT
     Contact_Id,
     AT_Id AS previous_academic_semester,
     school_c,
@@ -115,4 +115,4 @@ SELECT
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
-    AND college_track_status_c IN ('16A')
+    AND college_track_status_c IN ('15A','16A','17A')
