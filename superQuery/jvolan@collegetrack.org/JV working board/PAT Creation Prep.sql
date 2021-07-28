@@ -1,12 +1,20 @@
-SELECT
+-- active gather + transform
+    SELECT
     Contact_Id,
     AT_Id AS previous_academic_semester,
+
+--NULL out for alumni , maybe do as UDF later?
     CASE
         WHEN college_track_status_c = '17A' THEN NULL
         ELSE school_c
     END AS school,
-    AT_school_type,
-    cc_advisor_at_user_id_c AS cc_advisor_at,
+    CASE
+        WHEN college_track_status_c = '17A' THEN NULL
+        ELSE cc_advisor_at_user_id_c
+    END AS cc_advisor_at,
+
+--NULL out for alumni/inactive, maybe do as UDF later?
+
     CASE
         WHEN college_track_status_c <> '15A' THEN NULL 
         ELSE major_c
@@ -23,7 +31,9 @@ SELECT
         WHEN college_track_status_c <> '15A' THEN NULL 
         ELSE minor_c
     END AS minor,
-    --adv rubric fields that carry over term to term
+    
+--adv rubric fields that carry over term to term
+--NULL out for inactive / alumni , maybe do as UDF later?
     CASE
         WHEN college_track_status_c <> '15A' THEN NULL 
         ELSE financial_aid_package_c
@@ -108,6 +118,7 @@ SELECT
         WHEN college_track_status_c <> '15A' THEN NULL 
         ELSE     alumni_network_75_credits_c
     END AS     alumni_network_75_credits,
+    
     --for active, if summer and enrollment status is blank use prev. at enrollment status.
     CASE
         WHEN college_track_status_c <> '15A' THEN NULL 
@@ -120,6 +131,17 @@ SELECT
         WHEN college_track_status_c <>'16A' THEN NULL
         ELSE cumulative_credits_awarded_most_recent_c
     END AS Cumulative_Credits_Awarded_All_Terms,
+
+-- input college/univeristy RT
+     '01246000000RNnHAAW' AS record_type_id,
+-- update each summer, once a year (or make key in bigquery)
+    'a1b46000000dRR9'AS global_academic_year,
+-- will need to update ids each term (or create a key in bigquery)
+    CASE
+        WHEN (college_track_status_c = '15A'
+        AND school_academic_calendar_c IN ('Quarter','Trimester')) THEN 'a3646000000dMXx'
+        ELSE 'a3646000000dMXu'
+    END AS global_academic_semester,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
