@@ -1,4 +1,4 @@
-    SELECT
+SELECT
     Contact_Id,
     AT_Id AS previous_academic_semester,
     school_c,
@@ -7,9 +7,18 @@
         WHEN college_track_status_c <> '15A' THEN NULL 
         ELSE major_c
     END AS major,
-    major_other_c,
-    second_major_c,
-    minor_c,
+    CASE
+        WHEN college_track_status_c <> '15A' THEN NULL 
+        ELSE major_other_c
+    END AS major_other,
+    CASE
+        WHEN college_track_status_c <> '15A' THEN NULL 
+        ELSE second_major_c
+    END AS second_major,
+    CASE
+        WHEN college_track_status_c <> '15A' THEN NULL 
+        ELSE minor_c
+    END AS minor,
     --adv rubric fields that carry over term to term
     financial_aid_package_c,
     free_checking_account_c,
