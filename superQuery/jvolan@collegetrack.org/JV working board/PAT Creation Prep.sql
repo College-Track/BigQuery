@@ -8,7 +8,24 @@
     major_other_c,
     second_major_c,
     minor_c,
+    --adv rubric fields that carry over term to term
     financial_aid_package_c,
+    free_checking_account_c,
+    e_fund_c,
+    repayment_plan_c,
+    loan_exit_c,
+    academic_networking_50_cred_c,
+    academic_networking_over_50_credits_c,
+    extracurricular_activity_c,
+    finding_opportunities_75_c,
+    resume_cover_letter_c,
+    career_counselor_25_credits_c,
+    career_field_2550_credits_c,
+    resources_2550_credits_c,
+    internship_5075_credits_c,
+    post_graduate_plans_5075_creds_c,
+    post_graduate_opportunities_75_cred_c,
+    alumni_network_75_credits_c,
     CASE
         WHEN 
         (term_c = 'Summer'
