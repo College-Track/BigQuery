@@ -1,7 +1,11 @@
-    SELECT
+SELECT
     Contact_Id,
     AT_Id AS previous_academic_semester,
-    school_c,
+    CASE
+        WHEN college_track_status_c = '17A' THEN NULL
+        ELSE school_c
+    END AS school,
+    AT_school_type,
     cc_advisor_at_user_id_c AS cc_advisor_at,
     CASE
         WHEN college_track_status_c <> '15A' THEN NULL 
@@ -112,6 +116,10 @@
         AND enrollment_status_c IS NULL) THEN persistence_at_prev_enrollment_status_c
         ELSE enrollment_status_c
     END AS enrollment_status,
+    CASE
+        WHEN college_track_status_c <>'16A' THEN NULL
+        ELSE cumulative_credits_awarded_most_recent_c
+    END AS Cumulative_Credits_Awarded_All_Terms,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
