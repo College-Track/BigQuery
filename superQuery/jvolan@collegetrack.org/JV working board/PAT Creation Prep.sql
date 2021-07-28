@@ -115,4 +115,6 @@
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
-    AND college_track_status_c IN ('15A','16A','17A')
+    AND (college_track_status_c = '15A'
+    OR (college_track_status_c IN ('16A','17A')
+    AND indicator_years_since_hs_graduation_c <6))
