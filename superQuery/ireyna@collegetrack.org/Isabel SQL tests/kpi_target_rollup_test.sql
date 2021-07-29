@@ -343,6 +343,6 @@ GROUP BY
 SELECT region, kpis_by_role,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     
-FROM fy22_target_percent
+FROM PREP_FINAL_JOIN_1
 GROUP BY 
    region, kpis_by_role
