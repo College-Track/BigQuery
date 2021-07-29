@@ -110,6 +110,8 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college
         ON CA.College_University_c  = accnt_2.id    
     
 WHERE high_school_graduating_class_c = '2021'
+AND student_audit_status_c = 'Current CT HS Student'
+AND indicator_years_since_hs_grad_to_date_c = -.34
    
 ),
 
