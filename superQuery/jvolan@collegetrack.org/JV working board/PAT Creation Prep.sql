@@ -14,7 +14,7 @@
     END AS cc_advisor_at,
 
 --NULL out for alumni/inactive, maybe do as UDF later?
-
+   
     CASE
         WHEN college_track_status_c <> '15A' THEN NULL 
         ELSE major_c
