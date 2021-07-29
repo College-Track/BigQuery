@@ -340,9 +340,9 @@ GROUP BY
 )
 
 --PREP_FINAL_JOIN_2 AS (
-SELECT region, kpis_by_role,
+SELECT region, kpis_by_role,student_count_sum,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
     
 FROM PREP_FINAL_JOIN_1
 GROUP BY 
-   region, kpis_by_role
+   region, kpis_by_role,student_count_sum
