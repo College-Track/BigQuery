@@ -319,14 +319,14 @@ GROUP BY
 ),
 
 fy22_target_percent AS (
-SELECT region,kpis_by_role,student_count,
+SELECT region,kpis_by_role,
     CASE 
         WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
         ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_test
+    END AS fy22_target_percent_test,
+    SUM(student_count) AS student_count_sum
 FROM correct_missing_site_region
-group by  region,kpis_by_role,student_count
-
+group by  region,kpis_by_role
 ),
 
 PREP_FINAL_JOIN_1 AS (
@@ -336,13 +336,13 @@ GROUP BY
     Region,
     kpis_by_role,
     fy22_target_percent_test,
-    student_count
+    student_count_sum
 )
 
 --PREP_FINAL_JOIN_2 AS (
 SELECT region, kpis_by_role,
     SUM(fy22_target_percent_test) AS sum_of_numerator,
-    SUM(student_count) AS student_count_sum
+    
 FROM fy22_target_percent
 GROUP BY 
    region, kpis_by_role
