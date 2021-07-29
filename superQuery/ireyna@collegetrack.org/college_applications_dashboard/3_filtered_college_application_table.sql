@@ -1,11 +1,11 @@
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
 OPTIONS
     (
     description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
     )
 AS
-*/
+
 
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
