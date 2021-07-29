@@ -9,3 +9,4 @@ WHERE
     KPI_by_role.function IN (
       'Mature Regional Staff',
       'Non-Mature Regional Staff'
+    )    
