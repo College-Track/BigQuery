@@ -108,8 +108,7 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name f
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college name in application 
         ON CA.College_University_c  = accnt_2.id    
     
-WHERE (C.grade_c = '12th Grade' AND C.College_Track_Status_Name = 'Current CT HS Student')
-    OR high_school_graduating_class_c = '2021'
+WHERE high_school_graduating_class_c = '2021'
 ),
 
 acceptance_data AS 
