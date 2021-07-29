@@ -101,7 +101,7 @@ SELECT
     accnt.name AS high_school_name_filter,
     --accnt_2.name AS college_name_applied_wide #Wide filtter, college name on Application filter. Applications page. 
         
-FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
         ON C.contact_id = CA.student_c 
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name from contact
