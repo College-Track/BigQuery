@@ -100,7 +100,7 @@ SELECT
     accnt.name AS high_school_name_filter,
     --accnt_2.name AS college_name_applied_wide #Wide filtter, college name on Application filter. Applications page. 
         
-FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
         ON C.contact_id = CA.student_c 
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name from contact
@@ -109,6 +109,8 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college
         ON CA.College_University_c  = accnt_2.id    
     
 WHERE high_school_graduating_class_c = '2021'
+AND student_audit_status_c = 'Current CT HS Student'
+AND indicator_years_since_hs_grad_to_date_c = -.34
 ),
 
 acceptance_data AS 
