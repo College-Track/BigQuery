@@ -1,11 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
 OPTIONS
     (
     description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
     )
 AS
-
+*/
 
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
@@ -21,8 +21,8 @@ SELECT
     END AS application_status,
  
 #Contact 
-    C.full_name_c,
     C.contact_id, 
+    c.full_name_c,
     C.current_cc_advisor_2_c AS hs_ct_coach,
     C.high_school_graduating_class_c,
     C.npsp_primary_affiliation_c, 
@@ -30,8 +30,10 @@ SELECT
     C.college_eligibility_gpa_11th_grade,  #College Elig GPA (11th CGPA)
     CASE
         WHEN C.college_eligibility_gpa_11th_grade < 2.5 THEN '2.49 or below'
-        WHEN (C.college_eligibility_gpa_11th_grade >=2.5 AND C.college_eligibility_gpa_11th_grade < 3) THEN '2.5 - 2.99'
-        WHEN (C.college_eligibility_gpa_11th_grade >=3 AND C.college_eligibility_gpa_11th_grade < 3.5) THEN '3 - 3.49'
+        WHEN (C.college_eligibility_gpa_11th_grade >=2.5 AND C.college_eligibility_gpa_11th_grade < 2.75) THEN '2.5 - 2.74'
+        WHEN (C.college_eligibility_gpa_11th_grade >=2.75 AND C.college_eligibility_gpa_11th_grade < 3) THEN '2.75 - 2.99'
+        WHEN (C.college_eligibility_gpa_11th_grade >=3 AND C.college_eligibility_gpa_11th_grade < 3.25) THEN '3 - 3.24'
+        WHEN (C.college_eligibility_gpa_11th_grade >=3.25 AND C.college_eligibility_gpa_11th_grade < 3.5) THEN '3.25 - 3.49'
         WHEN (C.college_eligibility_gpa_11th_grade >=3.5 AND C.college_eligibility_gpa_11th_grade < 4) THEN '3.5 - 3.99'
         WHEN (C.college_eligibility_gpa_11th_grade >=4 AND C.college_eligibility_gpa_11th_grade < 4.5) THEN '4 - 4.49'
         ELSE '4.5+ or above'
@@ -96,7 +98,7 @@ SELECT
     
     #account
     accnt.name AS high_school_name_filter,
-    #accnt_2.name AS college_name_applied_wide, #Wide filtter, college name on Application filter. Applications page. 
+    --accnt_2.name AS college_name_applied_wide #Wide filtter, college name on Application filter. Applications page. 
         
 FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C    
 LEFT JOIN `data-warehouse-289815.salesforce_clean.college_application_clean` AS CA 
@@ -106,9 +108,8 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name f
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college name in application 
         ON CA.College_University_c  = accnt_2.id    
     
-WHERE C.grade_c = '12th Grade'
-AND C.College_Track_Status_Name = 'Current CT HS Student'
-   
+WHERE (C.grade_c = '12th Grade' AND C.College_Track_Status_Name = 'Current CT HS Student')
+    OR high_school_graduating_class_c = '2021'
 ),
 
 acceptance_data AS 
@@ -122,6 +123,16 @@ SELECT
         THEN 1
         ELSE 0
     END AS accepted,
+    
+    CASE
+        WHEN admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
+        THEN  accnt.name
+    END AS school_name_enrolled,
+    
+    CASE
+        WHEN admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
+        THEN app.id
+    END AS school_name_enrolled_record_id,
     
     CASE 
         WHEN (College_Fit_Type_Applied_c IS NULL OR application_status_c IS NULL) THEN 'Has Not Applied'
@@ -154,6 +165,13 @@ SELECT
         group by app2.student_c
         ) AS  contact_id_applied_status, #For metric on "Admissions" Page of Dashboard. Will only pull in students with Status of Applied.
         
+        (SELECT app2.id
+        FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
+        WHERE app.id=app2.id
+        AND application_status_c = "Applied"
+        group by app2.id
+        ) AS  college_app_id_applied,
+        
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app.student_c=app2.student_c
@@ -161,14 +179,14 @@ SELECT
         AND admission_status_c IS NULL
         group by app2.student_c
         ) AS  contact_id_applied_no_admission_status,
-        
+        /*
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
         AND application_status_c = "Applied"
         group by app2.student_c
         ) AS  contact_id_applied_4_year,
-    
+        */
         (SELECT app2.college_fit_type_applied_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE application_status_c = "Applied"
@@ -192,7 +210,7 @@ SELECT
         AND acc2.college_accepted_app_id=app.id
         group by acc2.fit_type_accepted, acc2.college_accepted_app_id
         ) AS  fit_type_accepted_tight,
-
+        /*
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
@@ -206,14 +224,14 @@ SELECT
         AND app.student_c=app2.student_c
         group by app2.student_c
         ) AS  contact_id_admissions,
-        
+        */
          (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app2.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting" AND app.student_c=app2.student_c
         AND app2.admission_status_c IN ("Accepted and Enrolled", "Accepted and Deferred")
         group by app2.student_c
         ) AS  contact_id_enrolled_4_year,
-        
+        /*
           (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app.student_c=app2.student_c
@@ -221,7 +239,7 @@ SELECT
         AND app.id = app2.id
         group by app2.student_c
         ) AS  contact_id_accepted,
-        
+        */
         (SELECT app2.student_c
         FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app2
         WHERE app.student_c=app2.student_c
@@ -275,6 +293,8 @@ SELECT
     college_accepted_app_id,
     accepted,
     fit_type_accepted,
+    school_name_enrolled,
+    school_name_enrolled_record_id
     
 FROM `data-warehouse-289815.salesforce_clean.college_application_clean`AS app
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
@@ -312,18 +332,17 @@ no_application_status AS
 (
 SELECT  
     contact_id AS  contact_id_status_not_applied 
-FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C
+FROM filtered_data AS C
 LEFT JOIN college_application_data
 ON contact_id = contact_id_applied_status
 WHERE contact_id_applied_status IS NULL
 ),
 
 --Identify students who have not enrolled
-no_enrollment AS
-(
+no_enrollment AS(
 SELECT  
     contact_id AS contact_id_not_enrolled
-FROM `data-warehouse-289815.salesforce_clean.contact_template` AS C
+FROM filtered_data AS C
 LEFT JOIN college_application_data
 ON contact_id = contact_id_enrolled
 WHERE contact_id_enrolled IS NULL
@@ -342,12 +361,31 @@ SELECT
     affordable_colleges.*,
     no_application_status.*,
     no_enrollment.*,
+    acceptance.contact_id_accepted,
     
     CASE WHEN 
         college_name_on_app_for_case_statement IS NULL THEN 'No College Application'
         ELSE college_name_on_app_for_case_statement 
     END AS college_name_applied_tight, #Tigher College Name filter. Top filter on Admissions & Enrollment page
     
+    CASE 
+        WHEN college_app_id = college_app_id_applied
+        THEN contact_id_applied_status
+        END AS contact_id_applied_to_college_listed,
+    
+    CASE 
+        WHEN college_name_on_app_for_case_statement = college_application_data.school_name_accepted
+        AND college_app_id = college_application_data.college_accepted_app_id
+        THEN contact_id_accepted
+        END AS contact_id_accepted_to_college_listed,
+    
+    CASE 
+        WHEN college_name_on_app_for_case_statement = college_application_data.school_name_enrolled
+        AND college_app_id = college_application_data.school_name_enrolled_record_id
+        THEN contact_id_accepted
+        END AS contact_id_enrolled_to_college_listed,
+
+        
     CASE
         WHEN application_status = "Prospect" THEN 1
         WHEN application_status = "In Progress" THEN 2
@@ -414,6 +452,8 @@ LEFT JOIN no_enrollment AS no_enrollment
     ON filtered_data.contact_id = no_enrollment.contact_id_not_enrolled
 LEFT JOIN affordable_colleges AS affordable_colleges 
     ON filtered_data.contact_id = affordable_colleges.student_affordable_colleges_table
+LEFT JOIN acceptance_data AS acceptance
+    ON filtered_data.contact_id = acceptance.contact_id_accepted 
 
    --Used in Data Studio to create sort helper field
     /*CASE
@@ -463,4 +503,3 @@ LEFT JOIN affordable_colleges AS affordable_colleges
         WHEN fit_type_accepted  = "Admission Status Not Yet Updated" THEN 7
         WHEN fit_type_accepted = 'Has Not Applied' THEN 8
         END*/
-    
