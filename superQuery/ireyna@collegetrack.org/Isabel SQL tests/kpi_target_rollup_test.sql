@@ -1,11 +1,16 @@
---Updating baker's query for fy22_team_kpis to map submitted targets to roles that share the same KPI
+#NEED TO CREATE SUM OF NUMERATOR NEXT!
+
 /*
 CREATE
-OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
+OR REPLACE TABLE `ct-testing-op.testing_salesforce_raw.testing_fy22_team_kpi` OPTIONS (
   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
 */
+
+
+
+
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -55,9 +60,7 @@ WITH prep_kpi_targets AS (
     END AS select_kpi,
     what_is_the_type_of_target_,
     CASE
-      
       WHEN KPI_Target.select_role IS NOT NULL THEN "Submitted"
-    --   WHEN site_kpi IN ("Sacramento", "Denver", "Watts") AND select_kpi = '% of students graduating from college within 6 years' THEN "Not Required"
       ELSE "Not Submitted"
     END AS target_submitted,
     CASE
@@ -69,15 +72,6 @@ WITH prep_kpi_targets AS (
   FROM
     `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` KPI_Target
     WHERE email_kpi != 'test@collegetrack.org'
-    -- AND indicator_disregard_entry_op_hard_coded	 <> 1
-    -- WHERE email_kpi != 'test@collegetrack.org'-- `data-studio-260217.performance_mgt.expanded_role_kpi_selection` KPI_Selection --List of KPIs by Team/Role
-    -- LEFT JOIN `data-warehouse-289815.google_sheets.team_kpi_target` KPI_Target --ON KPI_Target.team_kpi = REPLACE(KPI_Selection.function, ' ', '_')  #FormAssembly
-    -- ON KPI_Target.select_role = KPI_Selection.role
-    -- AND KPI_Target.select_kpi = KPI_Selection.kpis_by_role
-    -- AND KPI_Target.site_kpi = KPI_Selection.site_or_region
-    -- -- LEFT JOIN `data-warehouse-289815.performance_mgt.fy22_roles_to_kpi` as c
-    -- ON c.kpi = KPI_Selection.kpis_by_role
-    -- AND c.role = KPI_Selection.role
 ),
 
 prep_student_type_projections AS (
@@ -116,7 +110,6 @@ FROM prep_student_type_projections PSTP
 
 prep_non_program_kpis AS (
   SELECT
-    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     Non_Program_Targets.*,
     CAST(NULL AS STRING) AS region_abrev,
@@ -154,7 +147,6 @@ WHERE
 
 prep_regional_kpis AS (
   SELECT
-   indicator_disregard_entry_op_hard_coded,
    KPI_by_role.*,
    KPI_Tagets.*,
    Projections.region_abrev,
@@ -176,7 +168,6 @@ prep_regional_kpis AS (
 ),
 prep_site_kpis AS (
   SELECT
-    indicator_disregard_entry_op_hard_coded,
     KPI_by_role.*,
     KPI_Tagets.*,
     Projections.region_abrev,
@@ -197,6 +188,22 @@ prep_site_kpis AS (
     KPI_by_role.function IN ('Mature Site Staff', 'Non-Mature Site Staff')
  
 ),
+
+sum_student_count_by_program_kpi AS (
+SELECT distinct 
+    kpis_by_role,
+    (SELECT SUM(student_count) FROM prep_site_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t2.target_submitted = 'Submitted') AS student_count_sum
+FROM prep_site_kpis  AS t1
+),
+/*
+sum_student_count_by_regional_kpi AS (
+SELECT distinct 
+    kpis_by_role, region_abrev,
+    (SELECT SUM(student_count) FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND  t1.region_abrev = t2.region_abrev AND target_submitted = 'Submitted') AS student_count_sum_region
+FROM prep_regional_kpis  AS t1
+GROUP BY kpis_by_role, region_abrev
+),
+*/
 join_tables AS (
   SELECT
     PSK.*
@@ -218,19 +225,25 @@ identify_teams AS (
 SELECT
   function,
   role,
-  kpis_by_role,
+  join_tables.kpis_by_role,
+  student_count_sum,
+  --student_count_sum_region,
   site_or_region,
   target_fy22,
-  region_abrev AS Region,
+  join_tables.region_abrev AS Region,
   site_short AS Site,
   student_count,
 --   target_submitted,
   
   CASE
     WHEN target_fy22 IS NOT NULL THEN "Submitted"
-    WHEN site_or_region IN ("Sacramento", "Denver", "Watts") AND kpis_by_role = '% of students graduating from college within 6 years' THEN "Not Required"
+    /*WHEN site_or_region IN ("Sacramento", "Denver", "Watts") AND kpis_by_role = '% of students graduating from college within 6 years' THEN "Not Required"
     WHEN kpis_by_role = "% of students engaged in career exploration, readiness events or internships" THEN "Not Required"
     WHEN kpis_by_role = "% of students growing toward average or above social-emotional strengths" THEN "Not Required"
+    WHEN role IN ('Mental Health and Wellness Director','SL/MH&W Director (Non-Mature)','SL/MH&W Director') AND site_or_region IN ('San Francisco','Sacramento','Aurora','Denver','Boyle Heights') THEN "Not Required"
+    WHEN role IN ('College Access Director (Fellow)','College Access Director (Non-Mature)') AND site_or_region IN ('Crenshaw','The Durant Center','Ward 8','East Palo Alto') THEN "Not Required"
+    WHEN role = 'Regional College and Career Director' AND site_or_region = 'Sacramento' THEN "Not Required"
+    --WHEN (kpis_by_role = "% of college students who persist into the following year (all college students, not just first-years)" AND site_or_region = "Watts") THEN "Not Required"*/
     ELSE "Not Submitted"
   END AS target_submitted,
   CASE
@@ -272,77 +285,59 @@ SELECT
   -- END AS Site,
 FROM
   join_tables
-  WHERE kpis_by_role != "KPIs by role"
+LEFT JOIN sum_student_count_by_program_kpi ON join_tables.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
+--LEFT JOIN sum_student_count_by_regional_kpi ON join_tables.kpis_by_role = sum_student_count_by_regional_kpi.kpis_by_role AND join_tables.region_abrev = sum_student_count_by_regional_kpi.region_abrev
+  WHERE join_tables.kpis_by_role != "KPIs by role"
 ),
 
 calculate_numerators AS (
-SELECT *,
+SELECT 
+--Identify program kpis that roll-up regionally
+(SELECT t2.kpis_by_role FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 GROUP BY kpis_by_role) AS regional_rollup_kpi,
+--Map program kpis that roll-up regionally to the Region
+(SELECT t2.region_abrev FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t2.region_abrev = t1.region AND t1.program =1 GROUP BY region_abrev /*t2.site_or_region,kpis_by_role,t2.region_abrev*/) AS rollup_kpi_region,
+--Sum of students for regional rollups
+(SELECT SUM(student_count) FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 AND t2.region_abrev = t1.region GROUP BY region_abrev) AS regional_rollup_student_sum,
+*,
 target_fy22 * student_count AS target_numerator
-FROM identify_teams
+FROM identify_teams AS t1
 
 ),
 
 correct_missing_site_region AS (
-SELECT CN.* EXCEPT(Region, Site, target_numerator,student_count),
+SELECT CN.* EXCEPT(Region, Site, student_count, target_numerator), --student_count, target_numerator added by IR
 CASE WHEN Region IS NULL AND site_or_region IS NOT NULL THEN Projections.region_abrev ELSE region
 END AS Region,
 CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_short ELSE Site
 END AS Site,
 
 --added by IR
-CASE WHEN CN.student_count = 0 THEN NULL
-    ELSE CN.student_count
-    END AS student_count,
-CASE WHEN target_numerator = 0 THEN NULL 
-    ELSE target_numerator
-    END AS target_numerator
-    
---
+CASE WHEN target_submitted = 'Not Submitted' THEN NULL
+ELSE cn.student_count
+END AS student_count,
+CASE WHEN target_submitted = 'Not Submitted' THEN NULL
+ELSE target_numerator
+END AS target_numerator
+
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
-GROUP BY 
-    Region,
-    Site,
-    function,
-    region_function,
-    role,
-    kpis_by_role,
-    site_or_region,
-    target_submitted,
-    target_fy22,
-    student_count,
-    target_numerator,
-    national,
-    program,
-    hr_people,
-    development
 ),
 
-fy22_target_percent AS (
-SELECT region,kpis_by_role,
-    CASE 
-        WHEN SUM(student_count) IS NOT NULL THEN ROUND(SUM(target_numerator)/SUM(student_count),2)
-        ELSE SUM(target_fy22)/COUNT(role)
-    END AS fy22_target_percent_test,
-    SUM(student_count) AS student_count_sum
-FROM correct_missing_site_region
-group by  region,kpis_by_role
-),
-
-PREP_FINAL_JOIN_1 AS (
-SELECT *
-FROM fy22_target_percent
-GROUP BY 
-    Region,
-    kpis_by_role,
-    fy22_target_percent_test,
-    student_count_sum
+all_kpi_data AS (
+SELECT distinct * except (student_count_sum),--,student_count_sum_region),
+--CASE WHEN target_submitted = 'Submitted' THEN 1
+--ELSE 0
+--END AS count_of_submitted_targets,
+CASE WHEN target_submitted = "Submitted" THEN 1 -- "Not Required" THEN 1
+ELSE 0
+END AS count_of_targets
+FROM correct_missing_site_region AS t1
 )
 
---PREP_FINAL_JOIN_2 AS (
-SELECT region, kpis_by_role,student_count_sum,
-    SUM(fy22_target_percent_test) AS sum_of_numerator,
-    
-FROM PREP_FINAL_JOIN_1
-GROUP BY 
-   region, kpis_by_role,student_count_sum
+SELECT * EXCEPT (kpis_by_role)
+FROM all_kpi_data 
+LEFT JOIN sum_student_count_by_program_kpi ON all_kpi_data.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
+/*LEFT JOIN sum_student_count_by_regional_kpi 
+  ON all_kpi_data.kpis_by_role = sum_student_count_by_regional_kpi.kpis_by_role
+  AND all_kpi_data.region = sum_student_count_by_regional_kpi.region_abrev
+*/
