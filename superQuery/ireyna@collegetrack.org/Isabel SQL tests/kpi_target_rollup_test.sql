@@ -298,6 +298,9 @@ SELECT
 (SELECT t2.region_abrev FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t2.region_abrev = t1.region AND t1.program =1 GROUP BY region_abrev /*t2.site_or_region,kpis_by_role,t2.region_abrev*/) AS rollup_kpi_region,
 --Sum of students for regional rollups
 (SELECT SUM(student_count) FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 AND t2.region_abrev = t1.region GROUP BY region_abrev) AS regional_rollup_student_sum,
+--Identify program kpis that roll-up nationally
+(SELECT t2.kpis_by_role FROM prep_non_program_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 GROUP BY kpis_by_role) AS national_rollup_kpi,
+--Sum of students for national rollups
 *,
 target_fy22 * student_count AS target_numerator
 FROM identify_teams AS t1
