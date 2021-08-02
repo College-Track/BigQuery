@@ -767,10 +767,7 @@ WITH gather_contact_data AS (
      gather_spring_at_status AS (SELECT
                                      Contact_Id,
                                      AY_Name,
-                                     CASE
-                                         WHEN GAS_Name LIKE '%Spring 2020-21%' THEN College_Track_Status_Name
-                                         ELSE student_audit_status_c
-                                         END AS student_audit_status_c,
+                                     student_audit_status_c,
                                      AT_School_Name AS AY_School_Name,
                                      AT_school_type AS AY_School_type,
                                      AT_Enrollment_Status_c AS AY_enrollment_status,
@@ -781,7 +778,7 @@ WITH gather_contact_data AS (
                                      AT_Cumulative_GPA AS AY_Cumulative_GPA,
                                      AT_Term_GPA AS AY_Term_GPA,
                                      AT_Term_GPA_bucket AS AY_Term_GPA_bucket,
-                                     sort_AT_Term_GPA_bucket AS sort_AY_Term_GPA_bucket
+                                     sort_AT_Term_GPA_bucket AS sort_AT_Term_GPA_bucket
                                  FROM `data-warehouse-289815.salesforce_clean.contact_at_template` A_T
                                  WHERE term_c = 'Spring'),
      join_data AS (SELECT
