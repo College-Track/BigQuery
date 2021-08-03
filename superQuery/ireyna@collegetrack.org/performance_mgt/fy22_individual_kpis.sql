@@ -58,8 +58,8 @@ combimed_kpi_columns AS (
 SELECT 
 * EXCEPT (enter_the_target_numeric_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_percent_kpi_list_2,enter_the_target_percent_kpi_list_3),
  CASE
-      WHEN enter_the_target_numeric_ <> 0 THEN enter_the_target_numeric_
-      WHEN enter_the_target_percent_ <> 0 THEN enter_the_target_percent_
+      WHEN enter_the_target_numeric_ > 0 THEN enter_the_target_numeric_
+      WHEN enter_the_target_percent_ > 0 THEN enter_the_target_percent_
       WHEN enter_the_target_numeric_kpi_list <> 0 THEN enter_the_target_numeric_kpi_list
       WHEN enter_the_target_percent_kpi_list <> 0 THEN enter_the_target_percent_kpi_list
       WHEN what_is_the_type_of_target_kpi_list = "I am not adding another KPI from my team's list" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
