@@ -36,7 +36,7 @@ case when enter_the_target_numeric_kpi_list is null then 0 end as enter_the_targ
 */    
     
 FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS indiv_kpis
-WHERE Indicator_Disregard_Entry <> 0
+WHERE Indicator_Disregard_Entry <> 1
 )
 SELECT 
  CASE
