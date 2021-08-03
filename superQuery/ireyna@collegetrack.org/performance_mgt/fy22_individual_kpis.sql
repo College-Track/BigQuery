@@ -18,7 +18,7 @@ FROM `data-warehouse-289815.google_sheets.individual_kpi_target`
 WHERE Indicator_Disregard_Entry IS NULL
 ),
 
-prep_union_1 AS (
+prep_union_pre_1 AS (
 SELECT * EXCEPT(enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
     CASE  
         WHEN enter_the_target_percent_kpi_list IS NULL
@@ -30,6 +30,16 @@ SELECT * EXCEPT(enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_l
         END AS enter_the_target_numeric_kpi_list,
 FROM prep_kpis
 ),
+
+prep_union_1 AS (
+SELECT * EXCEPT(enter_the_target_numeric_kpi_list),
+    CASE  
+        WHEN enter_the_target_numeric_kpi_list IS NULL 
+        THEN NULL
+        END AS enter_the_target_numeric_kpi_list
+FROM prep_union_pre_1
+),
+
 
 prep_union_2 AS (
 SELECT * EXCEPT(enter_the_target_percent_kpi_list_2),
