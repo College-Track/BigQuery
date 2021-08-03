@@ -10,7 +10,10 @@ AS
 
 WITH
 prep_kpis AS (
-SELECT * 
+SELECT * EXCEPT(enter_your_college_track_email_address,great_select_your_name,op_rename_role_column_for_mapping),
+    enter_your_college_track_email_address AS email_address,
+    great_select_your_name AS full_name,
+    op_rename_role_column_for_mapping AS team
 FROM `data-warehouse-289815.google_sheets.individual_kpi_target` 
 WHERE Indicator_Disregard_Entry IS NULL
 ),
@@ -170,9 +173,9 @@ SELECT
         END AS fy22_individual_kpi
 
 FROM prep_kpis  
-)
+),
 
---UNION_EVERYTHING AS (
+UNION_EVERYTHING AS (
 
 SELECT *
 FROM UNION_1
@@ -196,4 +199,6 @@ UNION ALL
 
 SELECT *
 FROM UNION_6
-
+)
+SELECT *
+FROM union_everything
