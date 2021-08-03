@@ -59,21 +59,11 @@ SELECT
       WHEN enter_the_target_numeric_kpi_list IS NOT NULL THEN enter_the_target_numeric_kpi_list
       WHEN enter_the_target_percent_kpi_list IS NOT NULL THEN enter_the_target_percent_kpi_list
       WHEN what_is_the_type_of_target_kpi_list = "I am not adding another KPI from my team's list" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
-      ELSE NULL
-    END AS target_fy22_kpi,
-    CASE
       WHEN enter_the_target_percent_kpi_list_2 IS NOT NULL THEN enter_the_target_percent_kpi_list_2
-      ELSE NULL
-    END AS target_fy22_kpi,
-    CASE
       WHEN enter_the_target_percent_kpi_list_3 IS NOT NULL THEN enter_the_target_percent_kpi_list_3
-      ELSE NULL
-    END AS target_fy22_kpi,
-    CASE
       WHEN enter_the_target_percent_self_created IS NOT NULL THEN enter_the_target_percent_self_created
       WHEN enter_the_target_numeric_self_created IS NOT NULL THEN enter_the_target_numeric_self_created
       WHEN what_is_the_type_of_target_self_created = "I am not adding a self-created KPI" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
-      ELSE NULL
     END AS target_fy22_kpi
 
 FROM prep_individual_kpis
