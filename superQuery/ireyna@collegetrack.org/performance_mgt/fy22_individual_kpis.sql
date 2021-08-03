@@ -19,15 +19,12 @@ WHERE Indicator_Disregard_Entry IS NULL
 ),
 
 prep_union_pre_1 AS (
-SELECT * EXCEPT(enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+SELECT * EXCEPT(enter_the_target_percent_kpi_list),
     CASE  
         WHEN enter_the_target_percent_kpi_list IS NULL
         THEN NULL
         END AS enter_the_target_percent_kpi_list,
-    CASE  
-        WHEN enter_the_target_numeric_kpi_list IS NULL 
-        THEN NULL
-        END AS enter_the_target_numeric_kpi_list,
+    
 FROM prep_kpis
 ),
 
