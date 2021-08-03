@@ -6,9 +6,12 @@ OPTIONS
     )
 AS
 */
-
+WITH
+prep_individual_kpis AS (
 SELECT 
-* EXCEPT (response_url)
+* EXCEPT (response_url,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+case when enter_the_target_percent_kpi_list is null then 0 end as enter_the_target_percent_kpi_list,
+case when enter_the_target_numeric_kpi_list is null then 0 end as enter_the_target_numeric_kpi_list
 /*
     CASE
       WHEN enter_the_target_numeric_kpi_list IS NOT NULL THEN enter_the_target_numeric_kpi_list
@@ -34,3 +37,14 @@ SELECT
     
 FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS indiv_kpis
 WHERE Indicator_Disregard_Entry <> 0
+)
+SELECT 
+ CASE
+      WHEN enter_the_target_numeric_kpi_list IS NOT NULL THEN enter_the_target_numeric_kpi_list
+      WHEN enter_the_target_percent_kpi_list IS NOT NULL THEN enter_the_target_percent_kpi_list
+      WHEN what_is_the_type_of_target_kpi_list = "I am not adding another KPI from my team's list" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
+      ELSE NULL
+    END AS target_fy22_kpi
+
+
+FROM prep_individual_kpis
