@@ -84,8 +84,8 @@ FROM prep_individual_kpis
 clean_individual_kpi_targets AS (
 SELECT 
 great_select_your_name AS  full_name,
-enter_your_college_track_email_address AS email_address
---op_rename_role_column_for_mapping AS team,
+enter_your_college_track_email_address AS email_address,
+op_rename_role_column_for_mapping AS team,
 --target_fy22_kpi,
 --fy22_individual_kpi
 
@@ -102,4 +102,4 @@ FROM clean_individual_kpi_targets AS t1
 LEFT JOIN combimed_kpi_columns AS t2
     ON t1.full_name =t2.great_select_your_name
     AND t1.email_address=t2.enter_your_college_track_email_address
-    --AND t1.team = t2.op_rename_role_column_for_mapping
+    AND t1.team = t2.op_rename_role_column_for_mapping
