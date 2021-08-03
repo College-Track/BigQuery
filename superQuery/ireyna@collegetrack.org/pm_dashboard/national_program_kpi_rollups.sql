@@ -16,11 +16,10 @@ national_program_kpi AS (
     group by FUNCTION, kpis_by_role, site_or_region
 )
 SELECT SUM(student_count_prep) national_kpi_rollup,
-kpis_by_role
-FROM national_program_kpi
+kpis_by_role AS national_program_kpi
+FROM national_program_kpi 
 group by FUNCTION, kpis_by_role
 
-;
 
 
 /*
