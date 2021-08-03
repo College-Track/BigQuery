@@ -22,7 +22,7 @@ prep_union_pre_1 AS (
 SELECT * EXCEPT(enter_the_target_percent_kpi_list),
     CASE  
         WHEN enter_the_target_percent_kpi_list IS NULL
-        THEN NULL
+        THEN 0
         END AS enter_the_target_percent_kpi_list,
     
 FROM prep_kpis
@@ -32,7 +32,7 @@ prep_union_1 AS (
 SELECT * EXCEPT(enter_the_target_numeric_kpi_list),
     CASE  
         WHEN enter_the_target_numeric_kpi_list IS NULL 
-        THEN NULL
+        THEN 0
         END AS enter_the_target_numeric_kpi_list
 FROM prep_union_pre_1
 ),
@@ -43,7 +43,7 @@ SELECT * EXCEPT(enter_the_target_percent_kpi_list_2),
      CASE
         WHEN enter_the_target_percent_kpi_list_2 IS NOT NULL 
         THEN enter_the_target_percent_kpi_list_2
-        ELSE NULL 
+        ELSE 0 
         END AS enter_the_target_percent_kpi_list_2,
 FROM prep_kpis
 ),
@@ -53,7 +53,7 @@ SELECT * EXCEPT(enter_the_target_percent_kpi_list_3),
      CASE
         WHEN enter_the_target_percent_kpi_list_3 IS NOT NULL 
         THEN enter_the_target_percent_kpi_list_3
-        ELSE NULL 
+        ELSE 0 
         END AS enter_the_target_percent_kpi_list_3,
 FROM prep_kpis
 ),
@@ -63,7 +63,7 @@ SELECT * EXCEPT(enter_the_target_percent_kpi_list_4),
      CASE
         WHEN enter_the_target_percent_kpi_list_4 IS NOT NULL 
         THEN enter_the_target_percent_kpi_list_4
-        ELSE NULL 
+        ELSE 0 
         END AS enter_the_target_percent_kpi_list_4,
 FROM prep_kpis
 ),
@@ -75,7 +75,7 @@ SELECT
     CASE 
         WHEN enter_the_target_numeric_kpi_list IS NOT NULL THEN enter_the_target_numeric_kpi_list
         WHEN enter_the_target_percent_kpi_list IS NOT NULL THEN enter_the_target_percent_kpi_list
-        ELSE NULL
+        ELSE 0
     END AS target_fy22_kpi, 
   
     CASE 
