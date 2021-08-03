@@ -28,6 +28,7 @@ WITH prep_kpi_targets AS (
     END AS region_kpi,
     CASE
         WHEN team_kpi = "Org_Performance" THEN "Org Performance"
+        WHEN team_kpi = "Program_Development" THEN "Program Development"
         WHEN team_kpi = "Employee_Experience" THEN "Employee Experience"
         WHEN team_kpi = "Talent_Acquisition" THEN "Talent Acquisition"
         WHEN team_kpi = "Talent_Development" THEN "Talent Development"
