@@ -65,6 +65,15 @@ SELECT
       WHEN enter_the_target_numeric_self_created <> 0 THEN enter_the_target_numeric_self_created
       WHEN what_is_the_type_of_target_self_created = "I am not adding a self-created KPI" THEN 0 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
-    END AS target_fy22_kpi
+    END AS target_fy22_kpi,
+CASE 
+    WHEN add_from_your_team_s_kpi_list IS NOT NULL THEN add_from_your_team_s_kpi_list
+    WHEN what_will_your_self_created_kpi_be_this_year_ IS NOT NULL THEN what_will_your_self_created_kpi_be_this_year_
+    WHEN select_a_kpi_from_the_dropdown IS NOT NULL THEN select_a_kpi_from_the_dropdown
+    WHEN select_a_kpi_from_the_dropdown_2 IS NOT NULL THEN select_a_kpi_from_the_dropdown_2
+    WHEN select_a_kpi_from_the_dropdown_3 IS NOT NULL THEN select_a_kpi_from_the_dropdown_3
+    WHEN select_a_kpi_from_the_dropdown_4 IS NOT NULL THEN select_a_kpi_from_the_dropdown_4
+    ELSE NULL
+END AS fy22_individual_kpi
 
 FROM prep_individual_kpis
