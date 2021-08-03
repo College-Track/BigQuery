@@ -39,6 +39,7 @@ FROM`data-warehouse-289815.google_sheets.individual_kpi_target` AS indiv_kpis
 WHERE Indicator_Disregard_Entry <> 1
 )
 SELECT 
+*,
  CASE
       WHEN enter_the_target_numeric_kpi_list IS NOT NULL THEN enter_the_target_numeric_kpi_list
       WHEN enter_the_target_percent_kpi_list IS NOT NULL THEN enter_the_target_percent_kpi_list
