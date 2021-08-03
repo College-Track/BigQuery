@@ -1,15 +1,16 @@
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_individual_kpis`
 OPTIONS
     (
     description= "This table pulls in targets submitted by staff using the Individual KPI Target submission form"
     )
 AS
-*/
+
 WITH
 prep_individual_kpis AS (
 SELECT 
-    * EXCEPT (response_url,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list,enter_the_target_percent_kpi_list_2,enter_the_target_percent_kpi_list_3,enter_the_target_numeric_,enter_the_target_percent_),
+    * EXCEPT (response_url,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list,
+    enter_the_target_percent_kpi_list_2,enter_the_target_percent_kpi_list_3,enter_the_target_numeric_,enter_the_target_percent_),
     CASE 
         WHEN enter_the_target_numeric_ IS NULL  
         THEN 0 
@@ -104,7 +105,7 @@ FROM combimed_kpi_columns
 SELECT 
 full_name,
 email_address,
---team,
+team,
 target_fy22_kpi,
 fy22_individual_kpi
 
