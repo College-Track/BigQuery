@@ -23,7 +23,7 @@ WITH gather_data AS (
     
   FROM
     `data-studio-260217.gpa_dashboard.filtered_gpa_data`
-  WHERE GAS_Name = 'Fall 2020-21' -- Has to be manually adjusted each new complete term
+  WHERE GAS_Name = 'Spring 2020-21' -- Has to be manually adjusted each new complete term
   AND student_audit_status_c IN ('Current CT HS Student', 'Leave of Absence', 'Onboarding')
   GROUP BY
     region_abrev,
