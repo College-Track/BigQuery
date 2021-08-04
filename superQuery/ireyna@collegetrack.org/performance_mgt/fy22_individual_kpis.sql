@@ -14,7 +14,7 @@ SELECT * EXCEPT(enter_your_college_track_email_address,enter_the_target_percent_
     enter_your_college_track_email_address AS email_address,
     great_select_your_name AS full_name,
     op_rename_role_column_for_mapping AS team,
-    CAST(enter_the_target_percent_kpi_list AS INT64) AS enter_the_target_percent_kpi_list
+    CAST(enter_the_target_percent_kpi_list AS FLOAT64) AS enter_the_target_percent_kpi_list
 FROM `data-warehouse-289815.google_sheets.individual_kpi_target` 
 WHERE Indicator_Disregard_Entry IS NULL
 ),
