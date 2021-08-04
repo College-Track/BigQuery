@@ -1,5 +1,4 @@
-
-/*
+*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_individual_kpis`
 OPTIONS
     (
@@ -17,12 +16,12 @@ SELECT * EXCEPT(enter_your_college_track_email_address,great_select_your_name,op
 FROM `data-warehouse-289815.google_sheets.individual_kpi_target` 
 WHERE Indicator_Disregard_Entry IS NULL
 ),
-
+/*
 prep_union_pre_1 AS (
 SELECT * EXCEPT(enter_the_target_percent_kpi_list),
     CASE  
         WHEN enter_the_target_percent_kpi_list IS NULL
-        THEN 0
+        THEN NULL
         END AS enter_the_target_percent_kpi_list,
     
 FROM prep_kpis
@@ -32,7 +31,7 @@ prep_union_1 AS (
 SELECT * EXCEPT(enter_the_target_numeric_kpi_list),
     CASE  
         WHEN enter_the_target_numeric_kpi_list IS NULL 
-        THEN 0
+        THEN NULL
         END AS enter_the_target_numeric_kpi_list
 FROM prep_union_pre_1
 ),
@@ -43,7 +42,7 @@ SELECT * EXCEPT(enter_the_target_percent_kpi_list_2),
      CASE
         WHEN enter_the_target_percent_kpi_list_2 IS NOT NULL 
         THEN enter_the_target_percent_kpi_list_2
-        ELSE 0 
+        ELSE NULL 
         END AS enter_the_target_percent_kpi_list_2,
 FROM prep_kpis
 ),
@@ -53,7 +52,7 @@ SELECT * EXCEPT(enter_the_target_percent_kpi_list_3),
      CASE
         WHEN enter_the_target_percent_kpi_list_3 IS NOT NULL 
         THEN enter_the_target_percent_kpi_list_3
-        ELSE 0 
+        ELSE NULL 
         END AS enter_the_target_percent_kpi_list_3,
 FROM prep_kpis
 ),
@@ -63,35 +62,49 @@ SELECT * EXCEPT(enter_the_target_percent_kpi_list_4),
      CASE
         WHEN enter_the_target_percent_kpi_list_4 IS NOT NULL 
         THEN enter_the_target_percent_kpi_list_4
-        ELSE 0 
+        ELSE NULL 
         END AS enter_the_target_percent_kpi_list_4,
 FROM prep_kpis
 ),
-
+*/
 UNION_1 AS (
 SELECT 
-    * EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
-    enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+    * EXCEPT (enter_the_target_numeric_kpi_list,), --EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
+   --enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
     CASE 
         WHEN enter_the_target_numeric_kpi_list IS NOT NULL THEN enter_the_target_numeric_kpi_list
-        WHEN enter_the_target_percent_kpi_list IS NOT NULL THEN enter_the_target_percent_kpi_list
-        ELSE 0
-    END AS target_fy22_kpi, 
-  
+        ELSE NULL
+    END target_fy22_kpi,
+    
     CASE 
         WHEN add_from_your_team_s_kpi_list IS NOT NULL THEN add_from_your_team_s_kpi_list
         ELSE NULL
         END AS fy22_individual_kpi
         
-FROM prep_union_1 
-),
+FROM prep_kpis
+    ),
 
 UNION_2 AS (
 SELECT 
-    * EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
-    enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+    * EXCEPT (enter_the_target_percent_kpi_list,add_from_your_team_s_kpi_list,enter_the_target_numeric_kpi_list),
     CASE 
-        WHEN enter_the_target_percent_kpi_list_2 IS NOT NULL THEN enter_the_target_numeric_kpi_list
+        WHEN enter_the_target_percent_kpi_list IS NOT NULL THEN enter_the_target_percent_kpi_list
+        ELSE NULL
+    END AS target_fy22_kpi,
+    CASE 
+        WHEN add_from_your_team_s_kpi_list IS NOT NULL THEN add_from_your_team_s_kpi_list
+        ELSE NULL
+        END AS fy22_individual_kpi
+        
+FROM prep_kpis 
+),
+
+UNION_3 AS (
+SELECT 
+    * EXCEPT (enter_the_target_percent_kpi_list_2,select_a_kpi_from_the_dropdown_2),--EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
+    --enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+    CASE 
+        WHEN enter_the_target_percent_kpi_list_2 IS NOT NULL THEN enter_the_target_percent_kpi_list_2
         ELSE NULL
     END AS target_fy22_kpi, 
   
@@ -100,13 +113,13 @@ SELECT
        ELSE NULL
     END AS fy22_individual_kpi
     
-FROM prep_union_2     
+FROM UNION_2     
 
 ),
-UNION_3 AS (
+UNION_4 AS (
 SELECT 
-    * EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
-    enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+    * EXCEPT (enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_3),--EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
+    -- enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
     CASE 
         WHEN enter_the_target_percent_kpi_list_3 IS NOT NULL THEN enter_the_target_percent_kpi_list_3
         ELSE NULL
@@ -117,13 +130,13 @@ SELECT
        ELSE NULL
     END AS fy22_individual_kpi
     
-FROM prep_union_3    
+FROM UNION_3    
 ),       
 
-UNION_4 AS (
+UNION_5 AS (
 SELECT 
-    * EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
-    enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+    * except (enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_4),--EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
+    --enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
     CASE 
         WHEN enter_the_target_percent_kpi_list_4 IS NOT NULL THEN enter_the_target_percent_kpi_list_4
         ELSE NULL
@@ -134,13 +147,13 @@ SELECT
        ELSE NULL
     END AS fy22_individual_kpi
     
-FROM prep_union_4  
+FROM UNION_4  
 ),
 
-UNION_5 AS (
+UNION_6 AS (
 SELECT 
-    * EXCEPT(what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
-    enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
+    * EXCEPT (enter_the_target_percent_self_created,enter_the_target_numeric_self_created),--EXCEPT(what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
+    --enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
     CASE 
       WHEN enter_the_target_percent_self_created IS NOT NULL THEN enter_the_target_percent_self_created
       WHEN enter_the_target_numeric_self_created IS NOT NULL THEN enter_the_target_numeric_self_created
@@ -152,10 +165,10 @@ SELECT
        ELSE NULL
     END AS fy22_individual_kpi
     
-FROM prep_kpis  
+FROM UNION_5  
 ),
 
-UNION_6 AS (
+UNION_7 AS (
 SELECT 
     * EXCEPT (what_is_the_type_of_target_kpi_list,what_is_the_type_of_target_self_created,what_will_your_self_created_kpi_be_this_year_,enter_the_target_percent_self_created,enter_the_target_numeric_self_created,select_a_kpi_from_the_dropdown_4,enter_the_target_percent_kpi_list_4,select_a_kpi_from_the_dropdown_3,enter_the_target_percent_kpi_list_3,select_a_kpi_from_the_dropdown_2,
     enter_the_target_percent_kpi_list_2,add_from_your_team_s_kpi_list,enter_the_target_percent_kpi_list,enter_the_target_numeric_kpi_list),
@@ -180,43 +193,7 @@ SELECT
         END AS fy22_individual_kpi
 
 FROM prep_kpis  
-),
 
-UNION_EVERYTHING AS (
-
-SELECT *
-FROM UNION_1
-UNION ALL
-
-SELECT *
-FROM UNION_2
-UNION ALL
-
-SELECT *
-FROM UNION_3
-UNION ALL
-
+)
 SELECT *
 FROM UNION_4
-UNION ALL
-
-SELECT *
-FROM UNION_5
-UNION ALL
-
-SELECT *
-FROM UNION_6
-)
-SELECT 
-full_name,
-email_address,
-team,
-target_fy22_kpi,
-fy22_individual_kpi
-FROM union_everything
-GROUP BY 
-full_name,
-email_address,
-team,
-target_fy22_kpi,
-fy22_individual_kpi
