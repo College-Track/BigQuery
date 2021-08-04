@@ -186,5 +186,16 @@ UNION ALL
 SELECT *
 FROM UNION_6
 )
-SELECT *
+SELECT 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
 FROM union_everything
+GROUP BY
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
