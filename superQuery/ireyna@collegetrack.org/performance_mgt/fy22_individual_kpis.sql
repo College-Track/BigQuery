@@ -32,7 +32,13 @@ SELECT
     CASE 
         WHEN add_from_your_team_s_kpi_list IS NOT NULL THEN add_from_your_team_s_kpi_list
         ELSE NULL
-        END AS fy22_individual_kpi
+        END AS fy22_individual_kpi,
+    CASE 
+        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
+        THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        THEN what_is_the_type_of_target_kpi_list
+    END AS fy22_type_of_target
         
 FROM prep_kpis 
 
@@ -44,15 +50,21 @@ SELECT
     full_name,
     team,
     CASE
-    WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list > 1.0 
-        THEN (enter_the_target_percent_kpi_list/100)
+    WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
+        THEN enter_the_target_percent_kpi_list
     WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
         THEN enter_the_target_percent_kpi_list
     END AS target_fy22_kpi, 
     CASE 
         WHEN add_from_your_team_s_kpi_list IS NOT NULL THEN add_from_your_team_s_kpi_list
         ELSE NULL
-        END AS fy22_individual_kpi
+        END AS fy22_individual_kpi,
+    CASE 
+        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
+        THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        THEN what_is_the_type_of_target_kpi_list
+    END AS fy22_type_of_target
         
 
 FROM prep_kpis
@@ -72,7 +84,13 @@ SELECT
     CASE 
        WHEN select_a_kpi_from_the_dropdown_2 IS NOT NULL THEN select_a_kpi_from_the_dropdown_2
        ELSE NULL
-    END AS fy22_individual_kpi
+    END AS fy22_individual_kpi,
+    CASE 
+        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
+        THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        THEN what_is_the_type_of_target_kpi_list
+    END AS fy22_type_of_target
     
 FROM prep_kpis     
 
@@ -90,7 +108,13 @@ SELECT
     CASE 
        WHEN select_a_kpi_from_the_dropdown_3 IS NOT NULL THEN select_a_kpi_from_the_dropdown_3
        ELSE NULL
-    END AS fy22_individual_kpi
+    END AS fy22_individual_kpi,
+    CASE 
+        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
+        THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        THEN what_is_the_type_of_target_kpi_list
+    END AS fy22_type_of_target
     
 FROM prep_kpis    
 ),       
@@ -108,7 +132,13 @@ SELECT
     CASE 
        WHEN select_a_kpi_from_the_dropdown_4 IS NOT NULL THEN select_a_kpi_from_the_dropdown_4
        ELSE NULL
-    END AS fy22_individual_kpi
+    END AS fy22_individual_kpi,
+    CASE 
+        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
+        THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        THEN what_is_the_type_of_target_kpi_list
+    END AS fy22_type_of_target
     
 FROM prep_kpis  
 ),
@@ -127,7 +157,13 @@ SELECT
     CASE 
       WHEN what_will_your_self_created_kpi_be_this_year_ IS NOT NULL THEN what_will_your_self_created_kpi_be_this_year_
        ELSE NULL
-    END AS fy22_individual_kpi
+    END AS fy22_individual_kpi,
+    CASE 
+        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
+        THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        THEN what_is_the_type_of_target_kpi_list
+    END AS fy22_type_of_target
     
 FROM prep_kpis  
 ),
@@ -155,7 +191,13 @@ SELECT
         WHEN enter_the_target_percent_kpi_list_4 IS NULL
         THEN 'opting out'
   
-        END AS fy22_individual_kpi
+    END AS fy22_individual_kpi,
+    CASE 
+        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
+        THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        THEN what_is_the_type_of_target_kpi_list
+    END AS fy22_type_of_target
 
 FROM prep_kpis  
 ),
