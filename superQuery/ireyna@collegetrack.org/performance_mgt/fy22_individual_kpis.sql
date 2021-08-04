@@ -10,10 +10,11 @@ AS
 
 WITH
 prep_kpis AS (
-SELECT * EXCEPT(enter_your_college_track_email_address,great_select_your_name,op_rename_role_column_for_mapping),
+SELECT * EXCEPT(enter_your_college_track_email_address,enter_the_target_percent_kpi_list,great_select_your_name,op_rename_role_column_for_mapping),
     enter_your_college_track_email_address AS email_address,
     great_select_your_name AS full_name,
-    op_rename_role_column_for_mapping AS team
+    op_rename_role_column_for_mapping AS team,
+    CAST(enter_the_target_percent_kpi_list AS INT64) AS enter_the_target_percent_kpi_list
 FROM `data-warehouse-289815.google_sheets.individual_kpi_target` 
 WHERE Indicator_Disregard_Entry IS NULL
 ),
@@ -24,7 +25,10 @@ SELECT
     full_name,
     team,
     CASE 
-        WHEN (enter_the_target_numeric_kpi_list, enter_the_target_percent_kpi_list) IS  NULL THEN null
+        WHEN what_is_the_type_of_target_kpi_list = 'Numeric (but not percent)' AND enter_the_target_numeric_kpi_list IS NOT NULL
+        THEN enter_the_target_numeric_kpi_list
+        WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
+        THEN enter_the_target_percent_kpi_list
     END AS target_fy22_kpi, 
   
     CASE 
@@ -34,6 +38,21 @@ SELECT
         
 FROM prep_kpis 
 ),
+/*
+UNION_1A AS (
+SELECT 
+    t1.*,
+    CASE 
+    WHEN enter_the_target_percent_kpi_list IS NULL THEN null
+    ELSE enter_the_target_percent_kpi_list
+    END AS t1.target_fy22_kpi
+
+FROM UNION_1b     AS t1 
+LEFT JOIN prep_kpis AS t2
+    ON t1.email_address=t2.email_address
+    AND t1.full_name=t2.full_name
+    ),
+*/
 
 UNION_2 AS (
 SELECT 
@@ -141,6 +160,10 @@ UNION_EVERYTHING AS (
 SELECT *
 FROM UNION_1
 UNION ALL
+
+/*SELECT *
+FROM UNION_1B
+UNION ALL*/
 
 SELECT *
 FROM UNION_2
