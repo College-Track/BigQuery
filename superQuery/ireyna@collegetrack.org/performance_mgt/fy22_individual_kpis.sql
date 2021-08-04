@@ -35,6 +35,12 @@ SELECT
         END AS fy22_individual_kpi
         
 FROM prep_kpis 
+GROUP BY 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
 ),
 
 UNION_1B AS (
@@ -53,6 +59,12 @@ SELECT
         
 
 FROM prep_kpis
+GROUP BY 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
     ),
 
 
@@ -72,7 +84,12 @@ SELECT
     END AS fy22_individual_kpi
     
 FROM prep_kpis     
-
+GROUP BY 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
 ),
 UNION_3 AS (
 SELECT 
@@ -89,7 +106,13 @@ SELECT
        ELSE NULL
     END AS fy22_individual_kpi
     
-FROM prep_kpis    
+FROM prep_kpis  
+GROUP BY 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
 ),       
 
 UNION_4 AS (
@@ -107,7 +130,13 @@ SELECT
        ELSE NULL
     END AS fy22_individual_kpi
     
-FROM prep_kpis  
+FROM prep_kpis 
+GROUP BY 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
 ),
 
 UNION_5 AS (
@@ -126,7 +155,13 @@ SELECT
        ELSE NULL
     END AS fy22_individual_kpi
     
-FROM prep_kpis  
+FROM prep_kpis
+GROUP BY 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
 ),
 
 UNION_6 AS (
@@ -155,6 +190,12 @@ SELECT
         END AS fy22_individual_kpi
 
 FROM prep_kpis  
+GROUP BY 
+full_name,
+email_address,
+team,
+target_fy22_kpi,
+fy22_individual_kpi
 ),
 
 UNION_EVERYTHING AS (
