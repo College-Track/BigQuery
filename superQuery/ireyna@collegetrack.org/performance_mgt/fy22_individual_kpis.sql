@@ -44,6 +44,8 @@ SELECT
     full_name,
     team,
     CASE
+    WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list > 1 
+        THEN (enter_the_target_percent_kpi_list/100)
     WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
         THEN enter_the_target_percent_kpi_list
     END AS target_fy22_kpi, 
