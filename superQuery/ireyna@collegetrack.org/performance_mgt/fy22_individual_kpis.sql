@@ -236,7 +236,8 @@ full_name,
 email_address,
 team,
 target_fy22_kpi,
-fy22_individual_kpi
+fy22_individual_kpi,
+fy22_type_of_target
 FROM union_everything
 WHERE target_fy22_kpi IS NOT NULL
 GROUP BY
@@ -244,4 +245,5 @@ full_name,
 email_address,
 team,
 target_fy22_kpi,
-fy22_individual_kpi
+fy22_individual_kpi,
+fy22_type_of_target
