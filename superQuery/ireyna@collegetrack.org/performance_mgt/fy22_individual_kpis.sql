@@ -19,7 +19,7 @@ FROM `data-warehouse-289815.google_sheets.individual_kpi_target`
 WHERE Indicator_Disregard_Entry IS NULL
 ),
 
-UNION_1 AS (
+UNION_1A AS (
 SELECT 
     email_address,
     full_name,
@@ -27,8 +27,6 @@ SELECT
     CASE 
         WHEN what_is_the_type_of_target_kpi_list = 'Numeric (but not percent)' AND enter_the_target_numeric_kpi_list IS NOT NULL
         THEN enter_the_target_numeric_kpi_list
-        WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
-        THEN enter_the_target_percent_kpi_list
     END AS target_fy22_kpi, 
   
     CASE 
@@ -38,21 +36,25 @@ SELECT
         
 FROM prep_kpis 
 ),
-/*
-UNION_1A AS (
-SELECT 
-    t1.*,
-    CASE 
-    WHEN enter_the_target_percent_kpi_list IS NULL THEN null
-    ELSE enter_the_target_percent_kpi_list
-    END AS t1.target_fy22_kpi
 
-FROM UNION_1b     AS t1 
-LEFT JOIN prep_kpis AS t2
-    ON t1.email_address=t2.email_address
-    AND t1.full_name=t2.full_name
+UNION_1B AS (
+SELECT 
+    email_address,
+    full_name,
+    team,
+    CASE
+    WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
+        THEN enter_the_target_percent_kpi_list
+    END AS target_fy22_kpi, 
+    CASE 
+        WHEN add_from_your_team_s_kpi_list IS NOT NULL THEN add_from_your_team_s_kpi_list
+        ELSE NULL
+        END AS fy22_individual_kpi
+        
+
+FROM prep_kpis
     ),
-*/
+
 
 UNION_2 AS (
 SELECT 
@@ -158,12 +160,12 @@ FROM prep_kpis
 UNION_EVERYTHING AS (
 
 SELECT *
-FROM UNION_1
+FROM UNION_1A
 UNION ALL
 
-/*SELECT *
+SELECT *
 FROM UNION_1B
-UNION ALL*/
+UNION ALL
 
 SELECT *
 FROM UNION_2
