@@ -18,12 +18,16 @@
     (Current_Major_c = 'Arts: Design, Performing, or Visual'
      
     OR
-    (Current_school_name Like '%Art%'
+    ((Current_school_name Like '%Art%'
     OR Current_school_name LIKE '%Film%'
     OR Current_school_name LIKE '%Photography%'
     OR Current_school_name LIKE '%Fashion%'
     OR Current_school_name LIKE '%Design%'
     OR Current_school_name LIKE '%Music%')
+    AND
+    (Current_school_name NOT LIKE '%Swarthmore College%'
+    OR Current_school_name NOT LIKE '%Dartmouth College%'
+    OR Current_school_name NOT LIKE '%Hobart William Smith Colleges%'))
   
     
     OR 
