@@ -73,7 +73,17 @@ bb_2021_ay21 AS
 data_joined AS
 (
     SELECT
-    *,
+    Contact_Id,
+    full_name_c,
+    site_short,
+    high_school_graduating_class_c,
+    College_Track_Status_Name,
+    Current_school_name,
+    Current_School_Type_c_degree,
+    Current_Major_c,
+    Current_Major_specific_c,
+    current_second_major_c,
+    Current_Minor_c,
     door_e_fund.scholarship_c,
     door_e_fund.total_amount,
     bb_2021_ay21.fy21_bb_total,
