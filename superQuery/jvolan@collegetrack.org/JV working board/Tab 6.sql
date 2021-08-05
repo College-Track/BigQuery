@@ -13,7 +13,26 @@
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE college_track_status_c = '15A'
+    AND Current_School_c NOT LIKE '%Swarthmore College%'
+    AND Current_School_c NOT LIKE '%Dartmouth College%'
+    AND Current_School_c NOT LIKE '%Hobart William Smith Colleges%'
+    
     AND 
-    Current_Major_c Like '%Art%'
-    OR Current_Major_c LIKE '%Film%'
-    OR Current_Major_c LIKE '%Photography%'
+    (Current_Major_c = 'Arts: Design, Performing, or Visual'
+     
+    OR
+    (Current_school_name Like '%Art%'
+    OR Current_school_name LIKE '%Film%'
+    OR Current_school_name LIKE '%Photography%'
+    OR Current_school_name LIKE '%Fashion%'
+    OR Current_school_name LIKE '%Design%'
+    OR Current_school_name LIKE '%Music%')
+    
+    OR 
+    (Current_Minor_c Like '%Art%'
+    OR Current_school_name LIKE '%Film%'
+    OR Current_school_name LIKE '%Photography%'
+    OR Current_school_name LIKE '%Fashion%'
+    OR Current_school_name LIKE '%Design%'
+    OR Current_school_name LIKE '%Music%')
+    )
