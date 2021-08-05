@@ -48,7 +48,13 @@ door_e_fund AS
     SELECT
     student_c AS s_contact_id,
     scholarship_c,
-    SUM(amount_c) AS total_amount,
+    CASE
+        WHEN scholarship_c = 'DOOR' THEN
+    SUM(amount_c) END AS fy21_DOOR_total,
+    CASE
+        WHEN scholarship_c = 'College Track Emergency Fund' THEN
+    SUM(amount_c) END AS fy21_efund_total,
+    
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
     WHERE scholarship_c IN ('DOOR','College Track Emergency Fund')
@@ -84,8 +90,8 @@ data_joined AS
     Current_Major_specific_c,
     current_second_major_c,
     Current_Minor_c,
-    door_e_fund.scholarship_c,
-    door_e_fund.total_amount,
+    door_e_fund.fy21_DOOR_total,
+    door_e_fund.fy21_efund_total,
     bb_2021_ay21.fy21_bb_total,
     
     FROM gather_students
@@ -96,3 +102,8 @@ data_joined AS
     SELECT
     *
     FROM data_joined
+
+    
+    
+
+
