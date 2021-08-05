@@ -13,4 +13,4 @@
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE college_track_status_c = '15A'
-    AND REGEXP_CONTAINS(Current_Major_c, '/(Art|Film|Photography|Fashion|Design|Music)/')
+    AND REGEXP_CONTAINS(Current_Major_c, '/(Art|Film|Photography|Fashion|Design|Music/')
