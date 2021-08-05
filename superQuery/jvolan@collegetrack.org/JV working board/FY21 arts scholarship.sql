@@ -52,7 +52,7 @@ fy21_door AS
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE scholarship_c = 'DOOR'
-    AND academic_year_c = 'AY 2020-21'
+    AND academic_year_c = 'a1b46000000dRR8AAM'
     AND status_c = 'Won'
     GROUP BY student_c
 
@@ -65,7 +65,7 @@ fy21_efund AS
     SUM(amount_c) AS fy21_efund_total,
 
     FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
-    WHERE academic_year_c = 'AY 2020-21'
+    WHERE academic_year_c = 'a1b46000000dRR8AAM'
     AND scholarship_c = 'College Track Emergency Fund'
     GROUP BY student_c
 
@@ -79,7 +79,7 @@ bb_2021_ay21 AS
     
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
-    WHERE academic_year_c = 'AY 2020-21'
+    WHERE academic_year_c = 'a1b46000000dRR8AAM'
     AND record_type_id = '01246000000ZNhtAAG'
     GROUP BY student_c
  ),
