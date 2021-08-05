@@ -1,5 +1,6 @@
 SELECT
     st.student_c AS e_contact_id,
+    st.academic_semester_c,
     amount_c,
     cat.academic_year_c,
 
