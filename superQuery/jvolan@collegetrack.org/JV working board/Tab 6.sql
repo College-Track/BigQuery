@@ -2,7 +2,6 @@ WITH gather_students AS
 (
     SELECT
     Contact_Id,
-    x_18_digit_id_c,
     full_name_c,
     site_short,
     high_school_graduating_class_c,
@@ -80,8 +79,8 @@ data_joined AS
     bb_2021_ay21.fy21_bb_total,
     
     FROM gather_students
-    LEFT JOIN door_e_fund ON s_contact_id = x_18_digit_id_c
-    LEFT JOIN bb_2021_ay21 ON bb_contact_id = x_18_digit_id_c
+    LEFT JOIN door_e_fund ON s_contact_id = Contact_Id
+    LEFT JOIN bb_2021_ay21 ON bb_contact_id = Contact_Id
 )
 
     SELECT
