@@ -28,9 +28,9 @@
     
     OR 
     (Current_Minor_c Like '%Art%'
-    OR Current_school_name LIKE '%Film%'
-    OR Current_school_name LIKE '%Photography%'
-    OR Current_school_name LIKE '%Fashion%'
-    OR Current_school_name LIKE '%Design%'
-    OR Current_school_name LIKE '%Music%')
+    OR Current_Minor_c LIKE '%Film%'
+    OR Current_Minor_c LIKE '%Photography%'
+    OR Current_Minor_c LIKE '%Fashion%'
+    OR Current_Minor_c LIKE '%Design%'
+    OR Current_Minor_c LIKE '%Music%')
     )
