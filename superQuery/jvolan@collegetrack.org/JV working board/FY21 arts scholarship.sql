@@ -4,7 +4,7 @@ SELECT
  
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
-    WHERE scholarship_c = 'DOOR'
+    WHERE scholarship_c = 'a3B46000000HWacEAG'
     AND academic_year_c = 'a1b46000000dRR8AAM'
     AND status_c = 'Won'
     GROUP BY student_c
