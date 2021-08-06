@@ -28,3 +28,5 @@
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     WHERE college_track_status_c = '15A'
+    AND high_school_graduating_class_c != '2021'
+    
