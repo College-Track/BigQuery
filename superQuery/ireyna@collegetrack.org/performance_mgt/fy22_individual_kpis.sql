@@ -33,10 +33,9 @@ SELECT
         THEN enter_the_target_numeric_kpi_list
     END AS target_fy22_kpi, 
     CASE 
-        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
-        THEN what_is_the_type_of_target_kpi_list
-        WHEN what_is_the_type_of_target_self_created IS NOT NULL
-        THEN what_is_the_type_of_target_self_created
+        WHEN what_is_the_type_of_target_kpi_list = 'Numeric (but not percent)' THEN what_is_the_type_of_target_kpi_list 
+        #WHEN what_is_the_type_of_target_self_created IS NOT NULL
+        #THEN what_is_the_type_of_target_self_created
     END AS fy22_type_of_target
         
 FROM prep_kpis 
@@ -58,15 +57,14 @@ SELECT
     CASE
         WHEN what_is_the_type_of_target_kpi_list = 'Percent' THEN enter_the_target_percent_kpi_list
         WHEN what_is_the_type_of_target_kpi_list = 'Numeric (but not percent)'THEN enter_the_target_percent_kpi_list
-        WHEN what_is_the_type_of_target_kpi_list = 'Goal is met' THEN 1
+        WHEN what_is_the_type_of_target_kpi_list = 'Goal is Met' THEN 1
     END AS target_fy22_kpi, 
     
     CASE 
-        WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
-        THEN what_is_the_type_of_target_kpi_list
-    ELSE NULL
-        #WHEN what_is_the_type_of_target_self_created IS NOT NULL
-        #THEN what_is_the_type_of_target_self_created
+        WHEN what_is_the_type_of_target_kpi_list = 'Percent' THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_kpi_list = 'Numeric (but not percent)'THEN what_is_the_type_of_target_kpi_list
+        WHEN what_is_the_type_of_target_kpi_list = 'Goal is Met' THEN what_is_the_type_of_target_kpi_list
+        ELSE NULL
     END AS fy22_type_of_target
         
 
@@ -165,7 +163,7 @@ SELECT
     END AS fy22_individual_kpi,
     
     CASE 
-      WHEN what_is_the_type_of_target_self_created = 'Goal is met' THEN 1
+      WHEN what_is_the_type_of_target_self_created = 'Goal is Met' THEN 1
       WHEN enter_the_target_percent_self_created IS NOT NULL THEN enter_the_target_percent_self_created
       WHEN enter_the_target_numeric_self_created IS NOT NULL THEN enter_the_target_numeric_self_created
     ELSE NULL
