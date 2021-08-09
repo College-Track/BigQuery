@@ -37,7 +37,7 @@ SELECT
         WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
         THEN what_is_the_type_of_target_kpi_list
         WHEN what_is_the_type_of_target_self_created IS NOT NULL
-        THEN what_is_the_type_of_target_kpi_list
+        THEN what_is_the_type_of_target_self_created
     END AS fy22_type_of_target
         
 FROM prep_kpis 
@@ -52,7 +52,7 @@ SELECT
     CASE
     WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
         THEN enter_the_target_percent_kpi_list
-    WHEN what_is_the_type_of_target_kpi_list = 'Percent' AND enter_the_target_percent_kpi_list IS NOT NULL
+    WHEN what_is_the_type_of_target_kpi_list = 'Numeric (but not percent)' AND enter_the_target_numeric_kpi_list IS NOT NULL
         THEN enter_the_target_percent_kpi_list
     END AS target_fy22_kpi, 
     CASE 
@@ -63,7 +63,7 @@ SELECT
         WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
         THEN what_is_the_type_of_target_kpi_list
         WHEN what_is_the_type_of_target_self_created IS NOT NULL
-        THEN what_is_the_type_of_target_kpi_list
+        THEN what_is_the_type_of_target_self_created
     END AS fy22_type_of_target
         
 
@@ -89,7 +89,7 @@ SELECT
         WHEN what_is_the_type_of_target_kpi_list IS NOT NULL 
         THEN what_is_the_type_of_target_kpi_list
         WHEN what_is_the_type_of_target_self_created IS NOT NULL
-        THEN what_is_the_type_of_target_kpi_list
+        THEN what_is_the_type_of_target_self_created
     END AS fy22_type_of_target
     
 FROM prep_kpis     
@@ -149,6 +149,7 @@ SELECT
     full_name,
     team,
     CASE 
+      WHEN what_is_the_type_of_target_self_created IS NOT NULL THEN 1 #Goal is met
       WHEN enter_the_target_percent_self_created IS NOT NULL THEN enter_the_target_percent_self_created
       WHEN enter_the_target_numeric_self_created IS NOT NULL THEN enter_the_target_numeric_self_created
     ELSE NULL
