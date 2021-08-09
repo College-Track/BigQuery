@@ -32,7 +32,7 @@ SELECT
         
 FROM prep_kpis 
 
-)
+),
 
 UNION_1B AS (
 SELECT 
@@ -58,7 +58,7 @@ SELECT
         
 
 FROM prep_kpis
-    ),
+    )
 
 
 --UNION_2 AS (
@@ -82,4 +82,4 @@ SELECT
         #THEN what_is_the_type_of_target_self_created
     END AS fy22_type_of_target
     
-FROM prep_kpis  
+FROM prep_kpis   
