@@ -1,12 +1,11 @@
 
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_individual_kpis`
 OPTIONS
     (
     description= "This table pulls in targets submitted by staff using the Individual KPI Target submission form"
     )
 AS
-*/
 
 WITH
 prep_kpis AS (
