@@ -1,5 +1,4 @@
 
-
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_individual_kpis`
 OPTIONS
     (
