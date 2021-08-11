@@ -195,15 +195,7 @@ SELECT distinct
     (SELECT SUM(student_count) FROM prep_site_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t2.target_submitted = 'Submitted') AS student_count_sum
 FROM prep_site_kpis  AS t1
 ),
-/*
-sum_student_count_by_regional_kpi AS (
-SELECT distinct 
-    kpis_by_role, region_abrev,
-    (SELECT SUM(student_count) FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND  t1.region_abrev = t2.region_abrev AND target_submitted = 'Submitted') AS student_count_sum_region
-FROM prep_regional_kpis  AS t1
-GROUP BY kpis_by_role, region_abrev
-),
-*/
+
 join_tables AS (
   SELECT
     PSK.*
@@ -278,11 +270,7 @@ SELECT
     WHEN function IN ('Mature Site Staff', 'Non-Mature Site Staff') THEN 1
     ELSE 0
   END AS program,
-  -- CASE
-  --   WHEN site_kpi NOT IN ('East Palo Alto','Oakland','San Francisco','Sacramento','Boyle Heights','Watts','Crenshaw','Aurora','Denver','The Durant Center','Ward 8')
-  --   THEN 'National'
-  --   ELSE site_kpi
-  -- END AS Site,
+ 
 FROM
   join_tables
 LEFT JOIN sum_student_count_by_program_kpi ON join_tables.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
@@ -292,18 +280,40 @@ LEFT JOIN sum_student_count_by_program_kpi ON join_tables.kpis_by_role = sum_stu
 
 calculate_numerators AS (
 SELECT 
+*,
+target_fy22 * student_count AS target_numerator
+FROM identify_teams 
+),
+
+calculate_regional_rollups AS (
+SELECT 
 --Identify program kpis that roll-up regionally
 (SELECT t2.kpis_by_role FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 GROUP BY kpis_by_role) AS regional_rollup_kpi,
 --Map program kpis that roll-up regionally to the Region
 (SELECT t2.region_abrev FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t2.region_abrev = t1.region AND t1.program =1 GROUP BY region_abrev /*t2.site_or_region,kpis_by_role,t2.region_abrev*/) AS rollup_kpi_region,
 --Sum of students for regional rollups
 (SELECT SUM(student_count) FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 AND t2.region_abrev = t1.region GROUP BY region_abrev) AS regional_rollup_student_sum,
+
+FROM identify_teams AS t1
+GROUP BY 
+kpis_by_role,
+t1.program,
+t1.region
+
+),
+
+calculate_national_rollups AS (
+SELECT 
 --Identify program kpis that roll-up nationally
 (SELECT t2.kpis_by_role FROM prep_non_program_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 GROUP BY kpis_by_role) AS national_rollup_kpi,
 --Sum of students for national rollups
-*,
-target_fy22 * student_count AS target_numerator
+(SELECT SUM(student_count) FROM prep_non_program_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 GROUP BY kpis_by_role) AS national_rollup_student_sum
+
 FROM identify_teams AS t1
+GROUP BY 
+kpis_by_role,
+t1.program,
+t1.region
 
 ),
 
@@ -337,10 +347,8 @@ END AS count_of_targets
 FROM correct_missing_site_region AS t1
 )
 
-SELECT * EXCEPT (kpis_by_role)
+SELECT * --EXCEPT (kpis_by_role)
 FROM all_kpi_data 
 LEFT JOIN sum_student_count_by_program_kpi ON all_kpi_data.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
-/*LEFT JOIN sum_student_count_by_regional_kpi 
-  ON all_kpi_data.kpis_by_role = sum_student_count_by_regional_kpi.kpis_by_role
-  AND all_kpi_data.region = sum_student_count_by_regional_kpi.region_abrev
-*/
+LEFT JOIN calculate_national_rollups ON all_kpi_data.kpis_by_role = national_rollup_kpi
+LEFT JOIN calculate_regional_rollups ON all_kpi_data.kpis_by_role = regional_rollup_kpi
