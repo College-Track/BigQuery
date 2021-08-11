@@ -50,32 +50,11 @@ calc_attendance AS
     SELECT
     *,
     CASE
-        WHEN ((total_attended / total_enrolled) >=.8 
-        AND total_enrolled >0)
-        THEN 1 ELSE 0 END AS overall_f_s_80,
-        
-    CASE
-        WHEN ((total_attended / total_enrolled) >=.7 
-        AND total_enrolled>0)
-        THEN 1 ELSE 0 END AS overall_f_s_70,
+        WHEN total_enrolled = 0 THEN 0 
+        WHEN (total_attended / total_enrolled) >=.8 THEN 1
+        ELSE 0
+        END AS overall_f_s_80,
     
-    CASE
-        WHEN ((f2020_attended / f2020_enrolled) >=.8
-        AND f2020_enrolled >0)
-        THEN 1 ELSE 0 END AS f2020_80,
-    CASE
-        WHEN ((f2020_attended / f2020_enrolled) >=.7
-        AND f2020_enrolled >0)
-        THEN 1 ELSE 0 END AS f2020_70,
-        
-    CASE
-        WHEN ((sp2021_attended / sp2021_enrolled) >=.8
-        AND sp2021_enrolled >0)
-        THEN 1 ELSE 0 END AS sp2021_80,
-    CASE
-        WHEN ((sp2021_attended / sp2021_enrolled) >=.7
-        AND sp2021_enrolled >0)
-        THEN 1 ELSE 0 END AS sp2021_70,
         
     FROM gather_attendance
 )
