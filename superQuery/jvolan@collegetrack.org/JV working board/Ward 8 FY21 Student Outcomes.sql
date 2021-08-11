@@ -89,26 +89,3 @@ calc_attendance AS
     * except(at_contact_id),
     FROM student_list
     LEFT JOIN calc_attendance ON at_contact_id = Contact_Id
-/*
-    SELECT
-    CASE
-        WHEN f2020_attendance_rate >=.8 THEN 1 ELSE 0 END AS f2020_80,
-    CASE
-        WHEN f2020_attendance_rate >=.7 THEN 1 ELSE 0 END AS f2020_70,
-    
-    CASE
-        WHEN f2020_attendance_rate >=.8 THEN 1 ELSE 0 END AS f2020_80,
-    CASE
-        WHEN f2020_attendance_rate >=.7 THEN 1 ELSE 0 END AS f2020_70,
-    CASE
-        WHEN sp2021_attendance_rate >=.8 THEN 1 ELSE 0 END AS f2020_80,
-    CASE
-        WHEN sp2021_attendance_rate >=.7 THEN 1 ELSE 0 END AS f2020_70,
-        
-    student_list.Contact_Id,
-    student_list.Contact_Id
-    
-    
-    FROM gather_attendance
-    LEFT JOIN student_list ON Contact_Id = at_contact_id
-    */
