@@ -404,8 +404,12 @@ SELECT
 t1.*,
 function, 
 role,
-kpis_by_role,
 
+CASE
+    WHEN national_rollup_KPI IS NOT NULL
+    THEN national_rollup_kpi 
+    ELSE kpis_by_role
+    end as kpis_by_role
 FROM national_kpis_rollup AS t1 
 LEFT JOIN program_kpis AS t2
     ON t1.national_rollup_kpi = t2.kpis_by_role
