@@ -44,8 +44,12 @@ gather_attendance AS
     AND ay_2020_21_student_served_c = "High School Student"
     GROUP BY Contact_Id
 )
+  
+
+   
     SELECT
-    *
+    at_contact_id,
+    total_attended / total_enrolled AS f_s_overall_rate
     FROM gather_attendance
 
 /*
