@@ -392,12 +392,18 @@ WHERE (national = 1 or hr_people = 1)
 program_kpis AS (
 SELECT
 function, 
-role,
+kpis_by_role,
+student_count,
+count_of_targets,
+SUM(student_count) AS program_student_sum
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
+WHERE program = 1
+
+GROUP BY 
+function, 
 kpis_by_role,
 student_count,
 count_of_targets
-FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
-WHERE program = 1
 ),
 
 identify_program_rollups_for_national AS ( #25 KPIs for FY22
@@ -427,15 +433,25 @@ GROUP BY
 )
 
 SELECT 
-function,
-role,
 student_count,
 indicator_program_rollup_for_national,
 CASE
     WHEN national_rollup_kpi IS NOT NULL
     THEN kpis_by_role
     ELSE NULL
-END AS kpis_by_role
+END AS kpis_by_role,
+
+CASE 
+    WHEN national_function IS NOT NULL
+    THEN function
+    ELSE NULL
+END AS function,
+
+CASE
+    WHEN national_role IS NOT NULL
+    THEN role
+    ELSE NULL
+END AS role
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN identify_program_rollups_for_national AS natl
