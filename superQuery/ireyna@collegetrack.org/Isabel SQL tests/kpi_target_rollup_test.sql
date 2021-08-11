@@ -312,8 +312,7 @@ SELECT
 FROM identify_teams AS t1
 GROUP BY 
 kpis_by_role,
-t1.program,
-t1.region
+t1.program
 
 ),
 
