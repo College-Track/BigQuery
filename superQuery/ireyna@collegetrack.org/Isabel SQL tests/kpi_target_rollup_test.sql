@@ -400,28 +400,30 @@ FROM `data-studio-260217.performance_mgt.fy22_team_kpis`
 WHERE program = 1
 )
 
-SELECT
-t1.*,
-function, 
-role,
-kpis_by_role,
-CASE 
-    WHEN national_rollup_kpi IS NOT NULL 
-    THEN 1
-    ELSE 0
-END AS indicator_program_rollup_for_national
+--identify_program_rollups_for_national AS (
 
-FROM national_kpis_rollup AS t1 
-LEFT JOIN program_kpis AS t2
-    ON t1.national_rollup_kpi = t2.kpis_by_role
+SELECT
+    national.*,
+    --function, 
+    --role,
+    --kpis_by_role,
+    CASE 
+        WHEN national_rollup_kpi IS NOT NULL 
+        THEN 1
+        ELSE 0
+    END AS indicator_program_rollup_for_national
+
+FROM national_kpis_rollup AS national
+LEFT JOIN program_kpis AS program
+    ON national.national_rollup_kpi = program.kpis_by_role
     
-WHERE t1.national_rollup_kpi = t2.kpis_by_role
+WHERE national.national_rollup_kpi = program.kpis_by_role
 
 GROUP BY 
-t1.national_function,
-function,
-role,
-kpis_by_role,
-national_rollup_kpi,
-t1.national_role,
-count_of_targets
+    national.national_function,
+    function,
+    role,
+    kpis_by_role,
+    national_rollup_kpi,
+    national.national_role
+
