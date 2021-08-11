@@ -398,15 +398,12 @@ student_count,
 count_of_targets
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
 WHERE program = 1
-)
+),
 
---identify_program_rollups_for_national AS (
+identify_program_rollups_for_national AS ( #25 KPIs for FY22
 
 SELECT
     national.*,
-    --function, 
-    --role,
-    --kpis_by_role,
     CASE 
         WHEN national_rollup_kpi IS NOT NULL 
         THEN 1
@@ -426,4 +423,20 @@ GROUP BY
     national.national_function,
     national_rollup_kpi,
     national.national_role
+    
+)
 
+SELECT 
+function,
+role,
+student_count,
+indicator_program_rollup_for_national,
+CASE
+    WHEN national_rollup_kpi IS NOT NULL
+    THEN kpis_by_role
+    ELSE NULL
+END AS kpis_by_role
+
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
+LEFT JOIN identify_program_rollups_for_national AS natl
+    ON team_kpis.kpis_by_role = natl.national_rollup_kpi
