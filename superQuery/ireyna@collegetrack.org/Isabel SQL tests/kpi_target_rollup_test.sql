@@ -440,3 +440,10 @@ END AS kpis_by_role
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN identify_program_rollups_for_national AS natl
     ON team_kpis.kpis_by_role = natl.national_rollup_kpi
+
+group by 
+function,
+role,
+student_count,
+indicator_program_rollup_for_national,
+kpis_by_role
