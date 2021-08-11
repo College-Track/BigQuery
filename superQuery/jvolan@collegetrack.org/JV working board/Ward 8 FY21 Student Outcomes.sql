@@ -18,7 +18,7 @@ gather_attendance AS
     count(attended_workshops_c) AS total_attended,
     count(enrolled_sessions_c) AS total_enrolled,
     MAX(CASE
-        WHEN global_academic_semester_c = 'a3646000000dMXuAAM'THEN (attended_workshops_c / enrolled_sessions_c)
+        WHEN global_academic_semester_c = 'a3646000000dMXnAAM'THEN (attended_workshops_c / enrolled_sessions_c)
         ELSE 0
         END) AS f2020_attendance_rate,
     MAX(CASE
@@ -28,7 +28,7 @@ gather_attendance AS
     MAX(attended_workshops_c/enrolled_sessions_c) AS fall_spring_overall_attendance_rate,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE global_academic_semester_c IN ('a3646000000dMXuAAM','a3646000000dMXoAAM')
+    WHERE global_academic_semester_c IN ('a3646000000dMXnAAM','a3646000000dMXoAAM')
     AND site_short = 'Ward 8'
     AND ay_2020_21_student_served_c = "High School Student"
     GROUP BY Contact_Id
