@@ -419,7 +419,8 @@ LEFT JOIN program_kpis AS program
     
 WHERE national.national_rollup_kpi = program.kpis_by_role
     AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
-                                    'Staff engagement score above average nonprofit benchmark')
+                                    'Staff engagement score above average nonprofit benchmark',
+                                    '% of students engaged in career exploration, readiness events or internships')
 
 GROUP BY 
     national.national_function,
