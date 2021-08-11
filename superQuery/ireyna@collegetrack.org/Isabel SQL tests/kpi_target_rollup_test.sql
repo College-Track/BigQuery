@@ -396,17 +396,29 @@ kpis_by_role,
 program,
 function,
 role
+),
+
+program_kpis AS (
+SELECT
+function, 
+role,
+kpis_by_role,
+student_count,
+count_of_targets
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis`
+WHERE program = 1
+
 )
 
 SELECT
 t1.function,
+kpis_by_role,
+national_rollup_kpi,
 t1.role,
-(select kpis_by_role FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t3 where program=1 AND t2.kpis_by_role=t3.kpis_by_role) AS kpis_by_role,
-student_count,
 count_of_targets
 
 FROM national_kpis_rollup AS t1 
-LEFT JOIN `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2
+LEFT JOIN program_kpis AS t2
     ON t1.national_rollup_kpi = t2.kpis_by_role
 
     
