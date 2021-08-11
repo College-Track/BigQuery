@@ -301,7 +301,7 @@ t1.program,
 t1.region
 
 ),
-
+/*
 calculate_national_rollups AS (
 SELECT 
 --Identify program kpis that roll-up nationally
@@ -314,6 +314,18 @@ GROUP BY
 kpis_by_role,
 t1.program
 
+),
+*/
+calculate_national_rollups AS (
+SELECT
+t1.kpis_by_role AS national_rollup_kpi,
+SUM(t2.student_count) AS national_rollup_student_sum
+FROM prep_non_program_kpis AS t1
+LEFT JOIN identify_teams AS t2
+    ON t1.kpis_by_role=t2.kpis_by_role
+WHERE t2.program = 1
+GROUP BY 
+t1.kpis_by_role
 ),
 
 correct_missing_site_region AS (
