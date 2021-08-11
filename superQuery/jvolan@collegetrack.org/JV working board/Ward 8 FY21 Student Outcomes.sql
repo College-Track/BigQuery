@@ -17,6 +17,26 @@ gather_attendance AS
     Contact_Id AS at_contact_id,
     SUM(attended_workshops_c) AS total_attended,
     SUM(enrolled_sessions_c) AS total_enrolled,
+    SUM(
+        CASE 
+        WHEN global_academic_semester_c = 'a3646000000dMXnAAM' THEN attended_workshops_c
+        ELSE 0
+        END) AS f2020_attended,
+    SUM(
+        CASE 
+        WHEN global_academic_semester_c = 'a3646000000dMXnAAM' THEN enrolled_sessions_c
+        ELSE 0
+        END) AS f2020_enrolled,   
+    SUM(
+        CASE 
+        WHEN global_academic_semester_c = 'a3646000000dMXoAAM' THEN attended_workshops_c
+        ELSE 0
+        END) AS sp2021_attended,
+    SUM(
+        CASE 
+        WHEN global_academic_semester_c = 'a3646000000dMXoAAM' THEN enrolled_sessions_c
+        ELSE 0
+        END) AS sp2021_enrolled,   
     MAX(CASE
         WHEN 
         (global_academic_semester_c = 'a3646000000dMXnAAM'
