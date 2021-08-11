@@ -413,6 +413,7 @@ SELECT
     SUM(target_numerator) AS program_target_numerator_sum,
     kpis_by_role
 FROM program_kpis
+WHERE count_of_targets = 1
 GROUP BY kpis_by_role
 ),
 
