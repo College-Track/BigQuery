@@ -401,8 +401,7 @@ role
 SELECT
 t1.function,
 t1.role,
-(select kpis_by_role FROM `data-studio-260217.performance_mgt.fy22_team_kpis` where program=1) AS kpis_by_role,
-t1.national_rollup_kpi,
+(select kpis_by_role FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t3 where program=1 AND t2.kpis_by_role=t3.kpis_by_role) AS kpis_by_role,
 student_count,
 count_of_targets
 
