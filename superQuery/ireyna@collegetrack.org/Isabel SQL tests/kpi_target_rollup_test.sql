@@ -373,3 +373,35 @@ national_rollup_student_sum,
 regional_rollup_kpi,
 rollup_kpi_region,
 regional_rollup_student_sum
+
+;
+
+WITH 
+national_kpis_rollup AS (
+
+SELECT 
+    (SELECT t2.kpis_by_role 
+    FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2 
+    WHERE t2.kpis_by_role = t1.kpis_by_role 
+    AND t1.program =1 
+    GROUP BY t2.kpis_by_role,t1.program) AS national_rollup_kpi
+--SUM(student_count) AS national_rollup_student_sum
+
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t1
+GROUP BY 
+kpis_by_role,
+program
+)
+
+SELECT
+function,
+role,
+kpis_by_role,
+national_rollup_kpi,
+student_count,
+count_of_targets
+
+FROM national_kpis_rollup AS t1 
+LEFT JOIN `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2
+    ON t1.national_rollup_kpi = t2.kpis_by_role
+WHERE t2.program =1 
