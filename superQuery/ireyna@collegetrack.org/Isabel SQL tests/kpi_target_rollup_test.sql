@@ -421,4 +421,9 @@ FROM national_kpis_rollup AS t1
 LEFT JOIN program_kpis AS t2
     ON t1.national_rollup_kpi = t2.kpis_by_role
 
-    
+GROUP BY 
+t1.function,
+kpis_by_role,
+national_rollup_kpi,
+t1.role,
+count_of_targets
