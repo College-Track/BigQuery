@@ -423,7 +423,7 @@ SELECT
 --t1.national_function,
 kpis_by_role,
 national_rollup_kpi,
---t1.national_role,
+t1.national_role,
 count_of_targets,
 student_count
 
@@ -435,6 +435,6 @@ GROUP BY
 --t1.national_function,
 kpis_by_role,
 national_rollup_kpi,
---t1.national_role,
+t1.national_role,
 count_of_targets,
 student_count
