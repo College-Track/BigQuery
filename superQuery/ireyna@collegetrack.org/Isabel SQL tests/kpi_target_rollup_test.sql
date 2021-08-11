@@ -299,7 +299,6 @@ GROUP BY
 kpis_by_role,
 t1.program,
 t1.region
-
 ),
 
 calculate_national_rollups AS (
@@ -313,7 +312,6 @@ FROM identify_teams AS t1
 GROUP BY 
 kpis_by_role,
 t1.program
-
 ),
 
 correct_missing_site_region AS (
@@ -344,13 +342,37 @@ CASE WHEN target_submitted = "Submitted" THEN 1 -- "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets
 FROM correct_missing_site_region AS t1
+),
+
+national_rollup_test2 AS (
+SELECT 
+t1.kpis_by_role AS national_rollup_kpi2,
+t2.student_count AS national_student_count2,
+CASE 
+    WHEN t2.count_of_targets = 1
+    THEN count_of_targets = 1
+    ELSE NULL
+END AS count_of_targets
+FROM prep_non_program_kpis AS t1
+LEFT JOIN all_kpi_data AS t2
+    ON t1.kpis_by_role=t2.kpis_by_role
+WHERE t2.program = 1
+GROUP BY 
+t1.kpis_by_role,
+t2.student_count,
+t2.count_of_targets
 )
 
-SELECT * --EXCEPT (kpis_by_role)
+
+SELECT all_kpi_data.*, --EXCEPT (kpis_by_role)
+national_rollup_kpi2,
+national_student_count2
+
 FROM all_kpi_data 
 --LEFT JOIN sum_student_count_by_program_kpi ON all_kpi_data.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
 LEFT JOIN calculate_national_rollups ON all_kpi_data.kpis_by_role = national_rollup_kpi
 LEFT JOIN calculate_regional_rollups ON all_kpi_data.kpis_by_role = regional_rollup_kpi  AND all_kpi_data.region = rollup_kpi_region
+left join national_rollup_test2 ON all_kpi_data.kpis_by_role=national_rollup_kpi2
 GROUP BY
 function,
 role,
@@ -367,9 +389,11 @@ Region,
 Site,
 student_count,
 target_numerator,
-count_of_targets,
+all_kpi_data.count_of_targets,
 national_rollup_kpi,
 national_rollup_student_sum,
 regional_rollup_kpi,
 rollup_kpi_region,
-regional_rollup_student_sum
+regional_rollup_student_sum,
+national_rollup_kpi2,
+national_student_count2
