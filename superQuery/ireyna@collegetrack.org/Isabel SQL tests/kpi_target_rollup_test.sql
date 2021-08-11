@@ -307,7 +307,7 @@ SELECT
 --Identify program kpis that roll-up nationally
 (SELECT t2.kpis_by_role FROM prep_non_program_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 GROUP BY kpis_by_role) AS national_rollup_kpi,
 --Sum of students for national rollups
-(SELECT SUM(student_count) FROM prep_non_program_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1 GROUP BY kpis_by_role) AS national_rollup_student_sum
+(SELECT SUM(student_count) FROM prep_regional_kpis AS t2 WHERE t2.kpis_by_role = t1.kpis_by_role AND t1.program =1) AS national_rollup_student_sum
 
 FROM identify_teams AS t1
 GROUP BY 
@@ -352,3 +352,26 @@ FROM all_kpi_data
 --LEFT JOIN sum_student_count_by_program_kpi ON all_kpi_data.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
 LEFT JOIN calculate_national_rollups ON all_kpi_data.kpis_by_role = national_rollup_kpi
 LEFT JOIN calculate_regional_rollups ON all_kpi_data.kpis_by_role = regional_rollup_kpi
+GROUP BY
+function,
+role,
+kpis_by_role,
+site_or_region,
+target_fy22,
+target_submitted,
+hr_people,
+national,
+development,
+region_function,
+program,
+Region,
+Site,
+student_count,
+target_numerator,
+count_of_targets,
+national_rollup_kpi,
+national_rollup_student_sum,
+regional_rollup_kpi,
+rollup_kpi_region,
+regional_rollup_student_sum
+
