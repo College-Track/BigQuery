@@ -413,7 +413,7 @@ CASE
 FROM national_kpis_rollup AS t1 
 LEFT JOIN program_kpis AS t2
     ON t1.national_rollup_kpi = t2.kpis_by_role
-WHERE t1.national_rollup_kpi = t2.kpis_by_role
+--WHERE t1.national_rollup_kpi = t2.kpis_by_role
 
 
 GROUP BY 
