@@ -469,3 +469,24 @@ FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN national_rollups AS natl
     ON natl.national_rollup_kpi = team_kpis.kpis_by_role
     AND natl.national_function = team_kpis.function
+
+GROUP BY 
+function,
+role,
+kpis_by_role,
+site_or_region,
+target_fy22,
+target_submitted,
+hr_people,
+national,
+development,
+region_function,
+program,
+Region,
+Site,
+student_count,
+target_numerator,
+count_of_targets,
+national_rollup_kpi,
+program_student_sum,
+program_target_numerator_sum
