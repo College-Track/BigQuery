@@ -349,6 +349,6 @@ FROM correct_missing_site_region AS t1
 
 SELECT * --EXCEPT (kpis_by_role)
 FROM all_kpi_data 
-LEFT JOIN sum_student_count_by_program_kpi ON all_kpi_data.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
+--LEFT JOIN sum_student_count_by_program_kpi ON all_kpi_data.kpis_by_role = sum_student_count_by_program_kpi.kpis_by_role
 LEFT JOIN calculate_national_rollups ON all_kpi_data.kpis_by_role = national_rollup_kpi
 LEFT JOIN calculate_regional_rollups ON all_kpi_data.kpis_by_role = regional_rollup_kpi
