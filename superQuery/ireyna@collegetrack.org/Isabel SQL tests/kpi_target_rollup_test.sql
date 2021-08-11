@@ -423,9 +423,6 @@ WHERE national.national_rollup_kpi = program.kpis_by_role
 
 GROUP BY 
     national.national_function,
-    function,
-    role,
-    kpis_by_role,
     national_rollup_kpi,
     national.national_role
 
