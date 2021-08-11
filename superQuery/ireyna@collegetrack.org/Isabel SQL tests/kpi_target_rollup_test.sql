@@ -394,6 +394,7 @@ SELECT
 function, 
 kpis_by_role,
 student_count,
+target_numerator,
 count_of_targets,
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
 WHERE program = 1
@@ -402,12 +403,14 @@ GROUP BY
 function, 
 kpis_by_role,
 student_count,
+target_numerator,
 count_of_targets
 ),
 
 sum_program_student_count AS(
 SELECT 
     SUM(student_count) AS program_student_sum,
+    SUM(target_numerator) AS program_target_numerator_sum,
     kpis_by_role
 FROM program_kpis
 GROUP BY kpis_by_role
@@ -444,7 +447,8 @@ national_rollup_kpi,
 national_role,
 student_count,
 count_of_targets,
-program_student_sum
+program_student_sum,
+program_target_numerator_sum,
 indicator_program_rollup_for_national
 
 FROM identify_program_rollups_for_national AS natl
