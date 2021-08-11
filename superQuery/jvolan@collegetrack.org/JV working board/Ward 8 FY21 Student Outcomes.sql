@@ -48,7 +48,7 @@ gather_attendance AS
 
    
     SELECT
-    at_contact_id,
+    *,
     total_attended / total_enrolled AS f_s_overall_rate
     FROM gather_attendance
 
