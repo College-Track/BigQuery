@@ -429,7 +429,7 @@ GROUP BY
     national.national_function,
     national_rollup_kpi,
     national.national_role
-    
+
 )
 
 SELECT 
@@ -437,6 +437,7 @@ national_function,
 national_rollup_kpi,
  national_role,
 student_count,
+count_of_targets,
 indicator_program_rollup_for_national
 
 FROM identify_program_rollups_for_national AS natl
