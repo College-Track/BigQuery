@@ -37,3 +37,4 @@ gather_attendance AS
     SELECT
     *
     FROM gather_attendance
+    LEFT JOIN student_list ON Contact_Id = at_contact_id
