@@ -377,7 +377,7 @@ regional_rollup_student_sum
 ;
 
 WITH 
-national_kpis_rollup AS (
+national_kpis AS (
 
 SELECT 
 function AS national_function,
@@ -427,7 +427,7 @@ SELECT
         ELSE 0
     END AS indicator_program_rollup_for_national
 
-FROM national_kpis_rollup AS national
+FROM national_kpis AS national
 LEFT JOIN program_kpis AS program
     ON national.national_rollup_kpi = program.kpis_by_role
     
@@ -440,13 +440,13 @@ GROUP BY
     national.national_function,
     national_rollup_kpi,
     national.national_role
-)
+),
 
+national_rollups AS (
 SELECT 
 national_function,
 national_rollup_kpi,
 national_role,
-student_count,
 count_of_targets,
 program_student_sum,
 program_target_numerator_sum,
@@ -458,3 +458,14 @@ LEFT JOIN  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN sum_program_student_count AS sum_student
     ON sum_student.kpis_by_role=natl.national_rollup_kpi
 
+)
+SELECT 
+team_kpis.*,
+national_rollup_kpi,
+program_student_sum,
+program_target_numerator_sum
+
+FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
+LEFT JOIN national_rollups AS natl
+    ON natl.national_rollup_kpi = team_kpis.kpis_by_role
+    AND natl.national_function = team_kpis.function
