@@ -380,8 +380,17 @@ WITH
 national_kpis_rollup AS (
 
 SELECT 
-function,
-role,
+
+    (SELECT t2.function 
+    FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2 
+    WHERE  t2.national = 1 or t2.hr_people = 1
+    GROUP BY t2.function) AS national_function,
+    
+    (SELECT t2.role 
+    FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2 
+    WHERE t2.national = 1 or t2.hr_people = 1
+    GROUP BY t2.role) AS national_role,
+    
     (SELECT t2.kpis_by_role 
     FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2 
     WHERE t2.kpis_by_role = t1.kpis_by_role 
@@ -411,10 +420,10 @@ WHERE program = 1
 )
 
 SELECT
-t1.function,
+t1.national_function,
 kpis_by_role,
 national_rollup_kpi,
-t1.role,
+t1.national_role,
 count_of_targets
 
 FROM national_kpis_rollup AS t1 
@@ -422,8 +431,8 @@ LEFT JOIN program_kpis AS t2
     ON t1.national_rollup_kpi = t2.kpis_by_role
 
 GROUP BY 
-t1.function,
+t1.national_function,
 kpis_by_role,
 national_rollup_kpi,
-t1.role,
+t1.national_role,
 count_of_targets
