@@ -18,11 +18,15 @@ gather_attendance AS
     count(attended_workshops_c) AS total_attended,
     count(enrolled_sessions_c) AS total_enrolled,
     MAX(CASE
-        WHEN global_academic_semester_c = 'a3646000000dMXnAAM'THEN (attended_workshops_c / enrolled_sessions_c)
+        WHEN 
+        (global_academic_semester_c = 'a3646000000dMXnAAM'
+        AND enrolled_sessions_c >0) THEN (attended_workshops_c / enrolled_sessions_c)
         ELSE 0
         END) AS f2020_attendance_rate,
     MAX(CASE
-        WHEN global_academic_semester_c = 'a3646000000dMXoAAM'THEN (attended_workshops_c / enrolled_sessions_c)
+        WHEN 
+        (global_academic_semester_c = 'a3646000000dMXoAAM'
+        AND enrolled_sessions_c >0) THEN (attended_workshops_c / enrolled_sessions_c)
         ELSE 0
         END) AS sp2021_attendance_rate,
     MAX(attended_workshops_c/enrolled_sessions_c) AS fall_spring_overall_attendance_rate,
