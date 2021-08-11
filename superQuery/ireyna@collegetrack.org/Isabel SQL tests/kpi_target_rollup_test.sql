@@ -2,12 +2,12 @@ SELECT
 
     (SELECT t2.function 
     FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2 
-    WHERE  t2.national = 1 or t2.hr_people = 1 and t2.function=t1.function
+    WHERE  (t2.national = 1 or t2.hr_people = 1) and t2.function=t1.function
     GROUP BY t2.function) AS national_function,
     
     (SELECT t2.role 
     FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS t2 
-    WHERE t2.national = 1 or t2.hr_people = 1 and t2.role=t1.role
+    WHERE (t2.national = 1 or t2.hr_people = 1) and t2.role=t1.role
     GROUP BY t2.role) AS national_role,
     
     (SELECT t2.kpis_by_role 
