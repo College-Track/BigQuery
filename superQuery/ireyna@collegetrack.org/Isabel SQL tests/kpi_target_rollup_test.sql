@@ -1,3 +1,4 @@
+SELECT 
 function,
 role,
     (SELECT t2.kpis_by_role 
