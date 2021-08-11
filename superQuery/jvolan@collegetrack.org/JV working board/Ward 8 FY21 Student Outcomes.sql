@@ -43,15 +43,35 @@ gather_attendance AS
     AND site_short = 'Ward 8'
     AND ay_2020_21_student_served_c = "High School Student"
     GROUP BY Contact_Id
-)
-  
+),
 
-   
+calc_attendance AS
+(
     SELECT
     *,
-    total_attended / total_enrolled AS f_s_overall_rate
+    CASE
+        WHEN (total_attended / total_enrolled) >=.8 THEN 1 ELSE 0 END AS overall_f_s_80,
+        
+    CASE
+        WHEN (total_attended / total_enrolled) >=.7 THEN 1 ELSE 0 END AS overall_f_s_70,
+    
+    CASE
+        WHEN (f2020_attended / f2020_enrolled) >=.8 THEN 1 ELSE 0 END AS f2020_80,
+    CASE
+        WHEN (f2020_attended / f2020_enrolled) >=.7 THEN 1 ELSE 0 END AS f2020_70,
+        
+    CASE
+        WHEN (sp2021_attended / sp2021_enrolled) >=.8 THEN 1 ELSE 0 END AS sp2021_80,
+    CASE
+        WHEN (sp2021_attended / sp2021_enrolled) >=.7 THEN 1 ELSE 0 END AS sp2021_70,
+        
     FROM gather_attendance
+)
 
+    SELECT
+    * except(at_contact_id),
+    FROM student_list
+    LEFT JOIN calc_attendance ON at_contact_id = Contact_Id
 /*
     SELECT
     CASE
