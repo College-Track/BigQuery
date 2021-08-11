@@ -15,8 +15,8 @@ gather_attendance AS
 (
     SELECT 
     Contact_Id AS at_contact_id,
-    count(attended_workshops_c),
-    count(enrolled_sessions_c),
+    count(attended_workshops_c) AS total_attended,
+    count(enrolled_sessions_c) AS total_enrolled,
     MAX(CASE
         WHEN global_academic_semester_c = 'a3646000000dMXuAAM'THEN (attended_workshops_c / enrolled_sessions_c)
         ELSE 0
