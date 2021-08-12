@@ -1,10 +1,9 @@
 SELECT
-    student_c AS d_contact_id,
-    SUM(amount_awarded_c) AS fy21_DOOR_total,
- 
-    
-    FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
-    WHERE scholarship_c = 'a3B46000000HWacEAG'
-    AND academic_year_c = 'a1b46000000dRR8AAM'
-    AND status_c = 'Won'
-    GROUP BY student_c
+    st.student_c AS e_contact_id,
+    st.academic_semester_c,
+    amount_c,
+    cat.academic_year_c,
+
+    FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` cat ON st.academic_semester_c = cat.AT_Id
+    WHERE scholarship_c = 'a3B46000000HX7xEAG'
