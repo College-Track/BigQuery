@@ -30,7 +30,7 @@ from gather_AT
     high_school_graduating_class_c,
     site_short,
     College_Track_Status_Name,
-    earliest_AT_term_gpa.e_gpa
+    earliest_AT_term_gpa.e_gpa,
     AT_Term_GPA,
     gpa_growth_prev_semester_c,
     AT_Cumulative_GPA
