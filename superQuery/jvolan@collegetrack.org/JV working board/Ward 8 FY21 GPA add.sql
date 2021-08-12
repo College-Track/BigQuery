@@ -2,7 +2,7 @@ WITH gather_AT AS
 (
     SELECT
     Contact_Id,
-    max(AT_Term_GPA) AS AT_Term_GPA,
+    max(AT_Cumulative_GPA) AS AT_Cumulative_GPA,
     max(start_date_c) AS start_date_c
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
@@ -19,7 +19,7 @@ earliest_AT_term_gpa AS
 (
 select
 Contact_Id AS at_contact_id,
-AT_Term_GPA AS e_gpa,
+AT_Cumulative_GPA AS e_cgpa,
     row_number() over(partition by Contact_Id order by start_date_c) as rn
 from gather_AT
 )a where rn=1
@@ -31,15 +31,14 @@ from gather_AT
     site_short,
     College_Track_Status_Name,
     GAS_Name,
-    earliest_AT_term_gpa.e_gpa,
+    earliest_AT_term_gpa.e_cgpa,
     CASE
         WHEN 
         (GAS_Name = 'Spring 2020-21 (Semester)'
-        AND AT_Term_GPA IS NOT NULL) THEN (AT_Term_GPA - earliest_AT_term_gpa.e_gpa)
+        AND AT_Term_GPA IS NOT NULL) THEN (AT_Cumulative_GPA - earliest_AT_term_gpa.e_cgpa)
         ELSE 0
         END AS e_sp_gpa_growth,
     AT_Term_GPA,
-    gpa_growth_prev_semester_c,
     AT_Cumulative_GPA
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
