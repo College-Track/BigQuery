@@ -23,10 +23,8 @@ AT_Cumulative_GPA AS e_cgpa,
     row_number() over(partition by Contact_Id order by start_date_c) as rn
 from gather_AT
 )a where rn=1
-),
+)
 
-join_data AS
-(
     SELECT
     Contact_Id,
     high_school_graduating_class_c,
@@ -48,7 +46,9 @@ join_data AS
     WHERE site_short = 'Ward 8'
     AND ay_2020_21_student_served_c = "High School Student"
     AND GAS_Name IN ('Fall 2020-21 (Semester)', 'Spring 2020-21 (Semester)')
-)
+
+   
+/*  
     SELECT
     Contact_Id,
     site_short,
@@ -76,7 +76,7 @@ join_data AS
         END AS sp_t_gpa_growth_num,
         
     FROM join_data
-
+*/
 
 
 
