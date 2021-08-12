@@ -30,6 +30,7 @@ from gather_AT
     high_school_graduating_class_c,
     site_short,
     College_Track_Status_Name,
+    earliest_AT_term_gpa.earliest_term_gpa
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN earliest_AT_term_gpa ON at_contact_id = Contact_Id
