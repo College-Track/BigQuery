@@ -2,15 +2,14 @@ WITH gather_AT AS
 (
     SELECT
     Contact_Id,
-    max(AT_Cumulative_GPA) AS AT_Cumulative_GPA,
-    max(start_date_c) AS start_date_c
+    AT_Cumulative_GPA,
+    start_date_c
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE site_short = 'Ward 8'
     AND ay_2020_21_student_served_c = "High School Student"
     AND AT_Term_GPA IS NOT NULL
-    GROUP BY Contact_Id
-    ORDER BY start_date_c ASC
+
 ),
 
 earliest_AT_term_gpa AS
