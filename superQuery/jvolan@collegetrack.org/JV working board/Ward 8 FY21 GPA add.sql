@@ -66,7 +66,7 @@ join_data AS
     CASE
         WHEN GAS_Name = 'Spring 2020-21 (Semester)'
         AND AT_Term_GPA IS NOT NULL
-        AND (AT_Term_GPA - e_gpa) >0 THEN 1
+        AND ((AT_Term_GPA - e_gpa) >0) THEN 1
         ELSE 0
         END AS sp_t_gpa_growth_num,
         
