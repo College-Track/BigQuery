@@ -52,6 +52,7 @@ join_data AS
    
     SELECT
     Contact_Id,
+    full_name_c,
     site_short,
     e_cgpa,
     CASE
