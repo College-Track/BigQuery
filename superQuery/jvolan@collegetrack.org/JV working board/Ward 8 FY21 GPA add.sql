@@ -52,32 +52,33 @@ join_data AS
    
     SELECT
     Contact_Id,
-    full_name_c,
     site_short,
-    e_cgpa,
-    CASE
+    MAX(e_cgpa) AS e_cgpa,
+    MAX(CASE
         WHEN GAS_Name = 'Fall 2020-21 (Semester)'
         AND AT_Cumulative_GPA >=3 THEN 1
         ELSE 0 
-        END AS f_cgpa_3,
-    CASE
+        END) AS f_cgpa_3,
+    MAX(CASE
         WHEN GAS_Name = 'Spring 2020-21 (Semester)'
         AND AT_Term_GPA IS NULL THEN 1
         ELSE 0
-        END AS missing_spring_gpa,
-    CASE
+        END) AS missing_spring_gpa,
+    MAX(CASE
         WHEN GAS_Name = 'Spring 2020-21 (Semester)'
         AND AT_Term_GPA IS NOT NULL THEN 1
         ELSE 0
-        END AS sp_t_gpa_growth_denom,
-    CASE
+        END) AS sp_t_gpa_growth_denom,
+    MAX(CASE
         WHEN GAS_Name = 'Spring 2020-21 (Semester)'
         AND AT_Term_GPA IS NOT NULL
         AND e_sp_gpa_growth >0 THEN 1
         ELSE 0
-        END AS sp_t_gpa_growth_num,
+        END) AS sp_t_gpa_growth_num,
         
     FROM join_data
+    GROUP BY Contact_Id,site_short
+    
 
 
 
