@@ -34,6 +34,12 @@ join_data AS
     College_Track_Status_Name,
     GAS_Name,
     earliest_AT_term_gpa.e_gpa,
+    CASE
+        WHEN 
+        (GAS_Name = 'Spring 2020-21 (Semester)'
+        AND AT_Term_GPA IS NOT NULL) THEN (AT_Term_GPA - earliest_AT_term_gpa.e_gpa)
+        ELSE 0
+        END AS e_sp_gpa_growth,
     AT_Term_GPA,
     gpa_growth_prev_semester_c,
     AT_Cumulative_GPA
@@ -66,7 +72,7 @@ join_data AS
     CASE
         WHEN GAS_Name = 'Spring 2020-21 (Semester)'
         AND AT_Term_GPA IS NOT NULL
-        AND ((AT_Term_GPA - e_gpa) >0) THEN 1
+        AND e_sp_gpa_growth >0 THEN 1
         ELSE 0
         END AS sp_t_gpa_growth_num,
         
