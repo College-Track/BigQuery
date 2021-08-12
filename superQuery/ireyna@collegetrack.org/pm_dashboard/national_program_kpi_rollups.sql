@@ -22,7 +22,7 @@ FROM `data-studio-260217.performance_mgt.fy22_team_kpis`
 WHERE (national = 1 or hr_people = 1)
 ),
 
---pull KPIs that are program KPIs, to map to National later
+--pull KPIs that are only program KPIs, to map to National later
 program_kpis AS (
 SELECT
 function, 
@@ -76,7 +76,7 @@ GROUP BY
     national.national_role
 ),
 
---Map aggregated values (student_count, target_numerator) that rollup to National here
+--Map aggregated values from Program KPIs (student_count, target_numerator) that rollup to National here
 national_rollups AS (
 SELECT 
 national_function,
@@ -97,7 +97,9 @@ LEFT JOIN sum_program_student_count AS sum_student
 
 )
 
---Bring in all National KPIs and map roll-ups and SUM of stuff to applicable KPIs
+--final join
+--Bring in all KPIs
+--map program roll-ups and SUM of stuff to National KPIs that rollup
 SELECT 
 distinct * EXCEPT (national_function,
                     national_role)
