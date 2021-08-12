@@ -1,8 +1,9 @@
 SELECT
-    st.student_c AS e_contact_id,
+    st.student_c,
     st.academic_semester_c,
-    amount_c,
-    cat.academic_year_c,
-
+    st.amount_c,
+    cat.academic_year_c
+    
     FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
-    WHERE scholarship_c = 'a3B46000000HX7xEAG'
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` cat ON st.academic_semester_c = cat.AT_Id
+    WHERE st.record_type_id = '01246000000ZNhtAAG'
