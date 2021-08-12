@@ -20,7 +20,7 @@ earliest_AT_term_gpa AS
 select
 Contact_Id AS at_contact_id,
 AT_Cumulative_GPA AS e_cgpa,
-    row_number() over(partition by Contact_Id order by start_date_c) as rn
+    row_number() over(partition by Contact_Id order by start_date_c ASC) as rn
 from gather_AT
 )a where rn=1
 )
