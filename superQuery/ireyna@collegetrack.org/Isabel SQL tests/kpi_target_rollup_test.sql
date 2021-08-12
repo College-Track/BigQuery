@@ -78,7 +78,7 @@ SELECT
 national_function,
 national_rollup_kpi,
 national_role,
-count_of_targets,
+--count_of_targets,
 student_count AS natl_student_count,
 program_student_sum,
 program_target_numerator_sum,
@@ -92,11 +92,7 @@ LEFT JOIN sum_program_student_count AS sum_student
 
 )
 SELECT 
-team_kpis.*,
-national_rollup_kpi,
-program_student_sum,
-program_target_numerator_sum,
-natl_student_count
+distinct * EXCEPT (national_function,national_role,indicator_program_rollup_for_national)
 
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN national_rollups AS natl
