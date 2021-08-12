@@ -6,6 +6,6 @@ SELECT
     WHERE site_short = 'Ward 8'
     AND ay_2020_21_student_served_c = "High School Student"
     AND AT_Term_GPA IS NOT NULL
-    GROUP BY Contact_Id
+    GROUP BY Contact_Id, start_date_c
     ORDER BY start_date_c ASC
     LIMIT 1
