@@ -101,7 +101,7 @@ FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN national_rollups AS natl
     ON natl.national_rollup_kpi = team_kpis.kpis_by_role
     AND natl.national_function = team_kpis.function
-
+WHERE (national =1 OR hr_people=1)
 GROUP BY 
 function,
 role,
