@@ -27,6 +27,7 @@ from gather_AT
 
     SELECT
     Contact_Id,
+    full_name_c,
     high_school_graduating_class_c,
     site_short,
     College_Track_Status_Name,
