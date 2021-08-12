@@ -53,6 +53,7 @@ join_data AS
     SELECT
     Contact_Id,
     site_short,
+    full_name_c,
     MAX(e_cgpa) AS e_cgpa,
     MAX(CASE
         WHEN GAS_Name = 'Fall 2020-21 (Semester)'
@@ -77,7 +78,7 @@ join_data AS
         END) AS sp_t_gpa_growth_num,
         
     FROM join_data
-    GROUP BY Contact_Id,site_short
+    GROUP BY Contact_Id,full_name_c,site_short
     
 
 
