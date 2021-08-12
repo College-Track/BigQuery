@@ -15,6 +15,6 @@ WITH gather_AT AS
 
     select * from
 (
-select AT_Term_GPA, row_number() over(partition by Contact_Id order by start_date_c) as rn
+select Contact_Id,AT_Term_GPA, row_number() over(partition by Contact_Id order by start_date_c) as rn
 from gather_AT
 )a where rn=1
