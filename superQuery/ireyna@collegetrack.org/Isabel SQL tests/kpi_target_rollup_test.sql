@@ -1,11 +1,11 @@
-/*
+
 
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_national_kpis`  OPTIONS (
   description = "KPIs submitted by National teams for FY22. This also rolls up the numerator and denominator for National KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-*/
+
 
 WITH 
 national_kpis AS (
@@ -79,6 +79,7 @@ national_function,
 national_rollup_kpi,
 national_role,
 count_of_targets,
+student_count AS natl_student_count,
 program_student_sum,
 program_target_numerator_sum,
 indicator_program_rollup_for_national
@@ -94,7 +95,8 @@ SELECT
 team_kpis.*,
 national_rollup_kpi,
 program_student_sum,
-program_target_numerator_sum
+program_target_numerator_sum,
+natl_student_count
 
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN national_rollups AS natl
@@ -120,4 +122,5 @@ target_numerator,
 count_of_targets,
 national_rollup_kpi,
 program_student_sum,
-program_target_numerator_sum
+program_target_numerator_sum,
+natl_student_count
