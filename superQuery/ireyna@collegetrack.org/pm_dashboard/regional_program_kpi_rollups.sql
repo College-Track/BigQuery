@@ -1,3 +1,12 @@
+
+/*
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_regional_kpis`  OPTIONS (
+  description = "KPIs submitted by Regional teams for FY22. This also rolls up the numerator and denominator for KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+)
+AS 
+*/
+
 WITH 
 
 --pull roles that are only National roles
@@ -62,7 +71,7 @@ site_or_region
 ),
 
 --Map program KPIs that rollup to Regions to regional_kpis table
-identify_program_rollups_for_regional AS ( 
+regional_rollups AS ( 
 SELECT
     regional_function,
     regional_role,
@@ -72,12 +81,17 @@ SELECT
         WHEN regional_rollup_kpi IS NOT NULL 
         THEN 1
         ELSE 0
-    END AS indicator_program_rollup_for_regional
+    END AS indicator_program_rollup_for_regional,
+    program_student_sum,
+    program_target_numerator_sum,
     
 FROM regional_kpis AS region
 LEFT JOIN program_kpis AS program
-    --ON regional.regional_rollup_kpi = program.region
-    ON region.site_or_region=program.site_or_region
+    ON region.regional_rollup_kpi = program.kpis_by_role
+    AND region.site_or_region=program.site_or_region
+LEFT JOIN sum_program_student_count AS sums
+    ON region.regional_rollup_kpi = sums.kpis_by_role
+    AND region.site_or_region=sums.site_or_region
     
 WHERE program.kpis_by_role NOT IN  ('Staff engagement score above average nonprofit benchmark',
                                     '% of students engaged in career exploration, readiness events or internships')
@@ -90,7 +104,9 @@ GROUP BY
     regional_rollup_kpi,
     regional_role,
     program.site_or_region,
-    site_or_region
+    site_or_region,
+    program_student_sum,
+    program_target_numerator_sum
 )
 --final join
 --Bring in all KPIs
@@ -122,7 +138,7 @@ LEFT JOIN regional_rollups AS regional
     AND regional.site_or_region = team_kpis.site_or_region
 WHERE (region_function = 1)
 GROUP BY 
-regional.region_regionkpis,
+TEAM_KPIS.site_or_region,
 function,
 role,
 kpis_by_role,
