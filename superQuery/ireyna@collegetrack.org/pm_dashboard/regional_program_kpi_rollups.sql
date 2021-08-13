@@ -29,6 +29,7 @@ SELECT
 function, 
 kpis_by_role,
 site_or_region,
+region,
 student_count,
 target_numerator,
 count_of_targets,
@@ -39,6 +40,7 @@ GROUP BY
 function, 
 kpis_by_role,
 site_or_region,
+region,
 student_count,
 target_numerator,
 count_of_targets
@@ -50,17 +52,20 @@ SELECT
     SUM(student_count) AS program_student_sum,
     SUM(target_numerator) AS program_target_numerator_sum,
     kpis_by_role,
-    site_or_region
+    region
 FROM program_kpis
 WHERE count_of_targets = 1
 GROUP BY kpis_by_role,
-site_or_region
+region
 ),
 
 --Map program KPIs that rollup to Regions to regional_kpis table
 identify_program_rollups_for_regional AS ( 
 SELECT
-    regional.*,
+    regional_function,
+    regional_role,
+    regional_rollup_kpi,
+    program.region,
     CASE 
         WHEN regional_rollup_kpi IS NOT NULL 
         THEN 1
@@ -80,7 +85,7 @@ GROUP BY
     regional.regional_function,
     regional_rollup_kpi,
     regional.regional_role,
-    site_or_region
+    region
 ),
 
 --Map aggregated values from Program KPIs (student_count, target_numerator) that rollup to National here
@@ -95,7 +100,7 @@ program_student_sum,
 target_numerator AS regional_target_numerator,
 program_target_numerator_sum,
 indicator_program_rollup_for_regional,
-region.site_or_region
+region.region
 
 FROM identify_program_rollups_for_regional AS region
 LEFT JOIN  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
@@ -109,7 +114,7 @@ LEFT JOIN sum_program_student_count AS sum_student
 --Bring in all KPIs
 --map program roll-ups and SUM of stuff to Regional KPIs
 SELECT 
-regional.site_or_region,
+regional.region,
 function,
 role,
 kpis_by_role,
@@ -132,10 +137,10 @@ FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN regional_rollups AS regional
     ON regional.regional_rollup_kpi = team_kpis.kpis_by_role
     AND regional.regional_function = team_kpis.function
-    AND regional.site_or_region = team_kpis.site_or_region
+    AND regional.region = team_kpis.region
 WHERE (region_function = 1)
 GROUP BY 
-regional.site_or_region,
+regional.region,
 function,
 role,
 kpis_by_role,
