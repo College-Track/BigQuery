@@ -56,6 +56,11 @@ join_data AS
     full_name_c,
     MAX(e_cgpa) AS e_cgpa,
     MAX(CASE
+        WHEN GAS_Name = 'Spring 2020-21 (Semester)'
+        THEN AT_Cumulative_GPA 
+        ELSE 0
+        END) AS sp21_cpga,
+    MAX(CASE 
         WHEN GAS_Name = 'Fall 2020-21 (Semester)'
         AND AT_Cumulative_GPA >=3 THEN 1
         ELSE 0 
