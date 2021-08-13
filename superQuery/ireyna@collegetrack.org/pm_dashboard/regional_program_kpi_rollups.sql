@@ -69,7 +69,8 @@ SELECT
     CASE
         WHEN program.region IS NULL
         THEN region_regionkpis
-    END AS region
+    END AS region,
+    region_regionkpis
     
 FROM regional_kpis AS regional
 LEFT JOIN program_kpis AS program
