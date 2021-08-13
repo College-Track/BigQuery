@@ -152,7 +152,6 @@ LEFT JOIN regional_rollups AS regional
     AND regional.regional_function = team_kpis.function
     AND regional.site_or_region = team_kpis.site_or_region
 WHERE region_function = 1
-OR  (count_of_targets = 1 OR program_target_numerator_sum IS NOT NULL OR target_fy22 IS NOT NULL OR program_student_sum IS NOT NULL) 
 GROUP BY 
 team_kpis.site_or_region,
 function,
