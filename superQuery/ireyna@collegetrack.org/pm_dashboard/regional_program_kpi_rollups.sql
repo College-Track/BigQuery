@@ -53,10 +53,10 @@ FROM program_kpis
 WHERE count_of_targets = 1
 GROUP BY kpis_by_role,
 region
-),
+)
 
 --Map program KPIs that rollup to Regions to regional_kpis table
-identify_program_rollups_for_regional AS ( 
+--identify_program_rollups_for_regional AS ( 
 SELECT
     regional_function,
     regional_role,
@@ -69,8 +69,7 @@ SELECT
     CASE
         WHEN program.region IS NULL
         THEN region_regionkpis
-    END AS region,
-    region_regionkpis
+    END AS region
     
 FROM regional_kpis AS regional
 LEFT JOIN program_kpis AS program
@@ -89,49 +88,3 @@ GROUP BY
     regional.regional_role,
     program.region,
     region_regionkpis
-)
-
---Map aggregated values from Program KPIs (student_count, target_numerator) that rollup to regions here
---regional_rollups AS (
-SELECT 
-regional_function,
-regional_rollup_kpi,
-regional_role,
---count_of_targets,
-student_count AS regional_student_count,
-program_student_sum,
-target_numerator AS regional_target_numerator,
-program_target_numerator_sum,
---indicator_program_rollup_for_regional,
-region_regionkpis,
-team_kpis.region
-/*case when 
-    (team_kpis.kpis_by_role = regional.regional_rollup_kpi
-    AND team_kpis.role = regional.regional_role
-    AND team_kpis.function = regional.regional_function
-    AND region_regionkpis IS NULL)
-    THEN team_kpis.region
-    END AS testregion*/
-
-FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis    
-LEFT JOIN  regional_kpis AS regional
-
-    ON team_kpis.kpis_by_role = regional.regional_rollup_kpi
-    AND team_kpis.role = regional.regional_role
-    AND team_kpis.function = regional.regional_function
-LEFT JOIN sum_program_student_count AS sum_student
-    ON sum_student.kpis_by_role=regional.regional_rollup_kpi
-   -- AND sum_student.region = regional.region_regionkpis
-WHERE REGION_FUNCTION = 1
-GROUP BY 
-    regional_function,
-regional_rollup_kpi,
-regional_role,
---count_of_targets,
-student_count ,
-program_student_sum,
-target_numerator ,
-program_target_numerator_sum,
---indicator_program_rollup_for_regional,
-region_regionkpis,
-team_kpis.region
