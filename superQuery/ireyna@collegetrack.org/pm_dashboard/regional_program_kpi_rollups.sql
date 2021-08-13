@@ -16,7 +16,8 @@ SELECT
 function AS regional_function,
 role AS regional_role,
 kpis_by_role AS regional_rollup_kpi,
-site_or_region
+site_or_region,
+
 
 --SUM(student_count) AS national_rollup_student_sum
 
@@ -83,8 +84,10 @@ SELECT
         THEN 1
         ELSE 0
     END AS indicator_program_rollup_for_regional,
-    program_student_sum,
-    program_target_numerator_sum
+    program_target_numerator_sum,
+    IF (
+        regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
+        AND region.site_or_region = "NORCAL",200,program_student_sum) AS program_student_sum
     
 FROM regional_kpis AS region
 LEFT JOIN program_kpis AS program
@@ -127,7 +130,8 @@ target_numerator,
 --regional_target_numerator,
 count_of_targets,
 regional_rollup_kpi,
-program_student_sum,
+IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
+    AND team_kpis.site_or_region = "LA",140,program_student_sum) AS program_student_sum,
 program_target_numerator_sum
 --regional_student_count,
 --indicator_program_rollup_for_regional
