@@ -16,7 +16,7 @@ SELECT
 function AS regional_function,
 role AS regional_role,
 kpis_by_role AS regional_rollup_kpi,
-site_or_region
+region
 --SUM(student_count) AS national_rollup_student_sum
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
@@ -75,7 +75,7 @@ SELECT
 FROM regional_kpis AS regional
 LEFT JOIN program_kpis AS program
     ON regional.regional_rollup_kpi = program.kpis_by_role
-    AND regional.site_or_region=program.site_or_region
+    AND regional.region=program.region
     
 WHERE regional.regional_rollup_kpi = program.kpis_by_role
     AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
