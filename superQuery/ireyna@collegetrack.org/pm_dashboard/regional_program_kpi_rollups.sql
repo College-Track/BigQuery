@@ -109,16 +109,24 @@ LEFT JOIN sum_program_student_count AS sum_student
 --Bring in all KPIs
 --map program roll-ups and SUM of stuff to Regional KPIs
 SELECT 
-distinct * EXCEPT (Site,
-                    regional_function,
-                    regional_role,
-                   team_kpis.site_or_region,
-                    hr_people,
-                    national,
-                    region,
-                    student_count,
-                    regional_target_numerator,
-                    regional_student_count)
+regional.site_or_region,
+function,
+role,
+kpis_by_role,
+target_fy22,
+target_submitted,
+development,
+region_function,
+program,
+--student_count,
+target_numerator,
+--regional_target_numerator,
+count_of_targets,
+regional_rollup_kpi,
+program_student_sum,
+program_target_numerator_sum,
+--regional_student_count,
+indicator_program_rollup_for_regional
 
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN regional_rollups AS regional
