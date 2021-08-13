@@ -16,10 +16,7 @@ SELECT
 function AS regional_function,
 role AS regional_role,
 kpis_by_role AS regional_rollup_kpi,
-site_or_region,
-
-
---SUM(student_count) AS national_rollup_student_sum
+site_or_region
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
 WHERE region_function = 1
@@ -132,6 +129,12 @@ target_numerator,
 --regional_target_numerator,
 count_of_targets,
 regional_rollup_kpi,
+CASE
+    WHEN program_student_sum IS NOT NULL AND program_target_numerator_sum IS NOT NULL THEN count_of_targets = 1
+    WHEN target_fy22 IS NOT NULL THEN count_of_targets = 1
+    WHEN count_of_targets = 1 then  count_of_targets = 1
+    ELSE false
+END AS count_of_targets2,
 
 IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
     AND team_kpis.site_or_region = "LA",140,
