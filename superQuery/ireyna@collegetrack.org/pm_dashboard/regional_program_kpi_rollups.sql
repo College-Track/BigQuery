@@ -1,11 +1,11 @@
 
-/*
+
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_regional_kpis`  OPTIONS (
   description = "KPIs submitted by Regional teams for FY22. This also rolls up the numerator and denominator for KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-*/
+
 
 WITH 
 
@@ -70,9 +70,10 @@ FROM program_kpis
     where kpis_by_role NOT IN ('Staff engagement score above average nonprofit benchmark',
                             '% of students engaged in career exploration, readiness events or internships',
                             '% of entering 9th grade students who are low-income AND first-gen')
-    --AND (kpis_by_role <> '% of entering 9th grade students who are low-income AND first-gen' AND site_or_region <> "DC")
-GROUP BY kpis_by_role,
-site_or_region
+
+GROUP BY 
+    kpis_by_role,
+    site_or_region
 ),
 
 --Map program KPIs that rollup to Regions to regional_kpis table
@@ -97,11 +98,7 @@ LEFT JOIN program_kpis AS program
 LEFT JOIN sum_program_student_count AS sums
     ON region.regional_rollup_kpi = sums.kpis_by_role
     AND region.site_or_region=sums.site_or_region
-    
-    -- AND regional.regional_rollup_kpi = program.kpis_by_role
-    -- AND regional.region_regionkpis=program.region
-    -- AND ('% of students growing toward average or above social-emotional strengths',
-                                   
+
 GROUP BY 
     regional_function,
     regional_rollup_kpi,
