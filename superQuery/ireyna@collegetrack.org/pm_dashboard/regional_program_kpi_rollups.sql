@@ -100,6 +100,7 @@ LEFT JOIN sum_program_student_count AS sums
     
 WHERE program.kpis_by_role NOT IN  ('Staff engagement score above average nonprofit benchmark',
                                     '% of students engaged in career exploration, readiness events or internships')
+    AND (program.site_or_region NOT IN ('NOR CAL','CO','LA') AND program.kpis_by_role <> '% of entering 9th grade students who are low-income AND first-gen')
     -- AND regional.regional_rollup_kpi = program.kpis_by_role
     -- AND regional.region_regionkpis=program.region
     -- AND ('% of students growing toward average or above social-emotional strengths',
@@ -150,7 +151,7 @@ LEFT JOIN regional_rollups AS regional
     ON regional.regional_rollup_kpi = team_kpis.kpis_by_role
     AND regional.regional_function = team_kpis.function
     AND regional.site_or_region = team_kpis.site_or_region
-WHERE (region_function = 1)
+WHERE region_function = 1
 GROUP BY 
 team_kpis.site_or_region,
 function,
