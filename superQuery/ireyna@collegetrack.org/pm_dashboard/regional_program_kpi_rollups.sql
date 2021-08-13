@@ -77,7 +77,7 @@ SELECT
     regional_function,
     regional_role,
     regional_rollup_kpi,
-    region.site_or_region,
+    
     CASE 
         WHEN regional_rollup_kpi IS NOT NULL 
         THEN 1
@@ -96,7 +96,7 @@ LEFT JOIN sum_program_student_count AS sums
     
 WHERE program.kpis_by_role NOT IN  ('Staff engagement score above average nonprofit benchmark',
                                     '% of students engaged in career exploration, readiness events or internships')
-    --AND regional.regional_rollup_kpi = program.kpis_by_role
+    -- AND regional.regional_rollup_kpi = program.kpis_by_role
     -- AND regional.region_regionkpis=program.region
     -- AND ('% of students growing toward average or above social-emotional strengths',
                                    
