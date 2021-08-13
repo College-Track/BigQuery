@@ -1,10 +1,10 @@
-
+/*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-
+*/
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -64,6 +64,7 @@ WITH prep_kpi_targets AS (
       WHEN what_is_the_type_of_target_ = "Goal is met" THEN 1 --   WHEN enter_the_target_non_numeric_ IS NOT NULL THEN enter_the_target_non_numeric_count
       ELSE NULL
     END AS target_fy22,
+    regional_executive_rollup
   FROM
     `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` KPI_Target
     WHERE email_kpi != 'test@collegetrack.org'
@@ -150,10 +151,10 @@ prep_regional_kpis AS (
   FROM
     modify_regional_kpis KPI_by_role
     LEFT JOIN prep_kpi_targets KPI_Tagets --ON KPI_by_role.role = KPI_Tagets.select_role
-    ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
-    AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi --map Region to Region
-    AND KPI_by_role.function = KPI_Tagets.team_kpi --map teams/functions (mature regional staff, non-mature regional staff)
-    AND indicator_disregard_entry_op_hard_coded	 <> 1
+        ON KPI_by_role.kpis_by_role = KPI_Tagets.select_kpi --map on shared KPI
+        AND KPI_by_role.site_or_region = KPI_Tagets.region_kpi --map Region to Region
+        AND KPI_by_role.function = KPI_Tagets.team_kpi --map teams/functions (mature regional staff, non-mature regional staff)
+        AND indicator_disregard_entry_op_hard_coded	 <> 1
     LEFT JOIN join_projections Projections ON Projections.region_abrev = KPI_by_role.site_or_region AND Projections.student_type = KPI_by_role.student_group
   WHERE
     KPI_by_role.function IN (
@@ -210,6 +211,7 @@ SELECT
   region_abrev AS Region,
   site_short AS Site,
   student_count,
+  regional_executive_rollup,
 --   target_submitted,
   
   CASE
