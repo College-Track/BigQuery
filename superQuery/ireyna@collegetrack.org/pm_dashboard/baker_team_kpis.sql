@@ -1,10 +1,9 @@
-/*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-*/
+
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -287,9 +286,7 @@ ELSE cn.student_count
 END AS student_count,
 CASE WHEN target_submitted = 'Not Submitted' THEN NULL
 ELSE target_numerator
-END AS target_numerator,
-
-
+END AS target_numerator
 
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
