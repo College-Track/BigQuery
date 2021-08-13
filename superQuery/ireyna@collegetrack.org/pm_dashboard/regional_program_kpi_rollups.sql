@@ -112,7 +112,7 @@ SELECT
 distinct * EXCEPT (Site,
                     regional_function,
                     regional_role,
-                    site_or_region,
+                   team_kpis.site_or_region,
                     hr_people,
                     national,
                     region,
