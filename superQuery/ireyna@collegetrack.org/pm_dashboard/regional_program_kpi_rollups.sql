@@ -110,7 +110,9 @@ SELECT
 distinct * EXCEPT (Site,
                     regional_function,
                     regional_role,
-                    site_or_region)
+                    site_or_region,
+                    hr_people,
+                    national)
 
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN regional_rollups AS region
@@ -123,8 +125,6 @@ role,
 kpis_by_role,
 target_fy22,
 target_submitted,
-hr_people,
-national,
 development,
 region_function,
 program,
