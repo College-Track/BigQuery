@@ -93,7 +93,6 @@ SELECT
     program_target_numerator_sum,
     program_student_sum
     
-    
 FROM regional_kpis AS region
 LEFT JOIN program_kpis AS program
     ON region.regional_rollup_kpi = program.kpis_by_role
@@ -118,12 +117,12 @@ GROUP BY
 --final join
 --Bring in all KPIs
 --map program roll-ups and SUM of stuff to Regional KPIs
-SELECT 
+SELECT
 team_kpis.site_or_region,
 function,
 role,
 kpis_by_role,
-target_fy22,
+--target_fy22,
 target_submitted,
 development,
 region_function,
@@ -142,6 +141,9 @@ IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AN
         
 IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
         AND team_kpis.site_or_region = "CO",80,program_student_sum))) AS program_student_sum,
+IF(target_fy22 IS NULL 
+        AND team_kpis.kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen' 
+        AND team_kpis.site_or_region = 'DC',.82, target_fy22) AS target_fy22,
         
 program_target_numerator_sum
 --regional_student_count,
