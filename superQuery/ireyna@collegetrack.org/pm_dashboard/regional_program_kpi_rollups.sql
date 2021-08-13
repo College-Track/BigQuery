@@ -139,7 +139,7 @@ IF(target_fy22 IS NULL
         AND team_kpis.kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen' 
         AND team_kpis.site_or_region = 'DC',.82, target_fy22) AS target_fy22,
         
-program_target_numerator_sum
+program_target_numerator_sum,
 --regional_student_count,
 indicator_program_rollup_for_regional
 
@@ -165,6 +165,6 @@ target_numerator,
 count_of_targets,
 regional_rollup_kpi,
 program_student_sum,
-program_target_numerator_sum
+program_target_numerator_sum,
 --regional_student_count,
 indicator_program_rollup_for_regional
