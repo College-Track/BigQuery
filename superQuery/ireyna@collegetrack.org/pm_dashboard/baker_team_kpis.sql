@@ -282,12 +282,14 @@ CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_shor
 END AS Site,
 
 --added by IR
-CASE WHEN target_submitted = 'Not Submitted' THEN cn.student_count
+CASE WHEN target_submitted = 'Not Submitted' THEN NULL
 ELSE cn.student_count
 END AS student_count,
 CASE WHEN target_submitted = 'Not Submitted' THEN NULL
 ELSE target_numerator
-END AS target_numerator
+END AS target_numerator,
+
+
 
 FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short
