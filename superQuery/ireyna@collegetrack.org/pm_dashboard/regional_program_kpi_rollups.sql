@@ -73,6 +73,7 @@ WHERE count_of_targets = 1
     AND kpis_by_role NOT IN ('Staff engagement score above average nonprofit benchmark',
                             '% of students engaged in career exploration, readiness events or internships',
                             '% of entering 9th grade students who are low-income AND first-gen')
+    AND (kpis_by_role <> '% of entering 9th grade students who are low-income AND first-gen' AND site_or_region <> "DC")
 GROUP BY kpis_by_role,
 site_or_region
 ),
