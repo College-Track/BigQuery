@@ -107,11 +107,11 @@ GROUP BY
     site_or_region,
     program_student_sum,
     program_target_numerator_sum
-),
-final join AS
+)
+--final join AS(
 --Bring in all KPIs
 --map program roll-ups and SUM of stuff to Regional KPIs
-(SELECT
+SELECT
 team_kpis.site_or_region,
 function,
 role,
@@ -168,7 +168,3 @@ program_student_sum,
 program_target_numerator_sum,
 --regional_student_count,
 indicator_program_rollup_for_regional
-)
-SELECT *
-LEFT JOIN regional_kpis
-WHERE 
