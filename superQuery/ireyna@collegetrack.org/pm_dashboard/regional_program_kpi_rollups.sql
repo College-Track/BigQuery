@@ -15,7 +15,8 @@ regional_kpis AS (
 SELECT 
 function AS regional_function,
 role AS regional_role,
-kpis_by_role AS regional_rollup_kpi
+kpis_by_role AS regional_rollup_kpi,
+region
 --SUM(student_count) AS national_rollup_student_sum
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
@@ -27,6 +28,7 @@ program_kpis AS (
 SELECT
 function, 
 kpis_by_role,
+region,
 student_count,
 target_numerator,
 count_of_targets,
@@ -36,6 +38,7 @@ WHERE program = 1
 GROUP BY 
 function, 
 kpis_by_role,
+region,
 student_count,
 target_numerator,
 count_of_targets
@@ -49,31 +52,34 @@ SELECT
     kpis_by_role
 FROM program_kpis
 WHERE count_of_targets = 1
-GROUP BY kpis_by_role
+GROUP BY kpis_by_role,
+region
 ),
 
---Map program KPIs that rollup to National to national_kpis table
-identify_program_rollups_for_regional AS ( #25 KPIs for FY22
+--Map program KPIs that rollup to Regions to regional_kpis table
+identify_program_rollups_for_regional AS ( 
 SELECT
-    region.*,
+    regional.*,
     CASE 
         WHEN regional_rollup_kpi IS NOT NULL 
         THEN 1
         ELSE 0
     END AS indicator_program_rollup_for_regional
 
-FROM regional_kpis AS region
+FROM regional_kpis AS regional
 LEFT JOIN program_kpis AS program
-    ON region.regional_rollup_kpi = program.kpis_by_role
+    ON regional.regional_rollup_kpi = program.kpis_by_role
+    AND regional.region=program.region
     
-WHERE region.regional_rollup_kpi = program.kpis_by_role
+WHERE regional.regional_rollup_kpi = program.kpis_by_role
     AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
                                     'Staff engagement score above average nonprofit benchmark',
                                     '% of students engaged in career exploration, readiness events or internships')
 GROUP BY 
-    region.regional_function,
+    regional.regional_function,
     regional_rollup_kpi,
-    region.regional_role
+    regional.regional_role,
+    region
 ),
 
 --Map aggregated values from Program KPIs (student_count, target_numerator) that rollup to National here
@@ -99,7 +105,7 @@ LEFT JOIN sum_program_student_count AS sum_student
 
 --final join
 --Bring in all KPIs
---map program roll-ups and SUM of stuff to National KPIs that rollup
+--map program roll-ups and SUM of stuff to Regional KPIs
 SELECT 
 distinct * EXCEPT (regional_function,
                     regional_role)
