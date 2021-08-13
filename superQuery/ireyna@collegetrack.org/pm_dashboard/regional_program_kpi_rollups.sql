@@ -112,11 +112,14 @@ case when
     AND region_regionkpis IS NULL)
     THEN team_kpis.region
     END AS testregion
-    
-FROM regional_kpis AS regional
-LEFT JOIN  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
+
+FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis    
+LEFT JOIN  regional_kpis AS regional
+
     ON team_kpis.kpis_by_role = regional.regional_rollup_kpi
     AND team_kpis.role = regional.regional_role
     AND team_kpis.function = regional.regional_function
 LEFT JOIN sum_program_student_count AS sum_student
     ON sum_student.kpis_by_role=regional.regional_rollup_kpi
+   -- AND sum_student.region = regional.region_regionkpis
+WHERE REGION_FUNCTION = 1
