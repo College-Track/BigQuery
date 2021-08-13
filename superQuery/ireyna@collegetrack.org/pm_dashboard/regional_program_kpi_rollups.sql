@@ -1,11 +1,11 @@
 
-
+/*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_regional_kpis`  OPTIONS (
   description = "KPIs submitted by Regional teams for FY22. This also rolls up the numerator and denominator for KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-
+*/
 
 WITH 
 
@@ -141,7 +141,7 @@ IF(target_fy22 IS NULL
         
 program_target_numerator_sum
 --regional_student_count,
---indicator_program_rollup_for_regional
+indicator_program_rollup_for_regional
 
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN regional_rollups AS regional
@@ -167,4 +167,4 @@ regional_rollup_kpi,
 program_student_sum,
 program_target_numerator_sum
 --regional_student_count,
---indicator_program_rollup_for_regional
+indicator_program_rollup_for_regional
