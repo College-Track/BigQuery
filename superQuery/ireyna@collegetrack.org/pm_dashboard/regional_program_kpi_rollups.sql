@@ -77,7 +77,7 @@ SELECT
     regional_function,
     regional_role,
     regional_rollup_kpi,
-    
+    region.site_or_region,
     CASE 
         WHEN regional_rollup_kpi IS NOT NULL 
         THEN 1
