@@ -1,12 +1,3 @@
-
-/*
-CREATE
-OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_regional_kpis`  OPTIONS (
-  description = "KPIs submitted by Regional teams for FY22. This also rolls up the numerator and denominator for KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
-)
-AS 
-*/
-
 WITH 
 
 --pull roles that are only National roles
@@ -79,8 +70,8 @@ LEFT JOIN program_kpis AS program
 --WHERE regional.regional_rollup_kpi = program.kpis_by_role
    -- AND regional.region_regionkpis=program.region
 --    AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
-                                    'Staff engagement score above average nonprofit benchmark',
-                                    '% of students engaged in career exploration, readiness events or internships')
+                                   -- 'Staff engagement score above average nonprofit benchmark',
+                                --    '% of students engaged in career exploration, readiness events or internships')
 GROUP BY 
     regional.regional_function,
     regional_rollup_kpi,
