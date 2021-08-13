@@ -70,7 +70,7 @@ WHERE count_of_targets = 1
     AND kpis_by_role NOT IN ('Staff engagement score above average nonprofit benchmark',
                             '% of students engaged in career exploration, readiness events or internships',
                             '% of entering 9th grade students who are low-income AND first-gen')
-    AND (kpis_by_role <> '% of entering 9th grade students who are low-income AND first-gen' AND site_or_region <> "DC")
+--    AND (kpis_by_role <> '% of entering 9th grade students who are low-income AND first-gen' AND site_or_region <> "DC")
 GROUP BY kpis_by_role,
 site_or_region
 ),
@@ -101,7 +101,7 @@ LEFT JOIN sum_program_student_count AS sums
     -- AND regional.regional_rollup_kpi = program.kpis_by_role
     -- AND regional.region_regionkpis=program.region
     -- AND ('% of students growing toward average or above social-emotional strengths',
-                                   
+ 
 GROUP BY 
     regional_function,
     regional_rollup_kpi,
@@ -129,12 +129,6 @@ target_numerator,
 --regional_target_numerator,
 count_of_targets,
 regional_rollup_kpi,
-CASE
-    WHEN program_student_sum IS NOT NULL AND program_target_numerator_sum IS NOT NULL THEN count_of_targets = 1
-    WHEN target_fy22 IS NOT NULL THEN count_of_targets = 1
-    WHEN count_of_targets = 1 then  count_of_targets = 1
-    ELSE false
-END AS count_of_targets2,
 
 IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
     AND team_kpis.site_or_region = "LA",140,
@@ -158,6 +152,7 @@ LEFT JOIN regional_rollups AS regional
     AND regional.regional_function = team_kpis.function
     AND regional.site_or_region = team_kpis.site_or_region
 WHERE region_function = 1
+AND  (count_of_targets = 1 OR program_target_numerator_sum IS NOT NULL OR target_fy22 IS NOT NULL OR program_student_sum IS NOT NULL) 
 GROUP BY 
 team_kpis.site_or_region,
 function,
