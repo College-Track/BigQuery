@@ -104,6 +104,7 @@ target_numerator AS regional_target_numerator,
 program_target_numerator_sum,
 --indicator_program_rollup_for_regional,
 region_regionkpis,
+region,
 case when 
     (team_kpis.kpis_by_role = regional.regional_rollup_kpi
     AND team_kpis.role = regional.regional_role
@@ -119,4 +120,3 @@ LEFT JOIN  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
     AND team_kpis.function = regional.regional_function
 LEFT JOIN sum_program_student_count AS sum_student
     ON sum_student.kpis_by_role=regional.regional_rollup_kpi
-   --
