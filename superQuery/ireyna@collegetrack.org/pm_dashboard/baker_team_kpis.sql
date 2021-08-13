@@ -282,7 +282,7 @@ CASE WHEN Site IS NULL AND site_or_region IS NOT NULL THEN Projections.site_shor
 END AS Site,
 
 --added by IR
-CASE WHEN target_submitted = 'Not Submitted' THEN NULL
+CASE WHEN target_submitted = 'Not Submitted' THEN cn.student_count
 ELSE cn.student_count
 END AS student_count,
 CASE WHEN target_submitted = 'Not Submitted' THEN NULL
