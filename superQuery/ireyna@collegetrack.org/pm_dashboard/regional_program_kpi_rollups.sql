@@ -29,7 +29,10 @@ WHERE region_function = 1
 program_kpis AS (
 
 SELECT
-team_kpis.kpis_by_role,
+CASE 
+    WHEN team_kpis.kpis_by_role = '% of all students with GPA 3.25+' THEN '% of students with a 3.25+ cumulative HS GPA'
+    ELSE team_kpis.kpis_by_role
+    END AS kpis_by_role,
 student_count,
 target_numerator,
 count_of_targets,
