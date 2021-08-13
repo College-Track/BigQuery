@@ -127,6 +127,7 @@ LEFT JOIN regional_rollups AS regional
     AND regional.site_or_region = team_kpis.site_or_region
 WHERE (region_function = 1)
 GROUP BY 
+regional.site_or_region,
 function,
 role,
 kpis_by_role,
@@ -135,7 +136,6 @@ target_submitted,
 development,
 region_function,
 program,
-regional.site_or_region,
 --student_count,
 target_numerator,
 --regional_target_numerator,
