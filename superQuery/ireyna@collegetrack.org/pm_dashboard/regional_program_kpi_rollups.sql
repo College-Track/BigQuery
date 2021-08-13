@@ -69,7 +69,10 @@ sum_program_student_count AS(
 SELECT 
     SUM(student_count) AS program_student_sum,
     SUM(target_numerator) AS program_target_numerator_sum,
-    kpis_by_role,
+    CASE 
+    WHEN kpis_by_role = '% of all students with GPA 3.25+' THEN '% of students with a 3.25+ cumulative HS GPA'
+    ELSE kpis_by_role
+    END AS kpis_by_role,
     site_or_region
 FROM program_kpis
 --WHERE count_of_targets = 1
