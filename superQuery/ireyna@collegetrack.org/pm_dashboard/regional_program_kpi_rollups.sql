@@ -16,7 +16,8 @@ SELECT
 function AS regional_function,
 role AS regional_role,
 kpis_by_role AS regional_rollup_kpi,
-site_or_region
+site_or_region,
+regional_executive_rollup
 --SUM(student_count) AS national_rollup_student_sum
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
@@ -138,7 +139,7 @@ LEFT JOIN regional_rollups AS regional
     AND regional.site_or_region = team_kpis.site_or_region
 WHERE (region_function = 1)
 GROUP BY 
-TEAM_KPIS.site_or_region,
+team_kpis.site_or_region,
 function,
 role,
 kpis_by_role,
