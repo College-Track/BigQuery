@@ -109,7 +109,8 @@ LEFT JOIN sum_program_student_count AS sum_student
 SELECT 
 distinct * EXCEPT (Site,
                     regional_function,
-                    regional_role)
+                    regional_role,
+                    site_or_region)
 
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN regional_rollups AS region
@@ -120,7 +121,6 @@ GROUP BY
 function,
 role,
 kpis_by_role,
-site_or_region,
 target_fy22,
 target_submitted,
 hr_people,
