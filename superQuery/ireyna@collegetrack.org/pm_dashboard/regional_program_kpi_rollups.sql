@@ -136,10 +136,16 @@ IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AN
         
 IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
         AND team_kpis.site_or_region = "CO",80,program_student_sum))) AS program_student_sum,
+        
+        
 IF(target_fy22 IS NULL 
         AND team_kpis.kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen' 
-        AND team_kpis.site_or_region = 'DC',.82, target_fy22) AS target_fy22,
-        
+        AND team_kpis.site_or_region = 'DC',.82, 
+IF (regional_rollup_kpi = '% of college students graduating from college within 6 years' 
+        AND team_kpis.site_or_region = 'CO',.43,
+IF(regional_rollup_kpi = '% of college students graduating from college within 6 years' 
+        AND team_kpis.site_or_region = 'LA',.55,target_fy22))) AS target_fy22, 
+
 program_target_numerator_sum,
 --regional_student_count,
 indicator_program_rollup_for_regional
