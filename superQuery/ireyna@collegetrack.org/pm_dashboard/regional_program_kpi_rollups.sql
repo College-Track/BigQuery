@@ -1,5 +1,12 @@
 
 
+CREATE
+OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_regional_kpis`  OPTIONS (
+  description = "KPIs submitted by Regional teams for FY22. This also rolls up the numerator and denominator for KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
+)
+AS 
+
+
 WITH 
 
 --pull roles that are only National roles
@@ -62,7 +69,8 @@ FROM program_kpis
 --WHERE count_of_targets = 1
     where kpis_by_role NOT IN ('Staff engagement score above average nonprofit benchmark',
                             '% of students engaged in career exploration, readiness events or internships',
-                            '% of entering 9th grade students who are low-income AND first-gen')
+                            '% of entering 9th grade students who are low-income AND first-gen',
+                            '% of college students graduating from college within 6 years')
 
 GROUP BY 
     kpis_by_role,
