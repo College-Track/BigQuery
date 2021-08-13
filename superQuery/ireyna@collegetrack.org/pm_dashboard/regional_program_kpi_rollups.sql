@@ -46,7 +46,13 @@ CASE
     WHEN site_or_region = 'The Durant Center' THEN 'DC'
     WHEN site_or_region = 'Ward 8' THEN 'DC'
     ELSE site_or_region
-END AS site_or_region
+END AS site_or_region,
+
+CASE
+    WHEN kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen'
+    THEN program = 1
+    ELSE FALSE
+END AS program
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
 WHERE program = 1
@@ -56,7 +62,8 @@ kpis_by_role,
 site_or_region,
 student_count,
 target_numerator,
-count_of_targets
+count_of_targets,
+program
 ),
 
 --SUM up student count and target numerators for Program KPIs
@@ -85,14 +92,8 @@ SELECT
         ELSE 0
     END AS indicator_program_rollup_for_regional,
     program_target_numerator_sum,
-    CASE WHEN (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-    AND region.site_or_region = "LA") THEN program_student_sum = 140
-    when(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-        AND region.site_or_region = "NOR CAL") THEN program_student_sum = 200
-    WHEN (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-        AND region.site_or_region = "CO") THEN program_student_sum = 80
-    ELSE NULL
-    END AS  program_student_sum
+    program_student_sum
+    
     
 FROM regional_kpis AS region
 LEFT JOIN program_kpis AS program
