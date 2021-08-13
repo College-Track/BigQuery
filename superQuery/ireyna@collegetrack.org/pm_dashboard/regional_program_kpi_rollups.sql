@@ -74,7 +74,7 @@ SELECT
 FROM regional_kpis AS regional
 LEFT JOIN program_kpis AS program
     ON regional.regional_rollup_kpi = program.region
-    AND regional.region_regionkpis=program.region
+    --AND regional.region_regionkpis=program.region
     
 WHERE regional.regional_rollup_kpi = program.kpis_by_role
    -- AND regional.region_regionkpis=program.region
