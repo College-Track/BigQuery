@@ -1,5 +1,5 @@
-SELECT
 CASE
+    WHEN program = 1 then true
     WHEN kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen'
     THEN program = 1
     ELSE false
