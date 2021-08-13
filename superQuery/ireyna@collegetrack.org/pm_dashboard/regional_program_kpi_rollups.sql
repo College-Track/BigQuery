@@ -86,7 +86,6 @@ SELECT
     region.site_or_region,
     CASE 
         WHEN program_student_sum IS NOT NULL 
-        AND region.site_or_region <> 'Sacramento'
         THEN 1
         ELSE 0
     END AS indicator_program_rollup_for_regional,
