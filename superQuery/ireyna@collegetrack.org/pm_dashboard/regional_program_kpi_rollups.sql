@@ -85,7 +85,14 @@ SELECT
         ELSE 0
     END AS indicator_program_rollup_for_regional,
     program_target_numerator_sum,
-    program_student_sum
+    IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
+    AND region.site_or_region = "LA",140,
+    
+IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
+        AND region.site_or_region = "NOR CAL",200,
+        
+IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
+        AND region.site_or_region = "CO",80,program_student_sum))) AS program_student_sum
     
 FROM regional_kpis AS region
 LEFT JOIN program_kpis AS program
@@ -131,14 +138,7 @@ regional_rollup_kpi,
 --IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
 --    AND team_kpis.site_or_region = "LA",140,program_student_sum) AS program_student_sum,
 
-IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-    AND team_kpis.site_or_region = "LA",140,
-    
-IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-        AND team_kpis.site_or_region = "NOR CAL",200,
-        
-IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-        AND team_kpis.site_or_region = "CO",80,program_student_sum))) AS program_student_sum,
+
         
 program_target_numerator_sum
 --regional_student_count,
