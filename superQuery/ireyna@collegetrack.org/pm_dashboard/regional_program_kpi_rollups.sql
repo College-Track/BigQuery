@@ -16,7 +16,7 @@ SELECT
 function AS regional_function,
 role AS regional_role,
 kpis_by_role AS regional_rollup_kpi,
-region
+region AS region_regionkpis
 --SUM(student_count) AS national_rollup_student_sum
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
@@ -61,7 +61,6 @@ SELECT
     regional_function,
     regional_role,
     regional_rollup_kpi,
-    program.region,
     CASE 
         WHEN regional_rollup_kpi IS NOT NULL 
         THEN 1
@@ -69,16 +68,16 @@ SELECT
     END AS indicator_program_rollup_for_regional,
     CASE
         WHEN program.region IS NULL
-        THEN region.region
-    END AS program.region
+        THEN region_regionkpis
+    END AS region
     
 FROM regional_kpis AS regional
 LEFT JOIN program_kpis AS program
     ON regional.regional_rollup_kpi = program.region
-    AND regional.region=program.region
+    AND regional.region_regionkpis=program.region
     
 WHERE regional.regional_rollup_kpi = program.kpis_by_role
-    AND regional.region=program.region
+    AND regional.region_regionkpis=program.region
     AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
                                     'Staff engagement score above average nonprofit benchmark',
                                     '% of students engaged in career exploration, readiness events or internships')
@@ -86,7 +85,8 @@ GROUP BY
     regional.regional_function,
     regional_rollup_kpi,
     regional.regional_role,
-    region
+    program.region,
+    region_regionkpis
 ),
 
 --Map aggregated values from Program KPIs (student_count, target_numerator) that rollup to regions here
@@ -101,15 +101,15 @@ program_student_sum,
 target_numerator AS regional_target_numerator,
 program_target_numerator_sum,
 indicator_program_rollup_for_regional,
-region.region
+regional.region
 
-FROM identify_program_rollups_for_regional AS region
+FROM identify_program_rollups_for_regional AS regional
 LEFT JOIN  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
-    ON team_kpis.kpis_by_role = region.regional_rollup_kpi
-    AND team_kpis.region = region.region
+    ON team_kpis.kpis_by_role = regional.regional_rollup_kpi
+    AND team_kpis.region = regional.region
 LEFT JOIN sum_program_student_count AS sum_student
-    ON sum_student.kpis_by_role=region.regional_rollup_kpi
-    AND sum_student.region = region.region
+    ON sum_student.kpis_by_role=regional.regional_rollup_kpi
+    AND sum_student.region = regional.region
 
 )
 
