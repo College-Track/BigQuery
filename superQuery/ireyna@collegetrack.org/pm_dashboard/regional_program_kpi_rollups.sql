@@ -1,3 +1,4 @@
+SELECT 
 function AS regional_function,
 role AS regional_role,
 kpis_by_role AS regional_rollup_kpi,
