@@ -108,10 +108,11 @@ region_regionkpis
 FROM regional_kpis AS regional
 LEFT JOIN  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
     ON team_kpis.kpis_by_role = regional.regional_rollup_kpi
-    AND team_kpis.region = regional.region_regionkpis
+    AND team_kpis.role = regional.regional_role
+    AND team_kpis.function = regional.regional_function
 LEFT JOIN sum_program_student_count AS sum_student
     ON sum_student.kpis_by_role=regional.regional_rollup_kpi
-    AND sum_student.region = regional.region_regionkpis
+   -- AND sum_student.region = regional.region_regionkpis
 
 )
 
