@@ -23,7 +23,8 @@ VALUES
 ('Mature Regional Staff', 'NOLA'),
 ('Mature Regional Staff', 'Bay Area'),
 ('Mature Regional Staff', 'Sacramento'),
-('Mature Regional Staff', 'CO')
+('Mature Regional Staff', 'CO'),
+('Mature Regional Staff', 'NOR CAL')
 
 
  ;
