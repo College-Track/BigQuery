@@ -16,8 +16,8 @@ SELECT
 function AS regional_function,
 role AS regional_role,
 kpis_by_role AS regional_rollup_kpi,
-site_or_region,
-regional_executive_rollup
+site_or_region
+
 --SUM(student_count) AS national_rollup_student_sum
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
@@ -128,7 +128,8 @@ target_numerator,
 count_of_targets,
 regional_rollup_kpi,
 program_student_sum,
-program_target_numerator_sum
+program_target_numerator_sum,
+team_kpis.regional_executive_rollup
 --regional_student_count,
 --indicator_program_rollup_for_regional
 
@@ -154,6 +155,7 @@ target_numerator,
 count_of_targets,
 regional_rollup_kpi,
 program_student_sum,
-program_target_numerator_sum
+program_target_numerator_sum,
+regional_executive_rollup
 --regional_student_count,
 --indicator_program_rollup_for_regional
