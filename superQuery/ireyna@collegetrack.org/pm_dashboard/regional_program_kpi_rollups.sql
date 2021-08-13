@@ -25,20 +25,6 @@ FROM `data-studio-260217.performance_mgt.fy22_team_kpis`
 WHERE region_function = 1
 ),
 
---force certain KPIs to be program = 1
-kpi_mod AS (
-SELECT
-CASE
-    WHEN program = 1 then true
-    WHEN kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen'
-    THEN program = 1
-    ELSE false
-END AS program_tf,
-kpis_by_role
-
-FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
-),
-
 --pull KPIs that are only program KPIs, to map to National later
 program_kpis AS (
 
@@ -65,17 +51,14 @@ END AS site_or_region,
 
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis`  team_kpis
-LEFT JOIN kpi_mod AS kpi_mod
-    ON kpi_mod.kpis_by_role =team_kpis.kpis_by_role
-WHERE kpi_mod.program_tf = TRUE
+WHERE program = 1
 
 GROUP BY 
 kpis_by_role,
 site_or_region,
 student_count,
 target_numerator,
-count_of_targets,
-program
+count_of_targets
 ),
 
 --SUM up student count and target numerators for Program KPIs
