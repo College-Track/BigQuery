@@ -129,7 +129,7 @@ count_of_targets,
 regional_rollup_kpi,
 program_student_sum,
 program_target_numerator_sum,
-team_kpis.regional_executive_rollup
+regional_executive_rollup
 --regional_student_count,
 --indicator_program_rollup_for_regional
 
