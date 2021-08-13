@@ -85,9 +85,7 @@ SELECT
         ELSE 0
     END AS indicator_program_rollup_for_regional,
     program_target_numerator_sum,
-    IF (
-        regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-        AND region.site_or_region = "NORCAL",200,program_student_sum) AS program_student_sum
+    program_student_sum
     
 FROM regional_kpis AS region
 LEFT JOIN program_kpis AS program
