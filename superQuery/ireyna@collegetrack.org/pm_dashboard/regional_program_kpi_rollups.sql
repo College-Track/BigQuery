@@ -76,9 +76,9 @@ LEFT JOIN program_kpis AS program
     ON regional.regional_rollup_kpi = program.region
     --AND regional.region_regionkpis=program.region
     
-WHERE regional.regional_rollup_kpi = program.kpis_by_role
+--WHERE regional.regional_rollup_kpi = program.kpis_by_role
    -- AND regional.region_regionkpis=program.region
-    AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
+--    AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
                                     'Staff engagement score above average nonprofit benchmark',
                                     '% of students engaged in career exploration, readiness events or internships')
 GROUP BY 
