@@ -148,9 +148,7 @@ target_numerator,
 --regional_target_numerator,
 count_of_targets,
 regional_rollup_kpi,
---IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
---    AND team_kpis.site_or_region = "LA",140,program_student_sum) AS program_student_sum,
-/*
+
 IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
     AND team_kpis.site_or_region = "LA",140,
     
@@ -159,7 +157,7 @@ IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AN
         
 IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
         AND team_kpis.site_or_region = "CO",80,program_student_sum))) AS program_student_sum,
-        */
+        
 program_target_numerator_sum
 --regional_student_count,
 --indicator_program_rollup_for_regional
