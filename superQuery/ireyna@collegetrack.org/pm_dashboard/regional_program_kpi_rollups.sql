@@ -104,7 +104,7 @@ target_numerator AS regional_target_numerator,
 program_target_numerator_sum,
 --indicator_program_rollup_for_regional,
 region_regionkpis,
-region,
+team_kpis.region,
 case when 
     (team_kpis.kpis_by_role = regional.regional_rollup_kpi
     AND team_kpis.role = regional.regional_role
