@@ -66,8 +66,12 @@ SELECT
         WHEN regional_rollup_kpi IS NOT NULL 
         THEN 1
         ELSE 0
-    END AS indicator_program_rollup_for_regional
-
+    END AS indicator_program_rollup_for_regional,
+    CASE
+        WHEN program.region IS NULL
+        THEN region.region
+    END AS program.region
+    
 FROM regional_kpis AS regional
 LEFT JOIN program_kpis AS program
     ON regional.regional_rollup_kpi = program.region
