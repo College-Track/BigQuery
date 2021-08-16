@@ -19,7 +19,7 @@ kpis_by_role AS regional_rollup_kpi,
 site_or_region
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
---WHERE region_function = 1
+WHERE region_function = 1
 ),
 
 --pull KPIs that are only program KPIs, to map to National later
@@ -155,7 +155,7 @@ LEFT JOIN regional_rollups AS regional
     ON regional.regional_rollup_kpi = team_kpis.kpis_by_role
     AND regional.regional_function = team_kpis.function
     AND regional.site_or_region = team_kpis.site_or_region
-WHERE region_function = 1
+--WHERE region_function = 1
 GROUP BY 
 team_kpis.site_or_region,
 function,
