@@ -150,5 +150,5 @@
     (college_track_status_c = '15A'
     OR 
     (college_track_status_c IN ('16A','17A')
-    AND indicator_years_since_hs_graduation_c <6)
+    AND indicator_years_since_hs_graduation_c <5.99)
     )
