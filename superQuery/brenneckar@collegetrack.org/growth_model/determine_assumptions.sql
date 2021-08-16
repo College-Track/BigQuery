@@ -45,8 +45,8 @@ WITH gather_data AS (
       'Active: Post-Secondary',
       "Leave of Absence"
     )
-    AND start_date_c >= '2016-01-01'
-    AND end_date_c <= '2020-06-30'
+    AND start_date_c >= '2017-01-01'
+    AND end_date_c <= '2021-06-30'
     and AT_Grade_c != '8th Grade'
 ),
 group_data AS (
@@ -123,10 +123,10 @@ calc_percent_of_target AS (
 -- SELECT
 --   *
 -- FROM
---   calc_percent_of_target 
+--   calc_percent_of_target
 
 
-select 
+select
 -- *
 "join" AS join_key,
 MAX(IF(AT_Grade_c = "9th Grade", percent_of_target, NULL)) AS nine_grade,
