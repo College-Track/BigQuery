@@ -1,12 +1,8 @@
-DECLARE FY INT64 DEFAULT 2020;
--- SET FY = 2020
 
-DECLARE years_ahead INT64 DEFAULT 15;
--- SET years_ahead = 15
 
 WITH calc_projections AS (SELECT region_abrev, site_short, high_school_graduating_class_c, SPLIT(student_count, ',')[OFFSET(0)] fiscal_year, CAST(SPLIT(student_count, ',')[OFFSET(1)] AS FLOAT64) num_student
 FROM (
-  SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(starting_count, FY, high_school_graduating_class_c, years_ahead,[0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383]) count_arrary
+  SELECT region_abrev, site_short, high_school_graduating_class_c, `learning-agendas.growth_model.calc_projected_student_count`(starting_count, @FY, high_school_graduating_class_c, @years_ahead,[0.918175347, 1.080857452, 0.877739525, 0.846273341, 0.945552158,0.947539442, 0.903267551, 0.83901895, 0.47881341, 0.481957966, 0.689493272, 0.419033383]) count_arrary
   FROM `learning-agendas.growth_model.growth_model_data_prep`
   
 ), UNNEST(count_arrary) student_count
@@ -125,3 +121,4 @@ fiscal_year,
 num_student, 
 student_type
 FROM join_all_data
+WHERE fiscal_year != CONCAT("FY", CAST((@years_ahead + @FY - 2000+1) AS STRING))
