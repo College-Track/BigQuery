@@ -141,6 +141,7 @@
         OR global_academic_semester_c LIKE '%Trimester%') THEN 'a3646000000dMXx'
         ELSE 'a3646000000dMXu'
     END AS global_academic_semester,
+    College_Track_Status_Name,
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
