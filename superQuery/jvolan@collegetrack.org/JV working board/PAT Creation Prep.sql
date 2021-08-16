@@ -142,6 +142,7 @@
         ELSE 'a3646000000dMXu'
     END AS global_academic_semester,
     College_Track_Status_Name,
+    indicator_years_since_hs_grad_to_date_c
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
