@@ -19,7 +19,7 @@ kpis_by_role AS regional_rollup_kpi,
 site_or_region
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
-WHERE region_function = 1
+--WHERE region_function = 1
 ),
 
 --pull KPIs that are only program KPIs, to map to National later
