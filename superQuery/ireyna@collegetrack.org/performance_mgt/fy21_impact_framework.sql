@@ -214,4 +214,3 @@ ORDER BY if_site_sort
 -- 9th grade diagnositcs math readiness
 -- hs capacity enrolled
 -- fafsa completion
-)
