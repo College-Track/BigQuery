@@ -1,3 +1,12 @@
+
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy21_impact_framework`
+OPTIONS
+    (
+    description= "Table of FY21 outcomes for Impact Framework data entry"
+    )
+AS (
+
+
 WITH gather_data AS (
     SELECT
         AY.Contact_Id,
@@ -158,3 +167,4 @@ ORDER BY if_site_sort
 -- 9th grade diagnositcs math readiness
 -- hs capacity enrolled
 -- fafsa completion
+)
