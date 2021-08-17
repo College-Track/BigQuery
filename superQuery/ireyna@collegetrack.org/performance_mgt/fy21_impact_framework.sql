@@ -197,6 +197,7 @@ SELECT
     SUM(readiness_10th_math) AS readiness_10th_math,
     SUM(readiness_9th_math) AS readiness_9th_math,
     SUM(above_3_gpa) AS above_3_gpa,
+    SUM(above_80_attendance) AS above_80_attendance,
     SUM(four_year_retention_numerator) AS four_year_retention_numerator,
     SUM(four_year_retention_denominator) AS four_year_retention_denominator
 FROM gather_data
