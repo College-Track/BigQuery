@@ -69,6 +69,14 @@ WITH gather_data AS (
             WHEN C.community_service_hours_c >= 100 AND AY_Grade = '12th Grade' THEN 1
             ELSE 0
             END AS community_service_met,
+            
+        --added by IR
+        CASE
+            WHEN C.student_s_start_academic_year_c <> 'AY 2020-21' AND AY.AY_student_served = 'High School'
+            AND AY_Grade <> '9th Grade' AND summer_experiences_previous_summer_c > 0 THEN 1
+            ELSE 0
+            END AS mse_met,
+            
         CASE
             WHEN AY.indicator_first_generation_c = 'Yes' AND AY_Grade = '9th Grade' THEN 1
             ELSE 0
@@ -169,6 +177,7 @@ SELECT
     SUM(ps_student_count) AS ps_student_count,
     SUM(dream_filled_out) AS dream_filled_out,
     SUM(community_service_met) AS community_service_met,
+    SUM(mse_met) AS mse_met,
     SUM(first_gen) AS first_gen,
     SUM(low_income) AS low_income,
     SUM(male) AS male,
