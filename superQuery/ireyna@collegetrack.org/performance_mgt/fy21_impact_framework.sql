@@ -154,6 +154,7 @@ SELECT
     SUM(first_gen) AS first_gen,
     SUM(low_income) AS low_income,
     SUM(read_math_official) AS read_math_official,
+    SUM(read_composite_official) AS read_composite_official,
     SUM(readiness_10th_composite) AS readiness_10th_composite,
     SUM(readiness_9th_math) AS readiness_9th_math,
     SUM(above_3_gpa) AS above_3_gpa,
