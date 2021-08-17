@@ -84,6 +84,17 @@ WITH gather_data AS (
                 0
             END
             read_math_official,
+            
+        --added by IR    
+        CASE 
+            WHEN C.readiness_composite_off_c = '1. Ready' AND AY_Grade = '12th Grade' AND
+                 C.contact_official_test_prep_withdrawal IS NULL THEN 1
+            ELSE 
+                0
+            END 
+            read_composite_official,
+        
+        
         CASE
             WHEN AY.readiness_10_th_composite_c = TRUE AND AY_Grade = '10th Grade' AND
                  C.contact_official_test_prep_withdrawal IS NULL THEN 1
