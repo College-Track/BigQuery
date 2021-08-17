@@ -81,7 +81,7 @@ WITH gather_data AS (
         --added by IR
         CASE
             WHEN summer_experiences_previous_summer_c >= 1 AND AY.AY_student_served = 'High School'  
-            AND (C.student_s_start_academic_year_c != 'a1b46000000dRR8AAM' OR C.student_s_start_academic_year_c IS NULL)
+            AND (C.student_s_start_academic_year_c != 'a1b46000000dRR8AAM' OR C.student_s_start_academic_year_c IS NULL) --student did not start 2020-21
             AND AY_Grade IN ('10th Grade','11th Grade','12th Grade') THEN 1
             ELSE 0
             END AS mse_met,
@@ -164,8 +164,13 @@ WITH gather_data AS (
                 0
             END
             AS fafas_submitted,
-        AY.four_year_retention_denominator,
-        AY.four_year_retention_numerator
+        CASE
+            WHEN four_year_retention_numerator = 1 AND AY_Grade = '12th Grade' THEN 1
+            ELSE 
+                0
+            END 
+            AS four_year_retention_numerator,
+        AY.four_year_retention_denominator
 
 
     FROM `data-studio-260217.ddt.ay_2020_21_summary_table` AY
