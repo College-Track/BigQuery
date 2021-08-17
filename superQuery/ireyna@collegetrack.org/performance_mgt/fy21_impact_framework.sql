@@ -47,6 +47,13 @@ WITH gather_data AS (
                  C.contact_official_test_prep_withdrawal IS NULL THEN 1
             ELSE 0
             END AS tenth_grade_count_valid_test,
+        
+        --added by IR
+        CASE
+            WHEN AY.AY_student_served = 'High School' AND AY_Grade IN ('10th Grade','11th Grade','12th Grade') THEN 1
+            ELSE 0
+            END AS tenth_thru_twelfth_grade_count,
+            
         CASE
             WHEN AY.AY_student_served = 'High School' AND AY_Grade = '12th Grade' THEN 1
             ELSE 0
@@ -173,6 +180,7 @@ SELECT
     SUM(twelfth_grade_count) AS twelfth_grade_count,
     SUM(ninth_grade_count_valid_test) AS ninth_grade_count_valid_test,
     SUM(tenth_grade_count_valid_test) AS tenth_grade_count_valid_test,
+    SUM(tenth_thru_twelfth_grade_count) AS tenth_thru_twelfth_grade_count,
     SUM(twelfth_grade_count_valid_test) AS twelfth_grade_count_valid_test,
     SUM(ps_student_count) AS ps_student_count,
     SUM(dream_filled_out) AS dream_filled_out,
