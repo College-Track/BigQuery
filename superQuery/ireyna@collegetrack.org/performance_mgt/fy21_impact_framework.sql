@@ -77,6 +77,13 @@ WITH gather_data AS (
             WHEN AY.indicator_low_income_c = 'Yes' AND AY_Grade = '9th Grade' THEN 1
             ELSE 0
             END AS low_income,
+        
+        --added by IR
+         CASE
+            WHEN AY.Gender_c = 'Male' AND AY_Grade = '9th Grade' THEN 1
+            ELSE 0
+            END AS male,
+            
         CASE
             WHEN AY.readiness_math_official_c = TRUE AND AY_Grade = '12th Grade' AND
                  C.contact_official_test_prep_withdrawal IS NULL THEN 1
@@ -164,6 +171,7 @@ SELECT
     SUM(community_service_met) AS community_service_met,
     SUM(first_gen) AS first_gen,
     SUM(low_income) AS low_income,
+    SUM(male) AS male,
     SUM(read_math_official) AS read_math_official,
     SUM(read_composite_official) AS read_composite_official,
     SUM(readiness_10th_composite) AS readiness_10th_composite,
