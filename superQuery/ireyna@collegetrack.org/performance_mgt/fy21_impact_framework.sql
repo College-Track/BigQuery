@@ -1,11 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy21_impact_framework`
 OPTIONS
     (
     description= "Table of FY21 outcomes for Impact Framework data entry"
     )
 AS (
-
+*/
 
 WITH gather_data AS (
     SELECT
@@ -79,7 +79,7 @@ WITH gather_data AS (
             
         --added by IR
         CASE
-            WHEN summer_experiences_previous_summer_c >= 1 AND C.student_s_start_academic_year_c != 'a1b46000000dRR8AAM'--AY 2020-21' 
+            WHEN summer_experiences_previous_summer_c >= 1 AND C.student_s_start_academic_year_c != 'AY 2020-21' --a1b46000000dRR8AAM
             AND AY.AY_student_served = 'High School' /* AND AY_Grade != '9th Grade' */ THEN 1
             ELSE 0
             END AS mse_met,
