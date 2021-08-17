@@ -50,8 +50,9 @@ WITH gather_data AS (
         
         --added by IR
         CASE
-            WHEN AY.AY_student_served = 'High School' AND (C.student_s_start_academic_year_c != 'AY 2020-21' OR C.student_s_start_academic_year_c IS NULL) 
-            AND AY_Grade != '9th Grade' THEN 1
+            WHEN AY.AY_student_served = 'High School'  
+            AND (C.student_s_start_academic_year_c != 'AY 2020-21' OR C.student_s_start_academic_year_c IS NULL)
+            AND AY_Grade IN ('10th Grade','11th Grade','12th Grade') THEN 1
             ELSE 0
             END AS tenth_thru_twelfth_grade_count,
             
