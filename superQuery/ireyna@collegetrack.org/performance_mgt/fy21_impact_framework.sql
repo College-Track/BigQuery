@@ -80,8 +80,6 @@ WITH gather_data AS (
         CASE
             WHEN AY.readiness_math_official_c = TRUE AND AY_Grade = '12th Grade' AND
                  C.contact_official_test_prep_withdrawal IS NULL THEN 1
-            WHEN AY.readiness_math_official_c = TRUE AND AY_Grade = '12th Grade' AND
-                 C.contact_official_test_prep_withdrawal IS NULL THEN 1
             ELSE
                 0
             END
