@@ -50,7 +50,7 @@ WITH gather_data AS (
         
         --added by IR
         CASE
-            WHEN AY.AY_student_served = 'High School' AND AY.high_school_graduating_class_c != '2024' THEN 1
+            WHEN AY.AY_student_served = 'High School' AND AY_Grade != '9th Grade' THEN 1
             ELSE 0
             END AS tenth_thru_twelfth_grade_count,
             
