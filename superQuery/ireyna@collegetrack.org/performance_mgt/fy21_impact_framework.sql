@@ -170,10 +170,15 @@ WITH gather_data AS (
                 0
             END
             AS fafas_submitted,
-        R.four_year_retention_numerator,
+        CASE
+            WHEN four_year_retention_numerator = 1 AND AY_Grade = '12th Grade' THEN 1
+            ELSE 
+                0
+            END 
+            AS four_year_retention_numerator,
     
         CASE 
-            WHEN R.four_year_retention_denominator IS NOT NULL  THEN 1
+            WHEN AY.four_year_retention_denominator IS NOT NULL AND AY_Grade = '12th Grade' THEN 1
             --AND College_Track_Status_Name IN ('Did Not Finish CT HS Program','Active: Post-Secondary','Inactive: Post-Secondary')THEN 1
             ELSE
                 0 
@@ -192,7 +197,6 @@ WITH gather_data AS (
 
     FROM `data-studio-260217.ddt.ay_summary_table` AY
          LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON AY.Contact_Id = C.Contact_Id
-         LEFT JOIN `data-studio-260217.ddt.ay2020_21_retention_adjustment` R ON AY.Contact_Id=R.Contact_Id
     WHERE AY.AY_student_served IN ('High School', 'Post Secondary')
 )
 
