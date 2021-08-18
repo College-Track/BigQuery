@@ -171,14 +171,13 @@ WITH gather_data AS (
             END 
             AS four_year_retention_numerator,
     
-        --CASE 
-        --    WHEN AY.four_year_retention_denominator IS NOT NULL AND AY_Grade = '12th Grade' THEN 1
-        --    --AND College_Track_Status_Name IN ('Did Not Finish CT HS Program','Active: Post-Secondary','Inactive: Post-Secondary')THEN 1
-        --    ELSE
-        --        0 
-        --    END 
-        --    AS 
-        four_year_retention_denominator
+        CASE 
+            WHEN AY.four_year_retention_denominator IS NOT NULL AND AY_Grade = '12th Grade' THEN 1
+            --AND College_Track_Status_Name IN ('Did Not Finish CT HS Program','Active: Post-Secondary','Inactive: Post-Secondary')THEN 1
+            ELSE
+                0 
+            END 
+            AS four_year_retention_denominator
            
 
 
