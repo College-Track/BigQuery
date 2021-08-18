@@ -211,12 +211,13 @@ gather_data AS (
             
         --added by IR
         CASE
-            WHEN fa_req_expected_financial_contribution_c IS NOT NULL AND AY_Grade = '11th Grade' THEN 1 
-            ELSE
+            WHEN (FA_Req_Expected_Financial_Contribution_c IS NOT NULL AND fa_req_efc_source_c = 'FAFSA4caster' AND AY_Grade = '11th Grade') THEN 1
+            ELSE 
                 0
             END
             AS efc_11th_grade,
-        
+            
+        --added by IR
         CASE 
             WHEN (aspirations_any_count >= 6 AND aspirations_affordable_count >= 3) AND AY_Grade = '11th Grade'  THEN 1
             ELSE 
