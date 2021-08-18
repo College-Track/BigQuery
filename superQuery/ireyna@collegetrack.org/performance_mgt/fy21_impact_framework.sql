@@ -241,6 +241,7 @@ SELECT
     SUM(ninth_grade_count_valid_test) AS ninth_grade_count_valid_test,
     SUM(tenth_grade_count_valid_test) AS tenth_grade_count_valid_test,
     SUM(tenth_thru_twelfth_grade_count) AS tenth_thru_twelfth_grade_count,
+    SUM(eleventh_grade_count) AS eleventh_grade_count,
     SUM(twelfth_grade_count_valid_test) AS twelfth_grade_count_valid_test,
     SUM(ps_student_count) AS ps_student_count,
     SUM(dream_filled_out) AS dream_filled_out,
