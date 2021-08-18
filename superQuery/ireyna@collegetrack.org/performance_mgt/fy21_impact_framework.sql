@@ -218,7 +218,7 @@ gather_data AS (
             AS efc_11th_grade,
         
         CASE 
-            WHEN (aspirations_any_count >= 6 AND aspirations_affordable_count >= 3) THEN 1
+            WHEN (aspirations_any_count >= 6 AND aspirations_affordable_count >= 3) AND AY_Grade = '11th Grade'  THEN 1
             ELSE 
                 0
         END 
