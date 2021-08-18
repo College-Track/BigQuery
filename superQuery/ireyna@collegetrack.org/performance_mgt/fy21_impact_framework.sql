@@ -145,7 +145,7 @@ WITH gather_data AS (
             readiness_9th_math,
             
         CASE
-            WHEN AY.AY_Cumulative_GPA > 2.99 AND AY_student_served = 'High School' THEN 1
+            WHEN AY.AY_Cumulative_GPA >= 3.00 AND AY_student_served = 'High School' THEN 1
             ELSE
                 0
             END
