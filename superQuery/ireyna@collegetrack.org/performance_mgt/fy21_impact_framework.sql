@@ -171,7 +171,14 @@ WITH gather_data AS (
             END
             AS fafas_submitted,
         R.four_year_retention_numerator,
-        R.four_year_retention_denominator,
+    
+        CASE 
+            WHEN R.four_year_retention_denominator IS NOT NULL  THEN 1
+            --AND College_Track_Status_Name IN ('Did Not Finish CT HS Program','Active: Post-Secondary','Inactive: Post-Secondary')THEN 1
+            ELSE
+                0 
+            END 
+            AS four_year_retention_denominator,
             
         --added by IR
         CASE
