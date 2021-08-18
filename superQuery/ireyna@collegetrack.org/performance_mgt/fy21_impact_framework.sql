@@ -7,7 +7,31 @@ OPTIONS
 AS 
 
 
-WITH gather_data AS (
+WITH 
+
+gather_11th_aspiration_data AS ( 
+    SELECT
+        contact_id,
+            
+     --11th Grade Aspirations, any Aspiration
+        SUM(CASE 
+            WHEN a.id IS NOT NULL 
+            THEN 1
+            ELSE 0
+            END) AS aspirations_any_count,
+            
+    --11th Grade Aspirations, Affordable colleges
+        SUM(CASE
+            WHEN fit_type_current_c IN ("Best Fit","Good Fit","Local Affordable") 
+            THEN 1
+            ELSE 0
+            END) AS aspirations_affordable_count
+            
+    FROM `data-warehouse-289815.salesforce_clean.contact_template` AS c
+    LEFT JOIN`data-warehouse-289815.salesforce.college_aspiration_c` a ON c.contact_id=a.student_c
+    GROUP BY Contact_Id
+),
+gather_data AS (
     SELECT
         AY.Contact_Id,
         C.site_short,
@@ -191,12 +215,19 @@ WITH gather_data AS (
             ELSE
                 0
             END
-            AS efc_11th_grade
-           
+            AS efc_11th_grade,
+        
+        CASE 
+            WHEN (aspirations_any_count >= 6 AND aspirations_affordable_count >= 3) THEN 1
+            ELSE 
+                0
+        END 
+        AS aspirations_11th_grade
 
 
     FROM `data-studio-260217.ddt.ay_summary_table` AY
          LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` C ON AY.Contact_Id = C.Contact_Id
+         LEFT JOIN gather_11th_aspiration_data AS A ON AY.Contact_Id=A.Contact_Id
     WHERE AY.AY_student_served IN ('High School', 'Post Secondary')
 )
 
@@ -226,7 +257,9 @@ SELECT
     SUM(above_3_gpa) AS above_3_gpa,
     SUM(above_80_attendance) AS above_80_attendance,
     SUM(four_year_retention_numerator) AS four_year_retention_numerator,
-    SUM(four_year_retention_denominator) AS four_year_retention_denominator
+    SUM(four_year_retention_denominator) AS four_year_retention_denominator,
+    SUM(efc_11th_grade) AS efc_11th_grade,
+    SUM(aspirations_11th_grade) AS aspirations_11th_grade
 FROM gather_data
 GROUP BY site_short, if_site_sort
 ORDER BY if_site_sort
