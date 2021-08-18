@@ -170,7 +170,13 @@ WITH gather_data AS (
                 0
             END 
             AS four_year_retention_numerator,
-        AY.four_year_retention_denominator
+        CASE 
+            WHEN AY.four_year_retention_denominator IS NOT NULL AND AY_Grade = '12th Grade' THEN 1
+            ELSE
+                0
+            END 
+            AS four_year_retention_denominator
+           
 
 
     FROM `data-studio-260217.ddt.ay_2020_21_summary_table` AY
