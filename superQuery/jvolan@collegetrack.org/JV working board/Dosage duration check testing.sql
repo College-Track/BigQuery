@@ -2,12 +2,12 @@ with get_key AS
 (  
 --finalize dosage req based on convo with BR. add AY column
     SELECT
-    Dosage_type,
+    Dosage_type AS k_dosage_type,
     Total_duration_min,
     academic_year,
     FROM `data-studio-260217.workshop_dosage_duration_tracker.fy22_dosage_expectations_key` 
     WHERE academic_year = 'AY 2021-22'
-    AND Term = 'Spring'
+    AND Term = 'Fall'
 ),
 
 get_site_name AS
@@ -33,15 +33,14 @@ gather_workshop_data AS
     duration_c,
     first_session_date_c,
     last_session_date_c,
-    get_key.Dosage_type,
+    get_key.k_dosage_type,
     get_key.Total_duration_min,
     get_site_name.site_short
 
     From `data-warehouse-289815.salesforce.class_c`cl
-    LEFT JOIN get_key ON get_key.Dosage_type = dosage_types_c
+    LEFT JOIN get_key ON get_key.k_dosage_type = dosage_types_c
     LEFT JOIN get_site_name ON c_site = cl.site_c
-    WHERE global_academic_semester_c = 'a3646000000dMXoAAM'
-    AND dosage_types_c IN ('Acceleration','Test Prep','Tutoring','Student Life')
+    WHERE global_academic_semester_c = 'a3646000000dMXuAAM'
 )
 
     SELECT
