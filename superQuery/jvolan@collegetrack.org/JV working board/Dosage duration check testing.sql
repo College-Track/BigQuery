@@ -13,11 +13,11 @@ with get_key AS
 get_site_name AS
 (
     SELECT
-    MAX(site_short) AS site_short,
+    site_short,
     site_c AS c_site,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    GROUP BY site_c
+    GROUP BY site_c, site_short
 ),
     
 gather_workshop_data AS
