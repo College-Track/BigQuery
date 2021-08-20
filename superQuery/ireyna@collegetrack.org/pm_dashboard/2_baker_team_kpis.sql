@@ -1,10 +1,10 @@
-
+/*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-
+*/
 WITH prep_kpi_targets AS (
   SELECT
     CASE 
@@ -209,9 +209,9 @@ SELECT
     WHEN role = 'Regional College and Career Director 'AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora') THEN 'Mature Regional Staff'
     ELSE function
 END AS function,
+  site_or_region,
   role,
   kpis_by_role,
-  site_or_region,
   target_fy22,
   region_abrev AS Region,
   site_short AS Site,
@@ -296,5 +296,10 @@ LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON C
 SELECT distinct *,
 CASE WHEN target_submitted = "Submitted" THEN 1 -- "Not Required" THEN 1
 ELSE 0
-END AS count_of_targets
+END AS count_of_targets,
+    CASE
+    WHEN role = 'College Completion Advisor/College Success Advisor' AND Site IN ('Boyle Heights','Watts','Denver','Aurora') THEN NULL
+    WHEN role = 'Regional College and Career Director 'AND Site IN ('Boyle Heights','Watts','Denver','Aurora') THEN NULL
+    ELSE Site
+END AS Site,
 FROM correct_missing_site_region
