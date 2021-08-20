@@ -299,7 +299,7 @@ ELSE 0
 END AS count_of_targets,
     CASE
     WHEN program = 1 AND region_function = 1
-    THEN NULL
+    THEN 'Regional Target'
     ELSE Site
     END AS Site
 FROM correct_missing_site_region
