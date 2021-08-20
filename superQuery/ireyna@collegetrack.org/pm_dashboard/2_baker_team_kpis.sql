@@ -1,9 +1,10 @@
-
+/*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_team_kpis` OPTIONS (
   description = "KPIs submitted by Team for FY22. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
+*/
 
 WITH prep_kpi_targets AS (
   SELECT
@@ -206,7 +207,7 @@ identify_teams AS (
 SELECT
   CASE
     WHEN role = 'College Completion Advisor/College Success Advisor' AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora') THEN 'Mature Regional Staff'
-    WHEN role = 'Regional College and Career Director 'AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora') THEN 'Mature Regional Staff'
+    WHEN role = 'Regional College and Career Director 'THEN 'Mature Regional Staff'
     ELSE function
 END AS function,
   site_or_region,
@@ -249,8 +250,8 @@ END AS function,
   END AS development,
   CASE
     WHEN function IN ('Mature Regional Staff', 'Non-Mature Regional Staff') THEN 1
-    WHEN role = 'College Completion Advisor/College Success Advisor' AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora')  THEN 1
-    WHEN role = 'Regional College and Career Director 'AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora')  THEN 1 
+    WHEN role = 'College Completion Advisor/College Success Advisor' THEN 1
+    WHEN role = 'Regional College and Career Director 'THEN 1 
     ELSE 0
   END AS region_function,
   CASE
