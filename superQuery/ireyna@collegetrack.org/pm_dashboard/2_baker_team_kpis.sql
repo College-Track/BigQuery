@@ -207,7 +207,7 @@ identify_teams AS (
 SELECT
   CASE
     WHEN role = 'College Completion Advisor/College Success Advisor' AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora') THEN 'Mature Regional Staff'
-    WHEN role = 'Regional College and Career Director 'THEN 'Mature Regional Staff'
+    WHEN role = 'Regional College and Career Director' THEN 'Mature Regional Staff'
     ELSE function
 END AS function,
   site_or_region,
@@ -251,7 +251,7 @@ END AS function,
   CASE
     WHEN function IN ('Mature Regional Staff', 'Non-Mature Regional Staff') THEN 1
     WHEN role = 'College Completion Advisor/College Success Advisor' THEN 1
-    WHEN role = 'Regional College and Career Director 'THEN 1 
+    WHEN role = 'Regional College and Career Director'THEN 1 
     ELSE 0
   END AS region_function,
   CASE
