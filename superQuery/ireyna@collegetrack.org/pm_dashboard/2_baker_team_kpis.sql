@@ -293,13 +293,13 @@ FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short 
 )
 
-SELECT distinct *,
+SELECT distinct * EXCEPT(Site),
 CASE WHEN target_submitted = "Submitted" THEN 1 -- "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets,
     CASE
-    WHEN role = 'College Completion Advisor/College Success Advisor' AND Site IN ('Boyle Heights','Watts','Denver','Aurora') THEN NULL
-    WHEN role = 'Regional College and Career Director 'AND Site IN ('Boyle Heights','Watts','Denver','Aurora') THEN NULL
+    WHEN program = 1 AND region_function = 1
+    THEN NULL
     ELSE Site
-END AS Site,
+    END AS Site
 FROM correct_missing_site_region
