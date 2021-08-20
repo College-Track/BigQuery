@@ -1,35 +1,27 @@
 
-/*
+
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_regional_kpis`  OPTIONS (
   description = "KPIs submitted by Regional teams for FY22. This also rolls up the numerator and denominator for KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-*/
+
 
 WITH 
 
---pull roles that are only regional roles
-regional_kpis AS (
-
+--pull KPIs that are only program KPIs, transform function for College Success Advisors, to map to regions later
+--If college success advisor in LA or CO, then regional role
+prep_kpis AS (
 SELECT 
-function AS regional_function,
-role AS regional_role,
-kpis_by_role AS regional_rollup_kpi,
-site_or_region
-
-FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
-WHERE region_function = 1
-),
-
---pull KPIs that are only program KPIs, to map to regions later
-program_kpis AS (
-
-SELECT
 kpis_by_role,
 student_count,
 target_numerator,
 count_of_targets,
+role,
+target_submitted,
+program,
+target_fy22,
+development,
 CASE
     WHEN site_or_region = 'East Palo Alto' THEN 'NOR CAL'
     WHEN site_or_region = 'Oakland' THEN 'NOR CAL'
@@ -45,16 +37,83 @@ CASE
     WHEN site_or_region = 'Ward 8' THEN 'DC'
     ELSE site_or_region
 END AS site_or_region,
+CASE
+    WHEN role = 'College Completion Advisor/College Success Advisor' AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora')
+    THEN 'Mature Regional Staff'
+    ELSE function
+END AS function,
+CASE
+    WHEN role = 'College Completion Advisor/College Success Advisor' AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora')
+    THEN 1
+    ELSE region_function
+END AS region_function,
 
-FROM `data-studio-260217.performance_mgt.fy22_team_kpis`  team_kpis
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis`  
+),
+
+--pull in transformed program KPIs into new table to union later
+--this table will also be used to pull in student count and target numerators to sum up
+program_kpis AS (
+
+SELECT
+role,
+kpis_by_role,
+student_count,
+target_numerator,
+count_of_targets,
+site_or_region,
+region_function,
+function
+
+FROM prep_kpis AS t1
 WHERE program = 1
 
 GROUP BY 
 kpis_by_role,
+role,
+function,
 site_or_region,
 student_count,
 target_numerator,
-count_of_targets
+count_of_targets,
+region_function
+),
+
+--pull program roles that are regional (CSA) to union with regional roles further down
+program_union AS (
+SELECT 
+function,
+role,
+kpis_by_role,
+site_or_region
+
+FROM program_kpis 
+WHERE region_function = 1
+),
+--pull roles that are only regional roles
+regional_kpis AS (
+
+SELECT 
+regional_team_kpis.function AS regional_function,
+regional_team_kpis.role AS regional_role,
+regional_team_kpis.kpis_by_role AS regional_rollup_kpi,
+regional_team_kpis.site_or_region
+
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS regional_team_kpis
+
+WHERE regional_team_kpis.region_function = 1
+),
+
+--Union College Success Advisor roles as part of regional roles
+union_csa_regional AS (
+
+SELECT *
+FROM regional_kpis 
+
+UNION ALL 
+
+SELECT *
+FROM program_union
 ),
 
 --SUM up student count and target numerators for Program KPIs
@@ -91,7 +150,7 @@ SELECT
     program_student_sum
 
 
-FROM regional_kpis AS region
+FROM union_csa_regional AS region
 LEFT JOIN program_kpis AS program
     ON region.regional_rollup_kpi = program.kpis_by_role
     AND region.site_or_region=program.site_or_region
@@ -149,7 +208,7 @@ program_target_numerator_sum,
 --regional_student_count,
 indicator_program_rollup_for_regional
 
-FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
+FROM  prep_kpis AS team_kpis
 LEFT JOIN regional_rollups AS regional
     ON regional.regional_rollup_kpi = team_kpis.kpis_by_role
     AND regional.regional_function = team_kpis.function
