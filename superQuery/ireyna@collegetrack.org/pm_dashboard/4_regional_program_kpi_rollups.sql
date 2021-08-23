@@ -9,111 +9,103 @@ AS
 
 WITH 
 
---pull KPIs that are only program KPIs, transform function for College Success Advisors, to map to regions later
---If college success advisor in LA or CO, then regional role
-prep_kpis AS (
-SELECT 
-kpis_by_role,
-student_count,
-target_numerator,
-count_of_targets,
-role,
-target_submitted,
-program,
-target_fy22,
-development,
-CASE
-    WHEN site_or_region = 'East Palo Alto' THEN 'NOR CAL'
-    WHEN site_or_region = 'Oakland' THEN 'NOR CAL'
-    WHEN site_or_region = 'San Francisco' THEN 'NOR CAL'
-    WHEN site_or_region = 'Sacramento' THEN 'NOR CAL'
-    WHEN site_or_region = 'Boyle Heights' THEN 'LA'
-    WHEN site_or_region = 'Watts' THEN 'LA'
-    WHEN site_or_region = 'Crenshaw' THEN 'LA'
-    WHEN site_or_region = 'Aurora' THEN 'CO'
-    WHEN site_or_region = 'Denver' THEN 'CO'
-    WHEN site_or_region = 'New Orleans' THEN 'NOLA' 
-    WHEN site_or_region = 'The Durant Center' THEN 'DC'
-    WHEN site_or_region = 'Ward 8' THEN 'DC'
-    ELSE site_or_region
-END AS site_or_region,
-CASE
-    WHEN role = 'College Completion Advisor/College Success Advisor' AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora')
-    THEN 'Mature Regional Staff'
-    ELSE function
-END AS function,
-CASE
-    WHEN role = 'College Completion Advisor/College Success Advisor' AND site_or_region IN ('Boyle Heights','Watts','Denver','Aurora')
-    THEN 1
-    ELSE region_function
-END AS region_function,
+--pull roles that are only National roles
+national_kpis AS (
 
-FROM `data-studio-260217.performance_mgt.fy22_team_kpis`  
+SELECT 
+function AS national_function,
+role AS national_role,
+kpis_by_role AS national_rollup_kpi,
+--SUM(student_count) AS national_rollup_student_sum
+
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
+WHERE (national = 1 or hr_people = 1)
 ),
 
---pull in transformed program KPIs into new table to union later
---this table will also be used to pull in student count and target numerators to sum up
-program_kpis AS (
+--Prep mapping of program KPI from Regions: % low income AND first gen to National
+region_kpis AS (
+SELECT  
+    function, 
+    site_or_region,
+    kpis_by_role,
 
-SELECT
-role,
+    --Crenshaw is a non-mature site and Site Director sets target. Use Site Director weighted target vs. LA RED weighted target. Blank out RED student_count
+     CASE 
+        WHEN site_or_region = 'LA' AND student_count = 50 AND target_numerator = 45 THEN NULL --Cresnhaw values
+        ELSE student_count
+    END AS student_count,
+
+    --Crenshaw is a non-mature site and Site Director sets target. Use Site Director weighted target vs. LA RED weighted target. Blank out RED target_numerator
+     CASE 
+        WHEN site_or_region = 'LA' AND student_count = 50 AND target_numerator = 45 THEN NULL --Crenshaw values
+        ELSE target_numerator
+    END AS target_numerator,
+    count_of_targets
+   
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
+WHERE region_function = 1
+AND kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen'
+
+GROUP BY 
+function, 
 kpis_by_role,
 student_count,
 target_numerator,
 count_of_targets,
-site_or_region,
-region_function,
-function
+site_or_region
+),
 
-FROM prep_kpis AS t1
+--pull KPIs that are only program KPIs, to map to National later
+program_kpis AS (
+SELECT
+function, 
+site_or_region,
+kpis_by_role,
+student_count,
+target_numerator,
+count_of_targets
+FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
 WHERE program = 1
 
 GROUP BY 
+function, 
 kpis_by_role,
-role,
-function,
-site_or_region,
 student_count,
 target_numerator,
 count_of_targets,
-region_function
-),
-
---pull program roles that are regional (CSA) to union with regional roles further down
-program_union AS (
-SELECT 
-function,
-role,
-kpis_by_role,
 site_or_region
+),
 
+combine_regional_program_kpis AS (
+SELECT program_kpis.*
 FROM program_kpis 
-WHERE region_function = 1
-),
---pull roles that are only regional roles
-regional_kpis AS (
-
-SELECT 
-regional_team_kpis.function AS regional_function,
-regional_team_kpis.role AS regional_role,
-regional_team_kpis.kpis_by_role AS regional_rollup_kpi,
-regional_team_kpis.site_or_region
-
-FROM `data-studio-260217.performance_mgt.fy22_team_kpis` AS regional_team_kpis
-
-WHERE regional_team_kpis.region_function = 1
-),
-
---Union College Success Advisor roles as part of regional roles
-union_csa_regional AS (
-
-SELECT *
-FROM regional_kpis 
 
 UNION ALL 
 
-SELECT *
-FROM program_union
+SELECT region_kpis.*
+FROM region_kpis
+),
+
+identify_program_rollups_for_national AS ( #25 KPIs for FY22
+SELECT
+    national.*,
+    CASE 
+        WHEN national_rollup_kpi IS NOT NULL 
+        THEN 1
+        ELSE 0
+    END AS indicator_program_rollup_for_national
+FROM national_kpis AS national
+LEFT JOIN combine_regional_program_kpis AS program
+    ON national.national_rollup_kpi = program.kpis_by_role
+    
+WHERE national.national_rollup_kpi = program.kpis_by_role
+    AND program.kpis_by_role NOT IN ('% of students growing toward average or above social-emotional strengths',
+                                    'Staff engagement score above average nonprofit benchmark',
+                                    '% of students engaged in career exploration, readiness events or internships')
+GROUP BY 
+    national.national_function,
+    national_rollup_kpi,
+    national.national_role
 ),
 
 --SUM up student count and target numerators for Program KPIs
@@ -121,115 +113,66 @@ sum_program_student_count AS(
 SELECT 
     SUM(student_count) AS program_student_sum,
     SUM(target_numerator) AS program_target_numerator_sum,
-    kpis_by_role,
-    site_or_region
-FROM program_kpis
-WHERE kpis_by_role NOT IN ('Staff engagement score above average nonprofit benchmark',
-                            '% of students engaged in career exploration, readiness events or internships',
-                            '% of entering 9th grade students who are low-income AND first-gen'
-                            )
-
-GROUP BY 
-    kpis_by_role,
-    site_or_region
+    kpis_by_role
+FROM combine_regional_program_kpis
+WHERE count_of_targets = 1
+GROUP BY kpis_by_role
 ),
 
---Map program KPIs that rollup to Regions to regional_kpis table
-regional_rollups AS ( 
-SELECT
-    regional_function,
-    regional_role,
-    regional_rollup_kpi,
-    region.site_or_region,
-    CASE 
-        WHEN program_student_sum IS NOT NULL 
-        THEN 1
-        ELSE 0
-    END AS indicator_program_rollup_for_regional,
-    program_target_numerator_sum,
-    program_student_sum
-
-
-FROM union_csa_regional AS region
-LEFT JOIN program_kpis AS program
-    ON region.regional_rollup_kpi = program.kpis_by_role
-    AND region.site_or_region=program.site_or_region
-LEFT JOIN sum_program_student_count AS sums
-    ON region.regional_rollup_kpi = sums.kpis_by_role
-    AND region.site_or_region=sums.site_or_region
-
-GROUP BY 
-    regional_function,
-    regional_rollup_kpi,
-    regional_role,
-    program.site_or_region,
-    site_or_region,
-    program_student_sum,
-    program_target_numerator_sum
-)
---final join AS(
---Bring in all KPIs
---map program roll-ups and SUM of stuff to Regional KPIs
-SELECT
-team_kpis.site_or_region,
-function,
-role,
-kpis_by_role,
---target_fy22,
-target_submitted,
-development,
-region_function,
-program,
---student_count,
-target_numerator,
---regional_target_numerator,
-count_of_targets,
-regional_rollup_kpi,
-
-IF (regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-    AND team_kpis.site_or_region = "LA",140,
-    
-IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-        AND team_kpis.site_or_region = "NOR CAL",200,
-        
-IF(regional_rollup_kpi = "% of entering 9th grade students who are low-income AND first-gen" 
-        AND team_kpis.site_or_region = "CO",80,program_student_sum))) AS program_student_sum,
-        
-        
-IF(target_fy22 IS NULL 
-        AND team_kpis.kpis_by_role = '% of entering 9th grade students who are low-income AND first-gen' 
-        AND team_kpis.site_or_region = 'DC',.82, 
-IF (regional_rollup_kpi = '% of college students graduating from college within 6 years' 
-        AND team_kpis.site_or_region = 'CO',.63,
-IF(regional_rollup_kpi = '% of college students graduating from college within 6 years' 
-        AND team_kpis.site_or_region = 'LA',.55,target_fy22))) AS target_fy22, 
-
+--Map aggregated values from Program KPIs (student_count, target_numerator) that rollup to National here
+national_rollups AS (
+SELECT 
+CASE
+    WHEN site_or_region IS NOT NULL THEN "National"
+    END AS National_location,
+national_function,
+national_rollup_kpi,
+national_role,
+--count_of_targets,
+student_count AS natl_student_count,
+program_student_sum,
+target_numerator AS natl_target_numerator,
 program_target_numerator_sum,
---regional_student_count,
-indicator_program_rollup_for_regional
+indicator_program_rollup_for_national
 
-FROM  prep_kpis AS team_kpis
-LEFT JOIN regional_rollups AS regional
-    ON regional.regional_rollup_kpi = team_kpis.kpis_by_role
-    AND regional.regional_function = team_kpis.function
-    AND regional.site_or_region = team_kpis.site_or_region
-WHERE region_function = 1
+FROM identify_program_rollups_for_national AS natl
+LEFT JOIN  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
+    ON team_kpis.kpis_by_role = natl.national_rollup_kpi
+LEFT JOIN sum_program_student_count AS sum_student
+    ON sum_student.kpis_by_role=natl.national_rollup_kpi
+)
+
+SELECT 
+distinct * EXCEPT (national_function,
+                    national_role, student_count)
+
+FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
+LEFT JOIN national_rollups AS natl
+    ON natl.national_rollup_kpi = team_kpis.kpis_by_role
+    AND natl.national_function = team_kpis.function
+WHERE (national =1 OR hr_people=1)
 GROUP BY 
-team_kpis.site_or_region,
 function,
 role,
 kpis_by_role,
+site_or_region,
 target_fy22,
 target_submitted,
+hr_people,
+national,
 development,
 region_function,
 program,
---student_count,
+Region,
+Site,
+student_count,
 target_numerator,
---regional_target_numerator,
+natl_target_numerator,
 count_of_targets,
-regional_rollup_kpi,
+national_rollup_kpi,
 program_student_sum,
 program_target_numerator_sum,
---regional_student_count,
-indicator_program_rollup_for_regional
+natl_student_count,
+indicator_program_rollup_for_national,
+national_location,
+regional_executive_rollup
