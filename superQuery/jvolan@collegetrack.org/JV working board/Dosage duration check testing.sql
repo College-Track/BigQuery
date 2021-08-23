@@ -144,7 +144,7 @@ dosage_key_join AS
 )
     SELECT
     *, 
-    get_key.Total_duration_min,
+    get_key.Total_duration_min AS required_dosage_duration,
     CASE
       WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
