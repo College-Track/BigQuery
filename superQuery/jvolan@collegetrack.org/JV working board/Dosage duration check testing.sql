@@ -118,11 +118,28 @@ clean_advisory_grade AS
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
     AND dosage_types_c = "Advisory"
     GROUP BY e_class, AT_Grade_c,global_academic_semester_c, dosage_types_c
-)
+),
     
+join_all AS
+(
     SELECT
     *,
     clean_advisory_grade.AT_Grade_c AS AT_grade
     
     FROM clean_workshop_data
     LEFT JOIN clean_advisory_grade ON e_class = w_id
+)
+
+    SELECT
+    * except (workshop_dosage_c),
+    CASE
+        WHEN 
+        (workshop_dosage_c = "Advisory"
+        AND AT_Grade = "12th Grade") THEN "Senior Advisory"
+        WHEN
+        (workshop_dosage_c = "Advisory"
+        AND AT_Grade = "11th Grade") THEN "Junior Advisory"
+        ELSE workshop_dosage_c
+        END AS workshop_dosage_c
+        
+    FROM join_all
