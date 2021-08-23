@@ -143,14 +143,16 @@ dosage_key_join AS
     
 )
     SELECT
-    *, 
+    *,
     CASE
       WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
     END AS meeting_dosage_yn,
+
     
     FROM dosage_key_join
     LEFT JOIN get_key ON get_key.k_dosage_type = clean_dosage_type
     WHERE Total_duration_min IS NOT NULL
 
+    
     
