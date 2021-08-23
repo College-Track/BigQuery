@@ -137,17 +137,19 @@ dosage_key_join AS
         OR AT_Grade = "11th Grade")) THEN "Junior Advisory"
 
         ELSE workshop_dosage_c
-        END AS workshop_dosage_c,
-    get_key.Total_duration_min AS required_dosage_duration
+        END AS clean_dosage_type,
         
     FROM join_all
-    LEFT JOIN get_key ON get_key.k_dosage_type = workshop_dosage_c
+    
 )
     SELECT
     *, 
+    get_key.Total_duration_min,
     CASE
       WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
     END AS meeting_dosage_yn,
     
     FROM dosage_key_join
+    LEFT JOIN get_key ON get_key.k_dosage_type = clean_dosage_type
+    
