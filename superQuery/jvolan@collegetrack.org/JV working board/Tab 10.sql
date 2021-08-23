@@ -9,10 +9,7 @@ WITH get_student_grade AS
     WHERE global_academic_semester_c = 'a3646000000dMXuAAM'
     AND college_track_status_c = '11A'
     GROUP BY Contact_Id, AT_Id, AT_Grade_c
-),
-
-enrollments_student_grade AS
-(
+)
     SELECT
     id,
     Class_c AS e_class,
@@ -22,8 +19,8 @@ enrollments_student_grade AS
     LEFT JOIN get_student_grade ON AT_Id = academic_semester_c
     WHERE status_c = "Enrolled"
     GROUP BY id, get_student_grade.AT_Grade_c, Class_c
-),
 
+/*
 get_class_dosage_type AS
 (
     SELECT
@@ -44,3 +41,4 @@ get_class_dosage_type AS
     FROM enrollments_student_grade
     LEFT JOIN get_class_dosage_type ON Class_c = e_class
     GROUP BY e_class, AT_Grade, get_class_dosage_type.dosage_types_c
+*/
