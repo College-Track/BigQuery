@@ -37,7 +37,8 @@ gather_workshop_data AS
     get_key.k_dosage_type,
     get_key.Total_duration_min,
     get_site_name.site_short,
-    get_site_name.site_sort
+    get_site_name.site_sort,
+    is_deleted
 
     From `data-warehouse-289815.salesforce.class_c`cl
     LEFT JOIN get_key ON get_key.k_dosage_type = workshop_dosage_c
@@ -61,7 +62,8 @@ gather_workshop_data AS
       WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
     END AS meeting_dosage_yn,
-    site_sort
+    site_sort,
+    is_deleted
         
     FROM gather_workshop_data
     
