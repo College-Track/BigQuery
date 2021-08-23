@@ -66,7 +66,7 @@ gather_workshop_data AS
     is_deleted
         
     FROM gather_workshop_data
-    WHERE is_deleted = true
+    WHERE is_deleted = false
     
 
    
