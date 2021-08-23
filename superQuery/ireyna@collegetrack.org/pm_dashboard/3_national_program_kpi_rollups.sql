@@ -29,7 +29,10 @@ function,
 kpis_by_role,
 student_count,
 target_numerator,
-count_of_targets,
+CASE 
+    WHEN site_or_region = 'Crenshaw' AND role = 'Regional Executive Director' THEN 0
+    ELSE count_of_targets
+    END AS count_of_targets
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
 WHERE program = 1
 
