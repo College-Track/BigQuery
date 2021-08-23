@@ -54,6 +54,7 @@ gather_workshop_data AS
     first_session_date_c,
     last_session_date_c,
     Total_duration_min,
+    at_total_mins,
     CASE
       WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
