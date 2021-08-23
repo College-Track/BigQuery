@@ -120,8 +120,10 @@ join_all AS
     
     FROM clean_workshop_data
     LEFT JOIN clean_advisory_grade ON e_class = w_id
-)
+),
 
+dosage_key_join AS
+(
     SELECT
     * except (workshop_dosage_c),
     CASE
@@ -136,11 +138,16 @@ join_all AS
 
         ELSE workshop_dosage_c
         END AS workshop_dosage_c,
-    get_key.Total_duration_min AS dosage_duration_floor,
-    CASE
-      WHEN get_key.Total_duration_min > at_total_mins THEN 0
-        ELSE 1
-    END AS meeting_dosage_yn,
+    get_key.Total_duration_min AS required_dosage_duration
         
     FROM join_all
     LEFT JOIN get_key ON get_key.k_dosage_type = workshop_dosage_c
+)
+    SELECT
+    *, 
+    CASE
+      WHEN Total_duration_min > at_total_mins THEN 0
+        ELSE 1
+    END AS meeting_dosage_yn,
+    
+    FROM dosage_key_join
