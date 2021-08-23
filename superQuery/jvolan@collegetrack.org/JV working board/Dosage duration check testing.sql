@@ -90,7 +90,6 @@ get_dosage_type AS
     SELECT
     Class_c AS d_class,
     dosage_types_c, 
-    workshop_display_name_c
     
     FROM `data-warehouse-289815.salesforce_clean.class_template`
 ),
@@ -103,7 +102,6 @@ get_enrollments AS
     get_student_grade.AT_Grade_c,
     get_student_grade.global_academic_semester_c,
     get_dosage_type.dosage_types_c,
-    get_dosage_type.workshop_display_name_c AS w_name
 
     FROM `data-warehouse-289815.salesforce.class_registration_c`
     LEFT JOIN get_student_grade ON AT_Id = academic_semester_c
@@ -119,7 +117,7 @@ clean_advisory_grade AS
     FROM get_enrollments
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
     AND dosage_types_c = "Advisory"
-    GROUP BY e_class, AT_Grade_c,global_academic_semester_c, dosage_types_c, w_name
+    GROUP BY e_class, AT_Grade_c,global_academic_semester_c, dosage_types_c
 ),
     
 join_all AS
@@ -137,11 +135,11 @@ join_all AS
     CASE
         WHEN 
         (workshop_dosage_c = "Advisory"
-        AND (w_name LIKE "%Senior%"
+        AND (workshop_display_name_c LIKE "%Senior%"
         OR AT_Grade = "12th Grade")) THEN "Senior Advisory"
         WHEN
         (workshop_dosage_c = "Advisory"
-        AND (w_name LIKE "%Junior%"
+        AND (workshop_display_name_c LIKE "%Junior%"
         OR AT_Grade = "11th Grade")) THEN "Junior Advisory"
         ELSE workshop_dosage_c
         END AS workshop_dosage_c
