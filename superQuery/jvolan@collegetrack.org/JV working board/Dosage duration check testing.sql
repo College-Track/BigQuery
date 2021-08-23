@@ -151,7 +151,7 @@ dosage_key_join AS
     
     FROM dosage_key_join
     LEFT JOIN get_key ON get_key.k_dosage_type = clean_dosage_type
-    WHERE clean_dosage_type <> "Advisory"
-    OR clean_dosage_type <> "College Exposure"
+    WHERE clean_dosage_type NOT LIKE "%Advisory%"
+    OR clean_dosage_type NOT LIKE "%College Exposure%"
 
     
