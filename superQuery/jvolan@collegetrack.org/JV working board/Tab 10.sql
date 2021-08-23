@@ -1,9 +1,8 @@
- SELECT
-    Contact_Id,
-    AT_Id,
-    AT_Grade_c,
+SELECT
+    Class_c,
+    dosage_types_c,
+    global_academic_semester_c
     
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    FROM `data-warehouse-289815.salesforce_clean.class_template`
     WHERE global_academic_semester_c = 'a3646000000dMXuAAM'
-    AND college_track_status_c = '11A'
-    GROUP BY Contact_Id, AT_Id, AT_Grade_c
+    GROUP BY Class_c, dosage_type_s_c, global_academic_semester_c
