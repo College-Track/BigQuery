@@ -25,7 +25,8 @@ get_enrollments AS
     WHERE status_c = "Enrolled"
 )
     SELECT
-    * 
+    * except (academic_semester_c)
     
     FROM get_enrollments
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
+    GROUP BY e_class, AT_Grade_c,global_academic_semester_c
