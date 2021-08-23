@@ -34,14 +34,11 @@ gather_workshop_data AS
     duration_c,
     first_session_date_c,
     last_session_date_c,
-    get_key.k_dosage_type,
-    get_key.Total_duration_min,
     get_site_name.site_short,
     get_site_name.site_sort,
     is_deleted
 
     From `data-warehouse-289815.salesforce.class_c`cl
-    LEFT JOIN get_key ON get_key.k_dosage_type = workshop_dosage_c
     LEFT JOIN get_site_name ON c_site = cl.site_c
     WHERE global_academic_semester_c = 'a3646000000dMXuAAM'
 ),
@@ -58,12 +55,7 @@ clean_workshop_data AS
     duration_c,
     first_session_date_c,
     last_session_date_c,
-    Total_duration_min,
     at_total_mins,
-    CASE
-      WHEN Total_duration_min > at_total_mins THEN 0
-        ELSE 1
-    END AS meeting_dosage_yn,
     site_sort,
     is_deleted
         
@@ -141,7 +133,14 @@ join_all AS
         (workshop_dosage_c = "Advisory"
         AND (workshop_display_name_c LIKE "%Junior%"
         OR AT_Grade = "11th Grade")) THEN "Junior Advisory"
+
         ELSE workshop_dosage_c
-        END AS workshop_dosage_c
+        END AS workshop_dosage_c,
+    get_key.Total_duration_min,
+    CASE
+      WHEN get_key.Total_duration_min > at_total_mins THEN 0
+        ELSE 1
+    END AS meeting_dosage_yn,
         
     FROM join_all
+    LEFT JOIN get_key ON get_key.k_dosage_type = workshop_dosage_c
