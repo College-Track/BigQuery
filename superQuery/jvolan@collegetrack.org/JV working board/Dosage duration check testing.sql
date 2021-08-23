@@ -89,12 +89,13 @@ advisory_grade_check AS
     SELECT
     Class_c,
     workshop_display_name_c AS w_name_check,
+    get_student_grade.AT_Grade_c
 
     FROM `data-warehouse-289815.salesforce_clean.class_template`
     LEFT JOIN get_student_grade ON Contact_Id = Student_c
     WHERE global_academic_semester_c = 'a3646000000dMXuAAM'
     AND dosage_types_c = 'Advisory'
-    GROUP BY Class_c, workshop_display_name_c
+    GROUP BY Class_c, workshop_display_name_c, get_student_grade.AT_Grade_c
 )
     SELECT 
     * 
