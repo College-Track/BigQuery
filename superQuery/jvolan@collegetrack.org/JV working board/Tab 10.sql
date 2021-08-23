@@ -11,14 +11,13 @@ WITH get_student_grade AS
     GROUP BY Contact_Id, AT_Id, AT_Grade_c
 )
     SELECT
-    id,
     Class_c AS e_class,
     get_student_grade.AT_Grade_c AS AT_Grade,
 
     FROM `data-warehouse-289815.salesforce.class_registration_c`
     LEFT JOIN get_student_grade ON AT_Id = academic_semester_c
     WHERE status_c = "Enrolled"
-    GROUP BY id, get_student_grade.AT_Grade_c, Class_c
+    GROUP BY Class_c, get_student_grade.AT_Grade_c
 
 /*
 get_class_dosage_type AS
