@@ -18,37 +18,16 @@ get_enrollments AS
     Class_c AS e_class,
     academic_semester_c,
     get_student_grade.AT_Grade_c,
-    get_student_grade.global_academic_semester_c
+    get_student_grade.global_academic_semester_c AS w_gas
 
     FROM `data-warehouse-289815.salesforce.class_registration_c`
     LEFT JOIN get_student_grade ON AT_Id = academic_semester_c
     WHERE status_c = "Enrolled"
 )
     SELECT
-    * 
+    * ,
+    c.dosage_types_c,
+    
     FROM get_enrollments
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.class_template`c ON Class_c = e_class
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
-
-
-/*
-get_class_dosage_type AS
-(
-    SELECT
-    Class_c,
-    dosage_types_c,
-    global_academic_semester_c
-    
-    FROM `data-warehouse-289815.salesforce_clean.class_template`
-    WHERE global_academic_semester_c = 'a3646000000dMXuAAM'
-    GROUP BY Class_c, dosage_types_c, global_academic_semester_c
-)
-    
-    SELECT 
-    e_class,
-    AT_Grade,
-    get_class_dosage_type.dosage_types_c
-    
-    FROM enrollments_student_grade
-    LEFT JOIN get_class_dosage_type ON Class_c = e_class
-    GROUP BY e_class, AT_Grade, get_class_dosage_type.dosage_types_c
-*/
