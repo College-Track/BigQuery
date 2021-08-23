@@ -61,6 +61,7 @@ gather_workshop_data AS
     END AS meeting_dosage_yn
         
     FROM gather_workshop_data
+    
 
    
 
