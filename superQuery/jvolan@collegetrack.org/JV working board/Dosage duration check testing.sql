@@ -27,7 +27,7 @@ gather_workshop_data AS
     department_c,
     workshop_display_name_c,
     id AS w_id,
-    dosage_types_c,
+    workshop_dosage_c,
     (sessions_c * duration_c) AS at_total_mins,
     sessions_c,
     duration_c,
@@ -38,7 +38,7 @@ gather_workshop_data AS
     get_site_name.site_short
 
     From `data-warehouse-289815.salesforce.class_c`cl
-    LEFT JOIN get_key ON get_key.k_dosage_type = dosage_types_c
+    LEFT JOIN get_key ON get_key.k_dosage_type = workshop_dosage_c
     LEFT JOIN get_site_name ON c_site = cl.site_c
     WHERE global_academic_semester_c = 'a3646000000dMXuAAM'
 )
@@ -46,7 +46,7 @@ gather_workshop_data AS
     SELECT
     site_short,
     department_c,
-    dosage_types_c,
+    workshop_dosage_c,
     workshop_display_name_c,
     w_id,
     sessions_c,
