@@ -136,7 +136,7 @@ join_all AS
 
         ELSE workshop_dosage_c
         END AS workshop_dosage_c,
-    get_key.Total_duration_min,
+    get_key.Total_duration_min AS dosage_duration_floor,
     CASE
       WHEN get_key.Total_duration_min > at_total_mins THEN 0
         ELSE 1
