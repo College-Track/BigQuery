@@ -14,10 +14,11 @@ get_site_name AS
 (
     SELECT
     site_short,
+    site_sort,
     site_c AS c_site,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    GROUP BY site_c, site_short
+    GROUP BY site_c, site_short, site_sort
 ),
     
 gather_workshop_data AS
@@ -35,7 +36,8 @@ gather_workshop_data AS
     last_session_date_c,
     get_key.k_dosage_type,
     get_key.Total_duration_min,
-    get_site_name.site_short
+    get_site_name.site_short,
+    get_site_name.site_sort
 
     From `data-warehouse-289815.salesforce.class_c`cl
     LEFT JOIN get_key ON get_key.k_dosage_type = workshop_dosage_c
@@ -58,7 +60,8 @@ gather_workshop_data AS
     CASE
       WHEN Total_duration_min > at_total_mins THEN 0
         ELSE 1
-    END AS meeting_dosage_yn
+    END AS meeting_dosage_yn,
+    site_sort
         
     FROM gather_workshop_data
     
