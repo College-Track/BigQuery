@@ -88,7 +88,7 @@ advisory_grade_check AS
 (   
     SELECT
     Class_c,
-    workshop_display_name_c,
+    workshop_display_name_c AS w_name_check,
 
     FROM `data-warehouse-289815.salesforce_clean.class_template`
     LEFT JOIN get_student_grade ON Contact_Id = Student_c
