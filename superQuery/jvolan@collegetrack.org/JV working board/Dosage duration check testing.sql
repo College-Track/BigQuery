@@ -1,6 +1,6 @@
 SELECT
     Contact_Id,
-    AT_grade,
+    AT_grade_c,
     
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
