@@ -141,7 +141,10 @@ dosage_key_join AS
         
     FROM join_all
     
-)
+),
+
+determine_dosage_met AS
+(
     SELECT
     *,
     CASE
@@ -153,6 +156,15 @@ dosage_key_join AS
     FROM dosage_key_join
     LEFT JOIN get_key ON get_key.k_dosage_type = clean_dosage_type
     WHERE Total_duration_min IS NOT NULL
+)
 
+    SELECT
+    site_short,
+    site_sort,
+    clean_dosage_type,
+    SUM(meeting_dosage_yn) AS meeting_dosage_num,
+    COUNT(meeting_dosage_yn) AS meeting_dosage_denom,
     
+    FROM determine_dosage_met 
+    GROUP BY site_short, site_sort, clean_dosage_type
     
