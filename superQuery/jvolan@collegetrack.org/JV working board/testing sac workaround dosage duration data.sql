@@ -143,7 +143,11 @@ dosage_key_join AS
     
 )
     SELECT
-    *,
+    * except (Total_duration_min),
+    CASE
+        WHEN site_short = "Sacramento" THEN Total_duration_min / 2
+        ELSE Total_duration_min
+        END AS Total_duration_min,
     CASE
         WHEN 
         (site_short = "Sacramento"
