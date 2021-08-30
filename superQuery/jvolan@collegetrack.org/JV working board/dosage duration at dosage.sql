@@ -143,9 +143,17 @@ dosage_key_join AS
     
 )
     SELECT
-    *,
+    * except (Total_duration_min),
     CASE
-      WHEN Total_duration_min > at_total_mins THEN 0
+        WHEN site_short = "Sacramento" THEN Total_duration_min / 2
+        ELSE Total_duration_min
+        END AS Total_duration_min,
+    CASE
+        WHEN 
+        (site_short = "Sacramento"
+        AND (Total_duration_min / 2) < at_total_mins) THEN 1
+        WHEN (site_short != "Sacramento"
+        AND Total_duration_min > at_total_mins) THEN 0
         ELSE 1
     END AS meeting_dosage_yn,
 
