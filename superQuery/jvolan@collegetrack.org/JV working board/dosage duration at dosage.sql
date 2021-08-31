@@ -1,6 +1,5 @@
 with get_key AS
 (  
---finalize dosage req based on convo with BR. add AY column
     SELECT
     Dosage_type AS k_dosage_type,
     Total_duration_min,
@@ -155,7 +154,9 @@ dosage_key_join AS
         ((site_short = "Sacramento"
         OR site_short = "East Palo Alto")
         AND (Total_duration_min / 2) < at_total_mins) THEN 1
-        WHEN (site_short != "Sacramento"
+        WHEN
+        ((site_short != "Sacramento"
+        OR site_short != "East Palo Alto") 
         AND Total_duration_min > at_total_mins) THEN 0
         ELSE 1
     END AS meeting_dosage_yn,
