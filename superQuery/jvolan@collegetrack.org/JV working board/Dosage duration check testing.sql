@@ -154,7 +154,7 @@ determine_dosage_met AS
         AND (Total_duration_min / 2) < at_total_mins) THEN 1
         WHEN 
         ((site_short != "Sacramento"
-        OR site_short = "East Palo Alto")
+        OR site_short != "East Palo Alto")
         AND Total_duration_min > at_total_mins) THEN 0
         ELSE 1
     END AS meeting_dosage_yn,
