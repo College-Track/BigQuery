@@ -52,9 +52,6 @@ CASE
     THEN 0
     WHEN role = 'Director of Development & Partnerships' AND site_or_region = 'Sacramento' AND region_function = 1 AND kpis_by_role = '% of Visit Report/Touchpoints goals for the year'
     THEN 0
---Remove select KPIs from Nikki Wardlaw Director of Philanthropic Initiatives role. Fulfilling 2 roles in FY22, allowed to remove KPIs     
-    WHEN role = 'Director of Philanthropic Initiatives' AND kpis_by_role = '% of Board giving (National or Local Advisory Board)'
-    THEN 0
     ELSE region_function
 END AS region_function
 
