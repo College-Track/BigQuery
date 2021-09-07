@@ -26,6 +26,8 @@ CASE
     WHEN site_or_region = 'East Palo Alto' THEN 'NOR CAL'
     WHEN site_or_region = 'Oakland' THEN 'NOR CAL'
     WHEN site_or_region = 'San Francisco' THEN 'NOR CAL'
+    WHEN (site_or_region = 'Sacramento' AND region_function = 1) THEN 'Sacramento'
+    WHEN (site_or_region = 'Sacramento' AND program = 1) THEN 'NOR CAL'
     WHEN site_or_region = 'Sacramento' THEN 'NOR CAL'
     WHEN site_or_region = 'Boyle Heights' THEN 'LA'
     WHEN site_or_region = 'Watts' THEN 'LA'
