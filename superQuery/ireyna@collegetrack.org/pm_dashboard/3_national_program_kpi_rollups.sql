@@ -1,11 +1,11 @@
 
-/*
+
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_national_kpis`  OPTIONS (
   description = "KPIs submitted by National teams for FY22. This also rolls up the numerator and denominator for National KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-*/
+
 
 WITH 
 
@@ -18,6 +18,12 @@ role AS national_role,
 kpis_by_role AS national_rollup_kpi,
 --SUM(student_count) AS national_rollup_student_sum
 
+--Remove select KPIs from Nikki Wardlaw Director of Philanthropic Initiatives role. Fulfilling 2 roles in FY22, allowed to remove KPIs     
+CASE
+    WHEN role = 'Director of Philanthropic Initiatives' AND kpis_by_role = '% of Board giving (National or Local Advisory Board)'
+    THEN 0
+    ELSE national
+END AS national
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis` 
 WHERE (national = 1 or hr_people = 1)
 ),
@@ -88,7 +94,7 @@ FROM region_kpis
 
 identify_program_rollups_for_national AS ( #25 KPIs for FY22
 SELECT
-    national.*,
+    national.* EXCEPT (national),
     CASE 
         WHEN national_rollup_kpi IS NOT NULL 
         THEN 1
@@ -103,9 +109,9 @@ WHERE national.national_rollup_kpi = program.kpis_by_role
                                     'Staff engagement score above average nonprofit benchmark',
                                     '% of students engaged in career exploration, readiness events or internships')
 GROUP BY 
-    national.national_function,
+    national_function,
     national_rollup_kpi,
-    national.national_role
+    national_role
 ),
 
 --SUM up student count and target numerators for Program KPIs
