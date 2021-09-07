@@ -1,11 +1,11 @@
 
-/*
+
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_regional_kpis`  OPTIONS (
   description = "KPIs submitted by Regional teams for FY22. This also rolls up the numerator and denominator for KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS 
-*/
+
 
 WITH 
 
@@ -53,6 +53,9 @@ CASE
     WHEN role = 'Director of Development & Partnerships' AND site_or_region = 'Sacramento' AND region_function = 1 AND kpis_by_role = '% of Visit Report/Touchpoints goals for the year'
     THEN 0
     ELSE region_function
+--Remove select KPIs from Nikki Wardlaw Director of Philanthropic Initiatives role. Fulfilling 2 roles in FY22, allowed to remove KPIs     
+    WHEN role = 'Director of Philanthropic Initiatives' AND kpis_by_role = '% of Board giving (National or Local Advisory Board)'
+    THEN 0
 END AS region_function
 
 FROM `data-studio-260217.performance_mgt.fy22_team_kpis`  
