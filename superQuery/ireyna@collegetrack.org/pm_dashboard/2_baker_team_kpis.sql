@@ -294,7 +294,7 @@ FROM calculate_numerators CN
 LEFT JOIN `data-studio-260217.performance_mgt.fy22_projections` Projections ON CN.site_or_region = Projections.site_short 
 )
 
-SELECT distinct * EXCEPT(Site),
+SELECT distinct * EXCEPT(Site, Development),
 CASE WHEN target_submitted = "Submitted" THEN 1 -- "Not Required" THEN 1
 ELSE 0
 END AS count_of_targets,
@@ -302,5 +302,12 @@ END AS count_of_targets,
     WHEN program = 1 AND region_function = 1
     THEN 'Regional Target'
     ELSE Site
-    END AS Site
+    END AS Site,
+--Remove select KPIs from Nikki Wardlaw Director of Philanthropic Initiatives role. Fulfilling 2 roles in FY22, allowed to remove KPIs     
+CASE
+    WHEN role = 'Director of Philanthropic Initiatives' AND kpis_by_role = '% of Board giving (National or Local Advisory Board)'
+    THEN 0
+    ELSE development
+END AS development
+
 FROM correct_missing_site_region
