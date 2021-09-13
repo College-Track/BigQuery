@@ -8,8 +8,10 @@
     record_type_id = "01246000000ZNi1AAG"
     AND finance_bb_balance_total_c > 0
   GROUP BY
-    student_c )
-    
+    student_c ),
+
+join_data AS   
+(
   SELECT
     Contact_Id,
     Full_Name_c,
@@ -30,3 +32,9 @@
       '15A',
       '16A')
     AND bb_balance.Finance_BB_Balance IS NOT NULL
+)
+
+    SELECT
+    *
+    FROM join_data
+    WHERE Contact_Id = "0031M0000334qQ7QAI"
