@@ -94,3 +94,4 @@ SELECT
   *
 FROM
   bb_raw
+  WHERE Contact_Id = "0031M0000334qQ7QAI"
