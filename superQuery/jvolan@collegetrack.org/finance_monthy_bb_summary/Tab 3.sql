@@ -70,3 +70,4 @@ bb_e_fy.bb_earnings_total,
 FROM student_list_bb_balance
 LEFT JOIN bb_d_fy ON bb_d_fy.student_c = student_list_bb_balance.Contact_Id
 LEFT JOIN bb_e_fy ON bb_e_fy.student_c = student_list_bb_balance.Contact_Id
+WHERE Finance_BB_Balance IS NULL
