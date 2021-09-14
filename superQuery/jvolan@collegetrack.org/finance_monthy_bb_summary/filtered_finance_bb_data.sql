@@ -87,6 +87,6 @@ bb_raw AS
     *
     FROM
     bb_raw
-    WHERE BB_Record_Type = "BB Disbursement"
-     
+    WHERE BB_Record_Type = "BB Earnings"
+
      
