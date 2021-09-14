@@ -76,5 +76,5 @@ bb_raw AS
     FROM
     bb_raw
     WHERE bb_id IS NOT NULL
-    AND BB_Record_Type = "BB Disbursement"
+    AND BB_Record_Type = "BB Earnings"
     
