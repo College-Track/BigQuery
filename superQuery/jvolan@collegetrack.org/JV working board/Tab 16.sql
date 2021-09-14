@@ -1,6 +1,7 @@
   SELECT
-    AVG(AT_Term_GPA),
-    AVG(AT_Cumulative_GPA),
+    GAS_Name,
+    AVG(AT_Term_GPA) AS avg_term_gpa,
+    AVG(AT_Cumulative_GPA) AS avg_cgpa,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE site_short = "The Durant Center"
