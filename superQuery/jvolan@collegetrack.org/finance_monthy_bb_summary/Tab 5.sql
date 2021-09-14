@@ -9,5 +9,5 @@ SELECT
     AND created_date >= '2021-07-01'
     AND created_date < '2021-09-01'
     AND amount_c > 0
+    AND student_c ='0034600001TQuZJAA1'
     GROUP BY student_c
-    WHERE student_c ='0034600001TQuZJAA1'
