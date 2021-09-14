@@ -100,8 +100,14 @@ SELECT
 student_list_bb_balance.*,
 bb_d_fy.bb_disbursement_total,
 bb_e_fy.bb_earnings_total,
-bb_d_add_back.bb_disbursement_add_back,
-bb_e_subtract.bb_earnings_subtract,
+CASE
+    WHEN bb_d_add_back.bb_disbursement_add_back IS NULL THEN 0
+    ELSE bb_d_add_back.bb_disbursement_add_back
+END AS bb_disbursement_add_back,
+CASE
+    WHEN bb_e_subtract.bb_earnings_subtract IS NULL THEN 0
+    ELSE bb_e_subtract.bb_earnings_subtract
+END AS bb_earnings_subtract,
 
 FROM student_list_bb_balance
 LEFT JOIN bb_d_fy ON bb_d_fy.student_c = student_list_bb_balance.Contact_Id
