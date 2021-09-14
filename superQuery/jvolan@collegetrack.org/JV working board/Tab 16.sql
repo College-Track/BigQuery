@@ -6,9 +6,10 @@
     full_name_c,
     high_school_class_c
     
+    
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE site_short = "The Durant Center"
-    AND College_Track_Status_Name = "Current CT HS Student"
+    AND student_audit_status_c = "Current CT HS Student"
     AND GAS_Name IN ("Fall 2020-21 (Semester)","Spring 2020-21 (Semester)")
    
    /* AND 
