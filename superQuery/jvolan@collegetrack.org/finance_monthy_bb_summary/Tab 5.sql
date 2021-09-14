@@ -1,6 +1,6 @@
 SELECT
     student_c,
-    SUM (amount_c) as bb_earnings_total,
+    SUM (ABS(amount_c)) as bb_earnings_total,
     
     FROM
     `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean`
