@@ -112,7 +112,7 @@ LEFT JOIN bb_e_subtract ON bb_e_subtract.student_c = student_list_bb_balance.Con
 
 SELECT
 *,
-Finance_BB_Balance + bb_disbursement_add_back - bb_earnings_subtract AS temp_fix_finance_bb_balance_9_1,
+(Finance_BB_Balance + bb_disbursement_add_back - bb_earnings_subtract) AS temp_fix_finance_bb_balance_9_1,
 FORMAT_DATE("%m", CURRENT_DATE()) AS report_month,
 FORMAT_DATE("%x", CURRENT_DATE()) AS report_date,
 FROM
