@@ -27,7 +27,8 @@ student_list_bb_balance AS
     FROM
     `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN bb_balance ON bb_balance.student_c = Contact_Id
-    WHERE College_Track_Status_c IN ('11A', '12A','15A', '16A') 
+    WHERE college_track_status_name IN ('Current CT HS Student', 'Leave of Absence', 'Active: Post-Secondary','Inactive: Post-Secondary')
+    
 ),
 
 bb_d_fy AS
