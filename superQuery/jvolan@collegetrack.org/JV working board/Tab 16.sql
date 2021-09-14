@@ -2,7 +2,8 @@
     Contact_Id,
     AT_Name,
     AT_Term_GPA,
-    AT_Cumulative_GPA
+    AT_Cumulative_GPA,
+    GAS_Name
     
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
