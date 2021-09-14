@@ -32,7 +32,8 @@ WITH bb_d_e_fy AS
     AND transaction_status_c = "Approved")
     OR 
     (record_type_id = "01246000000ZNhtAAG"
-    AND finance_reporting_date_c >= '2021-07-01')
+    AND finance_reporting_date_c >= '2021-07-01'
+    AND finance_reporting_date_c <'2021-09-01')
 ),
 
 temp_fix_student_bb_balance_list AS
