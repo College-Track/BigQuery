@@ -1,4 +1,4 @@
-
+-- gather all BB disbursements & earnings from current FY to date
 WITH bb_d_e_fy AS
 (
    SELECT
@@ -32,6 +32,7 @@ WITH bb_d_e_fy AS
     AND finance_reporting_date_c >= '2021-07-01'
 ),
 
+-- next 2 CTEs gather 
 bb_balance AS
 (
     SELECT
@@ -44,7 +45,7 @@ bb_balance AS
     AND finance_bb_balance_total_c > 0
     GROUP BY student_c
  ),  
-    
+ 
 student_bb_balance_list AS
 (
     SELECT
