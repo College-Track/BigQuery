@@ -6,7 +6,13 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE site_short = "The Durant Center"
     AND student_audit_status_c = "Current CT HS Student"
-    AND GAS_Name IN ("Fall 2020-21 (Semester)","Spring 2020-21 (Semester)")
+    AND 
+    (
+    GAS_Name IN ("Fall 2020-21 (Semester)","Spring 2020-21 (Semester)")
+    AND 
+    (AT_Term_GPA IS NOT NULL
+    OR AT_Cumulative_GPA IS NOT NULL)
+    )
     GROUP BY GAS_Name
 
 /* alternate version if you want to account for NULLs
