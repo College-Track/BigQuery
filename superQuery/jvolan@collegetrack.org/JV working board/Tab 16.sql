@@ -1,7 +1,7 @@
   SELECT
     GAS_Name,
-    ROUND(AVG(AT_Term_GPA),2) AS avg_term_gpa,
-    ROUND(AVG(AT_Cumulative_GPA),2) AS avg_cgpa,
+    ROUND(AVG(AT_Term_GPA),3) AS avg_term_gpa,
+    ROUND(AVG(AT_Cumulative_GPA),3) AS avg_cgpa,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE site_short = "The Durant Center"
