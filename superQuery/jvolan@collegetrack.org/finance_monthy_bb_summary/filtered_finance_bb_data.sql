@@ -87,5 +87,6 @@ bb_raw AS
     *
     FROM
     bb_raw
+    WHERE bb_id IS NOT NULL
 
      
