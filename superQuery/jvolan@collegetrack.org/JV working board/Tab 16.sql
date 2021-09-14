@@ -5,8 +5,7 @@
     AT_Name,
     full_name_c,
     high_school_class_c, 
-    student_starting_grade_c, 
-    student_s_start_academic_year_c, 
+    College_Track_Status_Name
     
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
