@@ -74,7 +74,7 @@ bb_e_fy AS
     record_type_id = "01246000000ZNhtAAG"
     AND created_date >= '2021-07-01'
     AND created_date < '2021-09-01'
-    AND amount_c > 0
+    AND amount_c IS NOT NULL
     GROUP BY student_c
 ),
 -- need to grab all BB earnings that came in 9/1 to date, and then subtract that from bb balance to recreate as of 9/1
@@ -89,7 +89,7 @@ bb_e_subtract AS
     WHERE
     record_type_id = "01246000000ZNhtAAG"
     AND created_date >= '2021-09-01'
-    AND amount_c > 0
+    AND amount_c IS NOT NULL
     GROUP BY student_c
 ),
 
