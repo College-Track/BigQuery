@@ -123,4 +123,4 @@ FORMAT_DATE("%m", CURRENT_DATE()) AS report_month,
 FORMAT_DATE("%x", CURRENT_DATE()) AS report_date,
 FROM
 clean_student_bb_summary
-WHERE Finance_BB_Balance >0
+WHERE (Finance_BB_Balance + bb_disbursement_add_back - bb_earnings_subtract) >0
