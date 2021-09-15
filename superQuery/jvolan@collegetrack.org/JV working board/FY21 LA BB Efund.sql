@@ -8,7 +8,7 @@ SELECT
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = student_c
 
     WHERE scholarship_c = 'College Track Emergency Fund'
-    AND disbursement_approval_date_c >= '2020-07-01'
-    AND disbursement_approval_date_c < '2021-07-01'
+    AND date_c >= '2020-07-01'
+    AND date_c < '2021-07-01'
     AND site_short IN ('Boyle Heights','Watts')
     GROUP BY site_short
