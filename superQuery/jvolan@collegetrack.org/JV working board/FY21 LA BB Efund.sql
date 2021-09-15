@@ -12,3 +12,4 @@
     AND disbursement_approval_date_c >= '2020-07-01'
     AND disbursement_approval_date_c < '2021-07-01'
     AND site_short IN ('Boyle Heights','Watts')
+    GROUP BY site_short
