@@ -11,6 +11,7 @@ With fy21_bb_data AS
 
     WHERE st.record_type_id = '01246000000ZNhsAAG'
     AND amount_c >0
+    AND transaction_status_c = 'Approved'
     AND disbursement_approval_date_c >= '2020-07-01'
     AND disbursement_approval_date_c < '2021-07-01'
     AND site_short IN ('Boyle Heights','Watts')
