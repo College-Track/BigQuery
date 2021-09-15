@@ -1,9 +1,7 @@
 
     SELECT
-    student_c,
-    id,
-    amount_c,
-    disbursement_approval_date_c,
+    Count(id) AS bb_disbursement_count,
+    SUM(amount_c) total_bb_disbursement_amount,
     c.site_short
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
@@ -13,4 +11,4 @@
     AND amount_c >0
     AND disbursement_approval_date_c >= '2020-07-01'
     AND disbursement_approval_date_c < '2021-07-01'
-    AND c.site_short IN ('Boyle Heights','Watts')
+    Group by site_short
