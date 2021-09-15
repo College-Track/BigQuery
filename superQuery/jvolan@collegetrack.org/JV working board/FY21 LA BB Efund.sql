@@ -1,6 +1,6 @@
 
     SELECT
-    student_c,
+    COUNT(DISTINCT(student_c)) AS unique_student_count,
     Count(id) AS bb_disbursement_count,
     SUM(amount_c) total_bb_disbursement_amount,
 
@@ -12,4 +12,3 @@
     AND disbursement_approval_date_c >= '2020-07-01'
     AND disbursement_approval_date_c < '2021-07-01'
     AND site_short IN ('Boyle Heights','Watts')
-    Group by student_c
