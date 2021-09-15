@@ -49,6 +49,7 @@ class_2021_bb_earn AS
 )
 
     SELECT
+    site_short,
     fy21_bb_data.unique_bb_student_count,
     fy21_bb_data.bb_disbursement_count,
     fy21_bb_data.total_bb_disbursement_amount,
