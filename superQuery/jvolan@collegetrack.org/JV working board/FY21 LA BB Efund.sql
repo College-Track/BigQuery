@@ -3,6 +3,7 @@
     COUNT(DISTINCT(student_c)) AS unique_student_count,
     Count(id) AS bb_disbursement_count,
     SUM(amount_c) total_bb_disbursement_amount,
+    c.site_short
 
     FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = student_c
