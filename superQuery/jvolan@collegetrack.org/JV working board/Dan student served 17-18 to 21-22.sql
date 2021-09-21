@@ -26,9 +26,9 @@ with gather_raw_data AS
     SELECT
     site_short,
     AY_Name,
-    AY_student_served,
+    modified_AY_student_served_aur,
     COUNT(student_count) AS student_count
     
     FROM gather_raw_data
-    GROUP BY site_short, AY_Name, AY_student_served
+    GROUP BY site_short, AY_Name, modified_AY_student_served_aur
     
