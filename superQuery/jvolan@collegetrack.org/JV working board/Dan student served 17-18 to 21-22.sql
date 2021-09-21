@@ -6,7 +6,7 @@ with gather_raw_data AS
     cay.Contact_Id AS student_count,
     AY_student_served,
     CASE
-        WHEN AY_student_served = "Leave of Absence" THEN 'LOA'
+        WHEN ct_status_end_of_ay = "Leave of Absence" THEN 'LOA'
         ELSE AY_student_served
     END AS modified_AY_student_served_aur,
     AY_enrolled_sessions,
