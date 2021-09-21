@@ -45,3 +45,4 @@ SELECT
     WHERE site_short = "Aurora"
     AND AY_Name = "AY 2020-21"
     AND ct_status_end_of_ay = "Active: Post-Secondary"
+    AND AY_student_served IS NULL
