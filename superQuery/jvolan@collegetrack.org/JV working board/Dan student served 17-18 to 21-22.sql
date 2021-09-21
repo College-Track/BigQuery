@@ -15,7 +15,7 @@ with gather_raw_data AS
     
     FROM `data-warehouse-289815.salesforce_clean.contact_ay_template` cay 
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = cay.Contact_Id
-    WHERE ct_status_end_of_ay = "Leave of Abscence"
+    WHERE ct_status_end_of_ay = "Leave of Absence"
     AND site_short = "Aurora"
  
  /*
