@@ -1,7 +1,6 @@
-/*
+
 with gather_raw_data AS
 (
-*/
     SELECT
     cay.Contact_Id AS student_count,
     AY_student_served,
@@ -22,7 +21,6 @@ with gather_raw_data AS
     WHERE ct_status_end_of_ay IN ('Current CT HS Student','Leave of Absence','Active: Post-Secondary','Inactive: Post-Secondary', 'CT Alumni')
     AND site_short = "Aurora"
  
- /*
   )
   
     SELECT
@@ -34,4 +32,3 @@ with gather_raw_data AS
     FROM gather_raw_data
     GROUP BY site_short, AY_Name, AY_student_served
     
-*/
