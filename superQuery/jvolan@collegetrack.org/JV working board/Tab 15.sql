@@ -19,8 +19,8 @@ with gather_raw_data AS
   
     SELECT
     site_short,
-    AY_student_served,
     AY_Name,
+    AY_student_served,
     COUNT(student_count)
     
     FROM gather_raw_data
