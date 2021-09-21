@@ -44,3 +44,4 @@ SELECT
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = cay.Contact_Id
     WHERE site_short = "Aurora"
     AND AY_Name = "AY 2020-21"
+    AND ct_status_end_of_ay = "Active: Post-Secondary"
