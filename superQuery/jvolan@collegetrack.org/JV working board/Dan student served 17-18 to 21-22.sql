@@ -42,7 +42,6 @@ SELECT
     
     FROM `data-warehouse-289815.salesforce_clean.contact_ay_template` cay 
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = cay.Contact_Id
-    WHERE AY_enrollment_status IN ("Full-time", "Part-time")
-    AND AY_student_served NOT IN ("High School", "Alumni")
+    WHERE AY_student_served NOT IN ("High School", "Alumni")
     AND site_short = "Aurora"
     AND AY_Name = "AY 2020-21"
