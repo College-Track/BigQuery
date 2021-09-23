@@ -8,7 +8,6 @@ SELECT
     college_partnership_type_c,
     billing_state,
     website,
-    ipeds_id_c,
 /*CASE
         WHEN  THEN "CSU"
         WHEN  THEN "UC"
@@ -18,7 +17,7 @@ SELECT
 */
     best_fit_college_c,
     --uploaded publicly available data
-    college_admit_rate_c,
+    college_admit_rate_c/100 AS college_admit_rate_decimal,
     sat_c AS SAT_combined_avg,
     act_composite_average_c,
     gpa_average_c,
