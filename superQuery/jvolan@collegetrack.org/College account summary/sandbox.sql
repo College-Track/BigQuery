@@ -20,11 +20,11 @@ SELECT
     total_undergraduate_enrollment_c,
     
     -- enrollment by ethnicity charts
-    of_undergrad_enrollment_asian_c,
-    of_undergrad_enrollment_black_c,
-    of_undergrad_enrollment_hispanic_c,
-    of_undergrad_enrollment_api_c,
-    of_undergrad_enrollment_white_c,
+    of_undergrad_enrollment_asian_c/100 AS of_undergrad_enrollment_asian_c,
+    of_undergrad_enrollment_black_c/100 AS of_undergrad_enrollment_black_c,
+    of_undergrad_enrollment_hispanic_c/100 AS of_undergrad_enrollment_hispanic_c,
+    of_undergrad_enrollment_api_c/100 AS of_undergrad_enrollment_api_c,
+    of_undergrad_enrollment_white_c/100 AS of_undergrad_enrollment_white_c,
     
     --cost & graduation
     in_state_tuition_and_fees_c,
