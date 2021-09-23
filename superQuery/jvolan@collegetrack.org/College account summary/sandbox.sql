@@ -8,6 +8,7 @@ SELECT
     college_partnership_type_c,
     billing_state,
     website,
+    ipeds_id_c,
 /*CASE
         WHEN  THEN "CSU"
         WHEN  THEN "UC"
