@@ -1,6 +1,6 @@
 SELECT
     name,
-    control_of_institution_c,
+    control_of_institution_value_c,
     school_type_c,
     academic_calendar_category_c,
     minimum_credits_required_to_graduate_c,
