@@ -18,7 +18,7 @@ SELECT
 */
     best_fit_college_c,
     --uploaded publicly available data
-    round(college_admit_rate_c/100,0) AS college_admit_rate_decimal,
+    round(college_admit_rate_c/100,2) AS college_admit_rate_decimal,
     sat_c AS SAT_combined_avg,
     act_composite_average_c,
     gpa_average_c,
