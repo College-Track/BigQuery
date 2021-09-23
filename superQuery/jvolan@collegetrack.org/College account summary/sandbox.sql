@@ -5,9 +5,16 @@ SELECT
     level_of_institution_c,
     academic_calendar_category_c,
     minimum_credits_required_to_graduate_c,
-    best_fit_college_c,
     college_partnership_type_c,
-    
+    billing_state,
+/*CASE
+        WHEN  THEN "CSU"
+        WHEN  THEN "UC"
+        WHEN  THEN "HBCU"
+    ELSE NULL
+    END AS common_college_groupings,
+*/
+    best_fit_college_c,
     --uploaded publicly available data
     college_admit_rate_c,
     sat_c AS SAT_combined_avg,
