@@ -1,5 +1,6 @@
 SELECT
-    name,
+    id AS account_id,
+    name AS college_name,
     control_of_institution_value_c,
     level_of_institution_c,
     academic_calendar_category_c,
