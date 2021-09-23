@@ -1,4 +1,5 @@
 SELECT
+    --institutional details
     id AS account_id,
     name AS college_name,
     control_of_institution_value_c,
@@ -9,22 +10,23 @@ SELECT
     billing_state,
     website,
     ipeds_id_c,
-/*CASE
-        WHEN  THEN "CSU"
-        WHEN  THEN "UC"
-        WHEN  THEN "HBCU"
-    ELSE NULL
-    END AS common_college_groupings,
-*/
     best_fit_college_c,
-    --uploaded publicly available data
-    round(college_admit_rate_c/100,2) AS college_admit_rate_decimal,
+    
+    --enrollment and admits
+    college_admit_rate_c/100 AS college_admit_rate_decimal,
     sat_c AS SAT_combined_avg,
     act_composite_average_c,
     gpa_average_c,
-    
-    --enrollment and cost
     total_undergraduate_enrollment_c,
+    
+    -- enrollment by ethnicity charts
+    of_undergrad_enrollment_asian_c,
+    of_undergrad_enrollment_black_c,
+    of_undergrad_enrollment_hispanic_c,
+    of_undergrad_enrollment_api_c,
+    of_undergrad_enrollment_white_c,
+    
+    --cost & graduation
     in_state_tuition_and_fees_c,
     out_of_state_tuition_and_fees_c,
     receiving_federal_student_loans_c,
