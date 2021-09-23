@@ -29,8 +29,8 @@ SELECT
     --cost & graduation
     in_state_tuition_and_fees_c,
     out_of_state_tuition_and_fees_c,
-    receiving_federal_student_loans_c,
-    receiving_pell_grant_c,
+    receiving_federal_student_loans_c/100 AS receiving_federal_student_loans_c,
+    receiving_pell_grant_c/100 AS receiving_pell_grant_c,
     average_aid_c AS avg_financial_aid_package,
     
     --debt & graduation
