@@ -7,6 +7,7 @@ SELECT
     minimum_credits_required_to_graduate_c,
     college_partnership_type_c,
     billing_state,
+    website,
 /*CASE
         WHEN  THEN "CSU"
         WHEN  THEN "UC"
