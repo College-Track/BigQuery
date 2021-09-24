@@ -11,4 +11,5 @@
     AND term_c = 'Spring'
     AND ay_2020_21_student_served_c = "High School Student"
     AND site_short IN ("East Palo Alto", "Oakland", "San Francisco")
+    AND AT_Cumulative_GPA IS NULL
     GROUP BY Contact_Id, ay_2020_21_student_served_c
