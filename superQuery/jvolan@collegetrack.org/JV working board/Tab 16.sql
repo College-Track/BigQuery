@@ -16,7 +16,7 @@ with gather_ay_attednace_data AS
 
     SELECT
     AY_Name,
-    AVG(ay_fall_spring_attendance_rate)
+    ROUND(AVG(ay_fall_spring_attendance_rate)*100,2)
     
     FROM gather_ay_attednace_data
     GROUP BY AY_Name
