@@ -2,6 +2,8 @@
   SELECT
     cat.Contact_Id,
     cat.ay_2020_21_student_served_c,
+    high_school_graduating_class_c,
+    site_short,
     CASE
         WHEN AT_Cumulative_GPA >= 3 THEN 1
         ELSE 0
