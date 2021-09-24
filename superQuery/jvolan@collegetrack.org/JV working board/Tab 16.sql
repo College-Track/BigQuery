@@ -11,6 +11,7 @@ with gather_ay_attendance AS
     cat.AY_Name = "AY 2020-21"
     AND term_c != 'Summer'
     AND ay_2020_21_student_served_c = "High School Student"
+    AND site_short IN ("East Palo Alto", "Oakland", "San Francisco")
     GROUP BY Contact_Id
 )
     SELECT
