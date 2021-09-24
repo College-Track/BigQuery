@@ -15,6 +15,6 @@
     AND ay_2020_21_student_served_c = "High School Student"
     AND site_short IN ("East Palo Alto", "Oakland", "San Francisco")
     AND high_school_graduating_class_c = "2021"
-    AND AT_Cumulative_GPA IS NULL
+ 
 
     
