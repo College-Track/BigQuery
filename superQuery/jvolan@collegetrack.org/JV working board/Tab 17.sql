@@ -15,7 +15,9 @@ with gather_ay_gpa_data AS
     WHERE AY_Name IN ('AY 2018-19','AY 2019-20','AY 2020-21')
     AND AY_student_served = "High School"
     AND site_short IN  ("East Palo Alto", "Oakland", "San Francisco")
-    AND AY_Cumulative_GPA IS NOT NULL
+    AND 
+    (AY_Name = "AY 2020-21"
+    AND AY_Cumulative_GPA IS NOT NULL)
 )
 
     SELECT
