@@ -16,9 +16,9 @@ with gather_ay_gpa_data AS
     AND site_short IN  ("East Palo Alto", "Oakland", "San Francisco")
     AND AY_Grade = "12th Grade"
     AND
-    (AY_Name IN ("AY 2018-19", "AY 2019-20")
+    (AY_Name IN ("AY 2018-19")
     OR
-    (AY_Name = "AY 2020-21"
+    (AY_Name IN ("AY 2020-21", "AY 2019-20")
     AND AY_Cumulative_GPA IS NOT NULL))
 )
 
