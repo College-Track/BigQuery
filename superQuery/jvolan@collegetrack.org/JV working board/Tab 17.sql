@@ -14,11 +14,12 @@ with gather_ay_gpa_data AS
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = cay.Contact_Id
     WHERE AY_student_served = "High School"
     AND site_short IN  ("East Palo Alto", "Oakland", "San Francisco")
-    AND 
+    AND
+    (
     AY_Name IN ("AY 2018-19", "AY 2019-20")
     OR
     (AY_Name = "AY 2020-21"
-    AND AY_Cumulative_GPA IS NOT NULL)
+    AND AY_Cumulative_GPA IS NOT NULL))
 )
 
     SELECT
