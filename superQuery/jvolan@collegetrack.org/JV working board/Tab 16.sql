@@ -1,11 +1,14 @@
-SELECT
-x_18_digit_id_c,
-full_name_c,
-site,
-College_Track_Status_Name,
-total_bank_book_balance_contact_c
-
-FROM `data-warehouse-289815.salesforce_clean.contact_template`
-WHERE college_track_status_c IN ('11A','12A','15A')
-OR (college_track_status_c = '16A'
-AND total_bank_book_balance_contact_c >0)
+  SELECT
+    cat.Contact_Id,
+    SUM(attended_workshops_c) AS attended_workshops_c,
+    SUM(enrolled_sessions_c) AS enrolled_sessions_c,
+    SUM(attended_workshops_c)/SUM(enrolled_sessions_c) AS ay_attendance_rate
+    
+    
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template` cat
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_ay_template` cay ON cay.Contact_Id = cat.Contact_Id
+  WHERE
+    cat.AY_Name = "AY 2020-21"
+    AND term_c != 'Summer'
+  GROUP BY
+    Contact_Id
