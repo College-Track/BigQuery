@@ -24,6 +24,6 @@ with gather_12_sp_cgpa AS
     SELECT
     SUM(sp_20_21_cgpa_3) AS ay_cgpa_num,
     COUNT(sp_20_21_cgpa_3) AS ay_cgpa_denom,
-    (SUM(sp_20_21_cgpa_3) / COUNT(sp_20_21_cgpa_3)*100) AS percent_above_3
+    round((SUM(sp_20_21_cgpa_3) / COUNT(sp_20_21_cgpa_3)*100),2) AS percent_above_3
     
     FROM gather_12_sp_cgpa
