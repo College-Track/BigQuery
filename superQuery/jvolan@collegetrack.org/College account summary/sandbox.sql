@@ -34,7 +34,7 @@ SELECT
     average_aid_c AS avg_financial_aid_package,
     
     --debt & graduation
-    graduates_with_debt_c,
+    graduates_with_debt_c/100 AS graduates_with_debt_c,
     avg_debt_of_graduates_c,
     median_debt_of_graduates_c,
     graduation_rate_overall_c/100 AS graduation_rate_overall_c,
