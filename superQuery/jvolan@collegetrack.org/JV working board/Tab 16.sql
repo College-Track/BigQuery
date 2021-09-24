@@ -18,4 +18,5 @@ with gather_ay_attendance AS
     SUM(attended_workshops_c) / SUM(enrolled_sessions_c) AS ay_attendance_rate,
     
     FROM gather_ay_attendance
+    WHERE enrolled_sessions_c >0
     GROUP BY Contact_Id
