@@ -1,6 +1,5 @@
   SELECT
     cat.Contact_Id,
-    cat.ay_2020_21_student_served_c,
     SUM(attended_workshops_c) AS attended_workshops_c,
     SUM(enrolled_sessions_c) AS enrolled_sessions_c,
     
@@ -9,4 +8,5 @@
   WHERE
     cat.AY_Name = "AY 2020-21"
     AND term_c != 'Summer'
-    GROUP BY Contact_Id, ay_2020_21_student_served_c
+    AND ay_2020_21_student_served_c = "High School Student"
+    GROUP BY Contact_Id
