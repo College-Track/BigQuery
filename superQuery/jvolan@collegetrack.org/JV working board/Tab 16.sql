@@ -1,3 +1,5 @@
+with gather_ay_attendance AS
+(
   SELECT
     cat.Contact_Id,
     SUM(attended_workshops_c) AS attended_workshops_c,
@@ -9,4 +11,11 @@
     cat.AY_Name = "AY 2020-21"
     AND term_c != 'Summer'
     AND ay_2020_21_student_served_c = "High School Student"
+    GROUP BY Contact_Id
+)
+    SELECT
+    Contact_Id,
+    SUM(attended_workshops_c) / SUM(enrolled_sessions_c) AS ay_attendance_rate,
+    
+    FROM gather_ay_attendance
     GROUP BY Contact_Id
