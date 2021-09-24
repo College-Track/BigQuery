@@ -2,6 +2,7 @@ with gather_ay_attendance AS
 (
   SELECT
     cat.Contact_Id,
+    cat.ay_2020_21_student_served_c,
     SUM(attended_workshops_c) AS attended_workshops_c,
     SUM(enrolled_sessions_c) AS enrolled_sessions_c,
     
@@ -12,12 +13,12 @@ with gather_ay_attendance AS
     AND term_c != 'Summer'
     AND ay_2020_21_student_served_c = "High School Student"
     AND site_short IN ("East Palo Alto", "Oakland", "San Francisco")
-    GROUP BY Contact_Id
+    GROUP BY Contact_Id, ay_2020_21_student_served_c
 )
     SELECT
-    Contact_Id,
+    count(Contact_Id),
     SUM(attended_workshops_c) / SUM(enrolled_sessions_c) AS ay_attendance_rate,
     
     FROM gather_ay_attendance
     WHERE enrolled_sessions_c >0
-    GROUP BY Contact_Id
+    GROUP BY ay_2020_21_student_served_c
