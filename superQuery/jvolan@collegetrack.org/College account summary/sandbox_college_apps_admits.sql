@@ -37,6 +37,8 @@ gather_admit_student_data AS
 (
     SELECT
     Contact_Id,
+    high_school_graduating_class_c,
+    site_short,
     AT_Cumulative_GPA AS x_12_cgpa,
         CASE
             WHEN AT_Cumulative_GPA >=3.25 THEN 1
@@ -60,6 +62,7 @@ gather_admit_student_data AS
         CASE
             WHEN college_eligibility_gpa_11th_grade <2.75 THEN 1
         END AS x_11_cgpa_below_275,
+    AT_Cumulative_GPA_bucket,
     act_highest_composite_official_c AS act_highest_comp,
     sat_highest_total_single_sitting_c AS sat_highest_total,
     readiness_composite_off_c,
@@ -88,6 +91,10 @@ admit_profile AS
     SELECT
     admit_college_name,
     admit_college_id,
+    site_short,
+    high_school_graduating_class_c,
+    AT_Cumulative_GPA_bucket,
+    readiness_composite_off_c,
     SUM(admitted_y_n) AS total_admits,
     
     avg(college_app_count) AS avg_college_apps_applied,
@@ -107,7 +114,7 @@ admit_profile AS
     avg(sat_highest_total) AS avg_sat_highest_total,
     
     FROM join_admit_data
-    GROUP BY admit_college_name, admit_college_id
+    GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, AT_Cumulative_GPA_bucket,readiness_composite_off_c
 )
    
     SELECT
