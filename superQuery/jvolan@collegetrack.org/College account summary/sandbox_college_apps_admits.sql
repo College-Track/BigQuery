@@ -108,18 +108,13 @@ admit_profile AS
     
     FROM join_admit_data
     GROUP BY admit_college_name, admit_college_id
-),
+)
 
-join_apps_summary AS
-(
     SELECT
     total_applications,
     admit_profile.*
     
     FROM gather_college_apps 
     LEFT JOIN admit_profile ON admit_college_id = app_college_id
-)
 
-    SELECT
-    *
-    FROM join_apps_summary
+    
