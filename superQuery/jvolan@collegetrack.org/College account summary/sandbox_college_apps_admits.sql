@@ -4,12 +4,23 @@ WITH gather_college_apps AS
     COUNT(ca.id) AS total_applications,
     a.name AS app_college_name,
     a.id AS app_college_id,
-    
-    
+    c.site_short,
+    c.high_school_graduating_class_c,
+    c.readiness_composite_off_c,
+    CASE
+        WHEN college_eligibility_gpa_11th_grade >=3.25 THEN "3.25+"
+            WHEN 
+            (college_eligibility_gpa_11th_grade < 3.25
+            AND college_eligibility_gpa_11th_grade >= 2.75) THEN "2.75-3.25"
+            WHEN college_eligibility_gpa_11th_grade < 2.75 THEN "Below 2.75"
+            ELSE NULL
+        END AS x_11_cgpa_bucket,
+     
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean` ca
     LEFT JOIN `data-warehouse-289815.salesforce.account` a ON a.id = ca.college_university_c
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = ca.student_c
     WHERE application_status_c = "Applied"
-    GROUP BY app_college_name, app_college_id
+    GROUP BY app_college_name, app_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
 ),
 
 gather_college_admits AS
@@ -53,6 +64,14 @@ gather_admit_student_data AS
         
     college_eligibility_gpa_11th_grade AS x_11_cgpa,
         CASE
+            WHEN college_eligibility_gpa_11th_grade >=3.25 THEN "3.25+"
+            WHEN 
+            (college_eligibility_gpa_11th_grade < 3.25
+            AND college_eligibility_gpa_11th_grade >= 2.75) THEN "2.75-3.25"
+            WHEN college_eligibility_gpa_11th_grade < 2.75 THEN "Below 2.75"
+            ELSE NULL
+        END AS x_11_cgpa_bucket,
+        CASE
             WHEN college_eligibility_gpa_11th_grade >=3.25 THEN 1
         END AS x_11_cgpa_325,
         CASE
@@ -93,8 +112,8 @@ admit_profile AS
     admit_college_id,
     site_short,
     high_school_graduating_class_c,
-    AT_Cumulative_GPA_bucket,
     readiness_composite_off_c,
+    x_11_cgpa_bucket,
     SUM(admitted_y_n) AS total_admits,
     
     avg(college_app_count) AS avg_college_apps_applied,
@@ -114,17 +133,21 @@ admit_profile AS
     avg(sat_highest_total) AS avg_sat_highest_total,
     
     FROM join_admit_data
-    GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, AT_Cumulative_GPA_bucket,readiness_composite_off_c
+    GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
 )
    
     SELECT
     total_applications,
     app_college_name,
-    admit_profile.* except (admit_college_name),
+    ap.* except (admit_college_name),
     CASE
         WHEN total_admits > total_applications THEN NULL
         ELSE total_admits / total_applications
     END AS ct_admit_rate
     
-    FROM gather_college_apps 
-    LEFT JOIN admit_profile ON admit_college_id = app_college_id
+    FROM gather_college_apps gca
+    LEFT JOIN admit_profile ap ON admit_college_id = app_college_id
+    AND gca.site_short = ap.site_short
+    AND gca.high_school_graduating_class_c = ap.high_school_graduating_class_c
+    AND gca.x_11_cgpa_bucket = ap.x_11_cgpa_bucket
+    AND gca.readiness_composite_off_c = ap.readiness_composite_off_c
