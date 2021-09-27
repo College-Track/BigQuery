@@ -51,7 +51,7 @@ join_data AS
     college_university_c,
     college_name,
     admitted_y_n,
-    gsd.* except (Contact_Id)
+    gsd.*
     
     FROM gather_college_apps
     LEFT JOIN gather_student_data gsd ON gsd.Contact_Id = student_c
@@ -59,6 +59,7 @@ join_data AS
 )
     SELECT
     college_name,
+    COUNT(DISTINCT(Contact_Id)) AS unique_applicants,
     COUNT(college_app_id) AS total_applicants,
     SUM(admitted_y_n) AS total_admits,
     ROUND(SUM(admitted_y_n) / COUNT(college_app_id),2) AS ct_admit_rate,
