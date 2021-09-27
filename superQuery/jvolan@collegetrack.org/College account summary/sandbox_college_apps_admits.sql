@@ -84,7 +84,7 @@ join_admit_data AS
 admit_profile AS
 (
     SELECT
-    college_name,
+    college_name AS admit_college_name,
     SUM(admitted_y_n) AS total_admits,
     
     avg(college_app_count) AS avg_college_apps_applied,
@@ -111,10 +111,10 @@ join_apps_summary AS
 (
     SELECT
     total_applications,
-    ap.*
+    admit_profile.*
     
     FROM gather_college_apps
-    LEFT JOIN admit_profile ap ON ap.college_name = app_college_name
+    LEFT JOIN admit_profile  ON admit_college_name = app_college_name
 )
 
     SELECT
