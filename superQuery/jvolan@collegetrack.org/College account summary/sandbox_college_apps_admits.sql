@@ -89,4 +89,5 @@ join_data AS
     
     
     FROM join_data
+        WHERE COLLEGE_NAME IN ("University of California")
     GROUP BY college_name
