@@ -48,7 +48,8 @@ gather_student_data AS
     sat_highest_total_single_sitting_c AS sat_highest_total,
     readiness_composite_off_c,
     total_community_service_hours_completed_c,
-    
+    two_year_college_applications_c+four_year_college_applications_c AS college_app_count,
+    two_year_college_acceptances_c + four_year_college_acceptances_c AS college_acceptance_count,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AT_Grade_c = "12th Grade"
@@ -73,6 +74,9 @@ join_data AS
     COUNT(college_app_id) AS total_applicants,
     SUM(admitted_y_n) AS total_admits,
     ROUND(SUM(admitted_y_n) / COUNT(college_app_id),2) AS ct_admit_rate,
+    
+    avg(college_app_count) AS avg_college_apps_applied,
+    avg(college_acceptance_count) AS avg_college_accept,
     
     avg(x_12_cgpa) AS avg_12_cgpa,
     SUM(x_12_cgpa_325)/COUNT(x_12_cgpa) AS x_12_325_percent,
