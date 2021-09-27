@@ -3,6 +3,7 @@ WITH gather_college_apps AS
     SELECT
     student_c,
     college_university_c,
+    name,
     admission_status_c,
     CASE
         WHEN admission_status_c IN ("Accepted") THEN 1
@@ -35,6 +36,7 @@ join_data AS
 (
     SELECT
     college_university_c,
+    name,
     admitted_y_n,
     gsd.* except (Contact_Id)
     
