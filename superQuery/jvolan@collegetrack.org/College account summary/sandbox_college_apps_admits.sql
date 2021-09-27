@@ -111,7 +111,7 @@ admit_profile AS
 )
     SELECT
     *
-    FROM gather_college_apps
+    FROM admit_profile
     
 /*
     SELECT
