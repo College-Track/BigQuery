@@ -1,8 +1,13 @@
-SELECT
-    student_c,
-    college_university_c,
-    admission_status_c,
+ SELECT
+    Contact_Id,
+    AT_Cumulative_GPA AS x_12_cgpa,
+    college_eligibility_gpa_11th_grade AS x_11_cgpa,
+    act_highest_composite_official_c AS act_highest_comp,
+    sat_highest_total_single_sitting_c AS sat_highest_total,
+    readiness_composite_off_c,
+    total_community_service_hours_completed_c,
     
     
-    FROM `data-warehouse-289815.salesforce_clean.college_application_clean`
-    WHERE application_status_c = "Applied"
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE AT_Grade_c = "12th Grade"
+    AND term_c = "Spring"
