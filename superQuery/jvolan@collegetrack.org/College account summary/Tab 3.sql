@@ -21,3 +21,4 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AT_Grade_c = "12th Grade"
     AND term_c = "Spring"
+    AND AT_Cumulative_GPA IS NULL
