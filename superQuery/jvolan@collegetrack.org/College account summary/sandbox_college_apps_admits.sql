@@ -13,5 +13,4 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean` ca
     LEFT JOIN `data-warehouse-289815.salesforce.account` a ON a.id = ca.college_university_c
     WHERE application_status_c = "Applied"
-    AND admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred") 
-),
+    AND admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred")
