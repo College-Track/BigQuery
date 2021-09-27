@@ -114,7 +114,10 @@ admit_profile AS
     total_applications,
     app_college_name,
     admit_profile.* except (admit_college_name),
-    total_admits / total_applications AS ct_admit_rate
+    CASE
+        WHEN total_admits > total_applications THEN NULL
+        ELSE total_admits / total_applications
+    END AS ct_admit_rate
     
     FROM gather_college_apps 
     LEFT JOIN admit_profile ON admit_college_id = app_college_id
