@@ -112,6 +112,7 @@ admit_profile AS
    
     SELECT
     total_applications,
+    app_college_name,
     admit_profile.*,
     
     FROM gather_college_apps 
