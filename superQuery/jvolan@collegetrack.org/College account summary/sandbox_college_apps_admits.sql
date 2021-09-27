@@ -1,4 +1,25 @@
-SELECT
+WITH gather_college_apps AS
+(
+    SELECT
+    ca.id AS college_app_id,
+    ca.college_university_c,
+    student_c,
+    admission_status_c,
+    CASE
+        WHEN admission_status_c IN ("Accepted") THEN 1
+        ELSE 0
+    END AS admitted_y_n,
+    a.name AS college_name,
+    
+    
+    FROM `data-warehouse-289815.salesforce_clean.college_application_clean` ca
+    LEFT JOIN `data-warehouse-289815.salesforce.account` a ON a.id = ca.college_university_c
+    WHERE application_status_c = "Applied"
+),
+
+gather_student_data AS
+(
+    SELECT
     Contact_Id,
     AT_Cumulative_GPA AS x_12_cgpa,
         CASE
@@ -33,3 +54,43 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AT_Grade_c = "12th Grade"
     AND term_c = "Spring"
+),
+
+join_data AS
+(
+    SELECT
+    college_app_id,
+    college_university_c,
+    college_name,
+    admitted_y_n,
+    gsd.*
+    
+    FROM gather_college_apps
+    LEFT JOIN gather_student_data gsd ON gsd.Contact_Id = student_c
+    
+)
+    SELECT
+    college_name,
+    COUNT(college_app_id) AS total_applicants,
+    SUM(admitted_y_n) AS total_admits,
+    ROUND(SUM(admitted_y_n) / COUNT(college_app_id),2) AS ct_admit_rate,
+    
+    avg(college_app_count) AS avg_college_apps_applied,
+    avg(college_acceptance_count) AS avg_college_accept,
+    
+    avg(x_12_cgpa) AS avg_12_cgpa,
+    SUM(x_12_cgpa_325)/COUNT(x_12_cgpa) AS x_12_325_percent,
+    SUM(x_12_cgpa_275_325)/COUNT(x_12_cgpa) AS x_12_cgpa_275_325_percent,
+    SUM(x_12_cgpa_below_275)/COUNT(x_12_cgpa) AS x_12_cgpa_below_275_percent,
+    
+    avg(x_11_cgpa) AS avg_11_cgpa,
+    SUM(x_11_cgpa_325)/COUNT(x_11_cgpa) AS x_11_325_percent,
+    SUM(x_11_cgpa_275_325)/COUNT(x_11_cgpa) AS x_11_cgpa_275_325_percent,
+    SUM(x_11_cgpa_below_275)/COUNT(x_11_cgpa) AS x_11_cgpa_below_275_percent,
+    
+    avg(act_highest_comp) AS avg_act_highest_comp,
+    avg(sat_highest_total) AS avg_sat_highest_total,
+    
+    
+    FROM join_data
+    GROUP BY college_name
