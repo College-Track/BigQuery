@@ -112,8 +112,7 @@ admit_profile AS
 
     SELECT
     total_applications,
-    app_college_id,
-    admit_profile.*
+    admit_profile.*,
     
     FROM gather_college_apps 
     LEFT JOIN admit_profile ON admit_college_id = app_college_id
