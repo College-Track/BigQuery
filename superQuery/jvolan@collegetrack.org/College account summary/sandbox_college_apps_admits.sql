@@ -110,10 +110,10 @@ admit_profile AS
 join_apps_summary AS
 (
     SELECT
-    *,
+    total_applications,
     admit_profile.*
     
-    FROM gather_college_apps
+    FROM gather_college_apps 
     LEFT JOIN admit_profile ON admit_college_name = app_college_name
 )
 
