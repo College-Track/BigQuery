@@ -2,16 +2,17 @@ WITH gather_college_apps AS
 (
     SELECT
     student_c,
-    college_university_c,
-    name,
+    ca.college_university_c,
     admission_status_c,
     CASE
         WHEN admission_status_c IN ("Accepted") THEN 1
         ELSE 0
-    END AS admitted_y_n
+    END AS admitted_y_n,
+    a.name AS college_name,
     
     
-    FROM `data-warehouse-289815.salesforce_clean.college_application_clean`
+    FROM `data-warehouse-289815.salesforce_clean.college_application_clean` ca
+    LEFT JOIN `data-warehouse-289815.salesforce.account` a ON a.id = ca.college_university_c
     WHERE application_status_c = "Applied"
 ),
 
@@ -36,7 +37,7 @@ join_data AS
 (
     SELECT
     college_university_c,
-    name,
+    college_name,
     admitted_y_n,
     gsd.* except (Contact_Id)
     
