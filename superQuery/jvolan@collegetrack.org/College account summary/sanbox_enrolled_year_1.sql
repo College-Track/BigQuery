@@ -1,4 +1,4 @@
- SELECT
+SELECT
     ca.id,
     ca.college_university_c,
     student_c,
