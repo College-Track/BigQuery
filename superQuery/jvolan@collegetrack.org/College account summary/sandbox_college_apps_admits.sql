@@ -160,6 +160,7 @@ admit_profile AS
     app_college_name AS college_name,
     app_college_id AS account_id,
     ap.* except (admit_college_name),
+    "" AS dummy_dimension,
     
     FROM gather_college_apps gca
     LEFT JOIN admit_profile ap ON admit_college_id = app_college_id
