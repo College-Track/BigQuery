@@ -106,7 +106,7 @@ join_admit_data AS
 ),
 
 admit_profile AS
-(
+(   
     SELECT
     admit_college_name,
     admit_college_id,
@@ -116,8 +116,9 @@ admit_profile AS
     x_11_cgpa_bucket,
     SUM(admitted_y_n) AS total_admits,
     
-    avg(college_app_count) AS avg_college_apps_applied,
-    avg(college_acceptance_count) AS avg_college_accept,
+    SUM(college_app_count) AS avg_admit_apps_applied_num,
+    
+    SUM(college_acceptance_count) AS avg_admit_apps_accept_num,
     
     avg(x_12_cgpa) AS avg_12_cgpa,
     SUM(x_12_cgpa_325)/COUNT(x_12_cgpa) AS x_12_325_percent,
