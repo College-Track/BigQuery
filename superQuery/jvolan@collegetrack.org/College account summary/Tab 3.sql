@@ -1,22 +1,17 @@
 SELECT
-    COUNT(ca.id) AS total_applications,
-    a.name AS app_college_name,
-    a.id AS app_college_id,
-    c.site_short,
-    c.high_school_graduating_class_c,
-    c.readiness_composite_off_c,
+    ca.id,
+    ca.college_university_c,
+    student_c,
+    admission_status_c,
     CASE
-        WHEN college_eligibility_gpa_11th_grade >=3.25 THEN "3.25+"
-            WHEN 
-            (college_eligibility_gpa_11th_grade < 3.25
-            AND college_eligibility_gpa_11th_grade >= 2.75) THEN "2.75-3.25"
-            WHEN college_eligibility_gpa_11th_grade < 2.75 THEN "Below 2.75"
-            ELSE NULL
-        END AS x_11_cgpa_bucket,
-     
+        WHEN admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred") THEN 1
+        ELSE 0
+    END AS admitted_y_n,
+    a.name AS admit_college_name,
+    a.id AS admit_college_id,
+    
+    
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean` ca
     LEFT JOIN `data-warehouse-289815.salesforce.account` a ON a.id = ca.college_university_c
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = ca.student_c
     WHERE application_status_c = "Applied"
-    GROUP BY app_college_name, app_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
-
+    AND admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred") 
