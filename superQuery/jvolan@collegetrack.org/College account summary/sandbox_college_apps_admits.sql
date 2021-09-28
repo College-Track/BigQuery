@@ -149,7 +149,7 @@ admit_profile AS
         WHEN sat_highest_total IS NOT NULL THEN 1
         ELSE 0
     END) AS avg_sat_highest_total_denom,
-    
+    SUM(total_community_service_hours_completed_c) AS total_cs_hours,
     
     FROM join_admit_data
     GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
