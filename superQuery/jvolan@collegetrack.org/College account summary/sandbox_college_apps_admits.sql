@@ -120,13 +120,13 @@ admit_profile AS
     
     SUM(college_acceptance_count) AS avg_admit_apps_accept_num,
     
-    avg(x_12_cgpa) AS avg_12_cgpa,
+    ROUND(avg(x_12_cgpa),2) AS avg_12_cgpa,
     SUM(x_12_cgpa_325) AS x_12_cgpa_325_percent_num,
     SUM(x_12_cgpa_275_325) AS x_12_cgpa_275_325_percent_num,
     SUM(x_12_cgpa_below_275) AS x_12_cgpa_below_275_percent_num,
     COUNT(x_12_cgpa) AS x_12_cgpa_percent_denom,
     
-    avg(x_11_cgpa) AS avg_11_cgpa,
+    ROUND(avg(x_11_cgpa),2) AS avg_11_cgpa,
     SUM(x_11_cgpa_325) AS x_11_cgpa_325_percent_num,
     SUM(x_11_cgpa_275_325) AS x_11_cgpa_275_325_percent_num,
     SUM(x_11_cgpa_below_275) AS x_11_cgpa_below_275_percent_num,
