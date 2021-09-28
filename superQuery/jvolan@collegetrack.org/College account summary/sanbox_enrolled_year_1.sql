@@ -1,4 +1,5 @@
-
+WITH gather_college_admit_enrolled AS
+(
     SELECT
     ca.id,
     ca.college_university_c,
@@ -10,27 +11,43 @@
     END AS admitted_y_n,
     a.name AS admit_college_name,
     a.id AS admit_college_id,
-    c.college_first_enrolled_school_c,
+    c.college_first_enrolled_school_c AS cfe_name,
+
     
     
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean` ca
     LEFT JOIN `data-warehouse-289815.salesforce.account` a ON a.id = ca.college_university_c
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = student_c
     AND admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred") 
-    AND a.name = college_first_enrolled_school_c
-
-/*
+    
 ),
+
 identify_admits_enrolled AS
 (
     SELECT
     *,
     CASE
-        WHEN 
+        WHEN cfe_name = admit_college_name THEN 1
+        ELSE 0
+    END AS admitted_and_enrolled
     
-    FROM gather_college_enrolled
+    FROM gather_college_admit_enrolled
+),
 
-
+clean_admits_enrolled_list AS
+(
+    SELECT 
+    *
+    FROM identify_admits_enrolled
+    WHERE admitted_and_enrolled = 1
+    
+ )   
+    SELECT
+    *
+    FROM clean_admits_enrolled_list
+    
+/*
+),
 gather_admit_student_data AS
 (
     SELECT
