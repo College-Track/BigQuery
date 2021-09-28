@@ -1,4 +1,4 @@
-SELECT
+ SELECT
     ca.id,
     ca.college_university_c,
     student_c,
@@ -9,6 +9,7 @@ SELECT
     END AS admitted_y_n,
     a.name AS admit_college_name,
     a.id AS admit_college_id,
+    c.college_first_enrolled_school_c,
     
     
     FROM `data-warehouse-289815.salesforce_clean.college_application_clean` ca
@@ -16,4 +17,3 @@ SELECT
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id - student_c
     WHERE application_status_c = "Applied"
     AND admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred") 
-    AND college_first_enrolled_school_c = TEXT(ca.college_university_c)
