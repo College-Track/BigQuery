@@ -1,4 +1,5 @@
-  COUNT(ca.id) AS total_applications,
+SELECT
+    COUNT(ca.id) AS total_applications,
     a.name AS app_college_name,
     a.id AS app_college_id,
     c.site_short,
