@@ -90,8 +90,9 @@ join_admit_data AS
     x_11_cgpa_bucket,
     SUM(admitted_y_n) AS total_admits,
     
-    avg(college_app_count) AS avg_college_apps_applied,
-    avg(college_acceptance_count) AS avg_college_accept,
+    SUM(college_app_count) AS total_admit_apps_applied_num,
+    
+    SUM(college_acceptance_count) AS avd_admit_college_accept_num,
     
     avg(x_12_cgpa) AS avg_12_cgpa,
     SUM(x_12_cgpa_325)/COUNT(x_12_cgpa) AS x_12_325_percent,
@@ -107,4 +108,5 @@ join_admit_data AS
     avg(sat_highest_total) AS avg_sat_highest_total,
     
     FROM join_admit_data
-    GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
+    WHERE admit_college_name = "University of California-Davis"
+        GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
