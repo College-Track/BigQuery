@@ -120,20 +120,36 @@ admit_profile AS
     
     SUM(college_acceptance_count) AS avg_admit_apps_accept_num,
     
-    ROUND(avg(x_12_cgpa),2) AS avg_12_cgpa,
+    SUM(x_12_cgpa) AS avg_12_cgpa_num,
     SUM(x_12_cgpa_325) AS x_12_cgpa_325_percent_num,
     SUM(x_12_cgpa_275_325) AS x_12_cgpa_275_325_percent_num,
     SUM(x_12_cgpa_below_275) AS x_12_cgpa_below_275_percent_num,
-    COUNT(x_12_cgpa) AS x_12_cgpa_percent_denom,
+    SUM(CASE
+        WHEN x_12_cgpa IS NOT NULL THEN 1
+        ELSE 0
+    END) AS x_12_cgpa_denom,
     
-    ROUND(avg(x_11_cgpa),2) AS avg_11_cgpa,
+    SUM(x_11_cgpa) AS avg_11_cgpa_num,
     SUM(x_11_cgpa_325) AS x_11_cgpa_325_percent_num,
     SUM(x_11_cgpa_275_325) AS x_11_cgpa_275_325_percent_num,
     SUM(x_11_cgpa_below_275) AS x_11_cgpa_below_275_percent_num,
-    COUNT(x_11_cgpa) AS x_11_cgpa_percent_denom,
+    SUM(CASE
+        WHEN x_11_cgpa IS NOT NULL THEN 1
+        ELSE 0
+    END) AS x_11_cgpa_denom,
     
-    avg(act_highest_comp) AS avg_act_highest_comp,
-    avg(sat_highest_total) AS avg_sat_highest_total,
+    SUM(act_highest_comp) AS avg_act_highest_comp_num,
+    SUM(CASE
+        WHEN act_highest_comp IS NOT NULL THEN 1
+        ELSE 0
+    END) AS avg_act_highest_comp_denom,
+    
+    SUM(sat_highest_total) AS avg_sat_highest_total_num,
+    SUM(CASE
+        WHEN sat_highest_total IS NOT NULL THEN 1
+        ELSE 0
+    END) AS avg_sat_highest_total_denom,
+    
     
     FROM join_admit_data
     GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
