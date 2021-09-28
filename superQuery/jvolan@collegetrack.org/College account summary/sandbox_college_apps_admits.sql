@@ -157,7 +157,7 @@ admit_profile AS
    
     SELECT
     total_applications,
-    app_college_name,
+    app_college_name AS college_name,
     app_college_id AS account_id,
     ap.* except (admit_college_name),
     
