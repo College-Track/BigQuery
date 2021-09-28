@@ -160,6 +160,12 @@ admit_profile AS
     app_college_name AS college_name,
     app_college_id AS account_id,
     ap.* except (admit_college_name),
+    CASE
+        WHEN ap.readiness_composite_off_c = "1. Ready" THEN 3
+        WHEN ap.readiness_composite_off_c = "2. Near Ready" THEN 2
+        WHEN ap.readiness_composite_off_c = "3. Not Ready" THEN 1
+        ELSE 0
+    END AS readiness_sort,
     "" AS dummy_dimension,
     
     FROM gather_college_apps gca
