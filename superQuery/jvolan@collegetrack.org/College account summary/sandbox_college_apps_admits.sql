@@ -121,14 +121,16 @@ admit_profile AS
     SUM(college_acceptance_count) AS avg_admit_apps_accept_num,
     
     avg(x_12_cgpa) AS avg_12_cgpa,
-    SUM(x_12_cgpa_325)/COUNT(x_12_cgpa) AS x_12_325_percent,
-    SUM(x_12_cgpa_275_325)/COUNT(x_12_cgpa) AS x_12_cgpa_275_325_percent,
-    SUM(x_12_cgpa_below_275)/COUNT(x_12_cgpa) AS x_12_cgpa_below_275_percent,
+    SUM(x_12_cgpa_325) AS x_12_cgpa_325_percent_num,
+    SUM(x_12_cgpa_275_325) AS x_12_cgpa_275_325_percent_num,
+    SUM(x_12_cgpa_below_275) AS x_12_cgpa_below_275_percent_num,
+    COUNT(x_12_cgpa) AS x_12_cgpa_percent_denom,
     
     avg(x_11_cgpa) AS avg_11_cgpa,
-    SUM(x_11_cgpa_325)/COUNT(x_11_cgpa) AS x_11_325_percent,
-    SUM(x_11_cgpa_275_325)/COUNT(x_11_cgpa) AS x_11_cgpa_275_325_percent,
-    SUM(x_11_cgpa_below_275)/COUNT(x_11_cgpa) AS x_11_cgpa_below_275_percent,
+    SUM(x_11_cgpa_325) AS x_11_cgpa_325_percent_num,
+    SUM(x_11_cgpa_275_325) AS x_11_cgpa_275_325_percent_num,
+    SUM(x_11_cgpa_below_275) AS x_11_cgpa_below_275_percent_num,
+    COUNT(x_11_cgpa) AS x_11_cgpa_percent_denom,
     
     avg(act_highest_comp) AS avg_act_highest_comp,
     avg(sat_highest_total) AS avg_sat_highest_total,
