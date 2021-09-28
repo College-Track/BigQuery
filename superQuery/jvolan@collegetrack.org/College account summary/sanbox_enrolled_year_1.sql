@@ -17,6 +17,7 @@
     LEFT JOIN `data-warehouse-289815.salesforce.account` a ON a.id = ca.college_university_c
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = student_c
     AND admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred") 
+    AND a.name = college_first_enrolled_school_c
 
 /*
 ),
