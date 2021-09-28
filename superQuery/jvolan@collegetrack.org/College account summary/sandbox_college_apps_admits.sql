@@ -144,10 +144,6 @@ admit_profile AS
     app_college_name,
     app_college_id AS account_id,
     ap.* except (admit_college_name),
-    CASE
-        WHEN total_admits > total_applications THEN NULL
-        ELSE total_admits / total_applications
-    END AS ct_admit_rate
     
     FROM gather_college_apps gca
     LEFT JOIN admit_profile ap ON admit_college_id = app_college_id
