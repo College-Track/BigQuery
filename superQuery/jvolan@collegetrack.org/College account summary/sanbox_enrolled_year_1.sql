@@ -20,10 +20,7 @@ WITH gather_college_admit_enrolled AS
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = student_c
     AND admission_status_c IN ("Accepted", "Accepted and Enrolled","Accepted and Deferred") 
     
-),
-
-identify_admits_enrolled AS
-(
+)
     SELECT
     *,
     CASE
@@ -32,19 +29,8 @@ identify_admits_enrolled AS
     END AS admitted_and_enrolled
     
     FROM gather_college_admit_enrolled
-),
+    WHERE cfe_name = admit_college_name
 
-clean_admits_enrolled_list AS
-(
-    SELECT 
-    *
-    FROM identify_admits_enrolled
-    WHERE admitted_and_enrolled = 1
-    
- )   
-    SELECT
-    *
-    FROM clean_admits_enrolled_list
     
 /*
 ),
