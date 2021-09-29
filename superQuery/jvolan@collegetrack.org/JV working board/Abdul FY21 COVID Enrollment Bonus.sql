@@ -11,3 +11,4 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AY_Name = "AY 2020-21"
     AND student_audit_status_c IN ("Current CT HS Student","Onboarding")
+    AND attended_workshops_c > 0
