@@ -9,7 +9,7 @@ SELECT
     college_partnership_type_c,
     billing_state,
     CASE
-        WHEN website IS NULL THEN CONCAT("http://www.google.com/search?q=",name, " & ", billing_state)
+        WHEN website IS NULL THEN CONCAT("http://www.google.com/search?q=",name, "+", billing_state)
         ELSE website
     END AS website,
     ipeds_id_c,
