@@ -1,6 +1,7 @@
  
     SELECT
     count(Contact_Id),
+    GAS_Name
     
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
