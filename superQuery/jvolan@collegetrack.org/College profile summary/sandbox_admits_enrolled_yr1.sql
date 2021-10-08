@@ -226,11 +226,11 @@ join_data AS
     
     SUM(at_gpa_standing_flag) AS at_gpa_standing_flag_num,
     
-    CASE
+    MAX(CASE
         WHEN s_year_1_cgpa_bucket = "3.25+" THEN 1
         WHEN s_year_1_cgpa_bucket = "2.75-3.25" THEN 2
         WHEN s_year_1_cgpa_bucket = "Below 2.75" THEN 3
-    END AS s_year_1_cgpa_bucket_sort,
+    END) AS s_year_1_cgpa_bucket_sort,
     
     "" AS dummy_dimension
 
