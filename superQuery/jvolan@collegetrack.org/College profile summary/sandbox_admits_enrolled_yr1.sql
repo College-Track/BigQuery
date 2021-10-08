@@ -1,4 +1,4 @@
- SELECT
+    SELECT
     Contact_Id AS at_contact_id,
     AT_Grade_c,
     school_c,
@@ -80,4 +80,4 @@
     AND term_c <> "Summer"
     AND AT_Record_Type_Name = "College/University Semester"
     AND school_c IS NOT NULL
-    AND enrollment IS NOT NULL
+    AND enrollment_status_c IS NOT NULL
