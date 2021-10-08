@@ -2,7 +2,8 @@ WITH gather_year_1_enrolled AS
 (
     SELECT
     Contact_Id AS at_contact_id,
-    school_c,
+    AT_Grade_c,
+    AT_School_Name,
     term_c,
     enrollment_status_c,
     academic_standing_c,
