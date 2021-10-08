@@ -180,6 +180,20 @@ join_data AS
     SUM(es_other) AS es_o_num,
     SUM(es_fulltime+es_parttime+es_other) AS es_denom,
     
+    SUM(s_year_1_cgpa) AS s_year_1_cgpa_num,
+    SUM(
+        CASE
+        WHEN s_year_1_cgpa IS NOT NULL THEN 1
+        ELSE 0
+    END) AS s_year_1_cgpa_denom,
+    
+    SUM(s_year_1_c_credits) AS s_year_1_c_credits_num,
+    SUM(
+        CASE
+        WHEN s_year_1_c_credits IS NOT NULL THEN 1
+        ELSE 0
+    END) AS s_year_1_c_credits_denom,
+    
     "" AS dummy_dimension
     
     FROM join_data
