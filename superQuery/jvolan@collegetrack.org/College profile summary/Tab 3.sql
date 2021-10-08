@@ -50,6 +50,9 @@ WITH gather_year_1_enrolled AS
     first_year_loan_debt_c,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    WHERE AT_Grade_c = "Year 1"
+    AND term_c <> "Summer"
+    AND AT_Record_Type_Name = "College/University"
 ),
 
     
