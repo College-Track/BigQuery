@@ -51,6 +51,9 @@ WITH gather_year_1_enrolled AS
     year_1_college_math_course_grade_c,
     first_year_loan_debt_c,
     
+    loans_c,
+    ability_to_pay_c,
+    
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AT_Grade_c = "Year 1"
     AND term_c <> "Summer"
