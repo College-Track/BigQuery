@@ -53,6 +53,7 @@ WITH gather_year_1_enrolled AS
     WHERE AT_Grade_c = "Year 1"
     AND term_c <> "Summer"
     AND AT_Record_Type_Name = "College/University Semester"
+    AND school_c IS NOT NULL
 ),
 
     
