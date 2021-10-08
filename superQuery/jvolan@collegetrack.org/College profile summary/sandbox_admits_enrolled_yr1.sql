@@ -149,7 +149,8 @@ join_data AS
     high_school_graduating_class_c,
     readiness_composite_off_c,
     x_11_cgpa_bucket,
-    COUNT(DISTINCT(Contact_Id)) AS total_students,
+    COUNT(DISTINCT(Contact_Id)) AS student_count,
+    COUNT(AT_School_Name) AS at_count,
     
     SUM(x_12_cgpa) AS avg_12_cgpa_num,
     SUM(x_12_cgpa_325) AS x_12_cgpa_325_percent_num,
@@ -205,6 +206,8 @@ join_data AS
         WHEN s_year_1_c_credits IS NOT NULL THEN 1
         ELSE 0
     END) AS s_year_1_c_credits_denom,
+    
+    SUM(at_gpa_standing_flag) AS at_gpa_standing_flag_num,
     
     "" AS dummy_dimension
     
