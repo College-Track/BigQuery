@@ -34,14 +34,20 @@ WITH gather_year_1_enrolled AS
     END AS s_at_term_gpa,
     
     CASE
+        WHEN term_c = "Spring" THEN credits_accumulated_c
+        ELSE NULL
+    END AS s_year_1_c_credits,
+    
+    CASE
         WHEN term_c = "Spring" THEN AT_Cumulative_GPA
         ELSE NULL
     END AS s_year_1_cgpa,
     
     CASE
-        WHEN term_c = "Spring" THEN credits_accumulated_c
+        WHEN term_c = "Spring" THEN AT_Cumulative_GPA_bucket
         ELSE NULL
-    END AS s_year_1_c_credits,
+    END AS s_year_1_cgpa_bucket,
+
     
     CASE
         WHEN 
@@ -149,6 +155,7 @@ join_data AS
     high_school_graduating_class_c,
     readiness_composite_off_c,
     x_11_cgpa_bucket,
+    s_year_1_cgpa_bucket,
     COUNT(DISTINCT(Contact_Id)) AS student_count,
     COUNT(AT_School_Name) AS at_count,
     
@@ -193,13 +200,6 @@ join_data AS
     SUM(es_other) AS es_o_num,
     SUM(es_fulltime+es_parttime+es_other) AS es_denom,
     
-    SUM(s_year_1_cgpa) AS s_year_1_cgpa_num,
-    SUM(
-        CASE
-        WHEN s_year_1_cgpa IS NOT NULL THEN 1
-        ELSE 0
-    END) AS s_year_1_cgpa_denom,
-    
     SUM(s_year_1_c_credits) AS s_year_1_c_credits_num,
     SUM(
         CASE
@@ -207,9 +207,17 @@ join_data AS
         ELSE 0
     END) AS s_year_1_c_credits_denom,
     
+    SUM(s_year_1_cgpa) AS s_year_1_cgpa_num,
+    SUM(
+        CASE
+        WHEN s_year_1_cgpa IS NOT NULL THEN 1
+        ELSE 0
+    END) AS s_year_1_cgpa_denom,
+
+    
     SUM(at_gpa_standing_flag) AS at_gpa_standing_flag_num,
     
     "" AS dummy_dimension
     
     FROM join_data
-    GROUP BY AT_School_Name,school_c, site_short, high_school_graduating_class_c, x_11_cgpa_bucket, readiness_composite_off_c
+    GROUP BY AT_School_Name,school_c, site_short, high_school_graduating_class_c, x_11_cgpa_bucket, readiness_composite_off_c, s_year_1_cgpa_bucket
