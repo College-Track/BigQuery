@@ -255,7 +255,9 @@ join_data AS
     END) AS year_1_math_pass_denom,
     first_year_college_math_course_c,
     
-    "" AS dummy_dimension
+    "" AS dummy_dimension,
+    CAST(NULL AS INT) AS loan_calc_year_input,
+
 
     
     FROM join_data
