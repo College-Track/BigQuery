@@ -248,7 +248,7 @@ join_data AS
     SUM(ar_ability_to_pay_full_cost_num) AS ar_ability_to_pay_full_cost_num,
     SUM(ar_ability_to_pay_full_cost_denom) AS ar_ability_to_pay_full_cost_denom,
     
-    SUM(year_1_math_pass_num),
+    SUM(year_1_math_pass_num) AS year_1_math_pass_num,
     SUM(CASE
         WHEN year_1_college_math_course_grade_c IS NOT NULL THEN 1
         ELSE 0
