@@ -51,8 +51,20 @@ WITH gather_year_1_enrolled AS
     year_1_college_math_course_grade_c,
     first_year_loan_debt_c,
     
-    loans_c,
-    ability_to_pay_c,
+    CASE
+        WHEN loans_c = "LN_R" THEN 1
+        ELSE 0
+    END AS ar_loans_at_risk_30k_num,
+    CASE WHEN loans_c IS NOT NULL THEN 1
+        ELSE 0
+    END AS ar_loans_at_risk_30k_denom,
+    CASE
+        WHEN ability_to_pay_c = "ATP_G" THEN 1
+        ELSE 0
+    END AS ar_ability_to_pay_full_cost_num,
+     CASE WHEN ability_to_pay_c IS NOT NULL THEN 1
+        ELSE 0
+    END AS ar_ability_to_pay_full_cost_denom,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AT_Grade_c = "Year 1"
