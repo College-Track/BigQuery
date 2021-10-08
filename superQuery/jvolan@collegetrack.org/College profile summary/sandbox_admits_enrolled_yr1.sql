@@ -163,9 +163,8 @@ year_1_profile AS
     
     "" AS dummy_dimension
     
-    
     FROM join_data
-    GROUP BY college_name, account_id,site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
+    GROUP BY school_c, AT_School_Name, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
 )
 
     SELECT
