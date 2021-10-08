@@ -44,8 +44,16 @@ WITH gather_year_1_enrolled AS
     END AS s_year_1_cgpa,
     
     CASE
-        WHEN term_c = "Spring" THEN AT_Cumulative_GPA_bucket
-        ELSE NULL
+        WHEN 
+        (term_c = "Spring"
+        AND AT_Cumulative_GPA < 2.75) THEN "Below 2.75"
+        WHEN 
+        (term_c = "Spring"
+        AND AT_Cumulative_GPA >= 2.75
+        AND AT_Cumulative_GPA <3.25) THEN "2.75-3.25"
+        WHEN
+        (term_c = "Spring"
+        AND AT_Cumulative_GPA >= 3.25) THEN "3.25+"
     END AS s_year_1_cgpa_bucket,
 
     
