@@ -253,11 +253,12 @@ join_data AS
         WHEN year_1_college_math_course_grade_c IS NOT NULL THEN 1
         ELSE 0
     END) AS year_1_math_pass_denom,
-    first_year_college_math_course_c,
-    
-    "" AS dummy_dimension,
-    CAST(NULL AS INT) AS loan_calc_year_input,
+    CASE
+        WHEN first_year_college_math_course_c = "No math course taken in year 1" THEN NULL
+        ELSE first_year_college_math_course_c
+    END AS first_year_college_math_course_c,
 
+    "" AS dummy_dimension,
 
     
     FROM join_data
