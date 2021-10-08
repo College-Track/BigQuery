@@ -80,3 +80,4 @@ SELECT
     AND term_c <> "Summer"
     AND AT_Record_Type_Name = "College/University Semester"
     AND school_c IS NOT NULL
+    AND AT_Enrollment_Status_c IS NOT NULL
