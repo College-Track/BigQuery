@@ -75,6 +75,10 @@ WITH gather_year_1_enrolled AS
     
     first_year_college_math_course_c,
     year_1_college_math_course_grade_c,
+    CASE
+        WHEN year_1_college_math_course_grade_c IN ("A","B","C","Pass (P/NP)") THEN 1
+        ELSE 0
+    END AS year_1_math_pass_num,
     first_year_loan_debt_c,
     
     CASE
@@ -244,8 +248,15 @@ join_data AS
     SUM(ar_ability_to_pay_full_cost_num) AS ar_ability_to_pay_full_cost_num,
     SUM(ar_ability_to_pay_full_cost_denom) AS ar_ability_to_pay_full_cost_denom,
     
+    SUM(year_1_math_pass_num),
+    SUM(CASE
+        WHEN year_1_college_math_course_grade_c IS NOT NULL THEN 1
+        ELSE 0
+    END) AS year_1_math_pass_denom,
+    first_year_college_math_course_c,
+    
     "" AS dummy_dimension
 
     
     FROM join_data
-    GROUP BY AT_School_Name,school_c, site_short, high_school_graduating_class_c, x_11_cgpa_bucket, readiness_composite_off_c, s_year_1_cgpa_bucket
+    GROUP BY AT_School_Name,school_c, site_short, high_school_graduating_class_c, x_11_cgpa_bucket, readiness_composite_off_c, s_year_1_cgpa_bucket,first_year_college_math_course_c
