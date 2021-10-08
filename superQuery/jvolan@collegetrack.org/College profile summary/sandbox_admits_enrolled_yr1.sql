@@ -54,6 +54,7 @@ WITH gather_year_1_enrolled AS
         WHEN
         (term_c = "Spring"
         AND AT_Cumulative_GPA >= 3.25) THEN "3.25+"
+        ELSE NULL
     END AS s_year_1_cgpa_bucket,
 
     
@@ -225,7 +226,14 @@ join_data AS
     
     SUM(at_gpa_standing_flag) AS at_gpa_standing_flag_num,
     
+    CASE
+        WHEN s_year_1_cgpa_bucket = "3.25+" THEN 1
+        WHEN s_year_1_cgpa_bucket = "2.75-3.25" THEN 2
+        WHEN s_year_1_cgpa_bucket = "Below 2.75" THEN 3
+    END AS s_year_1_cgpa_bucket_sort,
+    
     "" AS dummy_dimension
+
     
     FROM join_data
     GROUP BY AT_School_Name,school_c, site_short, high_school_graduating_class_c, x_11_cgpa_bucket, readiness_composite_off_c, s_year_1_cgpa_bucket
