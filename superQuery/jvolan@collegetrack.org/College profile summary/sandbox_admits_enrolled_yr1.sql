@@ -232,6 +232,18 @@ join_data AS
         WHEN s_year_1_cgpa_bucket = "Below 2.75" THEN 3
     END) AS s_year_1_cgpa_bucket_sort,
     
+    SUM(first_year_loan_debt_c) AS first_year_loan_debt_num,
+    SUM(CASE
+        WHEN first_year_loan_debt_c IS NOT NULL THEN 1
+        ELSE 0
+    END) AS first_year_loan_debt_denom,
+    
+    SUM(ar_loans_at_risk_30k_num) AS ar_loans_at_risk_30k_num,
+    SUM(ar_loans_at_risk_30k_denom) AS ar_loans_at_risk_30k_denom,
+    
+    SUM(ar_ability_to_pay_full_cost_num) AS ar_ability_to_pay_full_cost_num,
+    SUM(ar_ability_to_pay_full_cost_denom) AS ar_ability_to_pay_full_cost_denom,
+    
     "" AS dummy_dimension
 
     
