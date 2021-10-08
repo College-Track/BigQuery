@@ -4,6 +4,7 @@ WITH gather_year_1_enrolled AS
     Contact_Id AS at_contact_id,
     AT_Grade_c,
     AT_School_Name,
+    AT_school_type,
     term_c,
     enrollment_status_c,
     academic_standing_c,
