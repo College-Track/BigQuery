@@ -175,6 +175,18 @@ join_data AS
         ELSE 0
     END) AS f_at_term_gpa_denom,
     
+    SUM(w_at_term_gpa) AS w_at_term_gpa_num,
+    SUM(CASE
+        WHEN w_at_term_gpa IS NOT NULL THEN 1
+        ELSE 0
+    END) AS w_at_term_gpa_denom,
+    
+    SUM(s_at_term_gpa) AS s_at_term_gpa_num,
+    SUM(CASE
+        WHEN s_at_term_gpa IS NOT NULL THEN 1
+        ELSE 0
+    END) AS s_at_term_gpa_denom,
+    
     SUM(es_fulltime) AS es_ft_num,
     SUM(es_parttime) AS es_pt_num,
     SUM(es_other) AS es_o_num,
