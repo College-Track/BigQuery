@@ -129,10 +129,8 @@ join_data AS
     FROM
     gather_year_1_enrolled gy
     LEFT JOIN gather_student_data gsd ON gsd.Contact_Id = gy.at_contact_id
-),
+)
 
-year_1_profile AS
-(   
     SELECT
     school_c AS account_id,
     AT_School_Name AS college_name,
@@ -164,9 +162,4 @@ year_1_profile AS
     "" AS dummy_dimension
     
     FROM join_data
-    GROUP BY school_c, AT_School_Name, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
-)
-
-    SELECT
-    *
-    FROM join_data
+    GROUP BY AT_School_Name,school_c, site_short, high_school_graduating_class_c, x_11_cgpa_bucket, readiness_composite_off_c
