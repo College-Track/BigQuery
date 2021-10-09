@@ -101,7 +101,7 @@ WITH gather_year_1_enrolled AS
         (credits_attempted_current_term_c IS NULL
         OR credits_attempted_current_term_c = 0) THEN NULL
         ELSE credits_awarded_current_term_c/credits_attempted_current_term_c 
-    END AS sap_percent_at_num,
+    END AS avg_sap_percent_at,
     
      CASE
         WHEN credits_attempted_current_term_c IS NOT NULL THEN 1
@@ -278,7 +278,7 @@ join_data AS
         ELSE first_year_college_math_course_c
     END AS first_year_college_math_course_c,
     
-    SUM(sap_percent_at_num) AS sap_percent_at_num,
+    AVG(avg_sap_percent_at) AS avg_sap_percent_at,
     SUM(met_sap_requirement_6667_num) AS met_sap_requirement_6667_num,
     SUM(sap_at_denom) AS sap_at_denom,
     
