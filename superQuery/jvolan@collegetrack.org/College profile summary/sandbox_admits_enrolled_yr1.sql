@@ -278,7 +278,7 @@ join_data AS
         ELSE first_year_college_math_course_c
     END AS first_year_college_math_course_c,
     
-    AVG(avg_sap_percent_at) AS avg_sap_percent_at,
+    ROUND(AVG(avg_sap_percent_at),0) AS avg_sap_percent_at,
     SUM(met_sap_requirement_6667_num) AS met_sap_requirement_6667_num,
     SUM(sap_at_denom) AS sap_at_denom,
     
