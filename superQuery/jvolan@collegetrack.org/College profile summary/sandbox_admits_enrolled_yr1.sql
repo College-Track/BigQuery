@@ -96,6 +96,26 @@ WITH gather_year_1_enrolled AS
         ELSE 0
     END AS ar_ability_to_pay_full_cost_denom,
     
+    CASE
+        WHEN 
+        (credits_attempted_current_term_c IS NULL
+        OR credits_attempted_current_term_c = 0) THEN NULL
+        ELSE credits_awarded_current_term_c/credits_attempted_current_term_c 
+    END AS sap_percent_at_num,
+    
+     CASE
+        WHEN credits_attempted_current_term_c IS NOT NULL THEN 1
+        ELSE 0
+    END AS sap_at_denom,
+    
+    CASE
+        WHEN 
+        (credits_attempted_current_term_c IS NULL
+        OR credits_attempted_current_term_c = 0) THEN NULL
+        WHEN (credits_awarded_current_term_c/credits_attempted_current_term_c) > .6667 THEN 1
+        ELSE 0
+    END AS met_sap_requirement_6667_num,
+    
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AT_Grade_c = "Year 1"
     AND term_c <> "Summer"
@@ -257,6 +277,11 @@ join_data AS
         WHEN first_year_college_math_course_c = "No math course taken in year 1" THEN NULL
         ELSE first_year_college_math_course_c
     END AS first_year_college_math_course_c,
+    
+    SUM(sap_percent_at_num) AS sap_percent_at_num,
+    SUM(met_sap_requirement_6667_num) AS met_sap_requirement_6667_num,
+    SUM(sap_at_denom) AS sap_at_denom,
+    
 
     "" AS dummy_dimension,
 
