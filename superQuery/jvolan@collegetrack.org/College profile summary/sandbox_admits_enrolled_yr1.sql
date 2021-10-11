@@ -191,7 +191,8 @@ gather_year_1_enrolled AS
     END AS avg_sap_percent_at,
     
      CASE
-        WHEN credits_attempted_current_term_c IS NOT NULL THEN 1
+        WHEN credits_attempted_current_term_c IS NOT NULL
+        OR credits_attempted_current_term_c >0 THEN 1
         ELSE 0
     END AS sap_at_denom,
     
@@ -199,7 +200,7 @@ gather_year_1_enrolled AS
         WHEN 
         (credits_attempted_current_term_c IS NULL
         OR credits_attempted_current_term_c = 0) THEN NULL
-        WHEN (credits_awarded_current_term_c/credits_attempted_current_term_c) > .6667 THEN 1
+        WHEN (credits_awarded_current_term_c/credits_attempted_current_term_c) >= .6667 THEN 1
         ELSE 0
     END AS met_sap_requirement_6667_num,
     
