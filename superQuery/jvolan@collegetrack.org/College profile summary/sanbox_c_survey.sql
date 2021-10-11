@@ -59,8 +59,11 @@
         ELSE 0
     END AS cs_cultural_comp_disagree,
     
-   
-
+    CASE
+        WHEN in_the_past_12th_months_were_you_involved_in_a_club_organization_at_your_college IS NULL THEN NULL
+        WHEN in_the_past_12th_months_were_you_involved_in_a_club_organization_at_your_college = "Yes" THEN 1
+        ELSE 0
+    END AS cs_club_participation,
     
     FROM `data-warehouse-289815.surveys.fy20_ps_survey`
     LEFT JOIN `data-warehouse-289815.salesforce.account` a ON name = current_college_clean
