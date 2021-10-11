@@ -1,4 +1,23 @@
-WITH gather_year_1_enrolled AS
+WITH gather_college_survey AS
+(
+    SELECT
+    Contact_Id AS cs_contact_id,
+    current_college_clean AS college_name,
+    a.id AS account_id,
+    "Spring" AS cs_term,
+    
+    i_felt_i_belonged_on_my_college_campus AS cs_belong_on_campus,
+    most_students_i_met_were_focused_on_getting_a_bachelors_degree AS cs_student_ba_focus,
+    my_college_is_culturally_competenthelp_note_i_felt_that_the_adults_on_campus_hel AS cs_cultural_comp,
+    
+    i_could_pay_for_tuition_and_living_expenses AS cs_afford_school,
+    
+    FROM `data-warehouse-289815.surveys.fy20_ps_survey`
+    LEFT JOIN `data-warehouse-289815.salesforce.account` a ON name = current_college_clean
+    WHERE are_you_currently_in_your_freshman_year_of_college = "Yes"
+),
+
+gather_year_1_enrolled AS
 (
     SELECT
     Contact_Id AS at_contact_id,
@@ -117,70 +136,9 @@ WITH gather_year_1_enrolled AS
     END AS met_sap_requirement_6667_num,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    LEFT JOIN gather_college_survey ON cs_contact_id = Contact_Id AND term_c = cs_term
     WHERE AT_Grade_c = "Year 1"
     AND term_c <> "Summer"
     AND AT_Record_Type_Name = "College/University Semester"
     AND school_c IS NOT NULL
     AND AT_Enrollment_Status_c IS NOT NULL
-),
-
-    
-
-gather_student_data AS
-(
-    SELECT
-    Contact_Id,
-    high_school_graduating_class_c,
-    site_short,
-    AT_Cumulative_GPA AS x_12_cgpa,
-        CASE
-            WHEN AT_Cumulative_GPA >=3.25 THEN 1
-        END AS x_12_cgpa_325,
-        CASE
-            WHEN AT_Cumulative_GPA <3.25
-            AND AT_Cumulative_GPA >=2.75 THEN 1
-        END AS x_12_cgpa_275_325,
-        CASE
-            WHEN AT_Cumulative_GPA <2.75 THEN 1
-        END AS x_12_cgpa_below_275,
-        
-    college_eligibility_gpa_11th_grade AS x_11_cgpa,
-        CASE
-            WHEN college_eligibility_gpa_11th_grade >=3.25 THEN "3.25+"
-            WHEN 
-            (college_eligibility_gpa_11th_grade < 3.25
-            AND college_eligibility_gpa_11th_grade >= 2.75) THEN "2.75-3.25"
-            WHEN college_eligibility_gpa_11th_grade < 2.75 THEN "Below 2.75"
-            ELSE NULL
-        END AS x_11_cgpa_bucket,
-        CASE
-            WHEN college_eligibility_gpa_11th_grade >=3.25 THEN 1
-        END AS x_11_cgpa_325,
-        CASE
-            WHEN college_eligibility_gpa_11th_grade <3.25
-            AND college_eligibility_gpa_11th_grade >=2.75 THEN 1
-        END AS x_11_cgpa_275_325,
-        CASE
-            WHEN college_eligibility_gpa_11th_grade <2.75 THEN 1
-        END AS x_11_cgpa_below_275,
-    readiness_composite_off_c,
-    
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-    WHERE AT_Grade_c = "12th Grade"
-    AND term_c = "Spring"
-),
-
-join_data AS
-(    
-    SELECT
-    gy.*,
-    gsd.*
-    
-    FROM
-    gather_year_1_enrolled gy
-    LEFT JOIN gather_student_data gsd ON gsd.Contact_Id = gy.at_contact_id
-
-)
-    SELECT
-    *
-    FROM join_data
