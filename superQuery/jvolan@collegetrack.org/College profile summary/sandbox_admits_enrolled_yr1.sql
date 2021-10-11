@@ -215,6 +215,9 @@ gather_year_1_enrolled AS
     cs_cultural_comp_denom,
     cs_cultural_comp_agree,
     cs_cultural_comp_disagree,
+    cs_club_participation,
+    cs_needed_job_yn,
+    cs_job_20_hours,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN gather_college_survey ON cs_contact_id = Contact_Id AND cs_term = term_c
@@ -398,6 +401,16 @@ join_data AS
     SUM(cs_cultural_comp_denom) AS cs_cultural_comp_denom,
     SUM(cs_cultural_comp_agree) AS cs_cultural_comp_agree,
     SUM(cs_cultural_comp_disagree) AS cs_cultural_comp_disagree,
+    
+    SUM(cs_club_participation) AS cs_club_participation_num,
+    COUNT(cs_club_participation) AS cs_club_participation_denom,
+    
+    SUM(cs_needed_job_yn) AS cs_needed_job_yn_num,
+    COUNT(cs_needed_job_yn) AS cs_needed_job_yn_denom,
+    
+    SUM(cs_job_20_hours) AS cs_job_20_hours_num,
+    COUNT(cs_job_20_hours) AS cs_job_20_hours_denom,
+    
     
 
     "" AS dummy_dimension,
