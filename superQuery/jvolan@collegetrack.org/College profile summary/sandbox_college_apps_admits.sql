@@ -52,16 +52,6 @@ gather_admit_student_data AS
     site_short,
     AT_Cumulative_GPA AS x_12_cgpa,
         CASE
-            WHEN AT_Cumulative_GPA >=3.25 THEN "3.25+"
-            WHEN 
-            (AT_Cumulative_GPA < 3.25
-            AND AT_Cumulative_GPA >= 2.75) THEN "2.75-3.25"
-            WHEN AT_Cumulative_GPA < 2.75 THEN "Below 2.75"
-            ELSE NULL
-    END AS x_12_cgpa_bucket,
-
-    
-        CASE
             WHEN AT_Cumulative_GPA >=3.25 THEN 1
         END AS x_12_cgpa_325,
         CASE
@@ -91,6 +81,7 @@ gather_admit_student_data AS
         CASE
             WHEN college_eligibility_gpa_11th_grade <2.75 THEN 1
         END AS x_11_cgpa_below_275,
+    AT_Cumulative_GPA_bucket,
     act_highest_composite_official_c AS act_highest_comp,
     sat_highest_total_single_sitting_c AS sat_highest_total,
     readiness_composite_off_c,
@@ -123,7 +114,6 @@ admit_profile AS
     high_school_graduating_class_c,
     readiness_composite_off_c,
     x_11_cgpa_bucket,
-    x_12_cgpa_bucket,
     SUM(admitted_y_n) AS total_admits,
     
     SUM(college_app_count) AS avg_admit_apps_applied_num,
@@ -150,19 +140,19 @@ admit_profile AS
     
     SUM(act_highest_comp) AS avg_act_highest_comp_num,
     SUM(CASE
-        WHEN act_highest_comp IS NOT NULL THEN 1
+        WHEN act_highest_comp >0 THEN 1
         ELSE 0
     END) AS avg_act_highest_comp_denom,
     
     SUM(sat_highest_total) AS avg_sat_highest_total_num,
     SUM(CASE
-        WHEN sat_highest_total IS NOT NULL THEN 1
+        WHEN sat_highest_total > 0 THEN 1
         ELSE 0
     END) AS avg_sat_highest_total_denom,
     SUM(total_community_service_hours_completed_c) AS total_cs_hours,
     
     FROM join_admit_data
-    GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket, x_12_cgpa_bucket, readiness_composite_off_c
+    GROUP BY admit_college_name, admit_college_id, site_short, high_school_graduating_class_c, x_11_cgpa_bucket ,readiness_composite_off_c
 )
    
     SELECT
