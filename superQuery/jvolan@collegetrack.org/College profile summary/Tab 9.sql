@@ -6,7 +6,12 @@
     AT_school_type,
     term_c,
 
-    credits_awarded_current_term_c/credits_attempted_current_term_c AS at_sap_credit_rate,
+    CASE
+         WHEN 
+        (credits_attempted_current_term_c IS NULL
+        OR credits_attempted_current_term_c = 0) THEN NULL
+        ELSE credits_awarded_current_term_c/credits_attempted_current_term_c 
+    END AS at_sap_credit_rate,
     CASE
         WHEN 
         (credits_attempted_current_term_c IS NULL
