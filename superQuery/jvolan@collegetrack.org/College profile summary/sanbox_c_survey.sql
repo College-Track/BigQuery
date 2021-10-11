@@ -10,6 +10,7 @@
         WHEN i_felt_i_belonged_on_my_college_campus IN ("Agree") THEN 1
         ELSE 0
     END AS cs_belong_num,
+    i_felt_i_belonged_on_my_college_campus,
     
     
     most_students_i_met_were_focused_on_getting_a_bachelors_degree AS cs_student_ba_focus,
