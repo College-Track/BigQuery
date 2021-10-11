@@ -61,7 +61,7 @@
     
     CASE
         WHEN in_the_past_12th_months_were_you_involved_in_a_club_organization_at_your_college IS NULL THEN NULL
-        WHEN in_the_past_12th_months_were_you_involved_in_a_club_organization_at_your_college = "Yes" THEN 1
+        WHEN in_the_past_12th_months_were_you_involved_in_a_club_organization_at_your_college IN ("Yes, more than one club/organization","Yes, one club/organization") THEN 1
         ELSE 0
     END AS cs_club_participation,
     
