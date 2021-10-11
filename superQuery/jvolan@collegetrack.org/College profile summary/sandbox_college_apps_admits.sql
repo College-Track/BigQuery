@@ -51,6 +51,15 @@ gather_admit_student_data AS
     high_school_graduating_class_c,
     site_short,
     AT_Cumulative_GPA AS x_12_cgpa,
+        CASE
+            WHEN AT_Cumulative_GPA >=3.25 THEN "3.25+"
+            WHEN 
+            (AT_Cumulative_GPA < 3.25
+            AND AT_Cumulative_GPA >= 2.75) THEN "2.75-3.25"
+            WHEN AT_Cumulative_GPA < 2.75 THEN "Below 2.75"
+            ELSE NULL
+    END AS x_12_cgpa_bucket,
+
     
         CASE
             WHEN AT_Cumulative_GPA >=3.25 THEN 1
@@ -82,7 +91,6 @@ gather_admit_student_data AS
         CASE
             WHEN college_eligibility_gpa_11th_grade <2.75 THEN 1
         END AS x_11_cgpa_below_275,
-    AT_Cumulative_GPA_bucket AS x_12_cgpa_bucket,
     act_highest_composite_official_c AS act_highest_comp,
     sat_highest_total_single_sitting_c AS sat_highest_total,
     readiness_composite_off_c,
