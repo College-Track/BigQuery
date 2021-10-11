@@ -7,7 +7,7 @@
     
     CASE
         WHEN i_felt_i_belonged_on_my_college_campus IS NULL THEN NULL
-        WHEN i_felt_i_belonged_on_my_college_campus IN ("Agree") THEN 1
+        WHEN i_felt_i_belonged_on_my_college_campus IN ("Strongly Agree", "Agree") THEN 1
         ELSE 0
     END AS cs_belong_num,
     i_felt_i_belonged_on_my_college_campus,
