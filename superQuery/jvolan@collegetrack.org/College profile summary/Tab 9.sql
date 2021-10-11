@@ -5,7 +5,8 @@
     AT_School_Name,
     AT_school_type,
     term_c,
-
+    credits_attempted_current_term_c,
+    credits_awarded_current_term_c,
     CASE
          WHEN 
         (credits_attempted_current_term_c IS NULL
