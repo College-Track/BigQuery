@@ -135,6 +135,11 @@ gather_year_1_enrolled AS
         ELSE 0
     END AS met_sap_requirement_6667_num,
     
+    cs_belong_on_campus,
+    cs_student_ba_focus,
+    cs_cultural_comp,
+    cs_afford_school,
+    
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN gather_college_survey ON cs_contact_id = Contact_Id AND term_c = cs_term
     WHERE AT_Grade_c = "Year 1"
