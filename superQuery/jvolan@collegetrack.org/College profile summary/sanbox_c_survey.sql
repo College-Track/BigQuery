@@ -1,6 +1,7 @@
     SELECT
     Contact_Id,
     current_college_clean AS college_name,
+    a.id,
     "Spring" AS cs_term,
     
     
@@ -14,5 +15,6 @@
     
     
     FROM `data-warehouse-289815.surveys.fy20_ps_survey`
+    LEFT JOIN `data-warehouse-289815.salesforce.account` a ON name = current_college_clean
     
     WHERE are_you_currently_in_your_freshman_year_of_college = "Yes"
