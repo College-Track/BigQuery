@@ -1,6 +1,7 @@
     SELECT
     Contact_Id,
-    current_college_clean,
+    current_college_clean AS college_name,
+    "Spring" AS cs_term,
     
     
     i_felt_i_belonged_on_my_college_campus AS cs_belong_on_campus,
@@ -11,5 +12,7 @@
     
     
     
+    
     FROM `data-warehouse-289815.surveys.fy20_ps_survey`
+    
     WHERE are_you_currently_in_your_freshman_year_of_college = "Yes"
