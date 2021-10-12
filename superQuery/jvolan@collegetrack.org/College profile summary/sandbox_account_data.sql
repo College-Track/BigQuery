@@ -19,18 +19,15 @@ SELECT
     CASE
         WHEN historically_black_college_univ_hbcu_c = TRUE THEN "HBCU"
         WHEN hispanic_serving_institution_hsi_c = TRUE THEN "HSI"
-        WHEN 
-            (name IN
+        WHEN name IN
             ("California Polytechnic State University-San Luis Obispo",
             "California State Polytechnic University-Pomona",
             "Humboldt State University",
             "San Diego State University",
             "San Jose State University",
-            "Sonoma State University")
-            OR
-            STARTS_WITH (name, "California State University")) THEN "CSU"
-        WHEN 
-            STARTS_WITH (name, "University of California") THEN "UC"
+            "Sonoma State University",
+            "California State University") THEN "CSU"
+        WHEN name IN ("University of California") THEN "UC"
         ELSE NULL
     END AS ct_common_college_groups,
 
