@@ -40,13 +40,9 @@ SELECT
     graduates_with_debt_c/100 AS graduates_with_debt_c,
     avg_debt_of_graduates_c,
     median_debt_of_graduates_c,
-    
     graduation_rate_overall_c/100 AS graduation_rate_overall_c,
-    graduation_rate_asian_c/100 AS graduation_rate_asian_c,
-    graduation_rate_pacific_islander_c/100 AS graduation_rate_pacific_islander_c,
-    graduation_rate_black_african_american_c/100 AS graduation_rate_black_african_american_c,
-    graduation_rate_hispanic_c/100 AS graduation_rate_hispanic_c, 
     
+    last_data_import_completed_c,
     
     FROM `data-warehouse-289815.salesforce.account`
     WHERE record_type_id = "01246000000RNnLAAW"
