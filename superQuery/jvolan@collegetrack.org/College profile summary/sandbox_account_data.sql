@@ -17,8 +17,6 @@ SELECT
     
     --common ct school grouping
     CASE
-        WHEN historically_black_college_univ_hbcu_c = TRUE THEN "HBCU"
-        WHEN hispanic_serving_institution_hsi_c = TRUE THEN "HSI"
         WHEN name IN
             ("California Polytechnic State University-San Luis Obispo",
             "California State Polytechnic University-Pomona",
@@ -28,6 +26,8 @@ SELECT
             "Sonoma State University",
             "California State University") THEN "CSU"
         WHEN name IN ("University of California") THEN "UC"
+        WHEN historically_black_college_univ_hbcu_c = TRUE THEN "HBCU"
+        WHEN hispanic_serving_institution_hsi_c = TRUE THEN "HSI"
         ELSE NULL
     END AS ct_common_college_groups,
 
