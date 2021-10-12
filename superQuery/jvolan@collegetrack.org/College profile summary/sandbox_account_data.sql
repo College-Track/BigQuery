@@ -25,7 +25,7 @@ SELECT
             "San Jose State University",
             "Sonoma State University",
             "California State University") THEN "CSU"
-        WHEN name IN ("University of Ca") THEN "UC"
+        WHEN REGEXP_CONTAINS (name,"University of California") THEN "UC"
         WHEN historically_black_college_univ_hbcu_c = TRUE THEN "HBCU"
         ELSE NULL
     END AS ct_common_college_groups,
