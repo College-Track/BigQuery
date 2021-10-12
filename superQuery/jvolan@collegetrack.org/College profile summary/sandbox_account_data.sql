@@ -17,15 +17,19 @@ SELECT
     
     --common ct school grouping
     CASE
-        WHEN name IN
+        WHEN 
+        (name IN
             ("California Polytechnic State University-San Luis Obispo",
             "California State Polytechnic University-Pomona",
             "Humboldt State University",
             "San Diego State University",
             "San Jose State University",
-            "Sonoma State University",
-            "California State University") THEN "CSU"
-        WHEN REGEXP_CONTAINS (name,"University of California") THEN "UC"
+            "Sonoma State University")
+        OR
+        REGEXP_CONTAINS (name, "California State University")) THEN "CSU"
+        WHEN 
+        (REGEXP_CONTAINS (name,"University of California-")
+        OR REGEXP_CONTAINS (name,"University of California-")) THEN "UC"
         WHEN historically_black_college_univ_hbcu_c = TRUE THEN "HBCU"
         ELSE NULL
     END AS ct_common_college_groups,
