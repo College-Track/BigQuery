@@ -24,19 +24,25 @@ inactive_college_students AS (
         contact_c,
         status_history.name,
         start_date_c AS day_marked_inactive,
-        DATE_DIFF(CURRENT_DATE(), start_date_c, DAY) AS days_since_inactive
+        MAX(MAX(start_date_c)) OVER (PARTITION BY contact_c) AS day_marked_inactive_max
     
       FROM`data-warehouse-289815.salesforce.contact_pipeline_history_c`  status_history
         
     WHERE 
         status_history.Name = 'Became Inactive Post-Secondary'
-        AND end_date_c IS NULL
+        --AND end_date_c IS NULL
+    GROUP BY 
+        status_history.name,
+        start_date_c,
+        contact_c
         
     )
 
         SELECT 
             contact.*,
-            status_history.*
+            status_history.*,
+            DATE_DIFF(CURRENT_DATE(), day_marked_inactive_max, DAY) AS days_since_inactive
         FROM inactive_college_students AS contact
         LEFT JOIN status_history AS status_history
             ON contact.contact_id = status_history.contact_c
+        WHERE day_marked_inactive = day_marked_inactive_max
