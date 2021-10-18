@@ -13,8 +13,7 @@
     Total_Bank_Book_Balance_contact_c,
     status_history.name,
     start_date_c,
-    CURRENT_DATE() - start_date_c AS days_since_inactive,
-    DATE_DIFF(CURRENT_DATE(), start_date_c, DAY)
+    DATE_DIFF(CURRENT_DATE(), start_date_c, DAY) AS days_since_inactive
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template` contact 
     LEFT JOIN `data-warehouse-289815.salesforce.contact_pipeline_history_c`  status_history
