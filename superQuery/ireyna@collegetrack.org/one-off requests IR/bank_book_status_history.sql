@@ -1,6 +1,8 @@
 #pull bank book for inactive college students. Pull in when they became inactive to calculate when they went inactive
 
+WITH 
 
+inactive_college_students AS (
     SELECT
     Contact_Id,
     full_name_c,
@@ -11,14 +13,30 @@
     anticipated_date_of_graduation_ay_c,
     Total_BB_Earnings_as_of_HS_Grad_contact_c,
     Total_Bank_Book_Balance_contact_c,
-    status_history.name,
-    start_date_c AS day_marked_inactive,
-    DATE_DIFF(CURRENT_DATE(), start_date_c, DAY) AS days_since_inactive
+    
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template` contact 
-    LEFT JOIN `data-warehouse-289815.salesforce.contact_pipeline_history_c`  status_history
-        ON contact.contact_id = status_history.contact_c
+    WHERE college_track_status_Name = 'Inactive: Post-Secondary'
+ ),
+  
+  status_history AS (
+    SELECT 
+        contact_c,
+        status_history.name,
+        start_date_c AS day_marked_inactive,
+        DATE_DIFF(CURRENT_DATE(), start_date_c, DAY) AS days_since_inactive
+    
+      FROM`data-warehouse-289815.salesforce.contact_pipeline_history_c`  status_history
+        
     WHERE 
-        college_track_status_Name = 'Inactive: Post-Secondary'
-        AND status_history.Name = 'Became Inactive Post-Secondary'
+        status_history.Name = 'Became Inactive Post-Secondary'
         AND end_date_c IS NULL
+        
+    )
+
+        SELECT 
+            contact.*,
+            status_history.*
+        FROM inactive_college_students AS contact
+        LEFT JOIN status_history AS status_history
+            ON contact.contact_id = status_history.contact_c
