@@ -38,7 +38,7 @@ inactive_college_students AS (
         SELECT 
             contact.*,
             status_history,
-            day_marked_inactive_max,
+           -- day_marked_inactive_max,
             DATE_DIFF(CURRENT_DATE(), day_marked_inactive_max, DAY) AS days_since_inactive
         FROM inactive_college_students AS contact
         LEFT JOIN status_history AS status_history
