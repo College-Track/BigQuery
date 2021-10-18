@@ -1,4 +1,5 @@
- Contact_Id,
+SELECT
+    Contact_Id,
     full_name_c,
     site_short,
     high_school_graduating_class_c,
