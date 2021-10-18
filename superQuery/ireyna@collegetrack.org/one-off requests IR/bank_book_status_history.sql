@@ -24,7 +24,6 @@ inactive_college_students AS (
     DISTINCT
         contact_c,
         status_history.name AS status_history,
-        --start_date_c AS day_marked_inactive,
         MAX(MAX(start_date_c)) OVER (PARTITION BY contact_c) AS day_marked_inactive_max
     
       FROM`data-warehouse-289815.salesforce.contact_pipeline_history_c`  status_history
