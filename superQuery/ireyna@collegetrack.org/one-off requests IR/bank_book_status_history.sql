@@ -12,8 +12,7 @@ inactive_college_students AS (
     grade_c,
     anticipated_date_of_graduation_ay_c,
     Total_BB_Earnings_as_of_HS_Grad_contact_c,
-    Total_Bank_Book_Balance_contact_c,
-    
+    Total_Bank_Book_Balance_contact_c
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template` contact 
     WHERE college_track_status_Name = 'Inactive: Post-Secondary'
@@ -33,9 +32,7 @@ inactive_college_students AS (
         --AND end_date_c IS NULL
     GROUP BY 
         name,
-        start_date_c,
         contact_c
-        
     )
 
         SELECT 
