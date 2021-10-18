@@ -10,7 +10,9 @@
     grade_c,
     anticipated_date_of_graduation_ay_c,
     Total_BB_Earnings_as_of_HS_Grad_contact_c,
-    Total_Bank_Book_Balance_contact_c
+    Total_Bank_Book_Balance_contact_c,
+    status_history.name,
+    start_date_c
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template` contact 
     LEFT JOIN `data-warehouse-289815.salesforce.contact_pipeline_history_c`  status_history
