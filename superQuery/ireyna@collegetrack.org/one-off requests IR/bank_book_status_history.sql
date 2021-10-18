@@ -21,8 +21,9 @@ inactive_college_students AS (
   
   status_history AS (
     SELECT 
+    DISTINCT
         contact_c,
-        status_history.name,
+        status_history.name AS status_history,
         --start_date_c AS day_marked_inactive,
         MAX(MAX(start_date_c)) OVER (PARTITION BY contact_c) AS day_marked_inactive_max
     
@@ -32,7 +33,7 @@ inactive_college_students AS (
         status_history.Name = 'Became Inactive Post-Secondary'
         --AND end_date_c IS NULL
     GROUP BY 
-        status_history.name,
+        name,
         start_date_c,
         contact_c
         
@@ -40,9 +41,9 @@ inactive_college_students AS (
 
         SELECT 
             contact.*,
-            status_history.*,
+            status_history,
+            day_marked_inactive_max,
             DATE_DIFF(CURRENT_DATE(), day_marked_inactive_max, DAY) AS days_since_inactive
         FROM inactive_college_students AS contact
         LEFT JOIN status_history AS status_history
             ON contact.contact_id = status_history.contact_c
-        --WHERE day_marked_inactive = day_marked_inactive_max
