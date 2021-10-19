@@ -83,16 +83,16 @@ status_history AS (
             THEN at_name 
             WHEN last_term IS NOT NULL
             THEN last_term
-            ELSE at_name
+            ELSE NULL
         END AS pat_name,
         
         CASE 
             WHEN status_history IS NULL 
             THEN last_active_term_end_date
-            WHEN last_active_term_end_date IS NULL
-            THEN last_available_term
             ELSE day_marked_inactive_max
-        END AS approx_inactive_date
+        END AS approx_inactive_date,
+        
+        DATE_DIFF(CURRENT_DATE(), day_marked_inactive_max, DAY) AS days_since_inactive
         
     FROM inactive_college_students AS ps
     LEFT JOIN status_history AS sh
