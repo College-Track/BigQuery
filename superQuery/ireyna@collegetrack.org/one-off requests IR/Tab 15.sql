@@ -26,8 +26,7 @@ last_active_term AS (
         contact_id,
         at_name,
         end_date_c AS last_active_term_end_date,
-        --MAX(MAX(end_date_c)) OVER (PARTITION BY contact_id) AS last_active_term_end_date,
-        ROW_NUMBER() OVER(PARTITION BY contact_id ORDER BY end_date_c DESC) AS row_num
+        ROW_NUMBER() OVER(PARTITION BY contact_id ORDER BY end_date_c DESC) AS row_num --pull last date student was active PS
         FROM `data-warehouse-289815.salesforce_clean.contact_at_template` term
         WHERE 
         ct_status_at_c ='Active: Post-Secondary'
@@ -36,6 +35,26 @@ last_active_term AS (
     GROUP BY at_id, contact_id, at_name, last_active_term_end_date
         
 ), 
+
+last_term AS (
+    SELECT 
+        * EXCEPT (row_num)
+        
+    FROM 
+        (SELECT 
+        at_id,
+        contact_id,
+        at_name,
+        end_date_c AS last_available_term,
+        ROW_NUMBER() OVER(PARTITION BY contact_id ORDER BY end_date_c DESC) AS row_num --pull last PAT. In case student does not have a PAT where they are active PS
+        FROM `data-warehouse-289815.salesforce_clean.contact_at_template` term
+        WHERE 
+        AT_Record_Type_Name = 'College/University'
+        AND College_Track_Status_Name ='Inactive: Post-Secondary')
+    WHERE row_num = 1
+    GROUP BY at_id, contact_id, at_name, last_available_term
+),
+    
 status_history AS (
     SELECT 
     DISTINCT
@@ -60,10 +79,17 @@ status_history AS (
         Total_BB_Earnings_as_of_HS_Grad_contact_c,
         Total_Bank_Book_Balance_contact_c,
         status_history,
-        at_name,
+        CASE 
+            WHEN term.at_name IS NULL AND last_term.at_name IS NOT NULL
+            THEN last_term.at_name 
+            ELSE term.at_name
+        END AS pat_name,
+        
         CASE 
             WHEN status_history IS NULL 
             THEN last_active_term_end_date
+            WHEN last_active_term_end_date IS NULL
+            THEN last_available_term
             ELSE day_marked_inactive_max
         END AS approx_inactive_date
         
@@ -72,6 +98,8 @@ status_history AS (
         ON ps.contact_id=sh.contact_c
     LEFT JOIN last_active_term AS term
         ON ps.contact_id=term.contact_id
+    LEFT JOIN last_term as last_term
+        ON ps.contact_id=last_term.contact_id
     
     GROUP BY
         Contact_Id,
@@ -84,7 +112,9 @@ status_history AS (
         Total_BB_Earnings_as_of_HS_Grad_contact_c,
         Total_Bank_Book_Balance_contact_c,
         status_history,
-        at_name,
+        term.at_name,
+        last_term.at_name,
         last_active_term_end_date,
-        day_marked_inactive_max
+        day_marked_inactive_max,
+        last_available_term
         
