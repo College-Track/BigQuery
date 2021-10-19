@@ -125,7 +125,8 @@ combine_data AS (
         last_term,
         last_active_term_end_date,
         day_marked_inactive_max,
-        last_available_term
+        last_available_term,
+        graduated_4_year_degree_c
 )
     SELECT 
         *,
