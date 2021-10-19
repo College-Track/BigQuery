@@ -18,7 +18,7 @@
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` term
         ON contact.contact_id=term.contact_id
     WHERE contact.college_track_status_Name = 'Inactive: Post-Secondary'
-    AND start_date_c IN (SELECT MAX(MAX(start_date_c)) OVER (PARTITION BY contact_id) AS start_date_c
+    AND start_date_c = (SELECT MAX(MAX(start_date_c)) OVER (PARTITION BY contact_id) AS start_date_c
                         FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
                         WHERE ct_status_at_c ='Active: Post-Secondary'
                         GROUP BY contact_id)
