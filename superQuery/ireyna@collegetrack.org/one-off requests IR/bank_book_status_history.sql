@@ -83,7 +83,8 @@ status_history AS (
             THEN at_name 
             WHEN last_term IS NOT NULL
             THEN last_term
-            ELSE NULL
+            WHEN status_history IS NOT NULL 
+            THEN NULL
         END AS pat_name,
         
         CASE 
