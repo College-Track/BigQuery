@@ -288,7 +288,7 @@ enrollment_indicators AS (
         current_enrollment_status_c,
         current_enrollment_type,
         
-        CASE 
+        MAX(CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
             THEN 0
             WHEN matriculation_enrollment_status = 'Approved Gap Year'
@@ -313,7 +313,7 @@ enrollment_indicators AS (
                 current_enrollment_type = 'enrolled_in_a_4_year_college_2021_22')
             THEN 1
             ELSE 0
-        END AS persistence_indicator,
+        END) AS persistence_indicator,
   
     FROM enrollment_indicators
     GROUP BY 
@@ -328,14 +328,15 @@ enrollment_indicators AS (
         current_enrollment_type,
         matriculation_enrollment_status,
         matriculated_enrolled_in_a_2_year_college_2020_21,
-        matriculated_enrolled_in_a_4_year_college_2020_21,
+        matriculated_enrolled_in_a_4_year_college_2020_21
+        /*
         q_winter_2_yr_enrolled_2020_21,
         q_winter_4_yr_enrolled_2020_21,
         q_spring_2_yr_enrolled_2020_21,
         q_spring_4_yr_enrolled_2020_21,
         s_spring_2_yr_enrolled_2020_21,
         s_spring_4_yr_enrolled_2020_21
-        
+        */
 )
     SELECT
         base.full_name_c,
