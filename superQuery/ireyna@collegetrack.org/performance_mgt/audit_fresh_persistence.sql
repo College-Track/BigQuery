@@ -157,6 +157,7 @@ enrollment_indicators AS (
         college_track_status_name,
         site_short,
         region_short,
+        term_c,
         
         #current enrollment data Fall 2021-22
         Current_school_name,
@@ -253,8 +254,9 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
+        term_c,
         
-        MAX(CASE 
+        CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
             THEN 0
             WHEN indicator_college_matriculation_c = 'Approved Gap Year'
@@ -279,10 +281,10 @@ enrollment_indicators AS (
                 current_enrollment_type = 'enrolled_in_4_yr_current')
             THEN 1
             ELSE 0
-        END) AS persistence_indicator
+        END AS persistence_indicator
   
     FROM enrollment_indicators
-    GROUP BY 
+    /*GROUP BY 
         contact_id,
         high_school_class_c,
         college_track_status_name,
@@ -292,4 +294,4 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
-        indicator_college_matriculation_c
+        indicator_college_matriculation_c*/
