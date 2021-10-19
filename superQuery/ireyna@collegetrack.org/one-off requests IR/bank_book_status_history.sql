@@ -9,7 +9,7 @@ inactive_college_students AS (
     high_school_graduating_class_c,
     College_Track_Status_Name,
     grade_c,
-    graduated_4_year_degree_c,
+    academic_year_4_year_degree_earned_c,
     anticipated_date_of_graduation_ay_c,
     Total_BB_Earnings_as_of_HS_Grad_contact_c,
     Total_Bank_Book_Balance_contact_c
@@ -83,7 +83,7 @@ combine_data AS (
         high_school_graduating_class_c,
         College_Track_Status_Name,
         grade_c,
-        graduated_4_year_degree_c,
+        academic_year_4_year_degree_earned_c,
         anticipated_date_of_graduation_ay_c,
         Total_BB_Earnings_as_of_HS_Grad_contact_c,
         Total_Bank_Book_Balance_contact_c,
@@ -117,6 +117,7 @@ combine_data AS (
         high_school_graduating_class_c,
         College_Track_Status_Name,
         grade_c,
+        academic_year_4_year_degree_earned_c,
         anticipated_date_of_graduation_ay_c,
         Total_BB_Earnings_as_of_HS_Grad_contact_c,
         Total_Bank_Book_Balance_contact_c,
@@ -125,8 +126,7 @@ combine_data AS (
         last_term,
         last_active_term_end_date,
         day_marked_inactive_max,
-        last_available_term,
-        graduated_4_year_degree_c
+        last_available_term
 )
     SELECT 
         *,
