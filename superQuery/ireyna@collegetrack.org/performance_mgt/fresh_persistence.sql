@@ -238,7 +238,9 @@ enrollment_indicators AS (
     END AS s_spring_4_yr_enrolled_2020_21
     
     FROM combine_groups
-    )
+    ),
+    
+    final_indicator AS(
 
     SELECT 
         contact_id,
@@ -278,3 +280,32 @@ enrollment_indicators AS (
         END AS persistence_indicator,
   
     FROM enrollment_indicators
+)
+    SELECT
+        contact_id,
+        high_school_class_c,
+        college_track_status_name,
+        site_short,
+        region_short,
+        
+        #current enrollment data Fall 2021-22
+        Current_school_name,
+        Current_School_Type_c_degree,
+        current_enrollment_status_c,
+        current_enrollment_type,
+        persistence_indicator
+    
+    FROM final_indicator
+    GROUP BY 
+        contact_id,
+        high_school_class_c,
+        college_track_status_name,
+        site_short,
+        region_short,
+        
+        #current enrollment data Fall 2021-22
+        Current_school_name,
+        Current_School_Type_c_degree,
+        current_enrollment_status_c,
+        current_enrollment_type,
+        persistence_indicator
