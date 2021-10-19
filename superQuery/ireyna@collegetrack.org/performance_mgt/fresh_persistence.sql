@@ -8,7 +8,6 @@ SELECT
     full_name_c,
     high_school_class_c,
     indicator_college_matriculation_c,
-    student_audit_status_c,
     College_Track_Status_Name,
     site_short,
     region_short,
@@ -37,8 +36,6 @@ SELECT
     enrolled_in_any_college_c AS matriculated_enrolled_in_any_college,
     fit_type_at_c AS matriculation_fit_type,
     at_grade_c AS matriculation_at_grade,
-    AT_name AS matriculation_AT_name,
-    at_id AS matriculation_at_id,
     AY_name AS matriculation_AY_name
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
@@ -79,9 +76,6 @@ SELECT
     enrolled_in_a_4_year_college_c AS enrolled_in_a_4_year_college_2020_21,
     enrolled_in_any_college_c AS enrolled_in_any_college_2020_21,
     fit_type_at_c,
-    AT_name,
-    at_id,
-    AY_name,
     term_c
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
@@ -100,7 +94,6 @@ SELECT
     base.full_name_c,
     base.high_school_class_c,
     base.indicator_college_matriculation_c,
-    base.student_audit_status_c,
     base.College_Track_Status_Name,
     base.site_short,
     base.region_short,
@@ -130,30 +123,46 @@ SELECT
     enrolled_in_a_4_year_college_2020_21,
     enrolled_in_any_college_2020_21,
     fit_type_at_c,
-    AT_name,
-    at_id,
-    AY_name,
     term_c
 
 FROM matriculation_and_current_enrollment AS base
 LEFT JOIN enrollment_data_2020_21 AS  enrollment ON base.contact_id=enrollment.contact_id
 
-/*GROUP BY 
+GROUP BY 
     full_name_c,
     contact_id,
     site_short,
     region_short,
     high_school_class_c,
-    base.student_audit_status_c,
+    College_Track_Status_Name,
+    indicator_college_matriculation_c,
+    
+    Current_school_name,
+    Current_School_Type_c_degree,
+    current_enrollment_status_c,
+    current_enrollment_type,
+    
+    #Matriculation - Fall 2020-21 academic term data
+    matriculation_college,
+    matriculation_school_type,
+    matriculated_enrolled_in_a_2_year_college_2020_21,
+    matriculated_enrolled_in_a_4_year_college_2020_21,
+    matriculated_enrolled_in_any_college,
+    matriculation_enrollment_status,
+    matriculation_fit_type,
+    
+    #2020-21 enrollment
+    school_academic_calendar_c,
+    GAS_name, --global academic semester
+    at_enrollment_status_c,
+    AT_School_Name,
+    AT_school_type,
     enrolled_in_a_2_year_college_2020_21,
     enrolled_in_a_4_year_college_2020_21,
-    enrolled_in_a_2_year_college_2021_22,
-    enrolled_in_a_4_year_college_2021_22,
-    college_track_status_name,
-    fit_type_current_c,
+    enrolled_in_any_college_2020_21,
     fit_type_at_c,
-    at_enrollment_status_c
-    */
+    term_c
+    
     
 ),
 
@@ -163,11 +172,8 @@ enrollment_indicators AS (
         contact_id,
         high_school_class_c,
         college_track_status_name,
-        student_audit_status_c,
-        at_enrollment_status_c,
         site_short,
         region_short,
-        fit_type_at_c,
         
         #current enrollment data Fall 2021-22
         Current_school_name,
@@ -194,9 +200,6 @@ enrollment_indicators AS (
         enrolled_in_a_4_year_college_2020_21,
         enrolled_in_any_college_2020_21,
         fit_type_at_c,
-        AT_name,
-        at_id,
-        AY_name,
     
     --Quarter: Winter
     CASE 
@@ -238,6 +241,40 @@ enrollment_indicators AS (
     END AS s_spring_4_yr_enrolled_2020_21
     
     FROM combine_groups
+    
+    GROUP BY 
+        contact_id,
+        high_school_class_c,
+        college_track_status_name,
+        site_short,
+        region_short,
+        
+        #current enrollment data Fall 2021-22
+        Current_school_name,
+        Current_School_Type_c_degree,
+        current_enrollment_status_c,
+        current_enrollment_type,
+        
+        #Matriculation - Fall 2020-21 academic term data
+        matriculation_college,
+        matriculation_school_type,
+        matriculated_enrolled_in_a_2_year_college_2020_21,
+        matriculated_enrolled_in_a_4_year_college_2020_21,
+        matriculated_enrolled_in_any_college,
+        matriculation_enrollment_status,
+        matriculation_fit_type,
+        
+        #2020-21 enrollment
+        school_academic_calendar_c,
+        GAS_name, --global academic semester
+        at_enrollment_status_c,
+        AT_School_Name,
+        AT_school_type,
+        enrolled_in_a_2_year_college_2020_21,
+        enrolled_in_a_4_year_college_2020_21,
+        enrolled_in_any_college_2020_21,
+        fit_type_at_c,
+        term_c
     ),
     
     final_indicator AS(
