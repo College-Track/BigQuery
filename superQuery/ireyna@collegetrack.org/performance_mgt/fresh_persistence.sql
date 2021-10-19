@@ -216,7 +216,7 @@ enrollment_indicators AS (
     CASE 
         WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Spring' AND enrolled_in_a_2_year_college_2020_21 = TRUE
         THEN TRUE
-        ELSE TRUE
+        ELSE FALSE
     END AS q_spring_2_yr_enrolled_2020_21,
     
     CASE 
