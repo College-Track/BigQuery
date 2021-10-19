@@ -9,6 +9,7 @@ inactive_college_students AS (
     high_school_graduating_class_c,
     College_Track_Status_Name,
     grade_c,
+    graduated_4_year_degree_c,
     anticipated_date_of_graduation_ay_c,
     Total_BB_Earnings_as_of_HS_Grad_contact_c,
     Total_Bank_Book_Balance_contact_c
