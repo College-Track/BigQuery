@@ -1,4 +1,4 @@
- SELECT *
+ SELECT DISTINCT *
     FROM 
         (SELECT at_id,
                 MAX(MAX(start_date_c)) OVER (PARTITION BY contact_id) AS start_date_c
