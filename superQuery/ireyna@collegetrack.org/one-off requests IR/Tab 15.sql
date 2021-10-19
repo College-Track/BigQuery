@@ -43,6 +43,7 @@ status_history AS (
 )
        
     SELECT 
+        DISTINCT
         ps.Contact_Id,
         full_name_c,
         site_short,
