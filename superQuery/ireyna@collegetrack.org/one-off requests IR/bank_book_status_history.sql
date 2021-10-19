@@ -69,7 +69,9 @@ last_term AS (
         AND College_Track_Status_Name ='Inactive: Post-Secondary')
     WHERE row_num = 1
     GROUP BY at_id, contact_id, last_term, last_available_term
-)
+),
+
+combine_data AS (
        
     SELECT 
         DISTINCT
@@ -95,9 +97,7 @@ last_term AS (
             WHEN (status_history IS NULL AND last_active_term_end_date IS NOT NULL)
             THEN last_active_term_end_date 
             ELSE last_available_term
-        END AS approx_inactive_date,
-        
-        DATE_DIFF(CURRENT_DATE(), day_marked_inactive_max, DAY) AS days_since_inactive
+        END AS approx_inactive_date
         
     FROM inactive_college_students AS ps
     LEFT JOIN status_history AS sh
@@ -123,4 +123,9 @@ last_term AS (
         last_active_term_end_date,
         day_marked_inactive_max,
         last_available_term
+)
+    SELECT 
+        *,
+        DATE_DIFF(CURRENT_DATE(), approx_inactive_date, DAY) AS days_since_inactive
         
+    FROM combine_data
