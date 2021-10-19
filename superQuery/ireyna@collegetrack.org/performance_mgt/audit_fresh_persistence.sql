@@ -167,6 +167,7 @@ GROUP BY
 enrollment_indicators AS (
 
         SELECT
+        full_name_c,
         contact_id,
         high_school_class_c,
         college_track_status_name,
@@ -241,6 +242,7 @@ enrollment_indicators AS (
     FROM combine_groups
     
     GROUP BY 
+        full_name_c,
         contact_id,
         high_school_class_c,
         college_track_status_name,
@@ -278,6 +280,7 @@ enrollment_indicators AS (
     --final_indicator AS(
 
     SELECT 
+        full_name_c,
         contact_id,
         high_school_class_c,
         college_track_status_name,
@@ -317,6 +320,7 @@ enrollment_indicators AS (
   
     FROM enrollment_indicators
     GROUP BY 
+        full_name_c,
         contact_id,
         high_school_class_c,
         college_track_status_name,
