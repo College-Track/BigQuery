@@ -240,9 +240,7 @@ enrollment_indicators AS (
         enrolled_in_any_college_c,
         fit_type_at_c,
         term_c
-    ),
-    
-    final_indicator AS(
+    )
 
     SELECT 
         contact_id,
