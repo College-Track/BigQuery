@@ -14,4 +14,3 @@
         AND College_Track_Status_Name ='Inactive: Post-Secondary')
     WHERE row_num = 1
     GROUP BY at_id, contact_id, last_term, last_available_term
-)
