@@ -78,6 +78,7 @@ SELECT
         AND high_school_class_c = '2020'
         AND AT_Record_Type_Name = 'College/University Semester' 
         AND AY_Name ='AY 2020-21' 
+        AND term_c <> 'Summer'
 ),
 
 combine_groups AS (
