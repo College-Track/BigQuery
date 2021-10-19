@@ -172,6 +172,7 @@ enrollment_indicators AS (
         
         #2020-21 enrollment
         school_academic_calendar_c,
+        AT_school_type,
         at_enrollment_status_c,
         enrolled_in_a_2_year_college_c,
         enrolled_in_a_4_year_college_c,
@@ -238,6 +239,7 @@ enrollment_indicators AS (
         
         #2020-21 enrollment
         school_academic_calendar_c,
+        AT_school_type,
         at_enrollment_status_c,
         enrolled_in_a_2_year_college_c,
         enrolled_in_a_4_year_college_c,
@@ -258,9 +260,12 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
+        
+        #2020-21 enrollment
+        at_enrollment_status_c,
+        AT_school_type,
         term_c,
         
-        at_enrollment_status_c,
         CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
             THEN 0
@@ -303,6 +308,7 @@ enrollment_indicators AS (
         current_enrollment_type,
         indicator_college_matriculation_c,
         at_enrollment_status_c,
+        AT_school_type,
         
         #2020-21 enrollment
         q_winter_2_yr_enrolled_2020_21,
