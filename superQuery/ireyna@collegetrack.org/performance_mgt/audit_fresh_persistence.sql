@@ -192,6 +192,7 @@ enrollment_indicators AS (
         #2020-21 enrollment
         school_academic_calendar_c,
         GAS_name, --global academic semester
+        term_c,
         at_enrollment_status_c,
         AT_School_Name,
         AT_school_type,
@@ -290,6 +291,7 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
+        term_c,
         
         MAX(CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
@@ -333,6 +335,7 @@ enrollment_indicators AS (
         matriculation_enrollment_status,
         matriculated_enrolled_in_a_2_year_college_2020_21,
         matriculated_enrolled_in_a_4_year_college_2020_21,
+        term_c,
         q_winter_2_yr_enrolled_2020_21,
         q_winter_4_yr_enrolled_2020_21,
         q_spring_2_yr_enrolled_2020_21,
