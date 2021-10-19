@@ -90,11 +90,11 @@ last_term AS (
         END AS pat_name,
 
         CASE 
-            WHEN status_history IS NULL 
-            THEN last_active_term_end_date
-            WHEN last_active_term_end_date IS NULL
-            THEN last_available_term
-            ELSE day_marked_inactive_max
+            WHEN status_history IS NOT NULL
+            THEN day_marked_inactive_max
+            WHEN (status_history IS NULL AND last_active_term_end_date IS NOT NULL)
+            THEN last_active_term_end_date 
+            ELSE last_available_term
         END AS approx_inactive_date,
         
         DATE_DIFF(CURRENT_DATE(), day_marked_inactive_max, DAY) AS days_since_inactive
