@@ -67,7 +67,7 @@ last_term AS (
         WHERE 
         AT_Record_Type_Name = 'College/University Semester'
         AND College_Track_Status_Name ='Inactive: Post-Secondary'
-        AND student_audit_status_c IS NOT NULL)
+        AND ct_status_at_c IS NOT NULL)
     WHERE row_num = 1
     GROUP BY at_id, contact_id, last_term, last_available_term
 ),
