@@ -170,6 +170,7 @@ enrollment_indicators AS (
         SELECT
         full_name_c,
         contact_id,
+        indicator_college_matriculation_c,
         high_school_class_c,
         college_track_status_name,
         site_short,
@@ -246,6 +247,7 @@ enrollment_indicators AS (
     GROUP BY 
         full_name_c,
         contact_id,
+        indicator_college_matriculation_c,
         high_school_class_c,
         college_track_status_name,
         site_short,
@@ -289,7 +291,7 @@ enrollment_indicators AS (
         site_short,
         region_short,
         
-        matriculated_enrolled_in_any_college,
+        indicator_college_matriculation_c,
         
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
@@ -338,7 +340,7 @@ enrollment_indicators AS (
         current_enrollment_status_c,
         current_enrollment_type,
         matriculation_enrollment_status,
-        matriculated_enrolled_in_any_college,
+        indicator_college_matriculation_c,
         matriculated_enrolled_in_a_2_year_college_2020_21,
         matriculated_enrolled_in_a_4_year_college_2020_21,
         at_enrollment_status_c,
