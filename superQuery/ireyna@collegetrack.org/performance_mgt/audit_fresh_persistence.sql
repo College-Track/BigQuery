@@ -154,6 +154,7 @@ enrollment_indicators AS (
 
         SELECT
         contact_id,
+        full_name_c,
         high_school_class_c,
         college_track_status_name,
         site_short,
@@ -220,6 +221,7 @@ enrollment_indicators AS (
     
     GROUP BY 
         contact_id,
+        full_name_c,
         high_school_class_c,
         college_track_status_name,
         site_short,
@@ -257,6 +259,7 @@ enrollment_indicators AS (
         current_enrollment_type,
         term_c,
         
+        at_enrollment_status_c,
         CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
             THEN 0
@@ -297,6 +300,7 @@ enrollment_indicators AS (
         current_enrollment_status_c,
         current_enrollment_type,
         indicator_college_matriculation_c,
+        at_enrollment_status_c,
         
         #2020-21 enrollment
         q_winter_2_yr_enrolled_2020_21,
