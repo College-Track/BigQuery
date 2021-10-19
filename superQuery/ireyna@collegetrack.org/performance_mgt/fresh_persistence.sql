@@ -21,7 +21,7 @@ SELECT
         WHEN (school_predominant_degree_awarded_c = "Predominantly bachelor's-degree granting" AND current_enrollment_status_c IN ('Full-time','Part-time'))
         THEN 'enrolled_in_4_yr_current'
         WHEN (school_predominant_degree_awarded_c = "Predominantly associate's-degree granting" AND current_enrollment_status_c IN ('Full-time','Part-time'))
-        THEN 'enrolled_in_a_2_yr_current' 
+        THEN 'enrolled_in_2_yr_current' 
         ELSE 'not enrolled'
     END AS current_enrollment_type, --enrollment of current term (FY22 is Fall 2021-22)
         
@@ -264,13 +264,22 @@ enrollment_indicators AS (
             AND current_enrollment_type = 'enrolled_in_4_yr_current'  
             THEN 1
             WHEN (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
-                (q_winter_2_yr_enrolled_2020_21 = TRUE OR q_winter_4_yr_enrolled_2020_21 = TRUE) AND 
-                (q_spring_2_yr_enrolled_2020_21 = TRUE OR  q_spring_4_yr_enrolled_2020_21= TRUE) AND 
-                current_enrollment_type IN ('enrolled_in_a_2_yr_current','enrolled_in_4_yr_current'))
+                q_winter_2_yr_enrolled_2020_21 = TRUE AND q_spring_2_yr_enrolled_2020_21 = TRUE)
+                OR 
+                (indicator_college_matriculation_c = '2-year' AND 
+                q_winter_4_yr_enrolled_2020_21 = TRUE AND q_spring_2_yr_enrolled_2020_21 = TRUE)
+                OR
+                (indicator_college_matriculation_c = '2-year' AND 
+                q_winter_2_yr_enrolled_2020_21 = TRUE AND q_spring_4_yr_enrolled_2020_21 = TRUE)
+                OR
+                (indicator_college_matriculation_c = '2-year' AND 
+                q_winter_4_yr_enrolled_2020_21 = TRUE AND q_spring_4_yr_enrolled_2020_21 = TRUE)
+                AND 
+                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
             THEN 1
             WHEN (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, semester
                 (s_spring_2_yr_enrolled_2020_21 = TRUE OR  s_spring_4_yr_enrolled_2020_21= TRUE) AND 
-                current_enrollment_type IN ('enrolled_in_a_2_yr_current','enrolled_in_4_yr_current'))
+                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
             THEN 1
             WHEN (indicator_college_matriculation_c = '4-year' AND --persistent 4-year enrollment, quarter
                 q_winter_4_yr_enrolled_2020_21 = TRUE AND 
