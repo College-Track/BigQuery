@@ -11,6 +11,7 @@
     contact.Total_BB_Earnings_as_of_HS_Grad_contact_c,
     contact.Total_Bank_Book_Balance_contact_c,
     --MAX(MAX(start_date_c)) OVER (PARTITION BY contact.contact_id) AS last_term_active,
+    start_date_c
     
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template` contact 
@@ -32,4 +33,5 @@
         --at_name,
         anticipated_date_of_graduation_ay_c,
         Total_BB_Earnings_as_of_HS_Grad_contact_c,
-        Total_Bank_Book_Balance_contact_c
+        Total_Bank_Book_Balance_contact_c,
+        start_date_c
