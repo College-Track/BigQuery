@@ -66,7 +66,8 @@ last_term AS (
         FROM `data-warehouse-289815.salesforce_clean.contact_at_template` term
         WHERE 
         AT_Record_Type_Name = 'College/University Semester'
-        AND College_Track_Status_Name ='Inactive: Post-Secondary')
+        AND College_Track_Status_Name ='Inactive: Post-Secondary'
+        AND student_audit_status_c IS NOT NULL)
     WHERE row_num = 1
     GROUP BY at_id, contact_id, last_term, last_available_term
 ),
