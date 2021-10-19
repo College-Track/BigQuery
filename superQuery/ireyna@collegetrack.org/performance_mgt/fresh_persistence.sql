@@ -241,7 +241,18 @@ enrollment_indicators AS (
     )
 
     SELECT 
-        *,
+        contact_id,
+        high_school_class_c,
+        college_track_status_name,
+        site_short,
+        region_short,
+        
+        #current enrollment data Fall 2021-22
+        Current_school_name,
+        Current_School_Type_c_degree,
+        current_enrollment_status_c,
+        current_enrollment_type,
+        
         CASE 
             WHEN matriculation_enrollment_status = 'Approved Gap Year'
             AND current_enrollment_type = 'enrolled_in_a_4_year_college_2021_22'  
