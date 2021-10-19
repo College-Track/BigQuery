@@ -292,6 +292,7 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
+        school_academic_calendar_c,
         term_c,
         
         MAX(CASE 
@@ -336,6 +337,7 @@ enrollment_indicators AS (
         matriculation_enrollment_status,
         matriculated_enrolled_in_a_2_year_college_2020_21,
         matriculated_enrolled_in_a_4_year_college_2020_21,
+        school_academic_calendar_c,
         term_c,
         q_winter_2_yr_enrolled_2020_21,
         q_winter_4_yr_enrolled_2020_21,
