@@ -289,9 +289,12 @@ enrollment_indicators AS (
         site_short,
         region_short,
         
+        matriculated_enrolled_in_any_college
+        
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
+        at_enrollment_status_c,
         school_academic_calendar_c,
         term_c,
         
@@ -337,6 +340,7 @@ enrollment_indicators AS (
         matriculation_enrollment_status,
         matriculated_enrolled_in_a_2_year_college_2020_21,
         matriculated_enrolled_in_a_4_year_college_2020_21,
+        at_enrollment_status_c,
         school_academic_calendar_c,
         term_c,
         q_winter_2_yr_enrolled_2020_21,
