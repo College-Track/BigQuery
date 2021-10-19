@@ -280,6 +280,7 @@ enrollment_indicators AS (
     FROM enrollment_indicators
 )
     SELECT
+        base.full_name_c,
         base.contact_id,
         base.high_school_class_c,
         base.college_track_status_name,
@@ -296,6 +297,7 @@ enrollment_indicators AS (
     FROM matriculation_and_current_enrollment AS base
     LEFT JOIN final_indicator AS indicator ON base.contact_id = indicator.contact_id
     GROUP BY 
+        full_name_c,
         contact_id,
         high_school_class_c,
         college_track_status_name,
