@@ -31,6 +31,7 @@ SELECT
     --at_enrollment_status_c,
     AT_School_Name AS matriculation_college,
     AT_school_type AS matriculation_school_type,
+    AT_Enrollment_Status_c AS matriculation_enrollment_status,
     enrolled_in_a_2_year_college_c AS matriculated_enrolled_in_a_2_year_college_2020_21,
     enrolled_in_a_4_year_college_c AS matriculated_enrolled_in_a_4_year_college_2020_21,
     enrolled_in_any_college_c AS matriculated_enrolled_in_any_college,
@@ -60,11 +61,16 @@ SELECT
     high_school_class_c,
     site_short,
     region_short,
-    term_c,
     fit_type_current_c,
 
     #academic term data
-    school_academic_calendar_c,
+    CASE 
+        WHEN school_academic_calendar_c = 'Trimester system (three terms comprise academic year)' 
+        THEN 'Quarter'
+        WHEN school_academic_calendar_c = 'Semester system (two terms comprise academic year)'
+        THEN 'Semester'
+        ELSE school_academic_calendar_c
+    END AS school_academic_calendar_c,
     GAS_name, --global academic semester
     at_enrollment_status_c,
     AT_School_Name,
@@ -75,7 +81,8 @@ SELECT
     fit_type_at_c,
     AT_name,
     at_id,
-    AY_name
+    AY_name,
+    term_c
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
 
@@ -102,7 +109,6 @@ SELECT
     Current_school_name,
     Current_School_Type_c_degree,
     current_enrollment_status_c,
-    school_predominant_degree_awarded_c AS current_school_type,
     current_enrollment_type,
     
     #Matriculation - Fall 2020-21 academic term data
@@ -111,6 +117,7 @@ SELECT
     matriculated_enrolled_in_a_2_year_college_2020_21,
     matriculated_enrolled_in_a_4_year_college_2020_21,
     matriculated_enrolled_in_any_college,
+    matriculation_enrollment_status,
     matriculation_fit_type,
     
     #2020-21 enrollment
@@ -125,7 +132,8 @@ SELECT
     fit_type_at_c,
     AT_name,
     at_id,
-    AY_name
+    AY_name,
+    term_c
 
 FROM matriculation_and_current_enrollment AS base
 LEFT JOIN enrollment_data_2020_21 AS  enrollment ON base.contact_id=enrollment.contact_id
@@ -160,50 +168,102 @@ enrollment_indicators AS (
         site_short,
         region_short,
         fit_type_at_c,
-        --fit_type_current_c,
+        
+        #current enrollment data Fall 2021-22
+        Current_school_name,
+        Current_School_Type_c_degree,
+        current_enrollment_status_c,
+        current_enrollment_type,
+        
+        #Matriculation - Fall 2020-21 academic term data
+        matriculation_college,
+        matriculation_school_type,
+        matriculated_enrolled_in_a_2_year_college_2020_21,
+        matriculated_enrolled_in_a_4_year_college_2020_21,
+        matriculated_enrolled_in_any_college,
+        matriculation_enrollment_status,
+        matriculation_fit_type,
+        
+        #2020-21 enrollment
+        school_academic_calendar_c,
+        GAS_name, --global academic semester
+        at_enrollment_status_c,
+        AT_School_Name,
+        AT_school_type,
+        enrolled_in_a_2_year_college_2020_21,
+        enrolled_in_a_4_year_college_2020_21,
+        enrolled_in_any_college_2020_21,
+        fit_type_at_c,
+        AT_name,
+        at_id,
+        AY_name,
     
-    --Winter
+    --Quarter: Winter
     CASE 
-        WHEN GAS_name = 'Winter 2020-21 (Quarter)' AND enrolled_in_a_2_year_college_2020_21 = TRUE
-        THEN "enrolled_2_yr_2020_21"
-        ELSE NULL
-    END AS winter_enrollment_2_yr_2020_21,
-
-    CASE 
-        WHEN student_audit_status_c = "Active: Post-Secondary"
-        AND enrolled_in_a_4_year_college_2020_21 = TRUE
-        THEN "enrolled_4_yr_2020_21"
-    END AS enrollment_4_yr_2020_21, 
+        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Winter' AND enrolled_in_a_2_year_college_2020_21 = TRUE
+        THEN TRUE
+        ELSE FALSE
+    END AS q_winter_2_yr_enrolled_2020_21,
     
     CASE 
-        WHEN college_track_status_name = "Active: Post-Secondary"
-        AND enrolled_in_a_2_year_college_2021_22 = TRUE
-        THEN "enrolled_2_yr_2021_22"
-    END AS enrollment_2_yr_2021_22,
-
+        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Winter' AND enrolled_in_a_4_year_college_2020_21 = TRUE
+        THEN TRUE
+        ELSE FALSE
+    END AS q_winter_4_yr_enrolled_2020_21,
+    
+    --Quarter: Spring
     CASE 
-        WHEN college_track_status_name = "Active: Post-Secondary"
-        AND enrolled_in_a_4_year_college_2021_22 = TRUE
-        THEN "enrolled_4_yr_2021_22"
-    END AS enrollment_4_yr_2021_22
-
+        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Spring' AND enrolled_in_a_2_year_college_2020_21 = TRUE
+        THEN TRUE
+        ELSE TRUE
+    END AS q_spring_2_yr_enrolled_2020_21,
+    
+    CASE 
+        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Spring' AND enrolled_in_a_4_year_college_2020_21 = TRUE
+        THEN TRUE
+        ELSE FALSE
+    END AS q_spring_4_yr_enrolled_2020_21,
+    
+    --Semester: Spring
+    CASE 
+        WHEN school_academic_calendar_c = 'Semester' AND term_c = 'Spring' AND enrolled_in_a_2_year_college_2020_21 = TRUE
+        THEN TRUE
+        ELSE FALSE
+    END AS s_spring_2_yr_enrolled_2020_21,
+    
+    CASE 
+        WHEN school_academic_calendar_c = 'Semester' AND term_c = 'Spring' AND enrolled_in_a_4_year_college_2020_21 = TRUE
+        THEN TRUE
+        ELSE FALSE
+    END AS s_spring_4_yr_enrolled_2020_21
+    
     FROM combine_groups
     )
 
     SELECT 
         *,
         CASE 
-            WHEN at_enrollment_status_c = 'Approved Gap Year'
-            AND enrollment_4_yr_2021_22 = 'enrolled_4_yr_2021_22'  
+            WHEN matriculation_enrollment_status = 'Approved Gap Year'
+            AND current_enrollment_type = 'enrolled_in_a_4_year_college_2021_22'  
             THEN 1
-            WHEN enrollment_4_yr_2020_21 = 'enrolled_4_yr_2020_21' AND enrollment_4_yr_2021_22 = 'enrolled_4_yr_2021_22'
+            WHEN (matriculated_enrolled_in_a_2_year_college_2020_21 = TRUE AND --persistent 2-year enrollment, quarter
+                (q_winter_2_yr_enrolled_2020_21 = TRUE OR q_winter_4_yr_enrolled_2020_21 = TRUE) AND 
+                (q_spring_2_yr_enrolled_2020_21 = TRUE OR  q_spring_4_yr_enrolled_2020_21= TRUE) AND 
+                current_enrollment_type IN ('enrolled_in_a_2_year_college_2021_22','enrolled_in_a_4_year_college_2021_22'))
             THEN 1
-            WHEN enrollment_2_yr_2020_21 = 'enrolled_4_yr_2020_21' AND enrollment_4_yr_2021_22 = 'enrolled_4_yr_2021_22'
+            WHEN (matriculated_enrolled_in_a_2_year_college_2020_21 = TRUE AND --persistent 2-year enrollment, semester
+                (s_spring_2_yr_enrolled_2020_21 = TRUE OR  s_spring_4_yr_enrolled_2020_21= TRUE) AND 
+                current_enrollment_type IN ('enrolled_in_a_2_year_college_2021_22','enrolled_in_a_4_year_college_2021_22'))
             THEN 1
-            WHEN enrollment_2_yr_2020_21 = 'enrolled_2_yr_2020_21' AND enrollment_2_yr_2021_22 = 'enrolled_2_yr_2021_22'
+            WHEN (matriculated_enrolled_in_a_4_year_college_2020_21 = TRUE AND --persistent 4-year enrollment, quarter
+                q_winter_4_yr_enrolled_2020_21 = TRUE AND 
+                q_spring_4_yr_enrolled_2020_21 = TRUE AND
+                current_enrollment_type = 'enrolled_in_a_4_year_college_2021_22')
             THEN 1
-            ELSE 0
-        END AS persistence_indicator
-
-        
+            WHEN (matriculated_enrolled_in_a_4_year_college_2020_21 = TRUE AND --persistent 4-year enrollment, semester
+                s_spring_4_yr_enrolled_2020_21 = TRUE AND
+                current_enrollment_type = 'enrolled_in_a_4_year_college_2021_22')
+            THEN 1
+        END AS persistence_indicator,
+  
     FROM enrollment_indicators
