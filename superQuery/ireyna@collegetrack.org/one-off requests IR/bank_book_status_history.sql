@@ -84,18 +84,15 @@ last_term AS (
         Total_Bank_Book_Balance_contact_c,
         status_history,
         CASE 
-            WHEN status_history IS NOT NULL  --leave AT field blank if we have Status History for student
-            THEN NULL
-            WHEN at_name IS NOT NULL 
-            THEN at_name 
-            WHEN last_term IS NOT NULL
+            WHEN (at_name IS NULL AND last_term IS NOT NULL)
             THEN last_term
+            ELSE at_name
         END AS pat_name,
-        
+
         CASE 
             WHEN status_history IS NULL 
             THEN last_active_term_end_date
-            WHEN status_history IS NULL AND last_active_term_end_date IS NULL
+            WHEN last_active_term_end_date IS NULL
             THEN last_available_term
             ELSE day_marked_inactive_max
         END AS approx_inactive_date,
