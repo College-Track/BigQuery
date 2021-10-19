@@ -284,14 +284,23 @@ enrollment_indicators AS (
         END AS persistence_indicator
   
     FROM enrollment_indicators
-    /*GROUP BY 
+    GROUP BY 
         contact_id,
         high_school_class_c,
         college_track_status_name,
         site_short,
         region_short,
+        term_c,
         
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
-        indicator_college_matriculation_c*/
+        indicator_college_matriculation_c,
+        
+        #2020-21 enrollment
+        q_winter_2_yr_enrolled_2020_21,
+        q_winter_4_yr_enrolled_2020_21,
+        q_spring_2_yr_enrolled_2020_21,
+        q_spring_4_yr_enrolled_2020_21,
+        s_spring_2_yr_enrolled_2020_21,
+        s_spring_4_yr_enrolled_2020_21
