@@ -250,8 +250,6 @@ enrollment_indicators AS (
         region_short,
         
         #current enrollment data Fall 2021-22
-        Current_school_name,
-        Current_School_Type_c_degree,
         current_enrollment_status_c,
         current_enrollment_type,
         
@@ -282,20 +280,21 @@ enrollment_indicators AS (
     FROM enrollment_indicators
 )
     SELECT
-        contact_id,
-        high_school_class_c,
-        college_track_status_name,
-        site_short,
-        region_short,
+        base.contact_id,
+        base.high_school_class_c,
+        base.college_track_status_name,
+        base.site_short,
+        base.region_short,
         
         #current enrollment data Fall 2021-22
         Current_school_name,
         Current_School_Type_c_degree,
-        current_enrollment_status_c,
-        current_enrollment_type,
+        base.current_enrollment_status_c,
+        base.current_enrollment_type,
         persistence_indicator
     
-    FROM final_indicator
+    FROM matriculation_and_current_enrollment AS base
+    LEFT JOIN final_indicator AS indicator ON base.contact_id = indicator.contact_id
     GROUP BY 
         contact_id,
         high_school_class_c,
