@@ -1,4 +1,6 @@
 with 
+
+--Pull all inacitve college students as base
 inactive_college_students AS (
     SELECT
     Contact_Id,
@@ -15,6 +17,20 @@ inactive_college_students AS (
     WHERE college_track_status_Name = 'Inactive: Post-Secondary'
 ),
 
+--Pull last date student was marked Inactive: Post-Secondary from Status History
+status_history AS (
+    SELECT 
+    DISTINCT
+        contact_c,
+        name AS status_history,
+        MAX(MAX(start_date_c)) OVER (PARTITION BY contact_c) AS day_marked_inactive_max
+    
+    FROM`data-warehouse-289815.salesforce.contact_pipeline_history_c`    
+    WHERE Name = 'Became Inactive Post-Secondary'
+    GROUP BY name,contact_c
+),
+
+--If student does not have Status History, pull last date student was Active: Post-Secondary
 last_active_term AS (
     SELECT 
         * EXCEPT (row_num)
@@ -35,6 +51,7 @@ last_active_term AS (
         
 ), 
 
+----If student does not have Status History, and doesn't have PAT Active: Post-Secondary, then pull last PAT on record
 last_term AS (
     SELECT 
         * EXCEPT (row_num)
@@ -52,18 +69,6 @@ last_term AS (
         AND College_Track_Status_Name ='Inactive: Post-Secondary')
     WHERE row_num = 1
     GROUP BY at_id, contact_id, last_term, last_available_term
-),
-    
-status_history AS (
-    SELECT 
-    DISTINCT
-        contact_c,
-        name AS status_history,
-        MAX(MAX(start_date_c)) OVER (PARTITION BY contact_c) AS day_marked_inactive_max
-    
-    FROM`data-warehouse-289815.salesforce.contact_pipeline_history_c`    
-    WHERE Name = 'Became Inactive Post-Secondary'
-    GROUP BY name,contact_c
 )
        
     SELECT 
