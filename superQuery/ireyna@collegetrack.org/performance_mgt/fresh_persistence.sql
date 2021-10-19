@@ -19,11 +19,11 @@ SELECT
     school_predominant_degree_awarded_c,
     CASE 
         WHEN (school_predominant_degree_awarded_c = "Predominantly bachelor's-degree granting" AND current_enrollment_status_c IN ('Full-time','Part-time'))
-        THEN 'enrolled_in_a_4_year_college_2021_22'
+        THEN 'enrolled_in_4_yr_current'
         WHEN (school_predominant_degree_awarded_c = "Predominantly associate's-degree granting" AND current_enrollment_status_c IN ('Full-time','Part-time'))
-        THEN 'enrolled_in_a_2_year_college_2021_22' 
+        THEN 'enrolled_in_a_2_yr_current' 
         ELSE 'not enrolled'
-    END AS current_enrollment_type,
+    END AS current_enrollment_type, --enrollment of current term (FY22 is Fall 2021-22)
         
 
     #Matriculation - Fall 2020-21 academic term data
