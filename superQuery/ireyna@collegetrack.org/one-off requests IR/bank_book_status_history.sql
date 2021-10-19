@@ -79,12 +79,12 @@ status_history AS (
         Total_Bank_Book_Balance_contact_c,
         status_history,
         CASE 
+            WHEN status_history IS NOT NULL  --leave AT field blank if we have Status History for student
+            THEN NULL
             WHEN at_name IS NOT NULL 
             THEN at_name 
             WHEN last_term IS NOT NULL
             THEN last_term
-            WHEN status_history IS NOT NULL 
-            THEN NULL
         END AS pat_name,
         
         CASE 
