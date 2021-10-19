@@ -260,24 +260,23 @@ enrollment_indicators AS (
         MAX(CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
             THEN 0
-            WHEN indicator_college_matriculation_c = 'Approved Gap Year'
-            AND current_enrollment_type = 'enrolled_in_4_yr_current'  
+            WHEN indicator_college_matriculation_c = 'Approved Gap Year' AND current_enrollment_type = 'enrolled_in_4_yr_current'  
             THEN 1
-            WHEN indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
+            WHEN (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
                 q_winter_2_yr_enrolled_2020_21 = TRUE AND q_spring_2_yr_enrolled_2020_21 = TRUE AND
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
-            THEN 1
-            WHEN indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
+                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
+                OR
+            (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
                 q_winter_4_yr_enrolled_2020_21 = TRUE AND q_spring_2_yr_enrolled_2020_21 = TRUE AND 
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
-            THEN 1
-            WHEN indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
+                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
+                OR
+            (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
                 q_winter_2_yr_enrolled_2020_21 = TRUE AND q_spring_4_yr_enrolled_2020_21 = TRUE AND 
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
-            THEN 1
-            WHEN indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
+                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
+                OR
+            (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
                 q_winter_4_yr_enrolled_2020_21 = TRUE AND q_spring_4_yr_enrolled_2020_21 = TRUE AND
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
+                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
             THEN 1
             WHEN indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, semester
                 (s_spring_2_yr_enrolled_2020_21 = TRUE OR  s_spring_4_yr_enrolled_2020_21= TRUE) AND 
