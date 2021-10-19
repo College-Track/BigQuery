@@ -18,17 +18,22 @@ inactive_college_students AS (
 
 last_active_term AS (
     SELECT 
+        * EXCEPT (row_num)
+        
+    FROM 
+        (SELECT 
         at_id,
         contact_id,
         at_name,
-        end_date_c,
-        MAX(MAX(end_date_c)) OVER (PARTITION BY contact_id) AS last_active_term_end_date
-        
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template` term
-    WHERE 
+        end_date_c AS last_active_term_end_date,
+        --MAX(MAX(end_date_c)) OVER (PARTITION BY contact_id) AS last_active_term_end_date,
+        ROW_NUMBER() OVER(PARTITION BY contact_id ORDER BY end_date_c DESC) AS row_num
+        FROM `data-warehouse-289815.salesforce_clean.contact_at_template` term
+        WHERE 
         ct_status_at_c ='Active: Post-Secondary'
-        AND College_Track_Status_Name ='Inactive: Post-Secondary'
-    GROUP BY at_id, contact_id, at_name, end_date_c
+        AND College_Track_Status_Name ='Inactive: Post-Secondary')
+    WHERE row_num = 1
+    GROUP BY at_id, contact_id, at_name, last_active_term_end_date
         
 ), 
 status_history AS (
@@ -67,8 +72,6 @@ status_history AS (
         ON ps.contact_id=sh.contact_c
     LEFT JOIN last_active_term AS term
         ON ps.contact_id=term.contact_id
-    WHERE 
-        end_date_c IN (SELECT last_active_term_end_date FROM last_active_term)
     
     GROUP BY
         Contact_Id,
