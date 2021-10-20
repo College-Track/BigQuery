@@ -257,7 +257,7 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
-        term_c,
+    
         
         MAX(CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
@@ -313,8 +313,7 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
-        indicator_college_matriculation_c,
-        term_c
+        indicator_college_matriculation_c
 )
     
     SELECT
