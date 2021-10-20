@@ -61,9 +61,9 @@ SELECT
     at_enrollment_status_c,
     AT_School_Name,
     AT_school_type,
-    enrolled_in_a_2_year_college_c,
-    enrolled_in_a_4_year_college_c,
-    enrolled_in_any_college_c,
+    enrolled_in_a_2_year_college_c AS AT_enrolled_in_a_2_year_college,
+    enrolled_in_a_4_year_college_c AS AT_enrolled_in_a_4_year_college,
+    enrolled_in_any_college_c AS AT_enrolled_in_any_college,
     fit_type_at_c,
     term_c
 
@@ -105,9 +105,9 @@ SELECT
     at_enrollment_status_c,
     AT_School_Name,
     AT_school_type,
-    enrolled_in_a_2_year_college_c,
-    enrolled_in_a_4_year_college_c,
-    enrolled_in_any_college_c,
+    AT_enrolled_in_a_2_year_college,
+    AT_enrolled_in_a_4_year_college,
+    AT_enrolled_in_any_college,
     fit_type_at_c,
     term_c
 
@@ -139,9 +139,9 @@ GROUP BY
     at_enrollment_status_c,
     AT_School_Name,
     AT_school_type,
-    enrolled_in_a_2_year_college_c,
-    enrolled_in_a_4_year_college_c,
-    enrolled_in_any_college_c,
+    AT_enrolled_in_a_2_year_college,
+    AT_enrolled_in_a_4_year_college,
+    AT_enrolled_in_any_college,
     fit_type_at_c,
     term_c
 ),
@@ -166,41 +166,41 @@ enrollment_indicators AS (
         
         #2020-21 enrollment
         at_enrollment_status_c,
-        enrolled_in_a_2_year_college_c,
-        enrolled_in_a_4_year_college_c,
-        enrolled_in_any_college_c,
+        AT_enrolled_in_a_2_year_college,
+        AT_enrolled_in_a_4_year_college,
+        AT_enrolled_in_any_college,
         fit_type_at_c,
         term_c,
     
     --Quarter
-    CASE --2-year
+    CASE --4-year
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '4-year'
             AND term_c = 'Winter' 
-            AND enrolled_in_a_4_year_college_c = TRUE
+            AND AT_enrolled_in_a_4_year_college = TRUE
             AND current_enrollment_type = 'enrolled_in_4_yr_current'
         THEN 1
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '4-year'
             AND term_c = 'Spring' 
-            AND enrolled_in_a_4_year_college_c = TRUE
+            AND AT_enrolled_in_a_4_year_college = TRUE
             AND current_enrollment_type = 'enrolled_in_4_yr_current'
         THEN 1
         ELSE 0
     END AS persist_4_yr_quarter,
 
-    CASE --4-year
+    CASE --2-year
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '2-year'
             AND term_c = 'Winter' 
-            AND enrolled_in_any_college_c = TRUE
+            AND AT_enrolled_in_any_college = TRUE
             AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
         THEN 1
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '2-year'
             AND term_c = 'Spring' 
-            AND enrolled_in_any_college_c = TRUE
-            AND current_enrollment_type = 'enrolled_in_2_yr_current'
+            AND AT_enrolled_in_any_college = TRUE
+            AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
         THEN 1
         ELSE 0
     END AS persist_2_yr_quarter,
@@ -210,7 +210,7 @@ enrollment_indicators AS (
         WHEN calendar = 'Semester' 
         AND indicator_college_matriculation_c = '4-year'
         AND term_c = 'Spring' 
-        AND enrolled_in_a_4_year_college_c = TRUE
+        AND AT_enrolled_in_a_4_year_college = TRUE
         AND current_enrollment_type ='enrolled_in_4_yr_current'
     THEN 1
     ELSE 0
@@ -220,7 +220,7 @@ enrollment_indicators AS (
         WHEN calendar = 'Semester' 
         AND indicator_college_matriculation_c = '2-year'
         AND term_c = 'Spring' 
-        AND enrolled_in_any_college_c = TRUE
+        AND AT_enrolled_in_any_college = TRUE
         AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
     THEN 1
     ELSE 0
@@ -248,9 +248,9 @@ enrollment_indicators AS (
         calendar,
         calendar,
         at_enrollment_status_c,
-        enrolled_in_a_2_year_college_c,
-        enrolled_in_a_4_year_college_c,
-        enrolled_in_any_college_c,
+        AT_enrolled_in_a_2_year_college,
+        AT_enrolled_in_a_4_year_college,
+        AT_enrolled_in_any_college,
         fit_type_at_c,
         term_c
     ),
