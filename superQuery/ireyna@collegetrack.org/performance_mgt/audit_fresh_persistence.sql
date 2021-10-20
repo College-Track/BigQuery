@@ -202,7 +202,7 @@ enrollment_indicators AS (
             AND indicator_college_matriculation_c = '2-year'
             AND term_c = 'Winter' 
             AND AT_enrolled_in_any_college = TRUE
-            AND current_enrollment_type = 'enrolled_in_2_yr_current'
+            AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
         THEN 1
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '2-year'
