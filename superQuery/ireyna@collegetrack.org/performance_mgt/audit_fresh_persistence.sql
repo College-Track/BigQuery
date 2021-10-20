@@ -181,42 +181,43 @@ enrollment_indicators AS (
     
     --Quarter: Winter
     CASE 
-        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Winter' AND enrolled_in_a_2_year_college_c = TRUE
-        THEN TRUE
-        ELSE FALSE
-    END AS q_winter_2_yr_enrolled_2020_21,
+        WHEN school_academic_calendar_c = 'Quarter' 
+        AND indicator_college_matriculation_c = '4-year'
+        AND (term_c = 'Winter' AND enrolled_in_a_4_year_college_c = TRUE)
+        AND (term_c = 'Spring' AND enrolled_in_a_4_year_college_c = TRUE)
+        AND current_enrollment_type = 'enrolled_in_4_yr_current'
+    THEN 1
+    ELSE 0
+    END AS persist_4_yr_quarter,
     
     CASE 
-        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Winter' AND enrolled_in_a_4_year_college_c = TRUE
-        THEN TRUE
-        ELSE FALSE
-    END AS q_winter_4_yr_enrolled_2020_21,
-    
-    --Quarter: Spring
-    CASE 
-        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Spring' AND enrolled_in_a_2_year_college_c = TRUE
-        THEN TRUE
-        ELSE FALSE
-    END AS q_spring_2_yr_enrolled_2020_21,
-    
-    CASE 
-        WHEN school_academic_calendar_c = 'Quarter' AND term_c = 'Spring' AND enrolled_in_a_4_year_college_c = TRUE
-        THEN TRUE
-        ELSE FALSE
-    END AS q_spring_4_yr_enrolled_2020_21,
+        WHEN school_academic_calendar_c = 'Quarter' 
+        AND indicator_college_matriculation_c = '2-year'
+        AND (term_c = 'Winter' AND enrolled_in_any_college_c = TRUE)
+        AND (term_c = 'Spring' AND enrolled_in_any_college_c = TRUE)
+        AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
+    THEN 1
+    ELSE 0
+    END AS persist_2_yr_quarter,
     
     --Semester: Spring
     CASE 
-        WHEN school_academic_calendar_c = 'Semester' AND term_c = 'Spring' AND enrolled_in_a_2_year_college_c = TRUE
-        THEN TRUE
-        ELSE FALSE
-    END AS s_spring_2_yr_enrolled_2020_21,
+        WHEN school_academic_calendar_c = 'Semester' 
+        AND indicator_college_matriculation_c = '2-year'
+        AND (term_c = 'Spring' AND enrolled_in_any_college_c = TRUE)
+        AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
+    THEN 1
+    ELSE 0
+    END AS persist_2_yr_semester,
     
     CASE 
-        WHEN school_academic_calendar_c = 'Semester' AND term_c = 'Spring' AND enrolled_in_a_4_year_college_c = TRUE
-        THEN TRUE
-        ELSE FALSE
-    END AS s_spring_4_yr_enrolled_2020_21
+        WHEN school_academic_calendar_c = 'Semester' 
+        AND indicator_college_matriculation_c = '4-year'
+        AND (term_c = 'Spring' AND enrolled_in_a_4_year_college_c = TRUE)
+        AND current_enrollment_type ='enrolled_in_4_yr_current'
+    THEN 1
+    ELSE 0
+    END AS persist_4_yr_semester
     
     FROM combine_groups
     
@@ -265,49 +266,15 @@ enrollment_indicators AS (
         at_enrollment_status_c,
         AT_school_type,
         term_c,
-        q_winter_2_yr_enrolled_2020_21,
-        q_winter_4_yr_enrolled_2020_21,
-        q_spring_2_yr_enrolled_2020_21,
-        q_spring_4_yr_enrolled_2020_21,
-        s_spring_2_yr_enrolled_2020_21,
-        s_spring_4_yr_enrolled_2020_21,
         
         CASE 
-            WHEN current_enrollment_status_c = 'Not Enrolled'
-            THEN 0
-            WHEN indicator_college_matriculation_c = 'Approved Gap Year' AND current_enrollment_type = 'enrolled_in_4_yr_current'  
+            WHEN persist_4_yr_quarter = 1
             THEN 1
-            WHEN (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
-                school_academic_calendar_c = 'Quarter'
-                term_c = 'Winter' AND enrolled_in_any_college_c = TRUE AND
-                term_c = 'Spring' AND enrolled_in_any_college_c = TRUE)
+            WHEN persist_4_yr_semester = 1
             THEN 1
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
-                OR
-            (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
-                q_winter_4_yr_enrolled_2020_21 = TRUE AND q_spring_2_yr_enrolled_2020_21 = TRUE AND 
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
-                OR
-            (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
-                q_winter_2_yr_enrolled_2020_21 = TRUE AND q_spring_4_yr_enrolled_2020_21 = TRUE AND 
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
-                OR
-            (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
-                q_winter_4_yr_enrolled_2020_21 = TRUE AND q_spring_4_yr_enrolled_2020_21 = TRUE AND
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
+            WHEN persist_2_yr_quarter = 1
             THEN 1
-            WHEN indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, semester
-                (s_spring_2_yr_enrolled_2020_21 = TRUE OR  s_spring_4_yr_enrolled_2020_21= TRUE) AND 
-                current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
-            THEN 1
-            WHEN (indicator_college_matriculation_c = '4-year' AND --persistent 4-year enrollment, quarter
-                q_winter_4_yr_enrolled_2020_21 = TRUE AND 
-                q_spring_4_yr_enrolled_2020_21 = TRUE AND
-                current_enrollment_type = 'enrolled_in_4_yr_current')
-            THEN 1
-            WHEN (indicator_college_matriculation_c = '4-year' AND --persistent 4-year enrollment, semester
-                s_spring_4_yr_enrolled_2020_21 = TRUE AND
-                current_enrollment_type = 'enrolled_in_4_yr_current')
+            WHEN persist_2_yr_semester = 1
             THEN 1
             ELSE 0
         END AS persistence_indicator
@@ -330,9 +297,7 @@ enrollment_indicators AS (
         AT_school_type,
         
         #2020-21 enrollment
-        q_winter_2_yr_enrolled_2020_21,
-        q_winter_4_yr_enrolled_2020_21,
-        q_spring_2_yr_enrolled_2020_21,
-        q_spring_4_yr_enrolled_2020_21,
-        s_spring_2_yr_enrolled_2020_21,
-        s_spring_4_yr_enrolled_2020_21
+        persist_4_yr_quarter,
+        persist_4_yr_semester,
+        persist_2_yr_quarter,
+        persist_2_yr_semester
