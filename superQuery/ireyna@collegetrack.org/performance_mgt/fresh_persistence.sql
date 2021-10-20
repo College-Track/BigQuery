@@ -279,7 +279,7 @@ enrollment_indicators AS (
             WHEN persist_2_yr_semester = 1
             THEN 1
             ELSE 0
-        END) AS persistence_indicator
+        END) AS Indicator_Persisted_into_2nd_Year_CT__c
   
     FROM enrollment_indicators
     GROUP BY 
@@ -309,7 +309,7 @@ enrollment_indicators AS (
         Current_School_Type_c_degree,
         base.current_enrollment_status_c,
         base.current_enrollment_type,
-        persistence_indicator
+        Indicator_Persisted_into_2nd_Year_CT__c	
         
     
     FROM matriculation_and_current_enrollment AS base
@@ -328,5 +328,5 @@ enrollment_indicators AS (
         Current_School_Type_c_degree,
         current_enrollment_status_c,
         current_enrollment_type,
-        persistence_indicator
+        Indicator_Persisted_into_2nd_Year_CT__c	
         
