@@ -27,8 +27,8 @@ SELECT
     CASE
         WHEN Current_School_Type_c_degree IN ("Predominantly bachelor's-degree granting","Predominantly associate's-degree granting")
         AND current_enrollment_status_c IN ('Full-time','Part-time')
-        THEN 1
-        ELSE 0
+        THEN TRUE
+        ELSE FALSE
     END AS currently_enrolled_in_any_college
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
@@ -46,7 +46,7 @@ SELECT
     *,
     #Persistence Indicator (WIDE)
     CASE
-        WHEN currently_enrolled_in_any_college = 1
+        WHEN currently_enrolled_in_any_college = TRUE
         THEN 1
         ELSE 0
     END AS persistence_indicator
