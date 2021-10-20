@@ -59,6 +59,8 @@ SELECT
         THEN 'Quarter'
         WHEN school_academic_calendar_c = 'Semester system (two terms comprise academic year)'
         THEN 'Semester'
+        WHEN school_academic_calendar_c = '4-1-4 system (two semesters & one-month January interterm)'
+        THEN 'Semester'
         ELSE school_academic_calendar_c
     END AS school_academic_calendar_c,
     GAS_name, --global academic semester
@@ -177,7 +179,7 @@ enrollment_indicators AS (
         fit_type_at_c,
         term_c,
     
-     --Quarter
+    --Quarter
     CASE 
         WHEN school_academic_calendar_c = 'Quarter' 
             AND indicator_college_matriculation_c = '4-year'
