@@ -181,20 +181,20 @@ enrollment_indicators AS (
     
     --Quarter
     CASE 
-        WHEN (term_c = 'Winter' AND enrolled_in_a_4_year_college_c = TRUE)
+        WHEN indicator_college_matriculation_c = '4-year'
+        AND current_enrollment_type = 'enrolled_in_4_yr_current'
+        AND (term_c = 'Winter' AND enrolled_in_a_4_year_college_c = TRUE)
         AND (term_c = 'Spring' AND enrolled_in_a_4_year_college_c = TRUE)
         AND school_academic_calendar_c = 'Quarter' 
-        AND indicator_college_matriculation_c = '4-year'
-        AND current_enrollment_type = 'enrolled_in_4_yr_current'
     THEN 1
     ELSE 0
     END AS persist_4_yr_quarter,
-    
+
     CASE 
         WHEN school_academic_calendar_c = 'Quarter' 
         AND indicator_college_matriculation_c = '2-year'
-        AND (term_c = 'Winter' AND enrolled_in_any_college_c = TRUE)
-        AND (term_c = 'Spring' AND enrolled_in_any_college_c = TRUE)
+        AND ((term_c = 'Winter' AND enrolled_in_any_college_c = TRUE)
+        AND (term_c = 'Spring' AND enrolled_in_any_college_c = TRUE))
         AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
     THEN 1
     ELSE 0
