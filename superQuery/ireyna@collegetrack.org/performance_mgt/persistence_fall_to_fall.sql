@@ -17,11 +17,6 @@ SELECT
     Current_school_name,
     Current_School_Type_c_degree,
     current_enrollment_status_c,
-        
-    #Matriculation - Fall 2020-21 academic term data
-    AT_School_Name AS matriculation_college,
-    AT_school_type AS matriculation_school_type,
-    fit_type_at_c AS matriculation_fit_type,
     
     #Is student currently enrolled in any school?
     CASE
@@ -29,7 +24,12 @@ SELECT
         AND current_enrollment_status_c IN ('Full-time','Part-time')
         THEN TRUE
         ELSE FALSE
-    END AS currently_enrolled_in_any_college
+    END AS currently_enrolled_in_any_college,
+    
+    #Matriculation - Fall 2020-21 academic term data
+    AT_School_Name AS matriculation_college,
+    AT_school_type AS matriculation_school_type, --can be different from the matriculation Indicator. This is extra info only.
+    fit_type_at_c AS matriculation_fit_type
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
 
