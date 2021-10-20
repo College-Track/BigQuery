@@ -52,17 +52,11 @@ SELECT
     site_short,
     region_short,
     fit_type_current_c,
-
     #academic term data
     CASE 
-        WHEN Academic_Calendar_Value_c = 'Trimester system (three terms comprise academic year)' 
-        THEN 'Quarter'
-        WHEN Academic_Calendar_Value_c = 'Semester system (two terms comprise academic year)'
-        THEN 'Semester'
-        WHEN Academic_Calendar_Value_c = '4-1-4 system (two semesters & one-month January interterm)'
-        THEN 'Semester'
-        ELSE Academic_Calendar_Value_c
-    END AS Academic_Calendar_Value_c,
+        WHEN (REGEXP_CONTAINS(GAS_Name, r'Quarter')) THEN 'Quarter'
+        WHEN (REGEXP_CONTAINS(GAS_Name, r'Semester')) THEN 'Semester'
+    END AS calendar,
     GAS_name, --global academic semester
     at_enrollment_status_c,
     AT_School_Name,
@@ -74,9 +68,7 @@ SELECT
     term_c
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
-    LEFT JOIN `data-warehouse-289815.salesforce.account` AS account
-        ON contact_at.school_c = account.id
-
+ 
     WHERE
         indicator_completed_Ct_hs_program_c = TRUE
         AND high_school_class_c = '2020'
@@ -108,7 +100,7 @@ SELECT
     matriculation_fit_type,
     
     #2020-21 enrollment
-    Academic_Calendar_Value_c,
+    calendar,
     GAS_name, --global academic semester
     at_enrollment_status_c,
     AT_School_Name,
@@ -142,7 +134,7 @@ GROUP BY
     matriculation_fit_type,
     
     #2020-21 enrollment
-    Academic_Calendar_Value_c,
+    calendar,
     GAS_name, --global academic semester
     at_enrollment_status_c,
     AT_School_Name,
@@ -175,7 +167,7 @@ enrollment_indicators AS (
         indicator_college_matriculation_c,
         
         #2020-21 enrollment
-        Academic_Calendar_Value_c,
+        calendar,
         AT_school_type,
         at_enrollment_status_c,
         enrolled_in_a_2_year_college_c,
@@ -185,13 +177,13 @@ enrollment_indicators AS (
     
     --Quarter
     CASE 
-        WHEN Academic_Calendar_Value_c = 'Quarter' 
+        WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '4-year'
             AND term_c = 'Winter' 
             AND enrolled_in_a_4_year_college_c = TRUE
             AND current_enrollment_type = 'enrolled_in_4_yr_current'
         THEN 1
-        WHEN Academic_Calendar_Value_c = 'Quarter' 
+        WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '4-year'
             AND term_c = 'Spring' 
             AND enrolled_in_a_4_year_college_c = TRUE
@@ -201,13 +193,13 @@ enrollment_indicators AS (
     END AS persist_4_yr_quarter,
 
     CASE 
-        WHEN Academic_Calendar_Value_c = 'Quarter' 
+        WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '2-year'
             AND term_c = 'Winter' 
             AND enrolled_in_any_college_c = TRUE
             AND current_enrollment_type = 'enrolled_in_2_yr_current'
         THEN 1
-        WHEN Academic_Calendar_Value_c = 'Quarter' 
+        WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '2-year'
             AND term_c = 'Spring' 
             AND enrolled_in_any_college_c = TRUE
@@ -218,7 +210,7 @@ enrollment_indicators AS (
     
     --Semester
     CASE 
-        WHEN Academic_Calendar_Value_c = 'Semester' 
+        WHEN calendar = 'Semester' 
         AND indicator_college_matriculation_c = '4-year'
         AND term_c = 'Spring' 
         AND enrolled_in_a_4_year_college_c = TRUE
@@ -228,7 +220,7 @@ enrollment_indicators AS (
     END AS persist_4_yr_semester,
 
     CASE 
-        WHEN Academic_Calendar_Value_c = 'Semester' 
+        WHEN calendar = 'Semester' 
         AND indicator_college_matriculation_c = '2-year'
         AND term_c = 'Spring' 
         AND enrolled_in_any_college_c = TRUE
@@ -257,7 +249,7 @@ enrollment_indicators AS (
         indicator_college_matriculation_c,
         
         #2020-21 enrollment
-        Academic_Calendar_Value_c,
+        calendar,
         AT_school_type,
         at_enrollment_status_c,
         enrolled_in_a_2_year_college_c,
@@ -284,6 +276,7 @@ enrollment_indicators AS (
         at_enrollment_status_c,
         AT_school_type,
         term_c,
+        calendar,
         
         CASE 
             WHEN persist_4_yr_quarter = 1
@@ -313,6 +306,7 @@ enrollment_indicators AS (
         indicator_college_matriculation_c,
         at_enrollment_status_c,
         AT_school_type,
+        calendar,
         
         #2020-21 enrollment
         persist_4_yr_quarter,
