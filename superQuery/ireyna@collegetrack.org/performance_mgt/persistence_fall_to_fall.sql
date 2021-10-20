@@ -23,13 +23,13 @@ SELECT
     AT_school_type AS matriculation_school_type,
     fit_type_at_c AS matriculation_fit_type,
     
-    #Persistence Indicator (WIDE)
+    #Is student currently enrolled in any school?
     CASE
         WHEN Current_School_Type_c_degree IN ("Predominantly bachelor's-degree granting","Predominantly associate's-degree granting")
         AND current_enrollment_status_c IN ('Full-time','Part-time')
         THEN 1
         ELSE 0
-    END AS persistence_indicator
+    END AS currently_enrolled_in_any_college
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
 
@@ -42,5 +42,13 @@ SELECT
     AND term_c = 'Fall'
 )
 
-SELECT *
+SELECT 
+    *,
+    #Persistence Indicator (WIDE)
+    CASE
+        WHEN currently_enrolled_in_any_college = 1
+        THEN 1
+        ELSE 0
+    END AS persistence_indicator
+    
 FROM matriculation_and_current_enrollment
