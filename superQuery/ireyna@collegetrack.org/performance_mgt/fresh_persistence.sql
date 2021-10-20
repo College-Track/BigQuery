@@ -275,7 +275,7 @@ enrollment_indicators AS (
         current_enrollment_status_c,
         current_enrollment_type,
     
-        SUM(CASE 
+        MAX(CASE 
             WHEN persist_4_yr_quarter = 1
             THEN 1
             WHEN persist_4_yr_semester = 1
