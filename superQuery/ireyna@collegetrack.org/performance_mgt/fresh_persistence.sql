@@ -298,7 +298,11 @@ enrollment_indicators AS (
         #current enrollment data Fall 2021-22
         current_enrollment_status_c,
         current_enrollment_type,
-        indicator_college_matriculation_c
+        indicator_college_matriculation_c,
+        persist_4_yr_quarter,
+        persist_4_yr_semester,
+        persist_2_yr_quarter,
+        persist_2_yr_semester
 )
     
     SELECT
@@ -335,3 +339,4 @@ enrollment_indicators AS (
         current_enrollment_status_c,
         current_enrollment_type,
         persistence_indicator
+        
