@@ -173,7 +173,7 @@ enrollment_indicators AS (
         term_c,
     
     --Quarter
-    CASE 
+    CASE --2-year
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '4-year'
             AND term_c = 'Winter' 
@@ -189,12 +189,12 @@ enrollment_indicators AS (
         ELSE 0
     END AS persist_4_yr_quarter,
 
-    CASE 
+    CASE --4-year
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '2-year'
             AND term_c = 'Winter' 
             AND enrolled_in_any_college_c = TRUE
-            AND current_enrollment_type = 'enrolled_in_2_yr_current'
+            AND current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current')
         THEN 1
         WHEN calendar = 'Quarter' 
             AND indicator_college_matriculation_c = '2-year'
@@ -206,7 +206,7 @@ enrollment_indicators AS (
     END AS persist_2_yr_quarter,
     
     --Semester
-    CASE 
+    CASE --4-year
         WHEN calendar = 'Semester' 
         AND indicator_college_matriculation_c = '4-year'
         AND term_c = 'Spring' 
@@ -216,7 +216,7 @@ enrollment_indicators AS (
     ELSE 0
     END AS persist_4_yr_semester,
 
-    CASE 
+    CASE --2-year
         WHEN calendar = 'Semester' 
         AND indicator_college_matriculation_c = '2-year'
         AND term_c = 'Spring' 
