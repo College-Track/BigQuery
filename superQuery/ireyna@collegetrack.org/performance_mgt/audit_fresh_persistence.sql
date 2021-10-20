@@ -265,6 +265,12 @@ enrollment_indicators AS (
         at_enrollment_status_c,
         AT_school_type,
         term_c,
+        q_winter_2_yr_enrolled_2020_21,
+        q_winter_4_yr_enrolled_2020_21,
+        q_spring_2_yr_enrolled_2020_21,
+        q_spring_4_yr_enrolled_2020_21,
+        s_spring_2_yr_enrolled_2020_21,
+        s_spring_4_yr_enrolled_2020_21,
         
         CASE 
             WHEN current_enrollment_status_c = 'Not Enrolled'
