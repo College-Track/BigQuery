@@ -264,7 +264,7 @@ enrollment_indicators AS (
             THEN 0
             WHEN indicator_college_matriculation_c = 'Approved Gap Year' AND current_enrollment_type = 'enrolled_in_4_yr_current'  
             THEN 1
-            WHEN (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
+            WHEN (indicator_college_matriculation_c = '4-year' AND --persistent 2-year enrollment, quarter
                 school_academic_calendar_c = 'Quarter' AND
                 term_c = 'Winter' AND enrolled_in_any_college_c = TRUE AND
                 term_c = 'Spring' AND enrolled_in_any_college_c = TRUE AND
