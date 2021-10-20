@@ -183,7 +183,7 @@ enrollment_indicators AS (
     CASE 
         WHEN indicator_college_matriculation_c = '4-year'
         AND current_enrollment_type = 'enrolled_in_4_yr_current'
-        (AND (term_c = 'Winter' AND enrolled_in_a_4_year_college_c = TRUE)
+        AND ((term_c = 'Winter' AND enrolled_in_a_4_year_college_c = TRUE)
         AND (term_c = 'Spring' AND enrolled_in_a_4_year_college_c = TRUE))
         AND school_academic_calendar_c = 'Quarter' 
     THEN 1
