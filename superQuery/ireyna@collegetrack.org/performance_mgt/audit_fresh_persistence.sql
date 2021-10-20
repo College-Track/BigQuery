@@ -59,6 +59,8 @@ SELECT
         THEN 'Quarter'
         WHEN school_academic_calendar_c = 'Semester system (two terms comprise academic year)'
         THEN 'Semester'
+        WHEN school_academic_calendar_c = '4-1-4 system (two semesters & one-month January interterm)'
+        THEN 'Semester'
         ELSE school_academic_calendar_c
     END AS school_academic_calendar_c,
     GAS_name, --global academic semester
