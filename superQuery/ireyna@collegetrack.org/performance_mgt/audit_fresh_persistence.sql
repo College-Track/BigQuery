@@ -65,7 +65,8 @@ SELECT
     enrolled_in_a_4_year_college_c,
     enrolled_in_any_college_c,
     fit_type_at_c,
-    term_c
+    term_c,
+    AT_Name
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
  
@@ -109,7 +110,8 @@ SELECT
     enrolled_in_a_4_year_college_c,
     enrolled_in_any_college_c,
     fit_type_at_c,
-    term_c
+    term_c,
+    AT_Name
 
 FROM matriculation_and_current_enrollment AS base
 LEFT JOIN enrollment_data_2020_21 AS  enrollment ON base.contact_id=enrollment.contact_id
@@ -143,7 +145,8 @@ GROUP BY
     enrolled_in_a_4_year_college_c,
     enrolled_in_any_college_c,
     fit_type_at_c,
-    term_c
+    term_c,
+    AT_Name
 ),
 
 enrollment_indicators AS (
@@ -174,6 +177,7 @@ enrollment_indicators AS (
         enrolled_in_a_4_year_college_c,
         enrolled_in_any_college_c,
         fit_type_at_c,
+        AT_Name,
     
     --Quarter
     CASE 
@@ -256,7 +260,8 @@ enrollment_indicators AS (
         enrolled_in_a_4_year_college_c,
         enrolled_in_any_college_c,
         fit_type_at_c,
-        term_c
+        term_c,
+        AT_Name
     )
 
     SELECT 
@@ -277,6 +282,7 @@ enrollment_indicators AS (
         AT_school_type,
         term_c,
         calendar,
+        AT_Name,
         
         CASE 
             WHEN persist_4_yr_quarter = 1
@@ -306,10 +312,11 @@ enrollment_indicators AS (
         indicator_college_matriculation_c,
         at_enrollment_status_c,
         AT_school_type,
-        calendar,
         
         #2020-21 enrollment
         persist_4_yr_quarter,
         persist_4_yr_semester,
         persist_2_yr_quarter,
-        persist_2_yr_semester
+        persist_2_yr_semester,
+        calendar,
+        AT_Name
