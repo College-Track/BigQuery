@@ -269,7 +269,8 @@ enrollment_indicators AS (
                 term_c = 'Winter' AND enrolled_in_any_college_c = TRUE AND
                 term_c = 'Spring' AND enrolled_in_any_college_c = TRUE AND
                 current_enrollment_type IN ('enrolled_in_2_yr_current','enrolled_in_4_yr_current'))
-                OR
+            THEN 1
+            WHEN
             (indicator_college_matriculation_c = '2-year' AND --persistent 2-year enrollment, quarter
                 q_winter_4_yr_enrolled_2020_21 = TRUE AND 
                 q_spring_2_yr_enrolled_2020_21 = TRUE AND 
