@@ -52,7 +52,6 @@ SELECT
     site_short,
     region_short,
     fit_type_current_c,
-    School_Academic_Calendar_c,
     #academic term data
     CASE 
         WHEN (REGEXP_CONTAINS(GAS_Name, r'Quarter')) THEN 'Quarter'
@@ -101,7 +100,6 @@ SELECT
     matriculation_fit_type,
     
     #2020-21 enrollment
-    School_Academic_Calendar_c,
     calendar,
     GAS_name, --global academic semester
     at_enrollment_status_c,
@@ -136,7 +134,6 @@ GROUP BY
     matriculation_fit_type,
     
     #2020-21 enrollment
-    School_Academic_Calendar_c,
     calendar,
     GAS_name, --global academic semester
     at_enrollment_status_c,
@@ -168,7 +165,6 @@ enrollment_indicators AS (
         indicator_college_matriculation_c,
         
         #2020-21 enrollment
-        School_Academic_Calendar_c,
         calendar,
         at_enrollment_status_c,
         enrolled_in_a_2_year_college_c,
@@ -250,7 +246,7 @@ enrollment_indicators AS (
         indicator_college_matriculation_c,
         
         #2020-21 enrollment
-        School_Academic_Calendar_c,
+        calendar,
         calendar,
         at_enrollment_status_c,
         enrolled_in_a_2_year_college_c,
@@ -274,7 +270,7 @@ enrollment_indicators AS (
         current_enrollment_status_c,
         current_enrollment_type,
     
-        School_Academic_Calendar_c,
+        calendar,
         MAX(CASE 
             WHEN persist_4_yr_quarter = 1
             THEN 1
@@ -296,7 +292,7 @@ enrollment_indicators AS (
         region_short,
         
         #current enrollment data Fall 2021-22
-        School_Academic_Calendar_c,
+        calendar,
         current_enrollment_status_c,
         current_enrollment_type,
         indicator_college_matriculation_c
@@ -312,7 +308,7 @@ enrollment_indicators AS (
         base.indicator_college_matriculation_c,
         
         #current enrollment data Fall 2021-22
-        School_Academic_Calendar_c AS AT_academic_calendar,
+        calendar AS AT_academic_calendar,
         Current_school_name,
         Current_School_Type_c_degree,
         base.current_enrollment_status_c,
@@ -332,7 +328,7 @@ enrollment_indicators AS (
         indicator_college_matriculation_c,
         
         #current enrollment data Fall 2021-22
-        School_Academic_Calendar_c,
+        calendar,
         Current_school_name,
         Current_School_Type_c_degree,
         current_enrollment_status_c,
