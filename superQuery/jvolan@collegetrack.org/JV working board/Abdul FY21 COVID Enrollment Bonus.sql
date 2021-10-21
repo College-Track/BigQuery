@@ -19,12 +19,13 @@ gather_bb_apps AS
     student_c,
     id AS bb_app_id,
     
-    total_service_earnings_c,
-    --placeholder for adding in + ct advised here --
+    MAX(total_service_earnings_c) AS total_service_earnings_c,
+    -- PLACEHOLDER for adding in + ct advised here --
    
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE scholarship_application_record_type_name = "Bank Book"
+    GROUP BY student_c, bb_app_id
 ),
 
 join_data AS
