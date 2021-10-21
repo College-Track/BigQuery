@@ -1,4 +1,4 @@
-SELECT at_id,full_name_c,internship_facilitated_by_c,internship_organization_c,internship_compensation_c,internship_related_to_career_interests_c
+SELECT at_id,full_name_c,internship_sector_c,internship_organization_c,internship_compensation_c,internship_related_to_major_minor_c,internship_related_to_career_interests_c
     
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
  WHERE 
@@ -9,4 +9,4 @@ FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
                         'Yanira Soto',
                         'Faustina Ngo'
                         )
-        AND internship_current_term_c = TRUE
+        AND at_id IN (SELECT at_id FROM `data-warehouse-289815.salesforce_clean.contact_at_template` WHERE internship_current_term_c = TRUE)
