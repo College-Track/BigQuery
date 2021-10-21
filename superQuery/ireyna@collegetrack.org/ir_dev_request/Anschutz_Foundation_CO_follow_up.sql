@@ -12,7 +12,7 @@ SELECT
        AY_Name = 'AY 2020-21'
        AND Term_c = 'Spring'
        AND AT_Record_Type_Name = 'High School Semester'
-       AND AY_2019_20_student_served_c = 'High School Student'
+       AND AY_2020_21_student_served_c = 'High School Student'
        AND region_short = 'Colorado'
     GROUP BY
       --site_short,
