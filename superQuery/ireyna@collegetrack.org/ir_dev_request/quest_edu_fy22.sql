@@ -1,4 +1,14 @@
- SELECT 
+#Ticket: https://collegetrack.zendesk.com/agent/tickets/11874
+/*
+Students
+Natalie Alfaro Rivas, 
+Karen Roman-Vite,
+Yanira Soto,
+Faustina Ngo
+*/
+
+--contact data, current college/graduated college data
+    SELECT 
         contact_id,
         full_name_c,
         College_Track_Status_Name,
@@ -15,13 +25,16 @@
         CASE WHEN College_Track_Status_Name= 'Active: Post-Secondary' THEN Current_Major_specific_c 
             ELSE major_other_4_year_degree_earned_c
             END AS major_other_specific,
+        
+--internship data from academic term
         at_id,
         internship_sector_c,
         internship_organization_c,
         internship_organization_other_c,
         internship_compensation_c,
         internship_related_to_major_minor_c,
-        internship_related_to_career_interests_c
+        internship_related_to_career_interests_c,
+        AY_Name
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 
