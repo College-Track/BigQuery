@@ -1,4 +1,4 @@
-SELECT
+ SELECT
        COUNT(DISTINCT contact_id) AS student_total,
        site_short,
        
@@ -14,6 +14,4 @@ SELECT
        AND region_short = 'Colorado'
        AND ay_2020_21_student_served_c ='High School Student'
     GROUP BY
-      site_short,
-      at_grade_c,
-      high_school_class_c
+      site_short
