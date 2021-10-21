@@ -23,6 +23,7 @@
        AND AT_Record_Type_Name = 'High School Semester'
        AND AY_2020_21_student_served_c = 'High School Student'
        AND region_short = 'Colorado'
+       AND ay_2020_21_student_served_c ='High School Student'
     GROUP BY
       site_short,
       at_grade_c,
@@ -51,6 +52,7 @@ term_gpa AS (
        AND AT_Record_Type_Name = 'High School Semester'
        AND AY_2020_21_student_served_c = 'High School Student'
        AND region_short = 'Colorado'
+       AND ay_2020_21_student_served_c ='High School Student'
        
     GROUP BY
         site_short,
