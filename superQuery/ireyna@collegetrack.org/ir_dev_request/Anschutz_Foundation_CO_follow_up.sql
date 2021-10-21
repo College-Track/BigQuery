@@ -34,7 +34,7 @@
 term_gpa AS (
   
   SELECT 
-    COUNT(DISTINCT contact_id) AS student_total,
+    contact_id,
     site_short,
     CASE 
         WHEN term_c = 'Fall' THEN AT_Term_GPA
@@ -55,10 +55,29 @@ term_gpa AS (
     GROUP BY
         site_short,
         AT_Term_GPA,
-        term_c
-)
+        term_c,
+        contact_id
+),
+
+growth AS (
     SELECT
-        student_total,
+        contact_id,
         site_short,
         fall_term_gpa - spring_term_gpa AS gpa_term_growth
     from term_gpa
+)
+
+    SELECT 
+        contact_id,
+        site_short,
+        SUM(CASE 
+            WHEN gpa_term_growth > 0 
+            THEN 1
+            ELSE 0
+        END) gpa_term_growth
+        
+    FROM growth
+    GROUP BY 
+        contact_id,
+        site_short
+        
