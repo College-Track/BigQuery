@@ -1,7 +1,8 @@
-SELECT 
-    at_id,
+ SELECT 
     contact_id,
     site_short,
+    term_c,
+    AT_Term_GPA,
     CASE 
         WHEN term_c = 'Fall' THEN AT_Term_GPA
     END AS fall_term_gpa,
@@ -22,5 +23,4 @@ SELECT
         site_short,
         AT_Term_GPA,
         term_c,
-        contact_id,
-        at_id
+        contact_id
