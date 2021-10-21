@@ -29,8 +29,7 @@ Faustina Ngo
 --internship data from academic term
         at_id,
         internship_sector_c,
-        account.Name,
-        internship_organization_c,
+        account.Name AS internsip_organization,
         internship_organization_other_c,
         internship_compensation_c,
         internship_related_to_major_minor_c,
