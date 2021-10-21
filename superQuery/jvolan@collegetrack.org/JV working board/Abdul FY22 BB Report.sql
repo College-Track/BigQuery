@@ -21,13 +21,20 @@ gather_bb_apps AS
     total_service_earnings_c,
     total_attendance_earnings_c,
     total_gpaearnings_c,
-    gather_students.*
-    
+
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
-    LEFT JOIN gather_students ON Contact_Id = student_c
     WHERE scholarship_application_record_type_name = "Bank Book"
+),
+
+join_data AS
+(
+    SELECT
+    * except (student_c)
+    
+    FROM gather_students
+    LEFT JOIN gather_bb_apps ON student_c = Contact_Id
 )
 
     SELECT
     *
-    FROM gather_bb_apps
+    FROM join_data
