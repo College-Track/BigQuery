@@ -1,7 +1,7 @@
- SELECT 
+SELECT 
     student_c AS sla_student,
     id AS sla_id,
-    date(created_date) AS created_date,
+    created_date,
     hours_of_service_completed_c,
     
     
