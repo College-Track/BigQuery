@@ -27,7 +27,8 @@ gather_bb_apps AS
 join_data AS
 (
     SELECT
-    *
+    *,
+    gather_bb_apps.* except (student_c)
     
     FROM gather_students
     LEFT JOIN gather_bb_apps ON student_c = Contact_Id
