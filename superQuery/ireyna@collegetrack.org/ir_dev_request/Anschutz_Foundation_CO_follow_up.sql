@@ -68,10 +68,10 @@ growth AS (
 )
 
     SELECT 
-        --contact_id,
+        COUNT(DISTINCT contact_id),
         site_short,
         SUM(CASE 
-            WHEN gpa_term_growth > 0 
+            WHEN gpa_term_growth > 0.01 
             THEN 1
             ELSE 0
         END) gpa_term_growth
