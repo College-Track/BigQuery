@@ -1,5 +1,5 @@
 SELECT
-       site_short,
+       --site_short,
        region_short,
        high_school_graduating_class_c,
      --average GPA. Pulled from Spring 2020-21
@@ -13,6 +13,6 @@ SELECT
         AND region_short = 'Colorado'
         AND high_school_graduating_class_c IN ('2021','2022')
     GROUP BY
-      site_short,
+     -- site_short,
       high_school_graduating_class_c,
       region_short
