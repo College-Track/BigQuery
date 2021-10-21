@@ -29,6 +29,7 @@ Faustina Ngo
 --internship data from academic term
         at_id,
         internship_sector_c,
+        account.Name,
         internship_organization_c,
         internship_organization_other_c,
         internship_compensation_c,
@@ -36,7 +37,9 @@ Faustina Ngo
         internship_related_to_career_interests_c,
         AY_Name
 
-    FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+    FROM `data-warehouse-289815.salesforce_clean.contact_at_template` contact_at
+    LEFT JOIN `data-warehouse-289815.salesforce.account` account
+        ON contact_at.internship_organization_c = account.id
 
     WHERE
         full_name_c IN( 
