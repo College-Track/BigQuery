@@ -1,5 +1,6 @@
 SELECT
        site_short,
+       region_short,
        high_school_graduating_class_c,
      --average GPA. Pulled from Spring 2020-21
        AVG(college_eligibility_gpa_11th_grade) AS avg_11th_cgpa,
@@ -13,4 +14,5 @@ SELECT
         AND high_school_graduating_class_c IN ('2021','2022')
     GROUP BY
       site_short,
-      high_school_graduating_class_c
+      high_school_graduating_class_c,
+      region_short
