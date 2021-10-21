@@ -1,8 +1,4 @@
- WITH
-
-term_gpa AS (
-  
-  SELECT 
+SELECT 
     contact_id,
     site_short,
     CASE 
@@ -27,27 +23,3 @@ term_gpa AS (
         AT_Term_GPA,
         term_c,
         contact_id
-),
-
-growth AS (
-    SELECT
-        contact_id,
-        site_short,
-        fall_term_gpa - spring_term_gpa AS gpa_term_growth
-    FROM term_gpa
-)
-
-    SELECT 
-        COUNT(DISTINCT contact_id),
-        site_short,
-        SUM(CASE 
-            WHEN gpa_term_growth > 0.000001 
-            THEN 1
-            ELSE 0
-        END) gpa_term_growth
-        
-    FROM growth
-    GROUP BY 
-        --contact_id,
-        site_short
-        
