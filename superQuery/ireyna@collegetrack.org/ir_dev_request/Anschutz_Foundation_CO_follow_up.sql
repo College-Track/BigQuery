@@ -64,11 +64,11 @@ growth AS (
         contact_id,
         site_short,
         fall_term_gpa - spring_term_gpa AS gpa_term_growth
-    from term_gpa
+    FROM term_gpa
 )
 
     SELECT 
-        contact_id,
+        --contact_id,
         site_short,
         SUM(CASE 
             WHEN gpa_term_growth > 0 
@@ -78,6 +78,6 @@ growth AS (
         
     FROM growth
     GROUP BY 
-        contact_id,
+        --contact_id,
         site_short
         
