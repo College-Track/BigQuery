@@ -1,4 +1,5 @@
 SELECT 
+    at_id,
     contact_id,
     site_short,
     CASE 
@@ -16,10 +17,10 @@ SELECT
        AND AT_Record_Type_Name = 'High School Semester'
        AND AY_2020_21_student_served_c = 'High School Student'
        AND region_short = 'Colorado'
-       AND ay_2020_21_student_served_c ='High School Student'
        
     GROUP BY
         site_short,
         AT_Term_GPA,
         term_c,
-        contact_id
+        contact_id,
+        at_id
