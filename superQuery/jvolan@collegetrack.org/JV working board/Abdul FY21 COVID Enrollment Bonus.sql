@@ -30,11 +30,18 @@ gather_bb_apps AS
 join_data AS
 (
     SELECT
-    * except (student_c)
+    * except (student_c),
+    (eligble_at_count * 200) AS eligble_covid_bonus,
+    (1600 - total_service_earnings_c) AS available_1600_cap,
     
     FROM gather_students
     LEFT JOIN gather_bb_apps ON student_c = Contact_Id
 )
     SELECT
-    *
+    *,
+    CASE
+        WHEN eligble_covid_bonus > available_1600_cap THEN available_1600_cap
+        ELSE eligble_covid_bonus
+    END AS final_covid_bonus_value
+    
     FROM join_data
