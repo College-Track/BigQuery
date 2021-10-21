@@ -4,6 +4,7 @@ WITH gather_students AS
     Contact_Id,
     College_Track_Status_Name,
     high_school_graduating_class_c,
+    site_short,
     community_service_hours_c AS bb_elig_cs_hours,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
@@ -22,6 +23,7 @@ gather_bb_apps AS
     total_gpaearnings_c,
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+    WHERE scholarship_application_record_type_name = "Bank Book"
 ),
 
 join_data AS
