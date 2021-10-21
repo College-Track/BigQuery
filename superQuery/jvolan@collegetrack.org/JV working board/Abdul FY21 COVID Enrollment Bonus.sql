@@ -34,6 +34,8 @@ join_data AS
     * except (student_c),
     (eligble_at_count * 200) AS eligble_covid_bonus,
     (1600 - total_service_earnings_c) AS available_1600_cap,
+    -- PLACEHOLDER for adding in + ct advised here --
+
     
     FROM gather_students
     LEFT JOIN gather_bb_apps ON student_c = Contact_Id
@@ -41,6 +43,7 @@ join_data AS
     SELECT
     *,
     CASE
+        WHEN available_1600_cap <= 0 THEN NULL
         WHEN eligble_covid_bonus > available_1600_cap THEN available_1600_cap
         ELSE eligble_covid_bonus
     END AS final_covid_bonus_value
