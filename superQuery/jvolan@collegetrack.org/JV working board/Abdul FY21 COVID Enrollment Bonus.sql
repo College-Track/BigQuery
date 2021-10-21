@@ -24,6 +24,7 @@ gather_bb_apps AS
    
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
+    WHERE scholarship_application_record_type_name = "Bank Book"
 ),
 
 join_data AS
