@@ -1,4 +1,4 @@
-SELECT id,full_name_c,internship_facilitated_by_c,internship_organization_c,internship_compensation_c,internship_related_to_career_interests_c
+SELECT at_id,full_name_c,internship_facilitated_by_c,internship_organization_c,internship_compensation_c,internship_related_to_career_interests_c
     
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
  WHERE 
