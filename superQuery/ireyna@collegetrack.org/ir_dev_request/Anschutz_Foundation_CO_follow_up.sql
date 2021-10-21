@@ -1,9 +1,9 @@
- SELECT 
+SELECT 
     full_name_c,
     contact_id,
     site_short,
     gpa_growth_prev_semester_c,
-    CASE WHEN gpa_growth_prev_semester_c>0 THEN 1 ELSE 0 AS gpa_growth_indicator,
+    CASE WHEN gpa_growth_prev_semester_c>0 THEN 1 ELSE 0 END AS gpa_growth_indicator,
     Prev_AT_Term_GPA
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
@@ -19,4 +19,5 @@
         contact_id,
         AT_Term_GPA,
         full_name_c,
-        gpa_growth_prev_semester_c
+        gpa_growth_prev_semester_c,
+        Prev_AT_Term_GPA
