@@ -1,6 +1,4 @@
-WITH gather_students AS
-( 
-    SELECT
+ SELECT
     Contact_Id,
     
     COUNT(AT_Id) AS eligble_AT_count,
@@ -11,30 +9,3 @@ WITH gather_students AS
     AND student_audit_status_c IN ("Current CT HS Student","Onboarding")
     AND attended_workshops_c > 0
     GROUP BY Contact_Id
-),
-
-gather_bb_apps AS    
-(   
-    SELECT
-    student_c,
-    id AS bb_app_id,
-    
-    total_service_earnings_c,
-    --placeholder for adding in + ct advised here --
-   
-    
-    FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
-    WHERE scholarship_application_record_type_name = "Bank Book"
-),
-
-join_data AS
-(
-    SELECT
-    *
-    
-    FROM gather_students
-    LEFT JOIN gather_bb_apps ON student_c = Contact_Id
-)
-    SELECT
-    *
-    FROM join_data
