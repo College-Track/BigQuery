@@ -1,4 +1,4 @@
-  SELECT
+SELECT
        COUNT(DISTINCT contact_id) AS student_total,
        --site_short,
        region_short,
@@ -16,4 +16,4 @@
        AND region_short = 'Colorado'
     GROUP BY
       --site_short,
-      region_short,
+      region_short
