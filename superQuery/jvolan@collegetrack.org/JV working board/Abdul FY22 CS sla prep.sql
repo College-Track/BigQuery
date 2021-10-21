@@ -12,8 +12,11 @@ WITH gather_new_approved_sla AS
     WHERE eligible_for_bank_book_service_earnings_c = TRUE
     AND status_c = "Approved"
     AND DATE(created_date) > DATE(2021,10,01)
-    ORDER BY sla_student,created_date ASC
+    
     -- PLACEHOLDER for OP Processed Record for BB = FALSE --
+    --PLACEHOLDER removed after testing--
+    AND student_c = '0031M000031XjisQAC'
+    ORDER BY sla_student,created_date ASC
 ),
 
 gather_students AS
@@ -50,6 +53,7 @@ join_data AS
     LEFT JOIN gather_bb_apps ON student_c = sla_student
 )
 
+    
     SELECT
-    *
+    * 
     FROM join_data
