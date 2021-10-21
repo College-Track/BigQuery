@@ -32,8 +32,9 @@ gather_bb_apps AS
 (   
     SELECT
     student_c,
+    
     --PLACEHOLDER for CT Advised -- 
-    total_service_earnings_c + total_service_earnings_c AS cs_1600_cap,
+    total_service_earnings_c + 0 AS cs_1600_cap,
 
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE scholarship_application_record_type_name = "Bank Book"
