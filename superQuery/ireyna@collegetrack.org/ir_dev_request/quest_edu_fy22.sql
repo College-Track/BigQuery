@@ -11,16 +11,18 @@ SELECT
     contact_id,
     full_name_c,
     College_Track_Status_Name,
-    college_4_year_degree_earned_c,
-    major_4_year_degree_earned_c,
-    major_other_4_year_degree_earned_c,
-    Current_school_name,
-    Current_Major_c,
-    Current_Major_specific_c,
-    anticipated_date_of_graduation_4_year_c,
     anticipated_date_of_graduation_ay_c,
     academic_year_4_year_degree_earned_c,
-    academic_year_term_4_year_degree_earned_c
+    academic_year_term_4_year_degree_earned_c,
+    CASE WHEN College_Track_Status_Name= 'Active: Post-Secondary' THEN Current_school_name
+        ELSE college_4_year_degree_earned_c
+        END AS college_attending_or_attended,
+    CASE WHEN College_Track_Status_Name= 'Active: Post-Secondary' THEN Current_Major_c
+        ELSE major_4_year_degree_earned_c
+        END AS major,
+    CASE WHEN College_Track_Status_Name= 'Active: Post-Secondary' THEN Current_Major_specific_c 
+        ELSE major_other_4_year_degree_earned_c
+        END AS major_other_specific
 
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 
