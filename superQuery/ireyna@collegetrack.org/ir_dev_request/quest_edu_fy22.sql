@@ -1,17 +1,12 @@
-SELECT
-        id,
-        student_c,
-        site_c,
-        global_academic_year_c,
-        program_participation_status_c,
-        organization_c,
-        role_c,
-        hourly_pay_rate_c,
-        record_type_id
-        
-    FROM `data-warehouse-289815.salesforce.career_readiness_c` 
-    WHERE student_c IN ('0034600001TQqAsAAL',
-                        '0034600001TQrd3AAD',
-                        '0034600001TQpWBAA1',
-                        '0034600001TQqwIAAT',
+SELECT full_name_c,internship_facilitated_by_c,internship_organization_c,internship_compensation_c,internship_related_to_career_interests_c
+    
+FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
+ WHERE 
+        AT_Record_Type_Name = 'College/University Semester'
+        AND full_name_c IN( 
+                        'Natalie Alfaro Rivas', 
+                        'Karen Roman-Vite',
+                        'Yanira Soto',
+                        'Faustina Ngo'
                         )
+        AND internship_current_term_c = TRUE
