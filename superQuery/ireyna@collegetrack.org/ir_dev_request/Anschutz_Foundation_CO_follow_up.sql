@@ -1,10 +1,11 @@
- SELECT
+  SELECT
        COUNT(DISTINCT contact_id) AS student_total,
-       site_short,
+       --site_short,
+       region_short,
        
      --average GPA. Pulled from Spring 2020-21
-       --AVG(AT_Cumulative_GPA) AS avg_cgpa,
-       SUM(CASE WHEN AT_Cumulative_GPA >= 3.25 THEN 1 ELSE 0 END) AS cumulative_gpa_3_25
+       AVG(AT_Cumulative_GPA) AS avg_cgpa,
+       --SUM(CASE WHEN AT_Cumulative_GPA >= 3.25 THEN 1 ELSE 0 END) AS cumulative_gpa_3_25
     FROM
        `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE
@@ -14,4 +15,5 @@
        AND AY_2019_20_student_served_c = 'High School Student'
        AND region_short = 'Colorado'
     GROUP BY
-      site_short
+      --site_short,
+      region_short,
