@@ -170,3 +170,4 @@ UNION ALL
     SELECT
     *
     FROM upload_file_prep
+    WHERE bb_earnings_amount >0
