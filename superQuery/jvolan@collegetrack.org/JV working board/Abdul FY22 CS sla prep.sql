@@ -60,6 +60,6 @@ join_data AS
     *,
     SUM(hours_dollar_amount)
     OVER 
-        (PARTITION BY sla_student
+        (PARTITION BY sla_student, cs_1600_cap
         ORDER BY sla_student, created_date ASC)
     FROM join_data
