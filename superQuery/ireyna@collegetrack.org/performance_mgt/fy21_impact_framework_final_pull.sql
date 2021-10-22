@@ -2,9 +2,12 @@
     SELECT
         if_site_sort,
         site_short,
+        persistence_denominator AS num_matriculation,
+        persistence_denominator / twelfth_grade_count AS matriculation,
         matriculated_affordable AS num_matriculated_affordable,
         twelfth_grade_count AS num_matriculation_affordable,
         matriculated_affordable / twelfth_grade_count AS matriculation_affordable_college,
+        
         college_first_enrolled_school_type_numerator
     
 
