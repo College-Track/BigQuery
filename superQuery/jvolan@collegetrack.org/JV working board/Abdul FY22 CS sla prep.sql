@@ -129,6 +129,7 @@ bonus_cs_hours_upload_file_prep AS
     MAX((FLOOR((cs_1600_cap - 1600)/100) - FLOOR(bb_elig_cs_hours/100))) AS cs_bonus_amount_still_needed,
     
     FROM join_data
+    WHERE bb_elig_cs_hours >=200
     GROUP BY sla_student
 )
 
