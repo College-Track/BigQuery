@@ -15,7 +15,7 @@
          if_site_sort,
         site_short,
         matriculated_affordable,
-        twelfth_grade_count,
+        twelfth_grade_count
    /*
 Percent of Students on Track to Earn Bachelor's Degree within 6 years
 Matriculation to a 4-yr College
