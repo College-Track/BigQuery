@@ -67,15 +67,16 @@ join_data AS
     
     SELECT
     sla_student,
-    sla_id,
-    DATE_SUB(created_date, INTERVAL 1 Day) AS created_date,
+    NULL AS sla_id,
+    MAX(DATE_SUB(created_date, INTERVAL 1 Day)) AS created_date,
     NULL AS hours_of_service_completed_c,
-    cs_1600_cap AS hours_dollar_amount,
+    MAX(cs_1600_cap) AS hours_dollar_amount,
     NULL AS bb_elig_cs_hours,
-    cs_1600_cap,
+    MAX(cs_1600_cap),
     1 AS dummy_data_row,
 
     FROM join_data
+    GROUP BY SLA_student
 
     
 /*    
