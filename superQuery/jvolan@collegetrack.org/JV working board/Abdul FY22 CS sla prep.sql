@@ -82,7 +82,7 @@ dummy_row_add AS
 )
     SELECT
     *,
-    SUM(hours_of_service_completed_c)
+    SUM(hours_dollar_amount)
     OVER
     (PARTITION BY sla_student
     ORDER BY sla_student, created_date ASC) AS running_cs_1600_cap_value
