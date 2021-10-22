@@ -98,7 +98,12 @@ running_1600_cap_calc AS
     CASE
         WHEN dummy_data_row = 1 THEN NULL
         WHEN running_cs_1600_cap_value < 600 THEN hours_dollar_amount
-        WHEN running_cs_1600_cap_value >= 600 THEN (running_cs_1600_cap_value - 600)
+        WHEN 
+        (running_cs_1600_cap_value >= 600
+        AND (running_cs_1600_cap_value - 600) > hours_dollar_amount) THEN NULL
+        WHEN 
+        (running_cs_1600_cap_value >= 600
+        AND (running_cs_1600_cap_value - 600) <= hours_dollar_amount) THEN hours_dollar_amount - (running_cs_1600_cap_value - 600)
         ELSE NULL
     END AS amount
     
