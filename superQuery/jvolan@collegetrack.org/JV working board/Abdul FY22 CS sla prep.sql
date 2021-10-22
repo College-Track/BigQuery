@@ -16,7 +16,6 @@ WITH gather_new_approved_sla AS
     
     -- PLACEHOLDER for OP Processed Record for BB = FALSE --
     --PLACEHOLDER removed after testing--
-    AND student_c = '0031M000031XjisQAC'
     ORDER BY sla_student,created_date ASC
 ),
 
@@ -116,7 +115,7 @@ bb_earn_calc AS
     FROM running_1600_cap_calc
 ),
 
-upload_file_prep AS
+main_upload_file_prep AS
 (
     SELECT
     sla_student AS student,
@@ -133,5 +132,4 @@ upload_file_prep AS
     SELECT
     *
     
-    FROM upload_file_prep
-    WHERE bb_earnings_amount IS NOT NULL
+    FROM main_upload_file_prep
