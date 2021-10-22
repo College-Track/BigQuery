@@ -95,7 +95,7 @@ running_1600_cap_calc AS
 )
     SELECT
     *, 
-    CASE
+    ROUND(CASE
         WHEN dummy_data_row = 1 THEN NULL
         WHEN running_cs_1600_cap_value < 600 THEN hours_dollar_amount
         WHEN 
@@ -105,7 +105,7 @@ running_1600_cap_calc AS
         (running_cs_1600_cap_value >= 600
         AND (running_cs_1600_cap_value - 600) <= hours_dollar_amount) THEN hours_dollar_amount - (running_cs_1600_cap_value - 600)
         ELSE NULL
-    END AS amount
+    END,2) AS amount
     
     FROM running_1600_cap_calc
     
