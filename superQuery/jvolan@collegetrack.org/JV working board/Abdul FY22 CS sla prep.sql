@@ -120,10 +120,12 @@ upload_file_prep AS
 (
     SELECT
     sla_student AS student,
+    bb_app_id AS scholarship_application,
     created_date AS date_c,
     "Service" AS earning_type,
     "01246000000ZNhtAAG" AS record_type_id,
     "a" AS academic_term,
+    bb_earnings_amount,
     
     FROM bb_earn_calc
 )
