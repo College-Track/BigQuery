@@ -22,7 +22,7 @@ gather_students AS
     SELECT
     Contact_Id,
     community_service_hours_c AS bb_elig_cs_hours,
-    Current_AT_Term,
+    current_academic_semester_c,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
 ),
@@ -58,7 +58,7 @@ dummy_row_add AS
     Contact_Id,
     bb_app_id,
     sla_id,
-    Current_AT_Term,
+    current_academic_semester_c,
     created_date,
     hours_of_service_completed_c,
     hours_dollar_amount,
@@ -75,7 +75,7 @@ dummy_row_add AS
     Contact_Id,
     MAX(bb_app_id),
     NULL AS sla_id,
-    NULL AS Current_AT_Term,
+    NULL AS current_academic_semester_c,
     MAX(DATE_SUB(created_date, INTERVAL 7 Day)) AS created_date,
     NULL AS hours_of_service_completed_c,
     MAX(cs_1600_cap) AS hours_dollar_amount,
@@ -126,7 +126,7 @@ bonus_cs_hours_calc AS
     CURRENT_DATE() AS date_c,
      "Service" AS earning_type,
     "01246000000ZNhtAAG" AS record_type_id,
-    MAX(Current_AT_Term) AS academic_term,
+    MAX(current_academic_semester_c) AS academic_term,
     MAX(FLOOR(bb_elig_cs_hours/100)-1) AS expected_cs_hours_bonus,
     MAX(FLOOR((cs_1600_cap - 1600)/100)) AS actual_cs_hours_bonus,
     MAX(
@@ -162,7 +162,7 @@ UNION ALL
     DATE(created_date) AS date_c,
     "Service" AS earning_type,
     "01246000000ZNhtAAG" AS record_type_id,
-    Current_AT_Term AS academic_term,
+    current_academic_semester_c AS academic_term,
     bb_earnings_amount,
     sla_id AS community_service,
     0 AS bonus_cs_award,
