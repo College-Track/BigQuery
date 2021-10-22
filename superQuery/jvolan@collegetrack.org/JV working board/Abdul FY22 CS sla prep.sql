@@ -57,7 +57,7 @@ join_data AS
 
     
     SELECT
-    *,
+    * except (student_c),
     SUM(cs_1600_cap + hours_dollar_amount)
     OVER 
         (PARTITION BY sla_student, cs_1600_cap
