@@ -15,4 +15,4 @@ SELECT
 
     WHERE
     indicator_completed_Ct_hs_program_c = TRUE
-    AND Current_school_name LIKE '%Hampton University%'
+    AND (Current_school_name LIKE '%Hampton University%' OR college_4_year_degree_earned_c LIKE '%Hampton University%')
