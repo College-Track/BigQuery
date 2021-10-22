@@ -9,7 +9,8 @@ SELECT
     #current enrollment data 
     Current_school_name,
     current_enrollment_status_c,
-    college_4_year_degree_earned_c --for alumni
+    college_4_year_degree_earned_c, --for alumni
+    academic_year_4_year_degree_earned_c
     
 
     FROM `data-warehouse-289815.salesforce_clean.contact_template` 
