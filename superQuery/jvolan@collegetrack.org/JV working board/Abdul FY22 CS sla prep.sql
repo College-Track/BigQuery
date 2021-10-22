@@ -59,8 +59,9 @@ dummy_row_add AS
     created_date,
     hours_of_service_completed_c,
     hours_dollar_amount,
-    bb_elig_cs_hours,
     cs_1600_cap,
+    bb_elig_cs_hours,
+
     0 AS dummy_data_row,
 
     FROM join_data
@@ -73,13 +74,17 @@ dummy_row_add AS
     MAX(DATE_SUB(created_date, INTERVAL 7 Day)) AS created_date,
     NULL AS hours_of_service_completed_c,
     MAX(cs_1600_cap) AS hours_dollar_amount,
+    NULL AS cs_1600_cap,
     NULL AS bb_elig_cs_hours,
-    MAX(cs_1600_cap),
+
     1 AS dummy_data_row,
 
     FROM join_data
     GROUP BY SLA_student
-)
+),
+
+running_1600_cap_calc AS
+(
     SELECT
     *,
     SUM(hours_dollar_amount)
@@ -87,8 +92,13 @@ dummy_row_add AS
     (PARTITION BY sla_student
     ORDER BY sla_student, created_date ASC) AS running_cs_1600_cap_value
     FROM dummy_row_add
-
+)
+    SELECT
+    *, 
     
+    FROM running_1600_cap_calc
+    
+
 /*    
     SELECT
     * except (student_c),
