@@ -63,5 +63,3 @@ SELECT
     FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics` 
     GROUP BY
         region_short
-;
---matriculation to 4 year college
