@@ -105,7 +105,7 @@ running_1600_cap_calc AS
         (running_cs_1600_cap_value >= 600
         AND (running_cs_1600_cap_value - 600) <= hours_dollar_amount) THEN hours_dollar_amount - (running_cs_1600_cap_value - 600)
         ELSE NULL
-    END,2) AS amount
+    END,2) AS bb_earnings_amount
     
     FROM running_1600_cap_calc
     
