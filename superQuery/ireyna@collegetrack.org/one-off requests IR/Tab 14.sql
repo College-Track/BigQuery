@@ -1,8 +1,18 @@
- SELECT DISTINCT *
-    FROM 
-        (SELECT at_id,
-                MAX(MAX(start_date_c)) OVER (PARTITION BY contact_id) AS start_date_c
-                        FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
-                        WHERE ct_status_at_c ='Active: Post-Secondary'
-                        AND College_Track_Status_Name ='Inactive: Post-Secondary'
-                        GROUP BY contact_id,at_id)
+SELECT
+    #contact data
+    contact_id,
+    full_name_c,
+    high_school_graduating_class_c,
+    College_Track_Status_Name,
+    site_short,
+
+    #current enrollment data 
+    Current_school_name,
+    current_enrollment_status_c
+    
+
+    FROM `data-warehouse-289815.salesforce_clean.contact_template` 
+
+    WHERE
+    indicator_completed_Ct_hs_program_c = TRUE
+    AND Current_school_name LIKE '%Hampton University%'
