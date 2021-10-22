@@ -12,7 +12,8 @@ WITH gather_new_approved_sla AS
     FROM `data-warehouse-289815.salesforce.student_life_activity_c`
     WHERE eligible_for_bank_book_service_earnings_c = TRUE
     AND status_c = "Approved"
-    AND op_needs_manual_processing_c = TRUE
+    AND DATE(created_date) > DATE(2021,09,01)
+    /*AND op_needs_manual_processing_c = TRUE */
     ORDER BY student_c,created_date ASC
 ),
 
