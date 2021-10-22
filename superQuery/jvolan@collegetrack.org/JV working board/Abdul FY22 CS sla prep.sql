@@ -102,13 +102,13 @@ bb_earn_calc AS
     *, 
     ROUND(CASE
         WHEN dummy_data_row = 1 THEN NULL
-        WHEN running_cs_1600_cap_value < 600 THEN hours_dollar_amount
+        WHEN running_cs_1600_cap_value < 1600 THEN hours_dollar_amount
         WHEN 
-        (running_cs_1600_cap_value >= 600
-        AND (running_cs_1600_cap_value - 600) > hours_dollar_amount) THEN NULL
+        (running_cs_1600_cap_value >= 1600
+        AND (running_cs_1600_cap_value - 1600) > hours_dollar_amount) THEN NULL
         WHEN 
-        (running_cs_1600_cap_value >= 600
-        AND (running_cs_1600_cap_value - 600) <= hours_dollar_amount) THEN hours_dollar_amount - (running_cs_1600_cap_value - 600)
+        (running_cs_1600_cap_value >= 1600
+        AND (running_cs_1600_cap_value - 1600) <= hours_dollar_amount) THEN hours_dollar_amount - (running_cs_1600_cap_value - 1600)
         ELSE NULL
     END,2) AS bb_earnings_amount
     
