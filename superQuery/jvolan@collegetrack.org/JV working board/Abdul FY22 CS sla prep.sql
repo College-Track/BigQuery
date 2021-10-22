@@ -12,7 +12,7 @@ WITH gather_new_approved_sla AS
     FROM `data-warehouse-289815.salesforce.student_life_activity_c`
     WHERE eligible_for_bank_book_service_earnings_c = TRUE
     AND status_c = "Approved"
-    AND DATE(created_date) > DATE(2021,10,01)
+    AND DATE(created_date) > DATE(2021,9,01)
     
     -- PLACEHOLDER for OP Processed Record for BB = FALSE --
     --PLACEHOLDER removed after testing--
