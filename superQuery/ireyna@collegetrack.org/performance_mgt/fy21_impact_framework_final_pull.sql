@@ -10,8 +10,6 @@
 
     FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics` 
     
-    GROUP By
-    
    /*
 Percent of Students on Track to Earn Bachelor's Degree within 6 years
 Matriculation to a 4-yr College
