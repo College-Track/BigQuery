@@ -33,6 +33,7 @@ gather_bb_apps AS
 (   
     SELECT
     student_c,
+    id AS bb_app_id,
     
     --PLACEHOLDER for CT Advised -- 
     total_service_earnings_c + 0 AS cs_1600_cap,
@@ -55,6 +56,7 @@ dummy_row_add AS
 (
     SELECT
     sla_student,
+    bb_app_id,
     sla_id,
     created_date,
     hours_of_service_completed_c,
@@ -70,6 +72,7 @@ dummy_row_add AS
     
     SELECT
     sla_student,
+    MAX(bb_app_id),
     NULL AS sla_id,
     MAX(DATE_SUB(created_date, INTERVAL 7 Day)) AS created_date,
     NULL AS hours_of_service_completed_c,
@@ -92,7 +95,10 @@ running_1600_cap_calc AS
     (PARTITION BY sla_student
     ORDER BY sla_student, created_date ASC) AS running_cs_1600_cap_value
     FROM dummy_row_add
-)
+),
+
+bb_earn_calc AS
+(
     SELECT
     *, 
     ROUND(CASE
@@ -108,14 +114,20 @@ running_1600_cap_calc AS
     END,2) AS bb_earnings_amount
     
     FROM running_1600_cap_calc
-    
+),
 
-/*    
+upload_file_prep AS
+(
     SELECT
-    * except (student_c),
-    (cs_1600_cap + hours_dollar_amount)
-    OVER 
-        (PARTITION BY sla_student
-        ORDER BY sla_student, created_date ASC)
-    FROM join_data
-*/
+    sla_student AS student,
+    created_date AS date_c,
+    "Service" AS earning_type,
+    "01246000000ZNhtAAG" AS record_type_id,
+    "a" AS academic_term,
+    
+    FROM bb_earn_calc
+)
+    SELECT
+    *
+    
+    FROM upload_file_prep
