@@ -24,9 +24,6 @@ gather_students AS
 (   
     SELECT
     Contact_Id,
-    College_Track_Status_Name,
-    high_school_graduating_class_c,
-    site_short,
     community_service_hours_c AS bb_elig_cs_hours,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
@@ -48,18 +45,45 @@ join_data AS
 (
     SELECT
     *,
-    1600 - cs_1600_cap AS available_cs_1600,
-    
+
     FROM gather_new_approved_sla
     LEFT JOIN gather_students ON Contact_Id = sla_student
     LEFT JOIN gather_bb_apps ON student_c = sla_student
 )
 
+    SELECT
+    sla_student,
+    sla_id,
+    created_date,
+    hours_of_service_completed_c,
+    hours_dollar_amount,
+    bb_elig_cs_hours,
+    cs_1600_cap,
+    0 AS dummy_data_row,
+
+    FROM join_data
+    
+  UNION ALL 
     
     SELECT
+    sla_student,
+    sla_id,
+    DATE_SUB(created_date, INTERVAL 1 Day) AS created_date,
+    NULL AS hours_of_service_completed_c,
+    cs_1600_cap AS hours_dollar_amount,
+    NULL AS bb_elig_cs_hours,
+    cs_1600_cap,
+    1 AS dummy_data_row,
+
+    FROM join_data
+
+    
+/*    
+    SELECT
     * except (student_c),
-    SUM(cs_1600_cap + hours_dollar_amount)
+    (cs_1600_cap + hours_dollar_amount)
     OVER 
-        (PARTITION BY sla_student, cs_1600_cap
+        (PARTITION BY sla_student
         ORDER BY sla_student, created_date ASC)
     FROM join_data
+*/
