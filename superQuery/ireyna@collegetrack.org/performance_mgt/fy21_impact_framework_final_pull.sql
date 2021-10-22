@@ -2,6 +2,8 @@
     SELECT
         if_site_sort,
         site_short,
+        matriculated_affordable,
+        twelfth_grade_count,
         matriculated_affordable / twelfth_grade_count AS matriculation_affordable_college,
        
 
