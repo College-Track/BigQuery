@@ -6,6 +6,7 @@ WITH gather_new_approved_sla AS
     id AS sla_id,
     created_date,
     hours_of_service_completed_c,
+    hours_of_service_completed_c*16 AS hours_dollar_amount,
     
     
     FROM `data-warehouse-289815.salesforce.student_life_activity_c`
@@ -55,5 +56,5 @@ join_data AS
 
     
     SELECT
-    * 
+    *
     FROM join_data
