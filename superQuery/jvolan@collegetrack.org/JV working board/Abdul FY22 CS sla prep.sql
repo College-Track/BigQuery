@@ -136,7 +136,7 @@ bonus_cs_hours_calc AS
     GROUP BY sla_student
 ),
 
-bonus_cs_hours_upload_file_prep AS
+upload_file_prep AS
 (
     SELECT
     student,
@@ -149,19 +149,13 @@ bonus_cs_hours_upload_file_prep AS
     NULL AS community_service,
     
     FROM bonus_cs_hours_calc
-)
-    SELECT
-    *
-    FROM 
-    bonus_cs_hours_upload_file_prep
-/*
 
-main_upload_file_prep AS
-(
+UNION ALL
+
     SELECT
     sla_student AS student,
     bb_app_id AS scholarship_application,
-    created_date AS date_c,
+    DATE(created_date) AS date_c,
     "Service" AS earning_type,
     "01246000000ZNhtAAG" AS record_type_id,
     "a" AS academic_term,
@@ -169,7 +163,8 @@ main_upload_file_prep AS
     sla_id AS community_service,
     
     FROM bb_earn_calc
-),
+)
 
-
-*/
+    SELECT
+    *
+    FROM upload_file_prep
