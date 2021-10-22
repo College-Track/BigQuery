@@ -95,6 +95,12 @@ running_1600_cap_calc AS
 )
     SELECT
     *, 
+    CASE
+        WHEN dummy_data_row = 1 THEN NULL
+        WHEN running_cs_1600_cap_value < 600 THEN hours_dollar_amount
+        WHEN running_cs_1600_cap_value >= 600 THEN (running_cs_1600_cap_value - 600)
+        ELSE NULL
+    END AS amount
     
     FROM running_1600_cap_calc
     
