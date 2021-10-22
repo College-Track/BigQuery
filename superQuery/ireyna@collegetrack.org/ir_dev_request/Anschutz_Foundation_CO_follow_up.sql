@@ -1,4 +1,4 @@
- SELECT
+SELECT
         COUNT(DISTINCT contact_id) AS student_total,
         AT_School_Name,
         site_short
@@ -15,8 +15,10 @@
             AT_School_Name  LIKE '%South%' OR
             AT_School_Name  LIKE '%John F. Kennedy%' OR
             AT_School_Name  LIKE '%Thomas Jefferson%')
-        AND College_Track_Status_Name IN ('Current CT HS Student','Leave of Absence')
-        AND current_as_c = TRUE
+        --AND College_Track_Status_Name IN ('Current CT HS Student','Leave of Absence')
+        --AND current_as_c = TRUE
+        AND ay_2020_21_student_served_c='High School Student'
+        AND GAS_Name = 'Spring 2020-21 (Semester)'
     GROUP BY
         site_short,
         AT_School_Name
