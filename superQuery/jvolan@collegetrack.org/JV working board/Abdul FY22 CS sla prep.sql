@@ -147,6 +147,7 @@ upload_file_prep AS
     academic_term,
     cs_bonus_amount_still_needed*100 AS bb_earnings_amount,
     NULL AS community_service,
+    1 AS bonus_cs_award,
     
     FROM bonus_cs_hours_calc
 
@@ -161,6 +162,7 @@ UNION ALL
     "a" AS academic_term,
     bb_earnings_amount,
     sla_id AS community_service,
+    0 AS bonus_cs_award,
     
     FROM bb_earn_calc
 )
