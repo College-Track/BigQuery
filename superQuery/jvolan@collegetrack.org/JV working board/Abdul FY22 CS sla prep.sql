@@ -49,8 +49,10 @@ join_data AS
     FROM gather_new_approved_sla
     LEFT JOIN gather_students ON Contact_Id = sla_student
     LEFT JOIN gather_bb_apps ON student_c = sla_student
-)
+),
 
+dummy_row_add AS
+(
     SELECT
     sla_student,
     sla_id,
@@ -77,6 +79,14 @@ join_data AS
 
     FROM join_data
     GROUP BY SLA_student
+)
+    SELECT
+    *,
+    SUM(hours_of_service_completed_c)
+    OVER
+    (PARTITION BY sla_student
+    ORDER BY sla_student, created_date ASC) AS running_cs_1600_cap_value
+    FROM dummy_row_add
 
     
 /*    
