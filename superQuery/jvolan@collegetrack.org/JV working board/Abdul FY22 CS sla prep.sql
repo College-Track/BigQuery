@@ -126,6 +126,7 @@ upload_file_prep AS
     "01246000000ZNhtAAG" AS record_type_id,
     "a" AS academic_term,
     bb_earnings_amount,
+    sla_id AS community_service,
     
     FROM bb_earn_calc
 )
