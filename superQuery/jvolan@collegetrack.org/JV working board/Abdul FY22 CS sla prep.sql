@@ -133,3 +133,4 @@ main_upload_file_prep AS
     *
     
     FROM main_upload_file_prep
+    WHERE bb_earnings_amount IS NOT NULL
