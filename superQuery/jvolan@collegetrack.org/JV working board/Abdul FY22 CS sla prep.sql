@@ -115,7 +115,7 @@ bb_earn_calc AS
     FROM running_1600_cap_calc
 ),
 
-bonus_cs_hours_upload_file_prep AS
+bonus_cs_hours_calc AS
 (
     SELECT 
     sla_student AS student,
@@ -128,19 +128,32 @@ bonus_cs_hours_upload_file_prep AS
     MAX(FLOOR((cs_1600_cap - 1600)/100)) AS actual_cs_hours_bonus,
     MAX(
     (FLOOR((bb_elig_cs_hours/100)-1) - FLOOR((cs_1600_cap - 1600)/100))) AS cs_bonus_amount_still_needed,
-    MAX(bb_elig_cs_hours),
-    MAX(cs_1600_cap),
+    MAX(bb_elig_cs_hours) AS bb_elig_cs_hours ,
+    MAX(cs_1600_cap) AS cs_1600_cap,
     
     FROM join_data
     WHERE bb_elig_cs_hours >=200
     GROUP BY sla_student
-)
+),
 
+bonus_cs_hours_upload_file_prep AS
+(
+    SELECT
+    student,
+    scholarship_application,
+    date_c,
+    earning_type,
+    record_type_id,
+    academic_term,
+    cs_bonus_amount_still_needed*100 AS bb_earnings_amount,
+    NULL AS community_service,
+    
+    FROM bonus_cs_hours_calc
+)
     SELECT
     *
-    FROM bonus_cs_hours_upload_file_prep
-
-
+    FROM 
+    bonus_cs_hours_upload_file_prep
 /*
 
 main_upload_file_prep AS
