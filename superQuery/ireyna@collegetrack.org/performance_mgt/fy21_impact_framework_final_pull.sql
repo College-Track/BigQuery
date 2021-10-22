@@ -2,14 +2,24 @@
     SELECT
         if_site_sort,
         site_short,
-        persistence_denominator AS num_matriculation,
-        persistence_denominator / twelfth_grade_count AS matriculation,
-        matriculated_affordable AS num_matriculated_affordable,
-        twelfth_grade_count AS num_matriculation_affordable,
+    --matriculation data
+        matriculation_numerator AS num_matriculation,
+        matriculation_numerator / twelfth_grade_count AS matriculation,
+        
+        matriculated_affordable AS num_matriculation_affordable,
         matriculated_affordable / twelfth_grade_count AS matriculation_affordable_college,
         
-        college_first_enrolled_school_type_numerator
-    
+        matriculated_best_good_situational AS num_matriculated_best_good_situational,
+        matriculated_best_good_situational / twelfth_grade_count AS matriculated_best_good_situational,
+        
+        twelfth_grade_count AS senior_denominator,
+        
+    --persistence data
+        indicator_persisted_into_2_nd_year_ct_numerator AS num_persistence
+        indicator_persisted_into_2_nd_year_ct_numerator / persistence_denominator AS freshman_persistencec,
+        
+        persistence_denominator,
+
 
     FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics` 
     
