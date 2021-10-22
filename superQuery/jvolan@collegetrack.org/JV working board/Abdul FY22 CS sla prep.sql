@@ -47,7 +47,8 @@ gather_bb_apps AS
 join_data AS
 (
     SELECT
-    *
+    *,
+    1600 - cs_1600_cap AS available_cs_1600,
     
     FROM gather_new_approved_sla
     LEFT JOIN gather_students ON Contact_Id = sla_student
@@ -56,7 +57,7 @@ join_data AS
 
     
     SELECT
-    * except (hours_dollar_amount),
+    *,
     SUM(hours_dollar_amount)
     OVER 
         (PARTITION BY sla_student
