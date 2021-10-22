@@ -127,7 +127,7 @@ bonus_cs_hours_upload_file_prep AS
     MAX(FLOOR(bb_elig_cs_hours/100)-1) AS expected_cs_hours_bonus,
     MAX(FLOOR((cs_1600_cap - 1600)/100)) AS actual_cs_hours_bonus,
     MAX(
-    (FLOOR(bb_elig_cs_hours/100) - FLOOR((cs_1600_cap - 1600)/100))) AS cs_bonus_amount_still_needed,
+    (FLOOR(bb_elig_cs_hours/100) - FLOOR((cs_1600_cap - 1600)/100 - 1))) AS cs_bonus_amount_still_needed,
     MAX(bb_elig_cs_hours),
     MAX(cs_1600_cap),
     
