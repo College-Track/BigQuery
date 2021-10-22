@@ -124,7 +124,7 @@ bonus_cs_hours_upload_file_prep AS
      "Service" AS earning_type,
     "01246000000ZNhtAAG" AS record_type_id,
     "a" AS academic_term,
-    MAX(FLOOR(bb_elig_cs_hours/100)) AS expected_cs_hours_bonus,
+    MAX(FLOOR(bb_elig_cs_hours/100)-1) AS expected_cs_hours_bonus,
     MAX(FLOOR((cs_1600_cap - 1600)/100)) AS actual_cs_hours_bonus,
     MAX(
     (FLOOR(bb_elig_cs_hours/100) - FLOOR((cs_1600_cap - 1600)/100))) AS cs_bonus_amount_still_needed,
