@@ -31,8 +31,8 @@ FROM `data-studio-260217.ddt.ay_summary_table` DDT
 map_to_attendance_memo AS (
 SELECT 
     SUM(CASE WHEN above_80_attendance = 0 AND above_80_attendance_memo = 1
-    THEN 1 
-    ELSE 0
+    THEN above_80_attendance_memo 
+    ELSE above_80_attendance
     END) AS attendance_numerator_memo,
     SUM(high_school_student_count) AS high_school_student_count,
     site_short,
