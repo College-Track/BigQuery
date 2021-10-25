@@ -1,3 +1,6 @@
+WITH
+attendance AS (
+
 SELECT
     ddt.site_short,
     ddt.region_short,
@@ -6,7 +9,9 @@ SELECT
         ELSE 0
         END AS high_school_student_count,
     CASE
-        WHEN DDT.above_80_attendance_fall = 'True' AND DDT.above_80_attendance_spring = 'True'
+        WHEN (DDT.above_80_attendance_fall = 'True' 
+            OR DDT.above_80_attendance_fall IS NULL) 
+            AND DDT.above_80_attendance_spring = 'True'
         THEN 1
         ELSE
             0
