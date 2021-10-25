@@ -4,6 +4,8 @@
     site_short,
     high_school_graduating_class_c,
     College_Track_Status_Name,
+    total_bank_book_balance_contact_c,
+    fy_bank_book_balance_contact_c,
     Current_school_name,
     Current_School_Type_c_degree,
     Current_Major_c,
