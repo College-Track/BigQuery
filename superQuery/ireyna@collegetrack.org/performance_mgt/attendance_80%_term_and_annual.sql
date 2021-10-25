@@ -1,6 +1,3 @@
-WITH
-attendance AS (
-
 SELECT
     ddt.site_short,
     ddt.region_short,
