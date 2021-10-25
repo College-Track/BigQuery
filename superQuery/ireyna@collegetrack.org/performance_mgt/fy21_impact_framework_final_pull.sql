@@ -34,7 +34,7 @@
         had_mse_numerator AS mse_numerator,
         had_mse_denominator AS mse_denominator,
         
-        above_80_attendance_memo AS above_80_attendance_orig,
+        above_80_attendance_memo AS above_80_attendance_memo_orig,
         CASE WHEN above_80_attendance = 0 AND above_80_attendance_memo = 1
             THEN above_80_attendance_memo  ELSE above_80_attendance
             END AS attendance_numerator_memo,
@@ -75,7 +75,7 @@ SELECT
         SUM(had_mse_numerator) AS mse_numerator,
         SUM(had_mse_denominator) AS mse_denominator,
         
-        SUM(above_80_attendance_memo) AS above_80_attendance_orig,
+        SUM(above_80_attendance_memo) AS above_80_attendance_memo_orig,
         
         SUM(CASE WHEN above_80_attendance = 0 AND above_80_attendance_memo = 1
             THEN above_80_attendance_memo  ELSE above_80_attendance
