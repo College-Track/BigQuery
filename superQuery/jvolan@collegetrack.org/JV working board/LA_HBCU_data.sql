@@ -83,32 +83,13 @@ gather_students AS
     d.academic_year_c,
     d.door_total,
     ef.e_fund_total,
+    bb.bb_disburse_total
     
     
     FROM gather_students gs
     LEFT JOIN fy_door d ON d.student_c = Contact_Id AND d.academic_year_c = gs.academic_year_c
     LEFT JOIN fy_e_fund ef ON ef.student_c = Contact_Id AND ef.academic_year_c = gs.academic_year_c
-
-    
-    
-/*
-
-
-
-
-),
-
-bb_2021_ay21 AS
-(
-    SELECT
-    student_c AS bb_contact_id,
-    SUM(amount_c) AS fy21_bb_total
-    
-    FROM get_bb_at_ay   
-    WHERE academic_year_c = 'a1b46000000dRR8AAM'
-    GROUP BY student_c
- ),
- */
+    LEFT JOIN fy_bb_disbursements bb ON bb.student_c = Contact_Id AND bb.academic_year_c = gs.academic_year_c
     
 
 
