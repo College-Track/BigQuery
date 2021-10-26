@@ -25,5 +25,4 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
     LEFT JOIN `data-warehouse-289815.salesforce.account` ON id = college_first_enrolled_school_c
     WHERE historically_black_college_univ_hbcu_c = TRUE
-    AND indicator_completed_ct_hs_program_c = TRUE
 
