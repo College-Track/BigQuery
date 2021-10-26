@@ -1,5 +1,5 @@
- SELECT
-    st.student_c
+SELECT
+    st.student_c,
     amount_c,
     cat.academic_year_c
 
