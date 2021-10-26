@@ -14,3 +14,4 @@
     LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` c ON c.Contact_Id = cay.Contact_Id
     WHERE site_short IN ('Ward 8', 'The Durant Center')
     AND AY_student_served = "High School"
+    AND AY_name <> "AY 2021-22"
