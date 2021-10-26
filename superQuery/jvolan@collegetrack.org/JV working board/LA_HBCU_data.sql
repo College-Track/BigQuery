@@ -5,7 +5,7 @@
     College_Track_Status_Name, 
     AT_Id,
     AT_name,
-    AT_School_Name
+    AT_School_Name,
     enrollment_status_c,
     type_of_degree_earned_c,
     ct_status_at_c,
