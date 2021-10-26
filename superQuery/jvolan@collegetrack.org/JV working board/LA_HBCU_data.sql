@@ -58,6 +58,7 @@ gather_students AS
     
     FROM gather_students gs
     LEFT JOIN fy_door fyd ON fyd.student_c = Contact_Id AND fyd.academic_year_c = gs.academic_year_c
+    WHERE door_total > 0
 
     
     
