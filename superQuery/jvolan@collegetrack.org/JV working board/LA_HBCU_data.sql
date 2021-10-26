@@ -43,6 +43,20 @@ fy_e_fund AS
     GROUP BY st.student_c,cat.academic_year_c
 ),
 
+fy_bb_disbursements AS
+(
+    SELECT
+    st.student_c,
+    SUM(amount_c) AS bb_disburse_total,
+    cat.academic_year_c
+    
+    FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` cat ON st.academic_semester_c = cat.AT_Id
+    WHERE st.record_type_id = '01246000000ZNhsAAG'
+    AND transaction_status_c = "Approved"
+    GROUP BY st.student_c, cat.academic_year_c
+
+),
 
 gather_students AS 
 ( 
@@ -53,7 +67,6 @@ gather_students AS
     site_short,
     school_c
    
-    
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     LEFT JOIN `data-warehouse-289815.salesforce.account` ON id = school_c
@@ -79,43 +92,9 @@ gather_students AS
     
     
 /*
-),
 
-get_efund AS
-(
-    SELECT
-    st.student_c AS e_contact_id,
-    st.academic_semester_c,
-    amount_c,
-    cat.academic_year_c
 
-    FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` cat ON st.academic_semester_c = cat.AT_Id
-    WHERE scholarship_c = 'College Track Emergency Fund'
-),
 
-fy21_efund AS
-(
-    SELECT
-    e_contact_id,
-    SUM(amount_c) AS fy21_efund_total
-
-    FROM get_efund
-    WHERE academic_year_c = 'a1b46000000dRR8AAM'
-    GROUP BY e_contact_id
-),
-
-get_bb_at_ay AS
-(
-    SELECT
-    st.student_c,
-    st.academic_semester_c,
-    st.amount_c,
-    cat.academic_year_c
-    
-    FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
-    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_at_template` cat ON st.academic_semester_c = cat.AT_Id
-    WHERE st.record_type_id = '01246000000ZNhtAAG'
 
 ),
 
