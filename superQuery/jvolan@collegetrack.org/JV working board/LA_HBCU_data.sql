@@ -1,7 +1,7 @@
     SELECT
     Contact_Id,
     site_short,
-    high_school_graduating_class_c
+    high_school_graduating_class_c,
     GAS_Name,
     AT_School_Name,
     enrollment_status_c,
