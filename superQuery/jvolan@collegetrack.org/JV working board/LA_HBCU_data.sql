@@ -1,8 +1,8 @@
     SELECT
     AY_Name,
-    COUNT(DISTINCT Contact_Id) AS unique_student_count,
     site_short,
     COUNT(AT_Id) AS at_count,
+    COUNT(DISTINCT Contact_Id) AS unique_student_count,
     COUNT(type_of_degree_earned_c) AS degree_earned_count,
     
     
