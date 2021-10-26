@@ -8,9 +8,19 @@
     
     CASE
         WHEN (AY_enrolled_sessions IS NULL 
-        OR AY_enrolled_sessions = 0) THEN "No Data"
+        OR AY_enrolled_sessions = 0) THEN NULL
+        ELSE (AY_attended_workshops / AY_enrolled_sessions) 
+    END AS ay_attendance_rate,
+        
+    CASE
+        WHEN (AY_enrolled_sessions IS NULL 
+        OR AY_enrolled_sessions = 0) THEN NULL
         WHEN (AY_attended_workshops / AY_enrolled_sessions) < .65 THEN "<65%"
-        ELSE "90%"
+        WHEN (AY_attended_workshops / AY_enrolled_sessions) >= .65
+        AND (AY_attended_workshops / AY_enrolled_sessions) < .8 THEN "65% - 79%"
+        WHEN (AY_attended_workshops / AY_enrolled_sessions) >= .8
+        AND (AY_attended_workshops / AY_enrolled_sessions) < .9 THEN "80% - 89%"
+        WHEN (AY_attended_workshops / AY_enrolled_sessions) >= .9 THEN "90%+"
     END AS attendance_bucket
     
     FROM `data-warehouse-289815.salesforce_clean.contact_ay_template` cay
