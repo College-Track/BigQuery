@@ -1,6 +1,7 @@
     SELECT
     Contact_Id,
     site_short,
+    College_Track_Status_Name,
     college_first_enrolled_school_c AS cfe,
     CASE
         WHEN 
