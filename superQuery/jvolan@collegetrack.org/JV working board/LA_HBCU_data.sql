@@ -1,6 +1,6 @@
 SELECT
     st.student_c,
-    amount_c,
+    SUM(amount_c) AS e_fund_total,
     cat.academic_year_c
 
     FROM `data-warehouse-289815.salesforce_clean.scholarship_transaction_clean` st
