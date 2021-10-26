@@ -5,6 +5,7 @@
     GAS_Name,
     AT_School_Name,
     enrollment_status_c,
+    ct_status_at_c,
     College_Track_Status_Name,
     historically_black_college_univ_hbcu_c
     
