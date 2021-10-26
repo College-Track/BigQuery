@@ -12,8 +12,7 @@ WITH gather_new_approved_sla AS
     FROM `data-warehouse-289815.salesforce.student_life_activity_c`
     WHERE eligible_for_bank_book_service_earnings_c = TRUE
     AND status_c = "Approved"
-    AND DATE(created_date) > DATE(2021,09,01)
-    /*AND op_needs_manual_processing_c = TRUE */
+    AND op_needs_manual_processing_c = TRUE
     ORDER BY student_c,created_date ASC
 ),
 
@@ -34,7 +33,7 @@ gather_bb_apps AS
     id AS bb_app_id,
     
     --PLACEHOLDER for CT Advised -- 
-    total_service_earnings_c + 0 AS cs_1600_cap,
+    total_service_earnings_c + total_ct_advised_earnings_c AS cs_1600_cap,
 
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE scholarship_application_record_type_name = "Bank Book"
@@ -64,7 +63,6 @@ dummy_row_add AS
     hours_dollar_amount,
     cs_1600_cap,
     bb_elig_cs_hours,
-
     0 AS dummy_data_row,
 
     FROM join_data
@@ -81,7 +79,6 @@ dummy_row_add AS
     MAX(cs_1600_cap) AS hours_dollar_amount,
     NULL AS cs_1600_cap,
     NULL AS bb_elig_cs_hours,
-
     1 AS dummy_data_row,
 
     FROM join_data
