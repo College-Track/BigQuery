@@ -49,6 +49,7 @@ WITH gather_at_attendance AS
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
     AND date_c < CURRENT_DATE()
     AND Attendance_Denominator_c = 1
+    AND site_short IN ('Ward 8', 'The Durant Center')
 )
     SELECT
     site_short,
