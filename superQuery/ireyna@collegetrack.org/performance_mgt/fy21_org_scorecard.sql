@@ -56,9 +56,12 @@ fy20_measures AS (
             WHEN Region__Account_Name = 'College Track DC' THEN 'DC'
         END AS region_short,
         
-    FROM `org-scorecard-286421.aggregate_data.objective_1_site`
-
-),
+    FROM `org-scorecard-286421.aggregate_data.objective_1_site` AS obj1
+    LEFT JOIN `org-scorecard-286421.aggregate_data.objective_1_region` obj2
+        ON obj1.Region__Account_Name = obj2.Region
+    FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.financial_sustainability_fy20` AS obj7
+        ON obj1.Region__Account_Name = obj7.Account AND obj1.Site__Account_Name = obj2.Region
+),      
 
 fy21_measures AS (
     SELECT
