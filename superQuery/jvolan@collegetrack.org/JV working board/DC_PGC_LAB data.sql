@@ -1,3 +1,5 @@
+-- updated attendance sql--
+/*
 SELECT
     c.Contact_Id,
     high_school_graduating_class_c,
@@ -29,3 +31,15 @@ SELECT
     WHERE site_short IN ('Ward 8', 'The Durant Center')
     AND AY_name IN ('AY 2019-20','AY 2020-21')
     AND AY_student_served = "High School"
+    */
+    
+    
+    SELECT
+    Student_c,
+    site_c,
+    Attendance_Numerator_c,
+    Attendance_Denominator_c,
+    date_c,
+    
+    FROM `data-warehouse-289815.salesforce_clean.class_template`
+    WHERE global_academic_semester_c = "Fall 2021-22 (Semester)"
