@@ -33,7 +33,8 @@ SELECT
     AND AY_student_served = "High School"
     */
     
-
+WITH gather_at_attendance AS
+(    
     SELECT
     Student_c,
     site_short,
@@ -48,3 +49,13 @@ SELECT
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
     AND date_c < CURRENT_DATE()
     AND Attendance_Denominator_c = 1
+)
+    SELECT
+    site_short,
+    high_school_graduating_class_c,
+    date_c,
+    ROUND(SUM(Attendance_Numerator_c)/SUM(Attendance_Denominator_c),2) AS daily_attendance_rate
+    
+    FROM 
+    gather_at_attendance
+    GROUP BY site_short, high_school_graduating_class_c, date_c
