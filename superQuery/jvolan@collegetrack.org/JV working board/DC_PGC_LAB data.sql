@@ -33,16 +33,18 @@ SELECT
     AND AY_student_served = "High School"
     */
     
-    
+
     SELECT
     Student_c,
-    site_c,
+    site_short,
+    high_school_graduating_class_c,
     Attendance_Numerator_c,
     Attendance_Denominator_c,
     date_c,
     Class_Attendance_Id
     
     FROM `data-warehouse-289815.salesforce_clean.class_template`
+    LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` ON Contact_Id = Student_c
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
     AND date_c < CURRENT_DATE()
     AND Attendance_Denominator_c = 1
