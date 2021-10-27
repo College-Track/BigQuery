@@ -40,6 +40,7 @@ SELECT
     Attendance_Numerator_c,
     Attendance_Denominator_c,
     date_c,
+    Class_Attendance_Id
     
     FROM `data-warehouse-289815.salesforce_clean.class_template`
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
