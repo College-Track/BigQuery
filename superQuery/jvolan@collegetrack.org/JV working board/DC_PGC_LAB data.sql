@@ -42,4 +42,4 @@ SELECT
     date_c,
     
     FROM `data-warehouse-289815.salesforce_clean.class_template`
-    WHERE global_academic_semester_c = "Fall 2021-22 (Semester)"
+    WHERE global_academic_semester_c = "a3646000000dMXuAAM"
