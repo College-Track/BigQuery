@@ -45,3 +45,4 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.class_template`
     WHERE global_academic_semester_c = "a3646000000dMXuAAM"
     AND date_c < CURRENT_DATE()
+    AND Attendance_Denominator_c = 1
