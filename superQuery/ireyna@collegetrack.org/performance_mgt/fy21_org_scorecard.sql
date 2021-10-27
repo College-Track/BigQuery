@@ -40,7 +40,22 @@ fy20_measures AS (
             WHEN Site__Account_Name = 'College Track The Durant Center' THEN 'PGC'
             WHEN Site__Account_Name = 'College Track Ward 8' THEN 'DC8'
             WHEN Site__Account_Name = 'College Track Crenshaw' THEN 'CREN'
-        END AS site_abrev
+        END AS site_abrev,
+        
+        CASE 
+            WHEN Region__Account_Name = 'College Track Northern California Region' THEN 'Northern California'
+            WHEN Region__Account_Name = 'College Track Los Angeles Region' THEN 'Los Angeles'
+            WHEN Region__Account_Name = 'College Track Colorado' THEN 'Colorado'
+            WHEN Region__Account_Name = 'College Track DC' THEN 'DC'
+        END AS region_short,
+        
+        CASE 
+            WHEN Region__Account_Name = 'College Track Northern California Region' THEN 'NORCAL'
+            WHEN Region__Account_Name = 'College Track Los Angeles Region' THEN 'LA'
+            WHEN Region__Account_Name = 'College Track Colorado' THEN 'CO'
+            WHEN Region__Account_Name = 'College Track DC' THEN 'DC'
+        END AS region_short,
+        
     FROM `org-scorecard-286421.aggregate_data.objective_1_site`
 
 ),
