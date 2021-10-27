@@ -22,7 +22,7 @@ fy20_measures AS (
             WHEN Site__Account_Name = 'College Track Sacramento' THEN 'Sacramento'
             WHEN Site__Account_Name = 'College Track Watts' THEN 'Watts'
             WHEN Site__Account_Name = 'College Track Denver' THEN 'Denver'
-            WHEN Site__Account_Name = 'College Track The Durant Center' THEN 'The Durant Center'
+            WHEN Site__Account_Name = 'College Track at The Durant Center' THEN 'The Durant Center'
             WHEN Site__Account_Name = 'College Track Ward 8' THEN 'Ward 8'
             WHEN Site__Account_Name = 'College Track Crenshaw' THEN 'Crenshaw'
         END AS site_short,
@@ -37,7 +37,7 @@ fy20_measures AS (
             WHEN Site__Account_Name = 'College Track Sacramento' THEN 'SAC'
             WHEN Site__Account_Name = 'College Track Watts' THEN 'WATTS'
             WHEN Site__Account_Name = 'College Track Denver' THEN 'DEN'
-            WHEN Site__Account_Name = 'College Track The Durant Center' THEN 'PGC'
+            WHEN Site__Account_Name = 'College Track at The Durant Center' THEN 'PGC'
             WHEN Site__Account_Name = 'College Track Ward 8' THEN 'DC8'
             WHEN Site__Account_Name = 'College Track Crenshaw' THEN 'CREN'
         END AS site_abrev,
