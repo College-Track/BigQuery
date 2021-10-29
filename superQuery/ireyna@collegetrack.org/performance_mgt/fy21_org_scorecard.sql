@@ -1,4 +1,4 @@
-    SELECT
+   SELECT
         obj1.*, --EXCEPT (Site__Account_Name,Region__Account_Name),
         obj1_b.*,
         obj2.*,
@@ -54,11 +54,11 @@
     LEFT JOIN `org-scorecard-286421.aggregate_data.objective_1_region` obj1_b ----recruit and retain students
         ON obj1.Region__Account_Name = obj1_b.Region
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20` AS obj2 -- academic & social-emotional growth
-        ON obj1.Region__Account_Name = obj2.Account AND obj1.Site__Account_Name = obj2.Account
+        ON obj1.Site__Account_Name = obj2.Account --obj1.Region__Account_Name = obj2.Account AND 
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.college_outcomes_fy20` AS obj3 --matriculation & graduates
-        ON  obj1.Site__Account_Name = obj3.Account --obj1.Region__Account_Name = obj3.Account AND
+        ON obj1.Site__Account_Name = obj3.Account --obj1.Region__Account_Name = obj3.Account AND
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20` AS obj4 --alumni, employment
-        ON obj1.Region__Account_Name = obj4.Account AND obj1.Site__Account_Name = obj4.Account
+        ON obj1.Site__Account_Name = obj4.Account --obj1.Region__Account_Name = obj4.Account AND 
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement` AS obj5 --hr, diverse staff
         ON obj1.Region__Account_Name = obj5.Region AND obj1.Site__Account_Name = obj5.Site
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.financial_sustainability_fy20` AS obj6 --financial sustainability
