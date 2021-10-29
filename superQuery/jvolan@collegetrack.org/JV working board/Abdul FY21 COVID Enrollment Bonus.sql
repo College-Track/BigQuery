@@ -33,7 +33,10 @@ join_data AS
 
     FROM gather_students
     LEFT JOIN gather_bb_apps ON student_c = Contact_Id
-)
+),
+
+upload_prep AS
+(   
     SELECT
     Contact_Id AS student,
     bb_app_id AS scholarship,
@@ -55,3 +58,9 @@ join_data AS
     available_1600_cap,
     
     FROM join_data
+)
+
+    SELECT 
+    *
+    FROM upload_prep
+    WHERE final_covid_bonus_amount > 0
