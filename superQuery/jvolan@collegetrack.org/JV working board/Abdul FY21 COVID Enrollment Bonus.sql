@@ -46,7 +46,7 @@ join_data AS
     "CT Advised" AS earning_type,
     CURRENT_DATE() AS date_c,
     TRUE AS OP_Manual_Disbursement,
-    "COVID enrollemnt related BB award, granted in response to decreased oopportunities for CS engagements during the pandemic. See FY22 Serivce Cap Plan for details" AS OP_Manual_Disbursement_notes,
+    "COVID enrollment related BB award, granted in response to decreased opportunities for CS engagements during the pandemic. See FY22 Service Cap Plan for details" AS OP_Manual_Disbursement_notes,
     
     --just to have visibile in upload file if we need to audit down the road
     eligble_AT_count,
