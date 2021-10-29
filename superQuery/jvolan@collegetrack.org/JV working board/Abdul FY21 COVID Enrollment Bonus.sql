@@ -2,7 +2,6 @@ WITH gather_students AS
 ( 
     SELECT
     Contact_Id,
-    
     COUNT(AT_Id) AS eligble_AT_count,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
@@ -18,10 +17,7 @@ gather_bb_apps AS
     SELECT
     student_c,
     id AS bb_app_id,
-    
     MAX(total_service_earnings_c) AS total_service_earnings_c,
-    -- PLACEHOLDER for adding in + ct advised here --
-   
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE scholarship_application_record_type_name = "Bank Book"
@@ -34,9 +30,7 @@ join_data AS
     * except (student_c),
     (eligble_at_count * 200) AS eligble_covid_bonus,
     (1600 - total_service_earnings_c) AS available_1600_cap,
-    -- PLACEHOLDER for adding in + ct advised here --
 
-    
     FROM gather_students
     LEFT JOIN gather_bb_apps ON student_c = Contact_Id
 )
