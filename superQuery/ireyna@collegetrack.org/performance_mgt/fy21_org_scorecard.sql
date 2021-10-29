@@ -1,12 +1,12 @@
-SELECT
-        obj1.* EXCEPT (Site__Account_Name,Region__Account_Name),
+   SELECT
+        obj1.*, --EXCEPT (Site__Account_Name,Region__Account_Name),
         obj1_b.*,
         obj2.*,
         obj3.*,
         obj4.*,
         obj5.*,
         obj6.*,
-        CASE 
+        /*CASE 
             WHEN Site__Account_Name = 'College Track East Palo Alto' THEN 'East Palo Alto'
             WHEN Site__Account_Name = 'College Track Oakland' THEN 'Oakland'
             WHEN Site__Account_Name = 'College Track San Francisco' THEN 'San Francisco'
@@ -48,7 +48,7 @@ SELECT
             WHEN Region__Account_Name = 'College Track Los Angeles Region' THEN 'LA'
             WHEN Region__Account_Name = 'College Track Colorado' THEN 'CO'
             WHEN Region__Account_Name = 'College Track DC' THEN 'DC'
-        END AS region_short,
+        END AS region_short,*/
         
     FROM `org-scorecard-286421.aggregate_data.objective_1_site` AS obj1 --recruit and retain students
     LEFT JOIN `org-scorecard-286421.aggregate_data.objective_1_region` obj1_b ----recruit and retain students
