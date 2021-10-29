@@ -54,7 +54,4 @@ join_data AS
     eligble_covid_bonus,
     available_1600_cap,
     
-    
-    
-    
     FROM join_data
