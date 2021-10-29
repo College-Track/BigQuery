@@ -1,4 +1,4 @@
-   SELECT
+  SELECT
         obj1.*, --EXCEPT (Site__Account_Name,Region__Account_Name),
         obj1_b.*,
         obj2.*,
@@ -62,4 +62,4 @@
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement` AS obj5 --hr, diverse staff
         ON obj1.Region__Account_Name = obj5.Region AND obj1.Site__Account_Name = obj5.Site
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.financial_sustainability_fy20` AS obj6 --financial sustainability
-        ON obj1.Region__Account_Name = obj6.Account AND obj1.Site__Account_Name = obj6.Account
+        ON obj1.Site__Account_Name = obj6.Account --obj1.Region__Account_Name = obj6.Account AND 
