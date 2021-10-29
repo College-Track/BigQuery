@@ -56,11 +56,19 @@ fy20_measures AS (
             WHEN Region__Account_Name = 'College Track DC' THEN 'DC'
         END AS region_short,
         
-    FROM `org-scorecard-286421.aggregate_data.objective_1_site` AS obj1
-    LEFT JOIN `org-scorecard-286421.aggregate_data.objective_1_region` obj2
-        ON obj1.Region__Account_Name = obj2.Region
-    FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.financial_sustainability_fy20` AS obj7
-        ON obj1.Region__Account_Name = obj7.Account AND obj1.Site__Account_Name = obj2.Region
+    FROM `org-scorecard-286421.aggregate_data.objective_1_site` AS obj1 --recruit and retain students
+    LEFT JOIN `org-scorecard-286421.aggregate_data.objective_1_region` obj1_b ----recruit and retain students
+        ON obj1.Region__Account_Name = obj1_b.Region
+    FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20` AS obj2 -- academic & social-emotional growth
+        ON obj1.Region__Account_Name = obj2.Account AND obj1.Site__Account_Name = obj2.Account
+    FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.college_outcomes_fy20` AS obj3 --matriculation & graduates
+        ON obj1.Region__Account_Name = obj3.Account AND obj1.Site__Account_Name = obj3.Account 
+    FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20` AS obj4 --alumni, employment
+        ON obj1.Region__Account_Name = obj4.Account AND obj1.Site__Account_Name = obj4.Account
+    FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement` AS obj5 --hr, diverse staff
+        ON obj1.Region__Account_Name = obj5.Region AND obj1.Site__Account_Name = obj5.Site
+    FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.financial_sustainability_fy20` AS obj6 --financial sustainability
+        ON obj1.Region__Account_Name = obj6.Account AND obj1.Site__Account_Name = obj6.Account
 ),      
 
 fy21_measures AS (
