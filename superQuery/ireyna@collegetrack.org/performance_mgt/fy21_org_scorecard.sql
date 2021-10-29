@@ -60,6 +60,6 @@
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20` AS obj4 --alumni, employment
         ON obj1.Site__Account_Name = obj4.Account --obj1.Region__Account_Name = obj4.Account AND 
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement` AS obj5 --hr, diverse staff
-        ON obj1.Region__Account_Name = obj5.Region AND obj1.Site__Account_Name = obj5.Site
+        ON obj1.Region__Account_Name = obj5.Region --AND obj1.Site__Account_Name = obj5.Site
     FULL OUTER JOIN  `org-scorecard-286421.aggregate_data.financial_sustainability_fy20` AS obj6 --financial sustainability
         ON obj1.Site__Account_Name = obj6.Account --obj1.Region__Account_Name = obj6.Account AND 
