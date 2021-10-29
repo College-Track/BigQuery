@@ -35,11 +35,26 @@ join_data AS
     LEFT JOIN gather_bb_apps ON student_c = Contact_Id
 )
     SELECT
-    *,
+    Contact_Id AS student,
+    bb_app_id AS scholarship,
     CASE
         WHEN available_1600_cap <= 0 THEN NULL
         WHEN eligble_covid_bonus > available_1600_cap THEN available_1600_cap
         ELSE eligble_covid_bonus
-    END AS final_covid_bonus_value
+    END AS final_covid_bonus_amount,
+    "01246000000ZNhtAAG" AS record_type_id,
+    "CT Advised" AS earning_type,
+    CURRENT_DATE() AS date_c,
+    TRUE AS OP_Manual_Disbursement,
+    "COVID enrollemnt related BB award, granted in response to decreased oopportunities for CS engagements during the pandemic. See FY22 Serivce Cap Plan for details" AS OP_Manual_Disbursement_notes,
+    
+    --just to have visibile in upload file if we need to audit down the road
+    eligble_AT_count,
+    total_service_earnings_c,
+    eligble_covid_bonus,
+    available_1600_cap,
+    
+    
+    
     
     FROM join_data
