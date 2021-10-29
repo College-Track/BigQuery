@@ -1,4 +1,11 @@
-  SELECT 
+SELECT
+        obj1.* EXCEPT (Site__Account_Name,Region__Account_Name),
+        obj1_b.*,
+        obj2.*,
+        obj3.*,
+        obj4.*,
+        obj5.*,
+        obj6.*,
         CASE 
             WHEN Site__Account_Name = 'College Track East Palo Alto' THEN 'East Palo Alto'
             WHEN Site__Account_Name = 'College Track Oakland' THEN 'Oakland'
