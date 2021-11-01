@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT Contact_Id) AS ay_student_count,
     SUM(
         CASE
-        WHEN type_of_degree_earned_c IN ("4-Year") THEN 1
+        WHEN type_of_degree_earned_c = "4-year degree" THEN 1
         ELSE 0
     END) AS degree_earned_count,
     
