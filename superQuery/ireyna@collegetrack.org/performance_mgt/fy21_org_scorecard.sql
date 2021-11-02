@@ -279,4 +279,4 @@ First_Gen
 
 SELECT *
 FROM join_all
-WHERE Account1 IS NOT NULL 
+WHERE site IS NOT NULL 
