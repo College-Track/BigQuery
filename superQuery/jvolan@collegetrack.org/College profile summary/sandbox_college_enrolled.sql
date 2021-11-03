@@ -28,6 +28,7 @@ WITH gather_all_enrolled_at_data AS
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE student_audit_status_c IN ("Active: Post-Secondary", "CT Alumni")
+    AND AT_School_Name IS NOT NULL
     GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, GAS_Name, major_c, fit_type_at, situational_best_fit_c, on_track_c
 )
 
