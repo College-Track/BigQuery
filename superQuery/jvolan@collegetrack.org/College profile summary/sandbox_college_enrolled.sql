@@ -15,7 +15,6 @@ WITH gather_all_enrolled_at_data AS
     CASE WHEN situational_best_fit_c = "High Grad Rate and Affordable" THEN 1 ELSE 0 END AS sfit_high_grad_afford,
     CASE WHEN situational_best_fit_c = "DOOR" THEN 1 ELSE 0 END AS sfit_door,
     CASE WHEN situational_best_fit_c = "Other" THEN 1 ELSE 0 END AS sfit_other,
-
     credits_attempted_current_term_c,
     credits_awarded_current_term_c,
     credits_accumulated_c,
@@ -35,13 +34,6 @@ WITH gather_all_enrolled_at_data AS
     AND AT_School_Name IS NOT NULL
 ),
 
-gather_student_data AS
-(
-    SELECT
-    *
-    FROM `data-studio-260217.college_account_summary.gather_hs_contact_data_view`
-),
-
 join_data AS
 (
     SELECT
@@ -49,7 +41,7 @@ join_data AS
     gsd.*
     
     FROM gather_all_enrolled_at_data gat
-    LEFT JOIN gather_student_data gsd ON gat.Contact_Id = gsd.Contact_Id
+    LEFT JOIN `data-studio-260217.college_account_summary.gather_hs_contact_data_view` gsd ON gat.Contact_Id = gsd.Contact_Id
 ),
    
 group_data AS
