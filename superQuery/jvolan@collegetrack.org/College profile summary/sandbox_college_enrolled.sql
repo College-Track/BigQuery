@@ -85,13 +85,8 @@ join_data AS
     
     FROM gather_all_enrolled_at_data gat
     LEFT JOIN gather_student_data gsd ON gat.Contact_Id = gsd.Contact_Id
-)
-
-    SELECT
-    *
-    FROM join_data
-/*
-
+),
+   
 group_data AS
 (    
     SELECT
@@ -116,10 +111,10 @@ group_data AS
     SUM(cumulative_credits_awarded_all_terms_c) AS c_credits_alltime_num,
     SUM(CASE WHEN cumulative_credits_awarded_all_terms_c IS NOT NULL THEN 1 ELSE 0 END) AS c_credits_alltime_denom,
 
-    SUM(CASE WHEN on_track_c = "On-Track" THEN 1 ELSE 0 END) AS on_track_count,
-    SUM(CASE WHEN on_track_c = "Near On-Track" THEN 1 ELSE 0 END) AS near_on_track_count,
-    SUM(CASE WHEN on_track_c = "Off-Track" THEN 1 ELSE 0 END) AS off_track_count,
-    SUM(CASE WHEN on_track_c IS NULL THEN 1 ELSE 0 END) AS missing_on_track_data_count,
+    SUM(on_track_count) AS on_track_count,
+    SUM(near_on_track_count) AS near_on_track_count,
+    SUM(off_track_count) AS off_track_count,
+    SUM(missing_on_track_data_count) AS missing_on_track_data_count,
     
     AVG(AT_Term_GPA) AS at_term_gpa,
     AVG(AT_Cumulative_GPA) AS avg_at_cgpa,
@@ -129,10 +124,8 @@ group_data AS
     readiness_composite_off_c
     
     FROM join_data
-    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, GAS_Name, major_c, fit_type_at, situational_best_fit_c
+    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, GAS_Name, major_c, fit_type_at, situational_best_fit_c, site_short, x_11_cgpa_bucket,readiness_composite_off_c
 )
-
     SELECT
     * 
     FROM group_data
-    */
