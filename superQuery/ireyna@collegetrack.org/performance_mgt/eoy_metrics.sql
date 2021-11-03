@@ -1,5 +1,5 @@
 #This compiles EOY metrics across the organization, including: FY21 Org Scorecard data, FY21 IF
-
+#this query has since been retired - now using the data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
 
 WITH
 --first gather HS data for Org Scorecard
