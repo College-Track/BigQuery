@@ -88,8 +88,6 @@ CREATE TEMPORARY FUNCTION mapRegion(site STRING) AS ( --map Region based on Site
             
         END)        
         ;
-
-
 WITH 
 
 objective_1_site AS (
@@ -277,6 +275,20 @@ First_Gen
 )
 
 
-SELECT *
+SELECT *,
+     CASE
+            WHEN site = 'East Palo Alto' THEN 1
+            WHEN site = 'Oakland' THEN 2
+            WHEN site = 'San Francisco' THEN 3
+            WHEN site = 'New Orleans' THEN 4
+            WHEN site = 'Aurora' THEN 5
+            WHEN site = 'Boyle Heights' THEN 6
+            WHEN site = 'Sacramento' THEN 7
+            WHEN site = 'Watts' THEN 8
+            WHEN site = 'Denver' THEN 9
+            WHEN site = 'The Durant Center' THEN 10
+            WHEN site = 'Ward 8' THEN 11
+            WHEN site = 'Crenshaw' THEN 12
+            END AS site_sort,
 FROM join_all
 WHERE site IS NOT NULL 
