@@ -23,9 +23,9 @@ WITH gather_all_enrolled_at_data AS
     SUM(cumulative_credits_awarded_all_terms_c) AS c_credits_alltime_num,
     SUM(CASE WHEN cumulative_credits_awarded_all_terms_c IS NOT NULL THEN 1 ELSE 0 END) AS c_credits_alltime_denom,
 
-    SUM(CASE WHEN on_track_c = "On-track" THEN 1 ELSE 0 END) AS on_track_count,
-    SUM(CASE WHEN on_track_c = "Near On-track" THEN 1 ELSE 0 END) AS near_on_track_count,
-    SUM(CASE WHEN on_track_c = "Off-track" THEN 1 ELSE 0 END) AS off_track_count,
+    SUM(CASE WHEN on_track_c = "On-Track" THEN 1 ELSE 0 END) AS on_track_count,
+    SUM(CASE WHEN on_track_c = "Near On-Track" THEN 1 ELSE 0 END) AS near_on_track_count,
+    SUM(CASE WHEN on_track_c = "Off-Track" THEN 1 ELSE 0 END) AS off_track_count,
     
     AVG(AT_Term_GPA) AS at_term_gpa,
     AVG(AT_Cumulative_GPA) AS avg_at_cgpa,
