@@ -1,4 +1,4 @@
-#This compiles EOY metrics across the organization, including: Org Scorecard data, FY21 IF
+#This compiles EOY metrics across the organization, including: FY21 Org Scorecard data, FY21 IF
 
 
 WITH
@@ -50,7 +50,8 @@ gather_some_hs_data AS (
             WHEN at_grade_c = '12th Grade'
             THEN 1
             ELSE NULL
-        END) AS seniors_above_3_25_gpa_denom
+        END) AS seniors_above_3_25_gpa_denom,
+
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
 
