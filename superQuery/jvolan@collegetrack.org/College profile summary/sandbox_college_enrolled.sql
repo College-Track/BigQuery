@@ -26,6 +26,7 @@ WITH gather_all_enrolled_at_data AS
     SUM(CASE WHEN on_track_c = "On-Track" THEN 1 ELSE 0 END) AS on_track_count,
     SUM(CASE WHEN on_track_c = "Near On-Track" THEN 1 ELSE 0 END) AS near_on_track_count,
     SUM(CASE WHEN on_track_c = "Off-Track" THEN 1 ELSE 0 END) AS off_track_count,
+    SUM(CASE WHEN on_track_c IS NULL THEN 1 ELSE 0 END) AS missing_on_track_data_count,
     
     AVG(AT_Term_GPA) AS at_term_gpa,
     AVG(AT_Cumulative_GPA) AS avg_at_cgpa,
