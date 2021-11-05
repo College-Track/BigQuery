@@ -151,8 +151,8 @@ SELECT
     B.* EXCEPT (Account),
     C.* EXCEPT (Account)
 FROM hr_tenure AS A                    
-LEFT JOIN financial_sustainability AS C     ON A.Account = B.Account 
-LEFT JOIN hr_identities AS H                ON A.Account = C.Account    
+LEFT JOIN financial_sustainability AS B     ON A.Account = B.Account 
+LEFT JOIN hr_identities AS C                ON A.Account = C.Account    
  
 )
 
