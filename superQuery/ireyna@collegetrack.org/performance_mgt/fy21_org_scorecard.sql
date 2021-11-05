@@ -286,21 +286,7 @@ SELECT
             END AS site_sort,
         * EXCEPT (Account),
         
-        /*CASE
-            WHEN Account = 'College Track East Palo Alto' THEN 'Northern California Region'
-            WHEN Account = 'College Track Oakland' THEN 'Northern California Region'
-            WHEN Account = 'College Track San Francisco' THEN 'Northern California Region'
-            WHEN Account = 'College Track New Orleans' THEN 'New Orleans Region'
-            WHEN Account = 'College Track Aurora' THEN 'Colorado Region'
-            WHEN Account = 'College Track Boyle Heights' THEN 'Los Angeles Region'
-            WHEN Account = 'College Track Sacramento' THEN 'Northern California Region'
-            WHEN Account = 'College Track Watts' THEN 'Los Angeles Region'
-            WHEN Account = 'College Track Denver' THEN 'Colorado Region'
-            WHEN Account = 'College Track at The Durant Center' THEN 'DC Region'
-            WHEN Account = 'College Track Ward 8' THEN 'DC Region'
-            WHEN Account = 'College Track Crenshaw' THEN 'Los Angeles Region'
-        ELSE NULL
-        END AS region_short,*/
+       mapRegionShort (ACCOUNT) AS Region,
         CASE
             WHEN Account = 'East Palo Alto' THEN 'Northern California Region'
             WHEN Account = 'Oakland' THEN 'Northern California Region'
@@ -318,4 +304,3 @@ SELECT
      
             
 FROM join_all
---WHERE site IS NOT NULL 
