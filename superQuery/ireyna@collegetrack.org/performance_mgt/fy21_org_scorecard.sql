@@ -270,7 +270,7 @@ First_Gen
 
 
 SELECT 
-distinct
+
     CASE
         WHEN Account = 'East Palo Alto' THEN 1
             WHEN Account = 'Oakland' THEN 2
