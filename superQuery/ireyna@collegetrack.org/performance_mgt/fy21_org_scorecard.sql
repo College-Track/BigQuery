@@ -102,7 +102,7 @@ CREATE TEMPORARY FUNCTION mapRegionShort (Account STRING) AS (
         END)
         ;
 CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS
-(
+ 
 WITH
 financial_sustainability AS (
      SELECT 
@@ -157,10 +157,10 @@ LEFT JOIN hr_identities AS C                ON A.Account = C.Account
 )
 
 SELECT 
-    CONCAT(Account,"_hr_finance_cpacity"), --append 'hr_finance"capacity' to each region/site to differntiate outcomes
-       *,
+    CONCAT(Account,"_hr_finance_cpacity") AS Account, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
+       * EXCEPT (Account),
 FROM join_all
-)
+
 ;
 
 WITH 
