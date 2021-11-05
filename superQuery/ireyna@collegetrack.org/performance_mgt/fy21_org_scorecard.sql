@@ -271,7 +271,7 @@ SELECT
             WHEN program.Account = 'Ward 8' THEN 11
             WHEN program.Account = 'Crenshaw' THEN 12
             END AS site_sort,
-       mapRegionShort (Account) AS Region, --crease Region column based on Account site name
+       mapRegionShort (program.Account) AS Region, --crease Region column based on Account site name
        *,
 FROM join_all AS program
 FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
