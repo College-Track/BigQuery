@@ -101,6 +101,68 @@ CREATE TEMPORARY FUNCTION mapRegionShort (Account STRING) AS (
             WHEN Account = 'Crenshaw' THEN 'Los Angeles Region'
         END)
         ;
+CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS
+
+WITH
+financial_sustainability AS (
+     SELECT 
+            * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
+        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
+
+        UNION DISTINCT
+
+        SELECT 
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
+        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
+),
+
+hr_tenure AS ( 
+    SELECT 
+        * EXCEPT (site,region), 
+        mapSite(site) as Account
+        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
+        WHERE site IS NOT NULL
+
+    UNION DISTINCT
+
+    SELECT 
+        * EXCEPT (site,region), 
+        mapRegion(region) as Account
+        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
+        where region IS NOT NULL
+),
+
+hr_identities AS (
+    SELECT 
+        * EXCEPT (Account,string_field_5),
+        mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
+        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
+        WHERE Account IS NOT NULL
+),
+
+join_all AS (
+SELECT 
+    DISTINCT
+    A.*,
+    B.* EXCEPT (Account),
+    C.* EXCEPT (Account)
+FROM hr_tenure AS A                    
+LEFT JOIN financial_sustainability AS C     ON A.Account = B.Account 
+LEFT JOIN hr_identities AS H                ON A.Account = C.Account    
+ 
+)
+
+SELECT 
+    CONCAT(Account,"_hr_finance_cpacity"), --append 'hr_finance"capacity' to each region/site to differntiate outcomes
+       *,
+FROM join_all
+
+;
+
 WITH 
 
 objective_1_site AS (
@@ -129,22 +191,6 @@ objective_1_region AS (
         SELECT * EXCEPT (Region), Region AS site
         FROM `org-scorecard-286421.aggregate_data.objective_1_region`
         )
-),
-
-financial_sustainability AS (
-     SELECT 
-            * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short 
-        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
-        
-        UNION DISTINCT
-
-        SELECT 
-            * EXCEPT (Account,site_short),
-            mapRegion(Account) AS Account --region abrev to region_short
-        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 ),
 
 college_outcomes AS (
@@ -195,85 +241,22 @@ mse_social_emotional_edits AS (
         WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 ),
 
-hr_tenure AS ( 
-    SELECT 
-        * EXCEPT (site,region), 
-        mapSite(site) as Account
-        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-        WHERE site IS NOT NULL
-    
-    UNION DISTINCT
-
-    SELECT 
-        * EXCEPT (site,region), 
-        mapRegion(region) as Account
-        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-        WHERE region IS NOT NULL
-),
-
-hr_identities AS (
-    SELECT 
-        * EXCEPT (Account,string_field_5),
-        mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
-        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
-        WHERE Account IS NOT NULL
-),
-
 join_all AS (
 SELECT 
     DISTINCT
     A.* EXCEPT (National),
+    B.* EXCEPT (Account),
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
-    E.* EXCEPT (Account),
-    F.* EXCEPT (Account),
-    G.* EXCEPT (Account),
-    H.* EXCEPT (Account)
 FROM objective_1_site AS A
 LEFT JOIN objective_1_region AS B           ON A.Account = B.Account2
-FULL JOIN financial_sustainability AS C     ON A.Account = C.Account 
-FULL JOIN mse_social_emotional_edits AS F   ON A.Account = F.Account 
-FULL JOIN hr_tenure AS G                    ON A.Account = G.Account   
-FULL JOIN hr_identities AS H                ON A.Account = H.Account 
+FULL JOIN mse_social_emotional_edits AS C   ON A.Account = C.Account 
 FULL JOIN college_outcomes AS D             ON A.Account = D.Account   
 FULL JOIN college_graduates AS E            ON A.Account = E.Account    
-
---WHERE A.Account IS NOT NULL 
-
-GROUP BY 
-Account,
-sum_male,
-sum_low_income_first_gen,
-denom_hs_admits,
-percent_male_fy20,
-percent_low_income_first_gen_fy20,
-sum_active_hs,
-denom_annual_retention,
-percent_active_FY20,
-__students,
-Capacity_Target,
-__Capacty,
-Fundraising_Target,
-on_track,
-Matriculate_to_Best__Good__or_Situational,
-_6_yr_grad_rate,
-gainful_employment_standard,
-full_time_employment_or_grad_school_6_months,
-meaningful_employment,
-Meaningful_Summer_Experiences,
-CoVi_growth,
-GPA___Composite,
-ENGAGEMENT_SCORE,
-TENURE,
-Non_white,
-LGBTQ,
-Male,
-First_Gen
 )
 
 
 SELECT 
-
     CASE
         WHEN Account = 'East Palo Alto' THEN 1
             WHEN Account = 'Oakland' THEN 2
@@ -290,6 +273,5 @@ SELECT
             END AS site_sort,
        mapRegionShort (Account) AS Region, --crease Region column based on Account site name
        *,
-     
-            
-FROM join_all
+FROM join_all AS program
+FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
