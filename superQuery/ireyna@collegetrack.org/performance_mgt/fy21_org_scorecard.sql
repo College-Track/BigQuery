@@ -13,7 +13,7 @@
 
 
 
-CREATE TEMPORARY FUNCTION site_short (site STRING) AS ( --Remap abbreviated site names to site_short
+CREATE TEMPORARY FUNCTION mapSite (site STRING) AS ( --Remap abbreviated site names to site_short
    CASE 
             WHEN site = 'College Track East Palo Alto' THEN 'East Palo Alto'
             WHEN site = 'College Track Oakland' THEN 'Oakland'
@@ -93,17 +93,18 @@ WITH
 objective_1_site AS (
     SELECT 
         * EXCEPT (Site__Account_Name,Region__Account_Name),
-        --mapRegion(Region__Account_Name) AS Account1
-         CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE Region__Account_Name END AS Account1
+        mapRegion(Region__Account_Name) AS Account1,
+         CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE Region__Account_Name END AS region_and_site
         
         FROM `org-scorecard-286421.aggregate_data.objective_1_site`
         GROUP BY National,sum_active_hs,sum_active_hs,sum_low_income_first_gen,sum_male,denom_hs_admits,percent_male_fy20,percent_low_income_first_gen_fy20,denom_annual_retention,percent_active_FY20,Region__Account_Name
-        UNION ALL
+        
+        UNION DISTINCT
 
      SELECT 
         * EXCEPT (Site__Account_Name,Region__Account_Name),
-        --site_short(Site__Account_Name) AS Account1
-        CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE Site__Account_Name END AS Account1
+        mapSite(Site__Account_Name) AS Account1,
+        CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE Site__Account_Name END AS region_and_site
 
         FROM `org-scorecard-286421.aggregate_data.objective_1_site`  
         GROUP BY National,sum_active_hs,sum_active_hs,sum_low_income_first_gen,sum_male,denom_hs_admits,percent_male_fy20,percent_low_income_first_gen_fy20,denom_annual_retention,percent_active_FY20,Site__Account_Name
@@ -122,77 +123,67 @@ objective_1_region AS (
 ),
 
 financial_sustainability AS (
-    SELECT 
-        * EXCEPT (site_short,Account),
-        --mapRegion(Account)   AS Account  --Map Region based on Site + remap region abbreviations to region_short
-        CASE WHEN Account = 'NATIONAL' THEN 'National' ELSE Account END AS Account
-
+     SELECT 
+            * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        GROUP BY Account,__students,Capacity_Target,__Capacty,Fundraising_Target
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
 
-    UNION ALL
+        UNION DISTINCT
 
-    SELECT 
-        * EXCEPT (site_short,Account),
-        --site_short(site_short)  AS Account, --Map abbreviated site names to site_short
-        CASE WHEN site_short = 'NATIONAL' THEN 'National' ELSE site_short END AS Account
-
+        SELECT 
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        GROUP BY Account,__students,Capacity_Target,__Capacty,Fundraising_Target
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 ),
 
 college_outcomes AS (
     SELECT 
-        * EXCEPT (Account,site_short), 
-        --mapRegion(Account)   AS Account  --Map Region based on Site + remap region abbreviations to region_short
-        CASE WHEN Account = 'NATIONAL' THEN 'National' ELSE Account END AS Account
+            * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.college_outcomes_fy20`
-        GROUP BY Account,Matriculate_to_Best__Good__or_Situational,on_track,_6_yr_grad_rate
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
         
-        UNION ALL 
+        UNION DISTINCT 
 
     SELECT 
-        * EXCEPT (site_short,Account),
-        --site_short(site_short)  AS Account, --Map abbreviated site names to site_short
-        CASE WHEN site_short = 'NATIONAL' THEN 'National' ELSE site_short END AS Account
-        FROM `org-scorecard-286421.aggregate_data.college_outcomes_fy20`
-        GROUP BY Account,Matriculate_to_Best__Good__or_Situational,on_track,_6_yr_grad_rate
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
+        FROM  `org-scorecard-286421.aggregate_data.college_outcomes_fy20`
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 ),
 
 college_graduates AS (
     SELECT
-        * EXCEPT (Account,site_short), 
-        --mapRegion(Account)   AS Account  --Map Region based on Site + remap region abbreviations to region_short
-        CASE WHEN Account = 'NATIONAL' THEN 'National' ELSE Account END AS Account
+        * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20`
-        GROUP BY Account,full_time_employment_or_grad_school_6_months,gainful_employment_standard,meaningful_employment
-        
-        UNION ALL 
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
+
+        UNION DISTINCT
 
     SELECT 
-        * EXCEPT (site_short,Account),
-        --site_short(site_short)  AS Account, --Map abbreviated site names to site_short
-        CASE WHEN site_short = 'NATIONAL' THEN 'National' ELSE site_short END AS Account
-        FROM `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20`
-        GROUP BY Account,full_time_employment_or_grad_school_6_months,gainful_employment_standard,meaningful_employment
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
+        FROM  `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20`
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 ),
 
 mse_social_emotional_edits AS ( 
     SELECT
-        * EXCEPT (Account,site_short),
-        --mapRegion(Account)   AS Account  --Map Region based on Site + remap region abbreviations to region_short
-        CASE WHEN Account = 'NATIONAL' THEN 'National' ELSE Account END AS Account
+        * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20`
-        GROUP BY Account,Meaningful_Summer_Experiences,CoVi_growth,GPA___Composite
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
 
-        UNION ALL 
+        UNION DISTINCT
 
     SELECT 
-        * EXCEPT (site_short,Account),
-        --site_short(site_short)  AS Account, --Map abbreviated site names to site_short
-        CASE WHEN site_short = 'NATIONAL' THEN 'National' ELSE site_short END AS Account
-        FROM `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20`
-        GROUP BY site_short,Meaningful_Summer_Experiences,CoVi_growth,GPA___Composite
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
+        FROM  `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20`
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 ),
 
 hr_tenure AS ( 
@@ -223,7 +214,7 @@ hr_identities AS (
 join_all AS (
 SELECT 
     DISTINCT
-    site_short(Account1) AS site,
+    mapSite(Account1) AS site,
     mapRegion(Account1) AS region,
     A.* EXCEPT (National),
     C.* EXCEPT (Account),
@@ -271,4 +262,25 @@ TENURE,
 Non_white,
 LGBTQ,
 Male,
-First_Gen
+First_Gen,
+REGION_AND_SITE
+)
+
+
+SELECT *,
+     CASE
+            WHEN site = 'East Palo Alto' THEN 1
+            WHEN site = 'Oakland' THEN 2
+            WHEN site = 'San Francisco' THEN 3
+            WHEN site = 'New Orleans' THEN 4
+            WHEN site = 'Aurora' THEN 5
+            WHEN site = 'Boyle Heights' THEN 6
+            WHEN site = 'Sacramento' THEN 7
+            WHEN site = 'Watts' THEN 8
+            WHEN site = 'Denver' THEN 9
+            WHEN site = 'The Durant Center' THEN 10
+            WHEN site = 'Ward 8' THEN 11
+            WHEN site = 'Crenshaw' THEN 12
+            END AS site_sort,
+FROM join_all
+WHERE site IS NOT NULL 
