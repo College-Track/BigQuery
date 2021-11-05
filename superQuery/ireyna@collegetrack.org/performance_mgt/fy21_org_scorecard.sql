@@ -258,18 +258,18 @@ FULL JOIN college_graduates AS E            ON A.Account = E.Account
 
 SELECT 
     CASE
-        WHEN Account = 'East Palo Alto' THEN 1
-            WHEN Account = 'Oakland' THEN 2
-            WHEN Account = 'San Francisco' THEN 3
-            WHEN Account = 'New Orleans' THEN 4
-            WHEN Account = 'Aurora' THEN 5
-            WHEN Account = 'Boyle Heights' THEN 6
-            WHEN Account = 'Sacramento' THEN 7
-            WHEN Account = 'Watts' THEN 8
-            WHEN Account = 'Denver' THEN 9
-            WHEN Account = 'The Durant Center' THEN 10
-            WHEN Account = 'Ward 8' THEN 11
-            WHEN Account = 'Crenshaw' THEN 12
+        WHEN program.Account = 'East Palo Alto' THEN 1
+            WHEN program.Account = 'Oakland' THEN 2
+            WHEN program.Account = 'San Francisco' THEN 3
+            WHEN program.Account = 'New Orleans' THEN 4
+            WHEN program.Account = 'Aurora' THEN 5
+            WHEN program.Account = 'Boyle Heights' THEN 6
+            WHEN program.Account = 'Sacramento' THEN 7
+            WHEN program.Account = 'Watts' THEN 8
+            WHEN program.Account = 'Denver' THEN 9
+            WHEN program.Account = 'The Durant Center' THEN 10
+            WHEN program.Account = 'Ward 8' THEN 11
+            WHEN program.Account = 'Crenshaw' THEN 12
             END AS site_sort,
        mapRegionShort (Account) AS Region, --crease Region column based on Account site name
        *,
