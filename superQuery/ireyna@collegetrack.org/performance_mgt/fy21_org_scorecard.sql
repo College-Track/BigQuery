@@ -137,7 +137,7 @@ financial_sustainability AS (
             mapSite(Account) AS Account, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
         WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
-
+        
         UNION DISTINCT
 
         SELECT 
@@ -200,6 +200,7 @@ hr_tenure AS (
         * EXCEPT (site,region), 
         mapSite(site) as Account
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
+        WHERE site IS NOT NULL
     
     UNION DISTINCT
 
@@ -207,6 +208,7 @@ hr_tenure AS (
         * EXCEPT (site,region), 
         mapRegion(region) as Account
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
+        WHERE region IS NOT NULL
 ),
 
 hr_identities AS (
@@ -214,6 +216,7 @@ hr_identities AS (
         * EXCEPT (Account,string_field_5),
         mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
+        WHERE Account IS NOT NULL
 ),
 
 join_all AS (
@@ -235,7 +238,7 @@ FULL JOIN hr_identities AS H                ON A.Account = H.Account
 FULL JOIN college_outcomes AS D             ON A.Account = D.Account   
 FULL JOIN college_graduates AS E            ON A.Account = E.Account    
 
-WHERE A.Account IS NOT NULL 
+--WHERE A.Account IS NOT NULL 
 
 GROUP BY 
 Account,
