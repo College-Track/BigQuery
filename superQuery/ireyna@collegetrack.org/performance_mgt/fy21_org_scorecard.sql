@@ -188,19 +188,16 @@ mse_social_emotional_edits AS (
 
 hr_tenure AS ( 
     SELECT 
-        * EXCEPT (site,region), site as Account
-        --mapRegion(site)    AS Account  --Map Region based on Site using mapRegion func,mapping site names and 
+        * EXCEPT (site,region), 
+        mapSite(site) as Account
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-        GROUP BY Account,ENGAGEMENT_SCORE,TENURE
     
-    UNION ALL
+    UNION DISTINCT
 
     SELECT 
-        * EXCEPT (site,region),
-        --mapRegion(region)  AS Account, --remap region abbreviations to region_short
-        CASE WHEN region = 'NATIONAL' THEN 'National' WHEN region = 'NATIONAL (AS LOCATION)' THEN 'National (As Location)' ELSE region END AS Account
+        * EXCEPT (site,region), 
+        mapRegion(region) as Account
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-        GROUP BY Account,ENGAGEMENT_SCORE,TENURE
 ),
 
 hr_identities AS (
@@ -208,7 +205,6 @@ hr_identities AS (
         * EXCEPT (Account,string_field_5),
         mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
-        GROUP BY Account,Non_white,LGBTQ,Male,First_Gen
 ),
 
 join_all AS (
