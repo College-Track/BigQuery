@@ -270,6 +270,6 @@ SELECT *,
             WHEN Account = 'The Durant Center' THEN 10
             WHEN Account = 'Ward 8' THEN 11
             WHEN Account = 'Crenshaw' THEN 12
-            END AS Account,
+            END AS site_sort,
 FROM join_all
 --WHERE site IS NOT NULL 
