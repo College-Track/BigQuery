@@ -214,8 +214,6 @@ hr_identities AS (
 join_all AS (
 SELECT 
     DISTINCT
-    mapSite(Account1) AS site,
-    mapRegion(Account1) AS region,
     A.* EXCEPT (National),
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
@@ -224,13 +222,13 @@ SELECT
     G.* EXCEPT (Account),
     H.* EXCEPT (Account)
 FROM objective_1_site AS A
-LEFT JOIN objective_1_region AS B           ON A.Account1 = B.Account2
-FULL JOIN financial_sustainability AS C     ON A.Account1 = C.Account 
-FULL JOIN mse_social_emotional_edits AS F   ON A.Account1 = F.Account   --AND A.site_short = F.Account    --AND B.region_short = F.region_short
-FULL JOIN hr_tenure AS G                    ON A.Account1 = G.Account    -- AND A.region_short = G.Account  
-FULL JOIN hr_identities AS H                ON A.Account1 = H.Account 
-FULL JOIN college_outcomes AS D             ON A.Account1 = D.Account   --AND A.site_short = D.Account 
-FULL JOIN college_graduates AS E            ON A.Account1 = E.Account   --AND A.site_short = E.Account -- AND A.region_short = E.region_only   
+LEFT JOIN objective_1_region AS B           ON A.region_and_site = B.Account2
+FULL JOIN financial_sustainability AS C     ON A.region_and_site = C.Account 
+FULL JOIN mse_social_emotional_edits AS F   ON A.region_and_site = F.Account   -- AND A.site_short = F.Account    --AND B.region_short = F.region_short
+FULL JOIN hr_tenure AS G                    ON A.region_and_site = G.Account   -- AND A.region_short = G.Account  
+FULL JOIN hr_identities AS H                ON A.region_and_site = H.Account 
+FULL JOIN college_outcomes AS D             ON A.region_and_site = D.Account   -- AND A.site_short = D.Account 
+FULL JOIN college_graduates AS E            ON A.region_and_site = E.Account   -- AND A.site_short = E.Account -- AND A.region_short = E.region_only   
 
 --WHERE Account1 IS NOT NULL 
 
@@ -269,18 +267,18 @@ REGION_AND_SITE
 
 SELECT *,
      CASE
-            WHEN site = 'East Palo Alto' THEN 1
-            WHEN site = 'Oakland' THEN 2
-            WHEN site = 'San Francisco' THEN 3
-            WHEN site = 'New Orleans' THEN 4
-            WHEN site = 'Aurora' THEN 5
-            WHEN site = 'Boyle Heights' THEN 6
-            WHEN site = 'Sacramento' THEN 7
-            WHEN site = 'Watts' THEN 8
-            WHEN site = 'Denver' THEN 9
-            WHEN site = 'The Durant Center' THEN 10
-            WHEN site = 'Ward 8' THEN 11
-            WHEN site = 'Crenshaw' THEN 12
+            WHEN region_and_site = 'East Palo Alto' THEN 1
+            WHEN region_and_site = 'Oakland' THEN 2
+            WHEN region_and_site = 'San Francisco' THEN 3
+            WHEN region_and_site = 'New Orleans' THEN 4
+            WHEN region_and_site = 'Aurora' THEN 5
+            WHEN region_and_site = 'Boyle Heights' THEN 6
+            WHEN region_and_site = 'Sacramento' THEN 7
+            WHEN region_and_site = 'Watts' THEN 8
+            WHEN region_and_site = 'Denver' THEN 9
+            WHEN region_and_site = 'The Durant Center' THEN 10
+            WHEN region_and_site = 'Ward 8' THEN 11
+            WHEN region_and_site = 'Crenshaw' THEN 12
             END AS site_sort,
 FROM join_all
-WHERE site IS NOT NULL 
+--WHERE site IS NOT NULL 
