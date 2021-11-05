@@ -284,9 +284,8 @@ SELECT
             WHEN Account = 'Ward 8' THEN 11
             WHEN Account = 'Crenshaw' THEN 12
             END AS site_sort,
-        * EXCEPT (Account),
-        
        mapRegionShort (Account) AS Region, --crease Region column based on Account site name
+       *,
      
             
 FROM join_all
