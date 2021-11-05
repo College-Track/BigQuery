@@ -93,21 +93,17 @@ WITH
 objective_1_site AS (
     SELECT 
         * EXCEPT (Site__Account_Name,Region__Account_Name),
-        mapRegion(Region__Account_Name) AS Account1,
-         CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE Region__Account_Name END AS region_and_site
+         CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE mapRegion(Region__Account_Name) END AS Account
         
         FROM `org-scorecard-286421.aggregate_data.objective_1_site`
-        GROUP BY National,sum_active_hs,sum_active_hs,sum_low_income_first_gen,sum_male,denom_hs_admits,percent_male_fy20,percent_low_income_first_gen_fy20,denom_annual_retention,percent_active_FY20,Region__Account_Name
-        
+    
         UNION DISTINCT
 
      SELECT 
         * EXCEPT (Site__Account_Name,Region__Account_Name),
-        mapSite(Site__Account_Name) AS Account1,
-        CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE Site__Account_Name END AS region_and_site
+        CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE mapSite(Site__Account_Name) END AS Account
 
         FROM `org-scorecard-286421.aggregate_data.objective_1_site`  
-        GROUP BY National,sum_active_hs,sum_active_hs,sum_low_income_first_gen,sum_male,denom_hs_admits,percent_male_fy20,percent_low_income_first_gen_fy20,denom_annual_retention,percent_active_FY20,Site__Account_Name
 ),
 
 objective_1_region AS (
@@ -218,18 +214,18 @@ SELECT
     G.* EXCEPT (Account),
     H.* EXCEPT (Account)
 FROM objective_1_site AS A
-LEFT JOIN objective_1_region AS B           ON A.region_and_site = B.Account2
-FULL JOIN financial_sustainability AS C     ON A.region_and_site = C.Account 
-FULL JOIN mse_social_emotional_edits AS F   ON A.region_and_site = F.Account   -- AND A.site_short = F.Account    --AND B.region_short = F.region_short
-FULL JOIN hr_tenure AS G                    ON A.region_and_site = G.Account   -- AND A.region_short = G.Account  
-FULL JOIN hr_identities AS H                ON A.region_and_site = H.Account 
-FULL JOIN college_outcomes AS D             ON A.region_and_site = D.Account   -- AND A.site_short = D.Account 
-FULL JOIN college_graduates AS E            ON A.region_and_site = E.Account   -- AND A.site_short = E.Account -- AND A.region_short = E.region_only   
+LEFT JOIN objective_1_region AS B           ON A.Account = B.Account2
+FULL JOIN financial_sustainability AS C     ON A.Account = C.Account 
+FULL JOIN mse_social_emotional_edits AS F   ON A.Account = F.Account 
+FULL JOIN hr_tenure AS G                    ON A.Account = G.Account   
+FULL JOIN hr_identities AS H                ON A.Account = H.Account 
+FULL JOIN college_outcomes AS D             ON A.Account = D.Account   
+FULL JOIN college_graduates AS E            ON A.Account = E.Account    
 
---WHERE Account1 IS NOT NULL 
+WHERE A.Account IS NOT NULL 
 
 GROUP BY 
-Account1,
+Account,
 sum_male,
 sum_low_income_first_gen,
 denom_hs_admits,
@@ -256,25 +252,24 @@ TENURE,
 Non_white,
 LGBTQ,
 Male,
-First_Gen,
-REGION_AND_SITE
+First_Gen
 )
 
 
 SELECT *,
      CASE
-            WHEN region_and_site = 'East Palo Alto' THEN 1
-            WHEN region_and_site = 'Oakland' THEN 2
-            WHEN region_and_site = 'San Francisco' THEN 3
-            WHEN region_and_site = 'New Orleans' THEN 4
-            WHEN region_and_site = 'Aurora' THEN 5
-            WHEN region_and_site = 'Boyle Heights' THEN 6
-            WHEN region_and_site = 'Sacramento' THEN 7
-            WHEN region_and_site = 'Watts' THEN 8
-            WHEN region_and_site = 'Denver' THEN 9
-            WHEN region_and_site = 'The Durant Center' THEN 10
-            WHEN region_and_site = 'Ward 8' THEN 11
-            WHEN region_and_site = 'Crenshaw' THEN 12
-            END AS site_sort,
+            WHEN Account = 'East Palo Alto' THEN 1
+            WHEN Account = 'Oakland' THEN 2
+            WHEN Account = 'San Francisco' THEN 3
+            WHEN Account = 'New Orleans' THEN 4
+            WHEN Account = 'Aurora' THEN 5
+            WHEN Account = 'Boyle Heights' THEN 6
+            WHEN Account = 'Sacramento' THEN 7
+            WHEN Account = 'Watts' THEN 8
+            WHEN Account = 'Denver' THEN 9
+            WHEN Account = 'The Durant Center' THEN 10
+            WHEN Account = 'Ward 8' THEN 11
+            WHEN Account = 'Crenshaw' THEN 12
+            END AS Account,
 FROM join_all
 --WHERE site IS NOT NULL 
