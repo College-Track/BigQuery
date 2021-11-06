@@ -258,7 +258,7 @@ LEFT JOIN college_graduates AS E            ON A.Account = E.Account
 
 SELECT 
     CASE
-            WHEN program.Account LIKE "_hr_finance_cpacity" 
+            WHEN program.Account LIKE "_hr_finance_capacity" 
             THEN hr.Account
             ELSE program.Account
             END AS Account,
