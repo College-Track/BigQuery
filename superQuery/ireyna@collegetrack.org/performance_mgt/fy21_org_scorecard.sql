@@ -157,7 +157,7 @@ LEFT JOIN hr_identities AS C                ON A.Account = C.Account
 )
 
 SELECT 
-    CONCAT(Account,"_hr_finance_cpacity") AS Account, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
+    CONCAT(Account,"_hr_finance_capacity") AS Account, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
        * EXCEPT (Account),
 FROM join_all
 
