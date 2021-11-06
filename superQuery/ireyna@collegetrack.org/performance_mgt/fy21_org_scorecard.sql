@@ -250,9 +250,9 @@ SELECT
     D.* EXCEPT (Account),
 FROM objective_1_site AS A
 LEFT JOIN objective_1_region AS B           ON A.Account = B.Account2
-FULL JOIN mse_social_emotional_edits AS C   ON A.Account = C.Account 
-FULL JOIN college_outcomes AS D             ON A.Account = D.Account   
-FULL JOIN college_graduates AS E            ON A.Account = E.Account    
+LEFT JOIN mse_social_emotional_edits AS C   ON A.Account = C.Account 
+LEFT JOIN college_outcomes AS D             ON A.Account = D.Account   
+LEFT JOIN college_graduates AS E            ON A.Account = E.Account    
 )
 
 
