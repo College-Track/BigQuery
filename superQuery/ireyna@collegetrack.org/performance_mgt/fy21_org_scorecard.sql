@@ -245,7 +245,7 @@ join_all AS (
 SELECT 
     DISTINCT
     A.* EXCEPT (National),
-    B.* EXCEPT (Account2),
+    B.Account2,
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
 FROM objective_1_site AS A
@@ -272,6 +272,7 @@ SELECT
             WHEN program.Account = 'Crenshaw' THEN 12
             END AS site_sort,
        mapRegionShort (program.Account) AS Region, --crease Region column based on Account site name
-       *,
+       program.*,
+       hr.*
 FROM join_all AS program
 FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
