@@ -291,6 +291,6 @@ SELECT
             WHEN program.Account = 'Crenshaw' THEN 12
             END AS site_sort,
        program.* EXCEPT (account), 
-       hr.* EXCEPT (site,region)
+       hr.* EXCEPT (account,site,region)
 FROM add_region_site AS program
-LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site AND program.region = hr.region
+LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.account AND program.region = hr.account
