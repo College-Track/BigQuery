@@ -301,8 +301,67 @@ LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site
 
 join_on_region AS(
     SELECT 
-        program_hr.*,
-        hr.TENURE, hr.__students, hr.__Capacty
+        program_hr.* EXCEPT (
+                            Capacity_Target,	
+                            __Capacty,	
+                            Fundraising_Target,
+                            ENGAGEMENT_SCORE,	
+                            TENURE,
+                            Non_white,	
+                            LGBTQ,	
+                            Male,
+                            First_Gen
+                            ),
+        CASE WHEN hr.__students IS NOT NULL 
+        THEN hr.__students
+        ELSE program_hr.__students
+        END AS __students,
+        
+        CASE WHEN hr.Capacity_Target IS NOT NULL 
+        THEN hr.Capacity_Target
+        ELSE program_hr.Capacity_Target
+        END AS Capacity_Target,
+        
+        CASE WHEN hr.__Capacty IS NOT NULL 
+        THEN hr.__Capacty
+        ELSE program_hr.__Capacty
+        END AS __Capacty,
+        
+        CASE WHEN hr.Fundraising_Target IS NOT NULL 
+        THEN hr.Fundraising_Target
+        ELSE program_hr.Fundraising_Target
+        END AS Fundraising_Target,
+        
+        CASE WHEN hr.ENGAGEMENT_SCORE IS NOT NULL 
+        THEN hr.ENGAGEMENT_SCORE
+        ELSE program_hr.ENGAGEMENT_SCORE
+        END AS ENGAGEMENT_SCORE,
+        
+        CASE WHEN hr.TENURE IS NOT NULL 
+        THEN hr.TENURE
+        ELSE program_hr.TENURE
+        END AS TENURE,
+        
+        CASE WHEN hr.Non_white IS NOT NULL 
+        THEN hr.Non_white
+        ELSE program_hr.Non_white
+        END AS Non_white,
+        
+        CASE WHEN hr.LGBTQ IS NOT NULL 
+        THEN hr.LGBTQ
+        ELSE program_hr.LGBTQ
+        END AS LGBTQ,
+        
+        CASE WHEN hr.Male IS NOT NULL 
+        THEN hr.Male
+        ELSE program_hr.Male
+        END AS Male,
+        
+        CASE WHEN hr.First_Gen IS NOT NULL 
+        THEN hr.First_Gen
+        ELSE program_hr.First_Gen
+        END AS First_Gen,
+        
     FROM join_on_site program_hr
     LEFT JOIN hr_financial_sustainability_hs_capacity AS hr 
         ON program_hr.region = hr.region
