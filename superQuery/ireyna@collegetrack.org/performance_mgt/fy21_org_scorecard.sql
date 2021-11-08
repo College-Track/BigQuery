@@ -294,4 +294,4 @@ SELECT
        program.* EXCEPT (account), 
        hr.* EXCEPT (account,site,region)
 FROM add_region_site AS program
-LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site --AND program.region = hr.region
+FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site --AND program.region = hr.region
