@@ -1,6 +1,20 @@
 --Consolidate fy20 org scorecard
 --HR tenure, identities/diversity, financial sustainability (including hs capcity)
 
+--Using FY21_eoy_combined_metrics table to consolidate org scorecard data
+/*
+    
+
+    Strategy Team representing a spectrum of identities above average nonprofit benchmarks*
+    Annual Fundraising target (100%)
+    Staff with full-time tenure of 3+ years in organization (35%)
+  
+    Staff engagement score above average nonprofit benchmark (Y)
+*/
+
+#UNION TESTS
+
+
 
 CREATE TEMPORARY FUNCTION mapSite (Account STRING) AS ( --Remap abbreviated Account names to site_short
    CASE 
@@ -146,6 +160,7 @@ LEFT JOIN hr_identities AS C                ON A.Account = C.Account
 )
 
 SELECT 
+    Account AS site_or_region_hr_finance,
     CONCAT(Account,"_hr_finance_capacity") AS Account, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
        * EXCEPT (Account),
 FROM join_all
