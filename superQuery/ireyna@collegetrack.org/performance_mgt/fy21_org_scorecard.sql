@@ -255,7 +255,7 @@ SELECT
         ELSE NULL 
         END AS Region,
     CASE 
-        WHEN .Account NOT LIKE '%Region%' THEN Account
+        WHEN Account NOT LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Site,
 FROM objective_1_site AS A
