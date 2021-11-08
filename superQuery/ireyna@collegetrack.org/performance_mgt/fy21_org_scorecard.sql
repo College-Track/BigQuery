@@ -281,4 +281,4 @@ SELECT
        program.*, --EXCEPT (Account),
        hr.* EXCEPT (Account)
 FROM join_all AS program
-FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
+left JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
