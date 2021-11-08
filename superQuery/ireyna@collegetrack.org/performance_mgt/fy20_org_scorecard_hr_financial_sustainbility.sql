@@ -165,7 +165,7 @@ SELECT
     *,
     --Account AS site_or_region_hr_finance,
     CASE 
-        WHEN Account LIKE '%Region%' THEN MapRegionShort(Account)
+        WHEN Account LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Region,
     CASE 
