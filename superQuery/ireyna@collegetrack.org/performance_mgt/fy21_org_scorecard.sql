@@ -248,7 +248,7 @@ join_all AS (
 SELECT 
     DISTINCT
     A.* EXCEPT (National),
-    B.Account2,
+    --B.* Account2,
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
 FROM objective_1_site AS A
