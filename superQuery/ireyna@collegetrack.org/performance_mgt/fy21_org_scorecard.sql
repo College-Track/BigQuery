@@ -256,11 +256,11 @@ LEFT JOIN college_outcomes AS D             ON A.Account = D.Account
 LEFT JOIN college_graduates AS E            ON A.Account = E.Account    
 )
 SELECT 
-    CASE
-            WHEN hr_financial_hs_capacity = 1 
-            THEN CONCAT(Account,"_hr_finance_capacity")
-            ELSE program.Account
-            END AS Account,
+    --CASE
+   --         WHEN hr_financial_hs_capacity = 1 
+    --        THEN CONCAT(Account,"_hr_finance_capacity")
+   --         ELSE program.Account
+    --        END AS Account,
     CASE
         WHEN program.Account = 'East Palo Alto' THEN 1
             WHEN program.Account = 'Oakland' THEN 2
@@ -276,7 +276,7 @@ SELECT
             WHEN program.Account = 'Crenshaw' THEN 12
             END AS site_sort,
        mapRegionShort (program.Account) AS Region, --crease Region column based on Account site name
-       program.* EXCEPT (Account),
-       hr.*-- EXCEPT (Account)
+       program.*, --EXCEPT (Account),
+       hr.* EXCEPT (Account)
 FROM join_all AS program
 FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
