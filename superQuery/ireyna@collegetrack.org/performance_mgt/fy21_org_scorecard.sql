@@ -169,4 +169,129 @@ SELECT
     CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
       
 FROM join_all
+);
+SELECT * FROM hr_financial_sustainability_hs_capacity
+;
+
+WITH 
+
+objective_1_site AS (
+    SELECT 
+        * EXCEPT (Site__Account_Name,Region__Account_Name),
+         CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE mapRegion(Region__Account_Name) END AS Account
+        
+        FROM `org-scorecard-286421.aggregate_data.objective_1_site`
+    
+        UNION DISTINCT
+
+     SELECT 
+        * EXCEPT (Site__Account_Name,Region__Account_Name),
+        CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE mapSite(Site__Account_Name) END AS Account
+
+        FROM `org-scorecard-286421.aggregate_data.objective_1_site`  
+),
+
+objective_1_region AS (
+    SELECT 
+        * EXCEPT (site),
+        --mapRegion(site)  AS Account2
+        Site AS Account2
+
+    FROM(
+        SELECT * EXCEPT (Region), Region AS site
+        FROM `org-scorecard-286421.aggregate_data.objective_1_region`
+        )
+),
+
+college_outcomes AS (
+    SELECT 
+            * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
+        FROM `org-scorecard-286421.aggregate_data.college_outcomes_fy20`
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
+        
+        UNION DISTINCT 
+
+    SELECT 
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
+        FROM  `org-scorecard-286421.aggregate_data.college_outcomes_fy20`
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
+),
+
+college_graduates AS (
+    SELECT
+        * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
+        FROM `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20`
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
+
+        UNION DISTINCT
+
+    SELECT 
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
+        FROM  `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20`
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
+),
+
+mse_social_emotional_edits AS ( 
+    SELECT
+        * EXCEPT (site_short, Account),
+            mapSite(Account) AS Account, --site_abbrev to site_short 
+        FROM `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20`
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
+
+        UNION DISTINCT
+
+    SELECT 
+            * EXCEPT (Account,site_short),
+            mapRegion(Account) AS Account --region abrev to region_short
+        FROM  `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20`
+        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
+),
+
+join_all AS (
+SELECT 
+    DISTINCT
+    A.* EXCEPT (National),
+    C.* EXCEPT (Account),
+    D.* EXCEPT (Account),
+FROM objective_1_site AS A
+LEFT JOIN objective_1_region AS B           ON A.Account = B.Account2
+LEFT JOIN mse_social_emotional_edits AS C   ON A.Account = C.Account 
+LEFT JOIN college_outcomes AS D             ON A.Account = D.Account   
+LEFT JOIN college_graduates AS E            ON A.Account = E.Account    
+),
+add_region_site AS (
+    SELECT
+        *,
+        CASE 
+        WHEN Account LIKE '%Region%' THEN Account
+        ELSE NULL 
+        END AS Region,
+    CASE 
+        WHEN Account NOT LIKE '%Region%' THEN Account
+        ELSE NULL 
+        END AS Site,
+    FROM join_all 
 )
+SELECT 
+    CASE
+        WHEN program.Account = 'East Palo Alto' THEN 1
+            WHEN program.Account = 'Oakland' THEN 2
+            WHEN program.Account = 'San Francisco' THEN 3
+            WHEN program.Account = 'New Orleans' THEN 4
+            WHEN program.Account = 'Aurora' THEN 5
+            WHEN program.Account = 'Boyle Heights' THEN 6
+            WHEN program.Account = 'Sacramento' THEN 7
+            WHEN program.Account = 'Watts' THEN 8
+            WHEN program.Account = 'Denver' THEN 9
+            WHEN program.Account = 'The Durant Center' THEN 10
+            WHEN program.Account = 'Ward 8' THEN 11
+            WHEN program.Account = 'Crenshaw' THEN 12
+            END AS site_sort,
+       program.* EXCEPT (account), 
+       hr.* EXCEPT (account,site,region)
+FROM add_region_site AS program
+LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site AND program.region = hr.region
