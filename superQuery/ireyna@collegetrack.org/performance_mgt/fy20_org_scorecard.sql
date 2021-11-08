@@ -320,7 +320,16 @@ join_on_region AS(
              WHEN hr.Non_white IS NOT NULL THEN 1
              WHEN hr.LGBTQ IS NOT NULL THEN 1
              WHEN hr.Male IS NOT NULL THEN 1
-             WHEN hr.First_Gen IS NOT NULL THEN 1
+             WHEN program.First_Gen IS NOT NULL THEN 1
+             WHEN program.Capacity_Target IS NOT NULL THEN 1
+             WHEN program.__Capacty IS NOT NULL THEN 1
+             WHEN program.Fundraising_Target IS NOT NULL THEN 1
+             WHEN program.ENGAGEMENT_SCORE IS NOT NULL THEN 1
+             WHEN program.TENURE IS NOT NULL THEN 1
+             WHEN program.Non_white IS NOT NULL THEN 1
+             WHEN program.LGBTQ IS NOT NULL THEN 1
+             WHEN program.Male IS NOT NULL THEN 1
+             WHEN program.First_Gen IS NOT NULL THEN 1
             ELSE NULL
         END AS objective_indicator_hr_financial_hs_capacity,
         
