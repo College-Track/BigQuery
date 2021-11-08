@@ -172,7 +172,7 @@ SELECT
         WHEN Account NOT LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Site,
-    CONCAT(Account,"_hr_finance_capacity") AS Account_hr_finance, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
+    --CONCAT(Account,"_hr_finance_capacity") AS Account_hr_finance, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
     CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
       
 FROM join_all
