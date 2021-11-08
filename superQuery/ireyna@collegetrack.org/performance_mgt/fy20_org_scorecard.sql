@@ -256,6 +256,7 @@ SELECT
     A.* EXCEPT (National),
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
+    E.* EXCEPT (Account)
 FROM objective_1_site AS A
 LEFT JOIN objective_1_region AS B           ON A.Account = B.Account2
 LEFT JOIN mse_social_emotional_edits AS C   ON A.Account = C.Account 
@@ -303,6 +304,7 @@ join_on_region AS(
         program_hr.* EXCEPT (
                             Capacity_Target,	
                             __Capacty,	
+                            __students,
                             Fundraising_Target,
                             ENGAGEMENT_SCORE,	
                             TENURE,
