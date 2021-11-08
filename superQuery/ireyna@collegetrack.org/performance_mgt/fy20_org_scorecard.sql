@@ -310,8 +310,7 @@ join_on_region AS(
                             Non_white,	
                             LGBTQ,	
                             Male,
-                            First_Gen,
-                            objective_indicator_hr_financial_hs_capacity
+                            First_Gen
                             ),
         CASE WHEN Capacity_Target IS NOT NULL THEN 1
              WHEN __Capacty IS NOT NULL THEN 1
