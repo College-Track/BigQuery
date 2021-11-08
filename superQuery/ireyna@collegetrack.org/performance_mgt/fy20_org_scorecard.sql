@@ -142,9 +142,9 @@ hr_identities AS (
         mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
         WHERE Account IS NOT NULL
-),
+)
 
-join_all AS (
+--join_all AS (
 SELECT 
     DISTINCT
     A.*,
@@ -153,10 +153,8 @@ SELECT
 FROM hr_tenure AS A                    
 LEFT JOIN financial_sustainability AS B     ON A.Account = B.Account 
 LEFT JOIN hr_identities AS C                ON A.Account = C.Account    
- 
-)
 
-SELECT 
+/*SELECT 
     *,
     CASE 
         WHEN Account LIKE '%Region%' THEN Account
@@ -168,7 +166,7 @@ SELECT
         END AS Site,
     CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
       
-FROM join_all
+FROM join_all */
 );
 SELECT * FROM hr_financial_sustainability_hs_capacity
 ;
@@ -310,8 +308,21 @@ join_on_region AS(
                             Non_white,	
                             LGBTQ,	
                             Male,
-                            First_Gen
+                            First_Gen,
+                            objective_indicator_hr_financial_hs_capacity
                             ),
+        CASE WHEN Capacity_Target IS NOT NULL THEN 1
+             WHEN __Capacty IS NOT NULL THEN 1
+             WHEN Fundraising_Target IS NOT NULL THEN 1
+             WHEN ENGAGEMENT_SCORE IS NOT NULL THEN 1
+             WHEN TENURE IS NOT NULL THEN 1
+             WHEN Non_white IS NOT NULL THEN 1
+             WHEN LGBTQ IS NOT NULL THEN 1
+             WHEN Male IS NOT NULL THEN 1
+             WHEN First_Gen IS NOT NULL THEN 1
+            ELSE NULL
+        END AS objective_indicator_hr_financial_hs_capacity,
+        
         CASE WHEN hr.__students IS NOT NULL 
         THEN hr.__students
         ELSE program_hr.__students
@@ -362,10 +373,10 @@ join_on_region AS(
         ELSE program_hr.First_Gen
         END AS First_Gen,
         
-        CASE WHEN hr.objective_indicator_hr_financial_hs_capacity IS NOT NULL 
+       /* CASE WHEN hr.objective_indicator_hr_financial_hs_capacity IS NOT NULL 
         THEN hr.objective_indicator_hr_financial_hs_capacity
         ELSE program_hr.objective_indicator_hr_financial_hs_capacity
-        END AS objective_indicator_hr_financial_hs_capacity,
+        END AS objective_indicator_hr_financial_hs_capacity,*/
         
         
     FROM join_on_site program_hr
