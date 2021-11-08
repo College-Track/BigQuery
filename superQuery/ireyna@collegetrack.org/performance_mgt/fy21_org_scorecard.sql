@@ -307,5 +307,5 @@ join_on_region AS(
     LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program_hr.region = hr.region
 
 )
- SELECT *
+ SELECT DISTINCT *
  FROM join_on_region
