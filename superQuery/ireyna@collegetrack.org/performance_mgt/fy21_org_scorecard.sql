@@ -251,11 +251,11 @@ SELECT
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
     CASE 
-        WHEN program.Account LIKE '%Region%' THEN Account
+        WHEN Account LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Region,
     CASE 
-        WHEN progra.Account NOT LIKE '%Region%' THEN Account
+        WHEN .Account NOT LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Site,
 FROM objective_1_site AS A
