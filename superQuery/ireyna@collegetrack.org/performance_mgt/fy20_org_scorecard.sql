@@ -142,9 +142,9 @@ hr_identities AS (
         mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
         WHERE Account IS NOT NULL
-)
+),
 
---join_all AS (
+join_all AS (
 SELECT 
     DISTINCT
     A.*,
@@ -153,8 +153,10 @@ SELECT
 FROM hr_tenure AS A                    
 LEFT JOIN financial_sustainability AS B     ON A.Account = B.Account 
 LEFT JOIN hr_identities AS C                ON A.Account = C.Account    
+ 
+)
 
-/*SELECT 
+SELECT 
     *,
     CASE 
         WHEN Account LIKE '%Region%' THEN Account
@@ -164,9 +166,9 @@ LEFT JOIN hr_identities AS C                ON A.Account = C.Account
         WHEN Account NOT LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Site,
-    CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
+   -- CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
       
-FROM join_all */
+FROM join_all
 );
 SELECT * FROM hr_financial_sustainability_hs_capacity
 ;
