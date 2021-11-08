@@ -163,7 +163,7 @@ FROM join_all
 SELECT * FROM hr_financial_sustainability_hs_capacity
 ;
 
-CREATE OR REPLACE TABLE `data-studio-260217.org_scorecard_fy20`
+CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.org_scorecard_fy20`
 OPTIONS
     (
     description= "Compiled outcomes for fy20 org scorecard"
