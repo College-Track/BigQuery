@@ -161,7 +161,7 @@ LEFT JOIN hr_identities AS C                ON A.Region = C.Account
 
 SELECT 
     * EXCEPT (region, site),
-    mapSite(site_short) AS site,
+    mapSite(site) AS site,
     mapRegion(region) AS Region,
     --Account AS site_or_region_hr_finance,
     --CONCAT(Account,"_hr_finance_capacity") AS Account_hr_finance, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
