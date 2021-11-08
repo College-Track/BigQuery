@@ -166,8 +166,7 @@ SELECT
         WHEN Account NOT LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Site,
-   -- CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
-      
+ 
 FROM join_all
 );
 SELECT * FROM hr_financial_sustainability_hs_capacity
@@ -312,27 +311,7 @@ join_on_region AS(
                             Male,
                             First_Gen
                             ),
-        CASE WHEN hr.Capacity_Target IS NOT NULL THEN 1
-             WHEN hr.__Capacty IS NOT NULL THEN 1
-             WHEN hr.Fundraising_Target IS NOT NULL THEN 1
-             WHEN hr.ENGAGEMENT_SCORE IS NOT NULL THEN 1
-             WHEN hr.TENURE IS NOT NULL THEN 1
-             WHEN hr.Non_white IS NOT NULL THEN 1
-             WHEN hr.LGBTQ IS NOT NULL THEN 1
-             WHEN hr.Male IS NOT NULL THEN 1
-             WHEN program_hr.First_Gen IS NOT NULL THEN 1
-             WHEN program_hr.Capacity_Target IS NOT NULL THEN 1
-             WHEN program_hr.__Capacty IS NOT NULL THEN 1
-             WHEN program_hr.Fundraising_Target IS NOT NULL THEN 1
-             WHEN program_hr.ENGAGEMENT_SCORE IS NOT NULL THEN 1
-             WHEN program_hr.TENURE IS NOT NULL THEN 1
-             WHEN program_hr.Non_white IS NOT NULL THEN 1
-             WHEN program_hr.LGBTQ IS NOT NULL THEN 1
-             WHEN program_hr.Male IS NOT NULL THEN 1
-             WHEN program_hr.First_Gen IS NOT NULL THEN 1
-            ELSE NULL
-        END AS objective_indicator_hr_financial_hs_capacity,
-        
+      
         CASE WHEN hr.__students IS NOT NULL 
         THEN hr.__students
         ELSE program_hr.__students
