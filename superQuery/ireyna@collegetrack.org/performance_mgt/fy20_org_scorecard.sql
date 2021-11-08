@@ -312,15 +312,15 @@ join_on_region AS(
                             Male,
                             First_Gen
                             ),
-        CASE WHEN Capacity_Target IS NOT NULL THEN 1
-             WHEN __Capacty IS NOT NULL THEN 1
-             WHEN Fundraising_Target IS NOT NULL THEN 1
-             WHEN ENGAGEMENT_SCORE IS NOT NULL THEN 1
-             WHEN TENURE IS NOT NULL THEN 1
-             WHEN Non_white IS NOT NULL THEN 1
-             WHEN LGBTQ IS NOT NULL THEN 1
-             WHEN Male IS NOT NULL THEN 1
-             WHEN First_Gen IS NOT NULL THEN 1
+        CASE WHEN hr.Capacity_Target IS NOT NULL THEN 1
+             WHEN hr.__Capacty IS NOT NULL THEN 1
+             WHEN hr.Fundraising_Target IS NOT NULL THEN 1
+             WHEN hr.ENGAGEMENT_SCORE IS NOT NULL THEN 1
+             WHEN hr.TENURE IS NOT NULL THEN 1
+             WHEN hr.Non_white IS NOT NULL THEN 1
+             WHEN hr.LGBTQ IS NOT NULL THEN 1
+             WHEN hr.Male IS NOT NULL THEN 1
+             WHEN hr.First_Gen IS NOT NULL THEN 1
             ELSE NULL
         END AS objective_indicator_hr_financial_hs_capacity,
         
