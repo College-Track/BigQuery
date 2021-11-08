@@ -362,6 +362,12 @@ join_on_region AS(
         ELSE program_hr.First_Gen
         END AS First_Gen,
         
+        CASE WHEN hr.objective_indicator_hr_financial_hs_capacity IS NOT NULL 
+        THEN hr.objective_indicator_hr_financial_hs_capacity
+        ELSE program_hr.objective_indicator_hr_financial_hs_capacity
+        END AS objective_indicator_hr_financial_hs_capacity,
+        
+        
     FROM join_on_site program_hr
     LEFT JOIN hr_financial_sustainability_hs_capacity AS hr 
         ON program_hr.region = hr.region
