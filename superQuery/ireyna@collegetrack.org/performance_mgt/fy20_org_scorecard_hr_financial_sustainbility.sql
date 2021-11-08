@@ -110,7 +110,7 @@ WITH
 financial_sustainability AS (
      SELECT 
             * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short 
+            mapSite(Account) AS Site, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
         WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
 
@@ -118,7 +118,7 @@ financial_sustainability AS (
 
         SELECT 
             * EXCEPT (Account,site_short),
-            mapRegion(Account) AS Account --region abrev to region_short
+            mapRegion(Account) AS Region --region abrev to region_short
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
         WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 ),
@@ -126,7 +126,7 @@ financial_sustainability AS (
 hr_tenure AS ( 
     SELECT 
         * EXCEPT (site,region), 
-        mapSite(site) as Account
+        mapSite(site) as Site
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
         WHERE site IS NOT NULL
 
@@ -134,7 +134,7 @@ hr_tenure AS (
 
     SELECT 
         * EXCEPT (site,region), 
-        mapRegion(region) as Account
+        mapRegion(region) as Region
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
         where region IS NOT NULL
 ),
@@ -142,7 +142,7 @@ hr_tenure AS (
 hr_identities AS (
     SELECT 
         * EXCEPT (Account,string_field_5),
-        mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
+        mapRegion(Account)  AS Region --mapping site names and region abbreviations to region_short
         FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
         WHERE Account IS NOT NULL
 ),
@@ -151,18 +151,18 @@ join_all AS (
 SELECT 
     DISTINCT
     A.*,
-    B.* EXCEPT (Account),
-    C.* EXCEPT (Account)
+    B.* EXCEPT (Site,Region),
+    C.* EXCEPT (Region)
 FROM hr_tenure AS A                    
-LEFT JOIN financial_sustainability AS B     ON A.Account = B.Account 
-LEFT JOIN hr_identities AS C                ON A.Account = C.Account    
+LEFT JOIN financial_sustainability AS B     ON A.Site = B.Site AND A.Region = B.Region  
+LEFT JOIN hr_identities AS C                ON A.Region = C.Region    
  
 )
 
 SELECT 
     *,
     --Account AS site_or_region_hr_finance,
-    CONCAT(Account,"_hr_finance_capacity") AS Account_hr_finance, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
+    --CONCAT(Account,"_hr_finance_capacity") AS Account_hr_finance, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
     CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
       
 FROM join_all
