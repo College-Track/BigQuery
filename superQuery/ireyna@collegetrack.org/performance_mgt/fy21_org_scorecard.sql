@@ -277,6 +277,6 @@ SELECT
             END AS site_sort,
        mapRegionShort (program.Account) AS Region, --crease Region column based on Account site name
        program.* EXCEPT (Account),
-       hr.* EXCEPT (Account)
+       hr.*-- EXCEPT (Account)
 FROM join_all AS program
 FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
