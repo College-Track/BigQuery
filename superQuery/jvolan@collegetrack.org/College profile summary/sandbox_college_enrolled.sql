@@ -55,6 +55,12 @@ group_data AS
     AT_Grade_c,
     start_date_c,
     term_c,
+    CASE
+        WHEN term_c = "Fall" THEN 1
+        WHEN term_c = "Winter" THEN 2
+        WHEN term_c = "Spring" THEN 3
+        ELSE 4
+    END AS term_sort,
     GAS_Name,
     AT_School_Name,
     AT_school_type,
@@ -92,7 +98,7 @@ group_data AS
     readiness_composite_off_c
     
     FROM join_data
-    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, start_date_c, GAS_Name, term_c, major_c, fit_type_at, site_short, x_11_cgpa_bucket,readiness_composite_off_c
+    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, start_date_c, GAS_Name, term_c, term_sort, major_c, fit_type_at, site_short, x_11_cgpa_bucket,readiness_composite_off_c
 )
     SELECT
     * 
