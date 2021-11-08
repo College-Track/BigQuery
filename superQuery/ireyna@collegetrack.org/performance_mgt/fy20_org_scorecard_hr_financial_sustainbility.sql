@@ -160,7 +160,7 @@ LEFT JOIN hr_identities AS C                ON A.Region = C.Account
 )
 
 SELECT 
-    * EXCEPT (region, site_short),
+    * EXCEPT (region, site),
     mapSite(site_short) AS site,
     mapRegion(region) AS Region,
     --Account AS site_or_region_hr_finance,
