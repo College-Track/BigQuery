@@ -169,7 +169,7 @@ SELECT
         ELSE NULL 
         END AS Region,
     CASE 
-        WHEN Account LIKE '%Region%' THEN NULL
+        WHEN Account NOT LIKE '%Region%' THEN NULL
         ELSE Account 
         END AS Site,
     CONCAT(Account,"_hr_finance_capacity") AS Account_hr_finance, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
