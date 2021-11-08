@@ -5,6 +5,7 @@ WITH gather_all_enrolled_at_data AS
     Contact_Id,
     AT_Id,
     AT_Grade_c,
+    indicator_years_since_hs_graduation_c,
     GAS_Name,
     AT_School_Name,
     AT_school_type,
@@ -51,6 +52,7 @@ group_data AS
     COUNT(AT_Id) AS at_count,
     high_school_graduating_class_c,
     AT_Grade_c,
+    indicator_years_since_hs_graduation_c,
     GAS_Name,
     AT_School_Name,
     AT_school_type,
@@ -88,7 +90,7 @@ group_data AS
     readiness_composite_off_c
     
     FROM join_data
-    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, GAS_Name, major_c, fit_type_at, site_short, x_11_cgpa_bucket,readiness_composite_off_c
+    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c,indicator_years_since_hs_graduation_c, GAS_Name, major_c, fit_type_at, site_short, x_11_cgpa_bucket,readiness_composite_off_c
 )
     SELECT
     * 
