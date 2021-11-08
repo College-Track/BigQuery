@@ -164,6 +164,14 @@ LEFT JOIN hr_identities AS C                ON A.Account = C.Account
 SELECT 
     *,
     --Account AS site_or_region_hr_finance,
+    CASE 
+        WHEN Account LIKE '%Region%' THEN MapRegionShort(Account)
+        ELSE NULL 
+        END AS Region,
+    CASE 
+        WHEN Account LIKE '%Region%' THEN NULL
+        ELSE Account 
+        END AS Site,
     CONCAT(Account,"_hr_finance_capacity") AS Account_hr_finance, --append 'hr_finance"capacity' to each region/site to differntiate outcomes
     CASE WHEN Account IS NOT NULL THEN 1 ELSE 0 END AS objective_indicator_hr_financial_hs_capacity,   
       
