@@ -155,7 +155,7 @@ SELECT
     C.* EXCEPT (Region)
 FROM hr_tenure AS A                    
 LEFT JOIN financial_sustainability AS B     ON A.Site = B.site_short AND A.Region = B.Account  
-LEFT JOIN hr_identities AS C                ON A.Account = C.Account    
+LEFT JOIN hr_identities AS C                ON A.Region = C.Account    
  
 )
 
