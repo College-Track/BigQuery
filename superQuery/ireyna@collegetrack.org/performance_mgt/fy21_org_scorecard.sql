@@ -250,6 +250,14 @@ SELECT
     A.* EXCEPT (National),
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
+    CASE 
+        WHEN program.Account LIKE '%Region%' THEN Account
+        ELSE NULL 
+        END AS Region,
+    CASE 
+        WHEN progra.Account NOT LIKE '%Region%' THEN Account
+        ELSE NULL 
+        END AS Site,
 FROM objective_1_site AS A
 LEFT JOIN objective_1_region AS B           ON A.Account = B.Account2
 LEFT JOIN mse_social_emotional_edits AS C   ON A.Account = C.Account 
@@ -271,15 +279,7 @@ SELECT
             WHEN program.Account = 'Ward 8' THEN 11
             WHEN program.Account = 'Crenshaw' THEN 12
             END AS site_sort,
-       CASE 
-        WHEN Account LIKE '%Region%' THEN Account
-        ELSE NULL 
-        END AS Region,
-    CASE 
-        WHEN Account NOT LIKE '%Region%' THEN Account
-        ELSE NULL 
-        END AS Site,
        program.*, 
        hr.* EXCEPT (Account)
 FROM join_all AS program
-left JOIN hr_financial_sustainability_hs_capacity AS hr ON program.Account=hr.Account
+left JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site AND program.region = hr.region
