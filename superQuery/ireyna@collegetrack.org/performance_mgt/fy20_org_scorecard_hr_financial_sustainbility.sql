@@ -151,7 +151,7 @@ join_all AS (
 SELECT 
     DISTINCT
     A.*,
-    B.* EXCEPT (Site,Region),
+    B.* EXCEPT (site_short,Region),
     C.* EXCEPT (Region)
 FROM hr_tenure AS A                    
 LEFT JOIN financial_sustainability AS B     ON A.Site = B.site_short AND A.Account = B.Account  
