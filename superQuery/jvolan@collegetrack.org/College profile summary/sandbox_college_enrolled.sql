@@ -29,7 +29,8 @@ WITH gather_all_enrolled_at_data AS
     AT_Cumulative_GPA,
     current_as_c,
     fit_type_current_c,
-    fit_type_at_c
+    fit_type_at_c,
+    enrollment_status_c,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE student_audit_status_c IN ("Active: Post-Secondary", "CT Alumni")
@@ -91,14 +92,14 @@ group_data AS
     SUM(CASE WHEN AT_Term_GPA IS NOT NULL THEN 1 ELSE 0 END) AS at_term_gpa_denom,
     SUM(AT_Cumulative_GPA) AS avg_at_cgpa_num,
     SUM(CASE WHEN AT_Cumulative_GPA IS NOT NULL THEN 1 ELSE 0 END) AS at_cgpa_denom,
-
+    
+    enrollment_status_c,
     current_as_c,
     site_short,
     x_11_cgpa_bucket,
-    readiness_composite_off_c
-    
+
     FROM join_data
-    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, current_as_c, start_date_c, GAS_Name, term_c, term_sort, major_c, fit_type_at, site_short, x_11_cgpa_bucket,readiness_composite_off_c
+    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, current_as_c, start_date_c, GAS_Name, term_c, term_sort, major_c, fit_type_at, site_short, x_11_cgpa_bucket,enrollment_status_c
 )
     SELECT
     * 
