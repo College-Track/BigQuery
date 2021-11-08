@@ -1,9 +1,6 @@
 --Using FY21_eoy_combined_metrics table to consolidate org scorecard data
 
 
-
-
-
 CREATE TEMPORARY FUNCTION mapSite (Account STRING) AS ( --Remap abbreviated Account names to site_short
    CASE 
             WHEN Account = 'College Track East Palo Alto' THEN 'East Palo Alto'
@@ -164,15 +161,24 @@ SELECT * FROM hr_financial_sustainability_hs_capacity
 ;
 
 --Create table based on temporary tables above, and query below
-/*
+
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.org_scorecard_fy20`
 OPTIONS
     (
     description= "Compiled outcomes for fy20 org scorecard"
     )
  AS 
- */
  
+ 
+/* Added Column: fiscal_year
+ ALTER TABLE `data-studio-260217.performance_mgt.org_scorecard_fy20`
+  ADD COLUMN fiscal_year STRING;
+*/
+
+/*Populated new fiscal_year column with 'FY20'
+  INSERT INTO `data-studio-260217.performance_mgt.org_scorecard_fy20` (fiscal_year) VALUES ('FY20')
+ */
+  
 WITH 
 
 objective_1_site AS (
@@ -364,6 +370,9 @@ join_on_region AS(
         THEN hr.First_Gen
         ELSE program_hr.First_Gen
         END AS First_Gen,
+        
+        CASE WHEN fiscal_year IS NULL THEN 'FY20'
+        END AS fiscal_year
         
     FROM join_on_site program_hr
     LEFT JOIN hr_financial_sustainability_hs_capacity AS hr 
