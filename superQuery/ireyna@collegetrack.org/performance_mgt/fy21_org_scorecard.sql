@@ -247,7 +247,7 @@ mse_social_emotional_edits AS (
 join_all AS (
 SELECT 
     DISTINCT
-    A.* EXCEPT (National),
+    A.* EXCEPT (Account,National),
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
     CASE 
