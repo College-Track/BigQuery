@@ -31,6 +31,11 @@ WITH gather_all_enrolled_at_data AS
     fit_type_current_c,
     fit_type_at_c,
     AT_Enrollment_Status_c,
+    CASE
+        WHEN current_as_c = TRUE
+        AND AT_School_Name = college_first_enrolled_school_c THEN 1
+        ELSE 0
+    END AS cfe_num,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE student_audit_status_c IN ("Active: Post-Secondary", "CT Alumni")
@@ -92,6 +97,8 @@ group_data AS
     SUM(CASE WHEN AT_Term_GPA IS NOT NULL THEN 1 ELSE 0 END) AS at_term_gpa_denom,
     SUM(AT_Cumulative_GPA) AS avg_at_cgpa_num,
     SUM(CASE WHEN AT_Cumulative_GPA IS NOT NULL THEN 1 ELSE 0 END) AS at_cgpa_denom,
+    
+    SUM(cfe_num) AS cfe_num,
     
     AT_Enrollment_Status_c,
     current_as_c,
