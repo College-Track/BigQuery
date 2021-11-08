@@ -1,4 +1,6 @@
-  
+
+WITH gather_all_enrolled_at_data AS
+(    
     SELECT
     Contact_Id,
     AT_Id,
@@ -28,8 +30,77 @@
     current_as_c,
     fit_type_current_c,
     fit_type_at_c,
-    enrollment_status_c,
+    AT_Enrollment_Status_c,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE student_audit_status_c IN ("Active: Post-Secondary", "CT Alumni")
     AND AT_School_Name IS NOT NULL
+),
+
+join_data AS
+(
+    SELECT
+    gat.* except (Contact_Id),
+    gsd.*
+    
+    FROM gather_all_enrolled_at_data gat
+    LEFT JOIN `data-studio-260217.college_account_summary.gather_hs_contact_data_view` gsd ON gat.Contact_Id = gsd.Contact_Id
+),
+   
+group_data AS
+(    
+    SELECT
+    COUNT(DISTINCT(Contact_Id)) AS at_unique_student_count,
+    COUNT(AT_Id) AS at_count,
+    high_school_graduating_class_c,
+    AT_Grade_c,
+    start_date_c,
+    term_c,
+    CASE
+        WHEN term_c = "Fall" THEN 1
+        WHEN term_c = "Winter" THEN 2
+        WHEN term_c = "Spring" THEN 3
+        ELSE 4
+    END AS term_sort,
+    GAS_Name,
+    AT_School_Name,
+    AT_school_type,
+    major_c,
+    CASE
+        when current_as_c = TRUE THEN fit_type_current_c
+        ELSE fit_type_at_c
+    END AS fit_type_at,
+    SUM(sfit_high_grad_program) AS sfit_high_grad_program_count,
+    SUM(sfit_high_grad_major) AS sfit_high_grad_major_count,
+    SUM(sfit_high_grad_afford) AS sfit_high_grad_afford_count,
+    SUM(sfit_door) AS sfit_door_count,
+    SUM(sfit_other) AS sfit_other_count,
+    SUM(credits_attempted_current_term_c) AS at_credit_attempt_num,
+    SUM(CASE WHEN credits_attempted_current_term_c IS NOT NULL THEN 1 ELSE 0 END) AS at_credit_attempt_denom,
+    SUM(credits_awarded_current_term_c) AS at_credit_awarded_num,
+    SUM(CASE WHEN credits_awarded_current_term_c IS NOT NULL THEN 1 ELSE 0 END) AS at_credit_awarded_denom,
+    AVG(credits_accumulated_c) AS avg_credits_accumulated,
+    SUM(cumulative_credits_awarded_all_terms_c) AS c_credits_alltime_num,
+    SUM(CASE WHEN cumulative_credits_awarded_all_terms_c IS NOT NULL THEN 1 ELSE 0 END) AS c_credits_alltime_denom,
+
+    SUM(on_track_count) AS on_track_count,
+    SUM(near_on_track_count) AS near_on_track_count,
+    SUM(off_track_count) AS off_track_count,
+    SUM(missing_on_track_data_count) AS missing_on_track_data_count,
+    
+    SUM(AT_Term_GPA) AS at_term_gpa_num,
+    SUM(CASE WHEN AT_Term_GPA IS NOT NULL THEN 1 ELSE 0 END) AS at_term_gpa_denom,
+    SUM(AT_Cumulative_GPA) AS avg_at_cgpa_num,
+    SUM(CASE WHEN AT_Cumulative_GPA IS NOT NULL THEN 1 ELSE 0 END) AS at_cgpa_denom,
+    
+    AT_Enrollment_Status_c,
+    current_as_c,
+    site_short,
+    x_11_cgpa_bucket,
+
+    FROM join_data
+    GROUP BY AT_School_Name, AT_school_type, high_school_graduating_class_c, AT_Grade_c, current_as_c, start_date_c, GAS_Name, term_c, term_sort, major_c, fit_type_at, site_short, x_11_cgpa_bucket,AT_Enrollment_Status_c
+)
+    SELECT
+    * 
+    FROM group_data
