@@ -274,11 +274,11 @@ add_region_site AS (
     SELECT
         *,
         CASE 
-        WHEN A.Account LIKE '%Region%' THEN A.Account
+        WHEN Account LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Region,
     CASE 
-        WHEN a.Account NOT LIKE '%Region%' THEN A.Account
+        WHEN Account NOT LIKE '%Region%' THEN Account
         ELSE NULL 
         END AS Site,
     FROM join_all 
