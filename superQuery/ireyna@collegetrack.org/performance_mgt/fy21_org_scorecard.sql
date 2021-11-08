@@ -247,15 +247,15 @@ mse_social_emotional_edits AS (
 join_all AS (
 SELECT 
     DISTINCT
-    A.* EXCEPT (Account,National),
+    A.* EXCEPT (National),
     C.* EXCEPT (Account),
     D.* EXCEPT (Account),
     CASE 
-        WHEN A.Account LIKE '%Region%' THEN Account
+        WHEN A.Account LIKE '%Region%' THEN A.Account
         ELSE NULL 
         END AS Region,
     CASE 
-        WHEN a.Account NOT LIKE '%Region%' THEN Account
+        WHEN a.Account NOT LIKE '%Region%' THEN A.Account
         ELSE NULL 
         END AS Site,
 FROM objective_1_site AS A
