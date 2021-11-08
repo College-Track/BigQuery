@@ -275,7 +275,9 @@ add_region_site AS (
         ELSE NULL 
         END AS Site,
     FROM join_all 
-)
+),
+
+join_on_site AS(
 SELECT 
     CASE
         WHEN program.Account = 'East Palo Alto' THEN 1
@@ -294,4 +296,14 @@ SELECT
        program.* EXCEPT (account), 
        hr.* EXCEPT (account,site,region)
 FROM add_region_site AS program
-FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site --AND program.region = hr.region
+FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site 
+),
+
+join_on_region AS(
+    SELECT *
+    FROM join_on_site program_hr
+    LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.region = hr.region
+
+)
+ SELECT *
+ FROM join_on_region
