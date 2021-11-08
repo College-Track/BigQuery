@@ -302,7 +302,7 @@ FULL JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site
 join_on_region AS(
     SELECT *
     FROM join_on_site program_hr
-    LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.region = hr.region
+    LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program_hr.region = hr.region
 
 )
  SELECT *
