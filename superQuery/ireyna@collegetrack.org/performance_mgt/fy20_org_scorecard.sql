@@ -174,14 +174,14 @@ SELECT * FROM hr_financial_sustainability_hs_capacity
 ;
 
 --Create table based on temporary tables above, and query below
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.org_scorecard_fy20`
 OPTIONS
     (
     description= "Compiled outcomes for fy20 org scorecard"
     )
  AS 
- 
+*/
  
 WITH 
 
