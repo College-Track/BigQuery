@@ -1,16 +1,4 @@
 --Using FY21_eoy_combined_metrics table to consolidate org scorecard data
-/*
-    
-
-    Strategy Team representing a spectrum of identities above average nonprofit benchmarks*
-    Annual Fundraising target (100%)
-    Staff with full-time tenure of 3+ years in organization (35%)
-  
-    Staff engagement score above average nonprofit benchmark (Y)
-*/
-
-#UNION TESTS
-
 
 
 CREATE TEMPORARY FUNCTION mapSite (Account STRING) AS ( --Remap abbreviated Account names to site_short
