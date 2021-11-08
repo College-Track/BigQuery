@@ -302,13 +302,10 @@ LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site
 join_on_region AS(
     SELECT 
         program_hr.*,
-        hr.*
+        hr.* EXCEPT (site)
     FROM join_on_site program_hr
     LEFT JOIN hr_financial_sustainability_hs_capacity AS hr 
         ON program_hr.region = hr.region
-        AND program_hr.SITE = hr.site
-        
-
 )
  SELECT *
  FROM join_on_region
