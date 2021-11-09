@@ -172,10 +172,10 @@ AS*/
 WITH 
 
 add_national_values_site AS(
-    SELECT * EXCEPT (percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20),
-        CASE WHEN Account = National  THEN SUM(sum_male)/SUM(denom_hs_admits) END AS percent_male_fy20, 
-        CASE WHEN Account = National  THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) END AS percent_low_income_first_gen_fy20, 
-        CASE WHEN Account = National  THEN SUM(sum_active_hs)/SUM(denom_annual_retention) END AS percent_active_FY20
+    SELECT * EXCEPT (percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20,National),
+        CASE WHEN Account = 'National'  THEN SUM(sum_male)/SUM(denom_hs_admits) END AS percent_male_fy20, 
+        CASE WHEN Account = 'National'  THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) END AS percent_low_income_first_gen_fy20, 
+        CASE WHEN Account = 'National'  THEN SUM(sum_active_hs)/SUM(denom_annual_retention) END AS percent_active_FY20
     FROM recruit_and_retain_site 
     GROUP BY sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account,Measure,objective,fiscal_year
 ),
