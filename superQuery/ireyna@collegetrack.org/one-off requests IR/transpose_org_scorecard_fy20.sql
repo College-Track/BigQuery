@@ -132,7 +132,7 @@ FROM hr_financial_sustainability_hs_capacity t,
 UNNEST(SPLIT(REGEXP_REPLACE(TO_JSON_STRING(t), r'[{}"]', ''))) kv
 WHERE SPLIT(kv, ':')[OFFSET(0)] != 'Account'
 AND SPLIT(kv, ':')[OFFSET(0)] NOT IN ('__students','Capacity_Target')
-AND SPLIT(kv, ':')[SAFE_OFFSET(2)] =('Fundraising_Target','__Capacty')
+AND SPLIT(kv, ':')[SAFE_OFFSET(2)] IN ('Fundraising_Target','__Capacty')
 
 
 
