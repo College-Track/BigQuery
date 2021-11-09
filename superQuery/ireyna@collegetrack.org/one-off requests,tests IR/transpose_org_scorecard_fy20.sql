@@ -142,7 +142,7 @@ unpivot AS (
             ELSE NULL
             END AS numerator
         FROM hr_financial_sustainability_hs_capacity
-        )
+        ))
         SELECT `Account`,
   SPLIT(kv, ':')[OFFSET(0)] Measure,
   SPLIT(kv, ':')[OFFSET(1)] Outcome,
