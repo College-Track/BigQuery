@@ -1,3 +1,16 @@
+--Using FY21_eoy_combined_metrics table to consolidate org scorecard data
+/* Added Column: fiscal_year
+ ALTER TABLE `data-studio-260217.performance_mgt.org_scorecard_fy20`
+  ADD COLUMN fiscal_year STRING;
+*/
+
+/*Populated new fiscal_year column with 'FY20'
+  UPDATE
+  `data-studio-260217.performance_mgt.org_scorecard_fy20` 
+SET
+  fiscal_year = "FY20"
+WHERE 
+    fiscal_year IS NULL
  */
   
 
