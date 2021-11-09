@@ -55,4 +55,5 @@ SELECT
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE current_as_c = TRUE
     AND site_short IN ('Ward 8', 'The Durant Center')
+    AND college_track_status_c = "Current CT HS Student"
 
