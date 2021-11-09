@@ -279,16 +279,20 @@ annual_retention_pivot_region AS (
     PIVOT (MAX(annual_retention_outcome) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
-)
-
+),
+union_site_table AS(
 SELECT * FROM site_pivot_male_site
 UNION DISTINCT 
 SELECT * FROM site_pivot_low_income_first_gen_site
 UNION DISTINCT
 SELECT * FROM annual_retention_pivot_site
-UNION DISTINCT
+),
+union_region_table AS(
 SELECT * FROM site_pivot_male_region
 UNION DISTINCT 
 SELECT * FROM site_pivot_low_income_first_gen_region
 UNION DISTINCT
 SELECT * FROM annual_retention_pivot_region
+)
+SELECT * FROM union_site_table AS site
+LEFT JOIN union_region_table AS region ON site.measure=region.measure
