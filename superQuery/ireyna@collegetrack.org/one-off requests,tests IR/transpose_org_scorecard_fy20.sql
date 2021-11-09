@@ -142,7 +142,7 @@ unpivot AS (
             ELSE NULL
             END AS numerator
         FROM hr_financial_sustainability_hs_capacity
-        ))
+        )
         PIVOT 
         (Max(NUMERATOR) FOR Account
        IN ('DC Region','Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region')
