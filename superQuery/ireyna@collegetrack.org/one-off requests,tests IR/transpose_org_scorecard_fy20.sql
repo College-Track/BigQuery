@@ -102,29 +102,6 @@ CREATE TEMPORARY FUNCTION mapRegionShort (Account STRING) AS (
             WHEN Account = 'Crenshaw' THEN 'Los Angeles Region'
         END)
         ;
-CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS
-(
-WITH
-financial_sustainability AS (
-     SELECT 
-            * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short 
-      
-        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
-
-        UNION DISTINCT
-
-        SELECT 
-            * EXCEPT (Account,site_short),
-            mapRegion(Account) AS Account, --region abrev to region_short
-        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
-)
-SELECT *
-FROM financial_sustainability);
---ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
-
 CREATE TEMPORARY FUNCTION mapRegionAbrev (Account STRING) AS (
     CASE
         WHEN Account LIKE '%Northern California%' THEN 'NORCAL'
@@ -156,9 +133,8 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
       END
     );
 
-CREATE TEMP TABLE hr_financial_sustainability_hs_capacity
-AS
- SELECT 
+CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS ( 
+        SELECT 
             * EXCEPT (site_short, Account),
             AccountAbrev(Account) AS Account, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
@@ -169,10 +145,12 @@ AS
         SELECT 
             * EXCEPT (Account,site_short),
             AccountAbrev(Account) AS Account --region abrev to region_short
-        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`;
+        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`);
         --WHERE Account NOT LIKE '%College Track%' ;--only looking at values that are region_abrev
-
+        
+--ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
 ALTER TABLE hr_financial_sustainability_hs_capacity
+
 ADD COLUMN Measure STRING,
 ADD COLUMN Objective STRING;
 
