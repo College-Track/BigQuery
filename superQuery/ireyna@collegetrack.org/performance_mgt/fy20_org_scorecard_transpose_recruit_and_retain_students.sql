@@ -162,14 +162,14 @@ WITH site_pivot AS (
             percent_male_fy20 AS male_admits_outcome,
             --percent_low_income_first_gen_fy20 AS low_income_first_gen_admits_outcome,
             --percent_active_FY20 AS annual_retention_outcome,
-            CASE WHEN Measure IS NULL THEN 'entering_9th_grade students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
             fiscal_year
         FROM recruit_and_retain
         )
     PIVOT (MAX(male_admits_outcome) FOR Account
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-    WHERE Measure = 'entering_9th_grade' --only transform annual fundraising outcomes
+    WHERE Measure = 'entering_9th_grade_students_male' --only transform annual fundraising outcomes
     )
     SELECT * FROM site_pivot
 /*
