@@ -147,12 +147,13 @@ unpivot AS (
     /*UNPIVOT INCLUDE NULLS  
         (Outcome FOR Measure IN (hs_capacity_outcome,fundraising_target_outcome) --Create a "Measure" column 
         ) AS UNPVt,*/
-    PIVOT 
-        (Max(NUMERATOR) FOR Account
-       IN (Account)
+    PIVOT (Max(numerator) FOR Account
+       IN ('DC Region','Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region')
         )
         )
     SELECT * FROM unpivot
+      
+
  
 /*
 --This works for 2 transformations
