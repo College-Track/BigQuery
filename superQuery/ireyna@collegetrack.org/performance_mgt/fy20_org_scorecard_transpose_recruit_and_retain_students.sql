@@ -127,26 +127,35 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
       END
     )
         ;
-/*CREATE TEMP TABLE recruit_and_retain AS
-(*/
+CREATE TEMP TABLE recruit_and_retain AS
+        
+--Create table leveraging temporary table above
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
+OPTIONS
+    (
+    description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
+    )
+AS*/
 WITH
-
-objective_1_site AS (
+obj_1_site AS(
     SELECT 
         * EXCEPT (Site__Account_Name,Region__Account_Name),
          CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE mapRegion(Region__Account_Name) END AS Account
         
         FROM `org-scorecard-286421.aggregate_data.objective_1_site`
-    
-        UNION DISTINCT
+)
+SELECT * FROM obj_1_site;
 
-     SELECT 
-        * EXCEPT (Site__Account_Name,Region__Account_Name),
-        CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE mapSite(Site__Account_Name) END AS Account
+ALTER TABLE recruit_and_retain
+    ADD COLUMN Measure STRING,
+    ADD COLUMN Objective STRING,
+    ADD COLUMN fiscal_year STRING;
+UPDATE recruit_and_retain --Populate 'fiscal year' with 'FY20'
+    SET fiscal_year = "FY20"
+    WHERE fiscal_year IS NULL
+        ;
 
-        FROM `org-scorecard-286421.aggregate_data.objective_1_site`  
-),
-
+/*
 objective_1_region AS (
     SELECT 
         * EXCEPT (site),
@@ -165,3 +174,4 @@ SELECT
     B.* --EXCEPT (Account)
 FROM objective_1_site AS A
 LEFT JOIN objective_1_region AS B  ON A.Account = B.Account2
+*/
