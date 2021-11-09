@@ -186,7 +186,7 @@ site_pivot_low_income_first_gen AS (
             fiscal_year
         FROM recruit_and_retain
         )
-    PIVOT (MAX(male_admits_outcome) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(low_income_first_gen_admits_outcome) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_lowincome_firstgen' --only transform data for measure: 9th grade students first gen, low income
 ),
