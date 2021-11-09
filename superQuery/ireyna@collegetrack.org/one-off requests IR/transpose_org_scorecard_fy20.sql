@@ -128,7 +128,7 @@ FROM financial_sustainability);
 SELECT Account, __Capacty, Fundraising_Target
 FROM hr_financial_sustainability_hs_capacity 
     UNPIVOT INCLUDE NULLS  (
-    (__Capacty,Fundraising_Target) FOR Accounts in (__Capacty,Fundraising_Target) 
+    (__Capacty,Fundraising_Target) FOR Accounts in (Account,__Capacty,Fundraising_Target) 
 ) AS UNPVT
 
 
