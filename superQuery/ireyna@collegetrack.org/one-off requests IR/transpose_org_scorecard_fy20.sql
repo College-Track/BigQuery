@@ -130,7 +130,7 @@ unpivot AS (
     SELECT * EXCEPT (__Capacty,Fundraising_Target)
     FROM 
         (
-        SELECT __Capacty,Fundraising_Target
+        SELECT *
         FROM hr_financial_sustainability_hs_capacity 
         )
     UNPIVOT INCLUDE NULLS  
