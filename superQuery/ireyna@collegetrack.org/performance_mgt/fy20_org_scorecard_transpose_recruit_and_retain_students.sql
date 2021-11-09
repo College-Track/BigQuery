@@ -149,7 +149,7 @@ UPDATE recruit_and_retain_site --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
-INSERT INTO recruit_and_retain_site (Account) VALUES ('National')
+INSERT INTO recruit_and_retain_site (Account) VALUES ('National') --Add "National" as a row value for Account column
         ;
 ALTER TABLE recruit_and_retain_region
     ADD COLUMN Measure STRING,
@@ -159,7 +159,8 @@ UPDATE recruit_and_retain_region --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
-
+INSERT INTO recruit_and_retain_region (Account) VALUES ('National') --Add "National" as a row value for Account column
+        ;
 --Create table leveraging temporary table above
 /*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.admit_demographics_annual_retention_transposed`
 OPTIONS
@@ -171,15 +172,6 @@ AS*/
 --CTES: pivot each measure within the objective separately, then UNION        
 WITH 
 
-/*add_national_values_site AS(
-    SELECT * EXCEPT (percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20,National),
-        CASE WHEN Account = 'National'  THEN SUM(sum_male)/SUM(denom_hs_admits) END AS percent_male_fy20, 
-        CASE WHEN Account = 'National'  THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) END AS percent_low_income_first_gen_fy20, 
-        CASE WHEN Account = 'National'  THEN SUM(sum_active_hs)/SUM(denom_annual_retention) END AS percent_active_FY20
-    FROM recruit_and_retain_site 
-    GROUP BY sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account,Measure,objective,fiscal_year
-),
-*/
 add_national_values_site AS( --transform Account field, and add Grand Total to National
      SELECT 
         * EXCEPT (percent_active_FY20,percent_male_fy20,percent_low_income_first_gen_fy20),
@@ -243,6 +235,8 @@ annual_retention_pivot_site AS (
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
 
+--APPLY SAME LOGIC ON SITE TABLE ABOVE (objective_1_site), TO REGION TABLE BELOW (objective_1_region)
+
 add_national_values_region AS( --transform Account field, and add Grand Total to National
      SELECT 
         * EXCEPT (percent_active_FY20,percent_male_fy20,percent_low_income_first_gen_fy20),
@@ -275,6 +269,7 @@ site_pivot_male_region AS (
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_male' --only transform data for 9th grade students that are male
     ),
+    
 site_pivot_low_income_first_gen_region AS (
     SELECT *, --pivot table to make regions and sites columns instead of rows
     FROM
