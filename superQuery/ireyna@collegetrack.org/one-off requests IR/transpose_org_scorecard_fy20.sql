@@ -127,7 +127,7 @@ FROM financial_sustainability);
 
 WITH
 unpivot AS (
-    SELECT * EXCEPT (__Capacty,Fundraising_Target)
+    SELECT * 
     FROM 
         (
         SELECT *
