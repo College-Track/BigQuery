@@ -135,7 +135,14 @@ financial_sustainability AS (
 SELECT *
 FROM financial_sustainability);
 ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
-SELECT * FROM hr_financial_sustainability_hs_capacity
+
+SELECT * 
+FROM
+    (SELECT * FROM hr_financial_sustainability_hs_capacity)
+UNPIVOT( (capacity_target,annual_fundraising_target) FOR capacity_target
+        IN (Account)
+    ) AS test
+    
 
 /*
 hr_tenure AS ( 
