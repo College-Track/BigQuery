@@ -136,21 +136,20 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
 CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS ( 
         SELECT 
             * EXCEPT (site_short, Account),
-            AccountAbrev(Account) AS Account, --site_abbrev to site_short 
+            mapSite(Account) AS Account, --site_abbrev to site_short  
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        --WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
+        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
 
         UNION DISTINCT
 
         SELECT 
             * EXCEPT (Account,site_short),
-            AccountAbrev(Account) AS Account --region abrev to region_short
-        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`);
-        --WHERE Account NOT LIKE '%College Track%' ;--only looking at values that are region_abrev
+            mapRegion(Account) AS Account, --region abrev to region_short
+        FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
+        WHERE Account NOT LIKE '%College Track%' ); --only looking at values that are region_abrev;
         
---ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
-ALTER TABLE hr_financial_sustainability_hs_capacity
 
+ALTER TABLE hr_financial_sustainability_hs_capacity
 ADD COLUMN Measure STRING,
 ADD COLUMN Objective STRING;
 
@@ -178,7 +177,7 @@ ADD COLUMN Objective STRING;
         FROM hr_financial_sustainability_hs_capacity
         )
         PIVOT 
-        (Max(NUMERATOR) FOR Account
+        (MAX(fundraising_target_outcome) FOR Account
        IN ('DC','CO','LA','NOLA','NORCAL'))
        WHERE Measure = 'annual_fundraising'
 
