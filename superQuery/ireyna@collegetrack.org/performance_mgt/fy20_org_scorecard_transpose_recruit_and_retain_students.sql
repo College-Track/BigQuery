@@ -136,15 +136,12 @@ OPTIONS
     description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
     )
 AS*/
-WITH
-obj_1_site AS(
-    SELECT 
-        * EXCEPT (Site__Account_Name,Region__Account_Name),
-         CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE mapRegion(Region__Account_Name) END AS Account
-        
-        FROM `org-scorecard-286421.aggregate_data.objective_1_site`
-)
-SELECT * FROM obj_1_site;
+
+SELECT 
+    * EXCEPT (Site__Account_Name,Region__Account_Name),
+    CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE mapSite(Site__Account_Name) END AS Account
+FROM `org-scorecard-286421.aggregate_data.objective_1_site`
+        ;
 
 ALTER TABLE recruit_and_retain
     ADD COLUMN Measure STRING,
@@ -154,7 +151,27 @@ UPDATE recruit_and_retain --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
-
+        
+WITH site_pivot AS (
+   SELECT --pivot table to make regions and sites columns instead of rows
+        *
+    FROM
+        (
+        SELECT 
+            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
+            percent_male_fy20 AS male_admits_outcome,
+            --percent_low_income_first_gen_fy20 AS low_income_first_gen_admits_outcome,
+            --percent_active_FY20 AS annual_retention_outcome,
+            CASE WHEN Measure IS NULL THEN 'entering_9th_grade students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
+            fiscal_year
+        FROM recruit_and_retain
+        )
+    PIVOT (MAX(male_admits_outcome) FOR Account
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
+    WHERE Measure = 'annual_fundraising' --only transform annual fundraising outcomes
+    )
+    SELECT * FROM site_pivot
 /*
 objective_1_region AS (
     SELECT 
