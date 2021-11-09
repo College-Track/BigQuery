@@ -124,7 +124,11 @@ financial_sustainability AS (
 SELECT *
 FROM financial_sustainability);
 --ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
-SELECT `Account`,
+SELECT Account, Capacity_Target, Fundraising_Target
+FROM hr_financial_sustainability_hs_capacity
+UNPIVOT INCLUDE NULLS  (Outcome FOR Account in (  Capacity_Target, Fundraising_Target) ) AS UNPVT
+
+/*SELECT `Account`,
   SPLIT(kv, ':')[OFFSET(0)] Measure,
   SPLIT(kv, ':')[OFFSET(1)] Outcome,
   SPLIT(kv, ':')[SAFE_OFFSET(2)] Values
@@ -134,9 +138,6 @@ WHERE SPLIT(kv, ':')[OFFSET(0)] != 'Account'
 AND SPLIT(kv, ':')[OFFSET(0)] NOT IN ('__students','Capacity_Target')
 AND SPLIT(kv, ':')[OFFSET(2)] IN ('__students','Capacity_Target')
 
-
-
-/*
 SELECT * 
 FROM
     (SELECT Fundraising_Target,__Capacty FROM hr_financial_sustainability_hs_capacity)
