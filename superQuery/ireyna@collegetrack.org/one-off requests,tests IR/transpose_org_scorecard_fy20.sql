@@ -143,10 +143,7 @@ unpivot AS (
             END AS numerator
         FROM hr_financial_sustainability_hs_capacity
         ))
-        SELECT `Account`,
-  SPLIT(kv, ':')[OFFSET(0)] Measure,
-  SPLIT(kv, ':')[OFFSET(1)] Outcome,
- 
-FROM hr_financial_sustainability_hs_capacity t,
-UNNEST(SPLIT(REGEXP_REPLACE(TO_JSON_STRING(t), r'[{}"]', ''))) kv
-WHERE SPLIT(kv, ':')[OFFSET(0)] != 'Account'
+        PIVOT 
+        (Max(NUMERATOR) FOR Account
+       IN ('DC Region','Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region')
+       IN (Account)
