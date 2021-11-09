@@ -37,6 +37,7 @@ SELECT
     high_school_graduating_class_c,
     site_short,
     College_Track_Status_Name,
+    AY_Name,
     CASE
         WHEN (enrolled_sessions_c IS NULL
         OR enrolled_sessions_c = 0) THEN NULL
