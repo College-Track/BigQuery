@@ -139,7 +139,7 @@ unpivot AS (
             CASE 
             WHEN __students IS NOT NULL 
             THEN __students
-            ELSE 0
+            ELSE NULL
             END AS numerator
         FROM hr_financial_sustainability_hs_capacity
         )
@@ -149,17 +149,7 @@ unpivot AS (
     PIVOT (Max(numerator) FOR Account
        IN (
        
-       "DC Region",'Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region',
-        'East Palo Alto',
-        'Oakland',
-        'San Francisco',
-        'New Orleans',
-        'Aurora',
-        'Boyle Heights',
-        'Sacramento',
-        'Watts',
-        'Denver',
-        'The Durant Center',
+       
         'Ward 8',
         'National')
         )
