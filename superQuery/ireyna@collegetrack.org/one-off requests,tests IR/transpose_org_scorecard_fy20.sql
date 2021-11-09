@@ -147,12 +147,12 @@ UPDATE fundraising_hs_capacity --Populate 'fiscal year' with 'FY20'
     WHERE fiscal_year IS NULL;
 
 --Create table leveraging temporary table
-CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
-OPTIONS
-    (
-    description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
-    )
-AS
+--CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
+--OPTIONS
+--    (
+--    description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
+--    )
+--AS
 
 WITH fundraising_pivot AS (
    SELECT --pivot table to make regions and sites columns instead of rows
@@ -165,6 +165,7 @@ WITH fundraising_pivot AS (
             Fundraising_Target      AS fundraising_target_outcome, --only pull funsraising outcomes for regions
             CASE WHEN Measure IS NULL THEN 'annual_fundraising' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
+            fiscal_year
         FROM fundraising_hs_capacity
         )
     PIVOT (MAX(fundraising_target_outcome) FOR Account
@@ -182,6 +183,7 @@ capacity_pivot AS (
             --Fundraising_Target AS fundraising_target_outcome,
             CASE WHEN Measure IS NULL THEN 'hs_capacity' ELSE NULL END AS Measure, --populate 'Measure' column with hs_capacity to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
+            fiscal_year
         FROM fundraising_hs_capacity
         )
     PIVOT (MAX(hs_capacity_outcome) FOR Account
