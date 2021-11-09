@@ -242,6 +242,7 @@ annual_retention_pivot_site AS (
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
+
 add_national_values_region AS( --transform Account field, and add Grand Total to National
      SELECT 
         * EXCEPT (percent_active_FY20,percent_male_fy20,percent_low_income_first_gen_fy20),
@@ -304,11 +305,11 @@ annual_retention_pivot_region AS (
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
 union_site_table AS(
-SELECT *
+SELECT * FROM site_pivot_male_site
 UNION DISTINCT 
-SELECT *
+SELECT * FROM site_pivot_low_income_first_gen_site
 UNION DISTINCT
-SELECT *
+SELECT * FROM annual_retention_pivot_site
 ),
 union_region_table AS(
 SELECT * FROM site_pivot_male_region
