@@ -147,12 +147,12 @@ UPDATE fundraising_hs_capacity --Populate 'fiscal year' with 'FY20'
     WHERE fiscal_year IS NULL;
 
 --Create table leveraging temporary table above
-CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
 OPTIONS
     (
     description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
     )
-AS
+AS*/
 
 WITH fundraising_pivot AS (
    SELECT --pivot table to make regions and sites columns instead of rows
