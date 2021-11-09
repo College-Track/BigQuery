@@ -127,10 +127,10 @@ FROM financial_sustainability);
 
 SELECT * 
 FROM
-    (SELECT annual_fundraising_target,hs_capacity FROM hr_financial_sustainability_hs_capacity)
+    (SELECT Fundraising_Target,__Capacty FROM hr_financial_sustainability_hs_capacity)
 UNPIVOT INCLUDE NULLS 
-    ( (annual_fundraising_target,hs_capacity) FOR Outcome
-        IN (annual_fundraising_target,hs_capacity)
+    ( (Fundraising_Target,__Capacty) FOR Outcome
+        IN (Fundraising_Target,__Capacty)
     ) AS test
      
      /* 
