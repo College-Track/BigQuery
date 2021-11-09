@@ -127,11 +127,25 @@ FROM financial_sustainability);
 
 WITH
 unpivot AS (
-    SELECT * 
-    FROM hr_financial_sustainability_hs_capacity 
+    SELECT 
+        * 
         
+    FROM  
+        (
+        SELECT 
+            Account,
+            Capacity_Target,
+            __Capacty AS hs_capacity_outcome,
+            Fundraising_Target AS fundraising_target_outcome,
+            CASE 
+            WHEN __students IS NOT NULL 
+            THEN __students
+            ELSE NULL
+            END AS numerator
+        FROM hr_financial_sustainability_hs_capacity
+        )
     UNPIVOT INCLUDE NULLS  
-        (Outcome FOR Measure IN (__Capacty,Fundraising_Target) --Create a "Measure" column 
+        (Outcome FOR Measure IN (hs_capacity_outcome,fundraising_target_outcome) --Create a "Measure" column 
         ) AS UNPVt
     )
     SELECT * FROM unpivot
