@@ -128,8 +128,7 @@ FROM financial_sustainability);
 WITH
 unpivot AS (
     SELECT * 
-
-        FROM hr_financial_sustainability_hs_capacity 
+    FROM hr_financial_sustainability_hs_capacity 
         
     UNPIVOT INCLUDE NULLS  
         (Outcome FOR Measure IN (__Capacty,Fundraising_Target) --Create a "Measure" column 
