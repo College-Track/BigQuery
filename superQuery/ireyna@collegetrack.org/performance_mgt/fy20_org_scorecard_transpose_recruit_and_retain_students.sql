@@ -169,7 +169,7 @@ WITH site_pivot AS (
         )
     PIVOT (MAX(male_admits_outcome) FOR Account
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-    WHERE Measure = 'annual_fundraising' --only transform annual fundraising outcomes
+    WHERE Measure = 'entering_9th_grade' --only transform annual fundraising outcomes
     )
     SELECT * FROM site_pivot
 /*
