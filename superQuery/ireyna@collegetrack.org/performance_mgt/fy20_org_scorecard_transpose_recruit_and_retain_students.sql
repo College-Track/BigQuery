@@ -159,7 +159,7 @@ WITH site_pivot AS (
         (
         SELECT 
             AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
-            percent_male_fy20 AS male_admits_outcome/100,
+            percent_male_fy20/100 AS male_admits_outcome,
             --percent_low_income_first_gen_fy20 AS low_income_first_gen_admits_outcome,
             --percent_active_FY20 AS annual_retention_outcome,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
