@@ -107,28 +107,17 @@ CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS
 WITH
 financial_sustainability AS (
      SELECT 
-            * EXCEPT (site_short, Account,Fundraising_Target,__Capacty),
-            Fundraising_Target AS annual_fundraising_target,
+            * EXCEPT (site_short, Account),
             mapSite(Account) AS Account, --site_abbrev to site_short 
-            CASE 
-                WHEN account IS NOT NULL 
-                THEN 6
-                ELSE NULL
-                END AS Objective
+      
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
         WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
 
         UNION DISTINCT
 
         SELECT 
-            * EXCEPT (Account,site_short,Fundraising_Target,__Capacty),
-            __Capacty AS hs_capacity,
+            * EXCEPT (Account,site_short),
             mapRegion(Account) AS Account, --region abrev to region_short
-            CASE 
-                WHEN account IS NOT NULL 
-                THEN 6
-                ELSE NULL
-                END AS Objective
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
         WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
 )
