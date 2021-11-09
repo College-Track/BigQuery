@@ -147,7 +147,19 @@ unpivot AS (
         (Outcome FOR Measure IN (hs_capacity_outcome,fundraising_target_outcome) --Create a "Measure" column 
         ) AS UNPVt,*/
     PIVOT (Max(numerator) FOR Account
-       IN (['DC Region'],['Colorado Region'],'Los Angeles Region','New Orleans Region','Northern California Region')
+       IN ('DC Region','Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region',
+            'East Palo Alto',
+'Oakland',
+'San Francisco',
+'New Orleans',
+'Aurora',
+'Boyle Heights',
+'Sacramento',
+'Watts',
+'Denver',
+'The Durant Center',
+'Ward 8',
+'National')
         )
         )
     SELECT * FROM unpivot
