@@ -138,14 +138,18 @@ FROM financial_sustainability);
 
 SELECT * 
 FROM
-    (SELECT annual_fundraising_target,capacity_target FROM hr_financial_sustainability_hs_capacity)
-UNPIVOT( (annual_fundraising_target,capacity_target) FOR Measure
+    (SELECT account,annual_fundraising_target,capacity_target FROM hr_financial_sustainability_hs_capacity)
+UNPIVOT( (account) FOR Measure
         IN (annual_fundraising_target,capacity_target)
     ) AS test
-      
+     
+     /* 
+  multi_column_unpivot:
+    values_column_set
+    FOR name_new_column
+    IN (new_column_Names_sets_to_unpivot)
 
-
-
+*/
 /*
 hr_tenure AS ( 
     SELECT 
