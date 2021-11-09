@@ -140,7 +140,11 @@ SELECT * FROM fundraising_hs_capacity;
 
 ALTER TABLE fundraising_hs_capacity
     ADD COLUMN Measure STRING,
-    ADD COLUMN Objective STRING;
+    ADD COLUMN Objective STRING,
+    ADD COLUMN fiscal_year STRING;
+UPDATE fundraising_hs_capacity --Populate 'fiscal year' with 'FY20'
+    SET fiscal_year = "FY20"
+    WHERE fiscal_year IS NULL;
 
 --Create table leveraging temporary table
 CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
@@ -191,4 +195,3 @@ UNION DISTINCT
 
 SELECT *
 FROM capacity_pivot 
-
