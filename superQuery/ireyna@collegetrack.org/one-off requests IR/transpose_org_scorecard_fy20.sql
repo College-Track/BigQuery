@@ -125,11 +125,12 @@ SELECT *
 FROM financial_sustainability);
 --ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
 SELECT `Account`,
-  SPLIT(kv, ':')[OFFSET(0)] MeEasure,
-  SPLIT(kv, ':')[OFFSET(1)] Values
+  SPLIT(kv, ':')[OFFSET(0)] Measure,
+  SPLIT(kv, ':')[OFFSET(1)] Outcome,
+  SPLIT(kv, ':')[OFFSET(2)] Values
 FROM hr_financial_sustainability_hs_capacity t,
 UNNEST(SPLIT(REGEXP_REPLACE(TO_JSON_STRING(t), r'[{}"]', ''))) kv
-WHERE SPLIT(kv, ':')[OFFSET(0)] != 'Account'
+WHERE SPLIT(kv, ':')[OFFSET(0)] NOT IN ('Account',__Capacty,Fundraising_Target)
 
 /*
 SELECT * 
