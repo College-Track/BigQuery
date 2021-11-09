@@ -171,7 +171,7 @@ AS*/
 --CTES: pivot each measure within the objective separately, then UNION        
 WITH 
 
-add_national_values_site AS(
+/*add_national_values_site AS(
     SELECT * EXCEPT (percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20,National),
         CASE WHEN Account = 'National'  THEN SUM(sum_male)/SUM(denom_hs_admits) END AS percent_male_fy20, 
         CASE WHEN Account = 'National'  THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) END AS percent_low_income_first_gen_fy20, 
@@ -179,21 +179,36 @@ add_national_values_site AS(
     FROM recruit_and_retain_site 
     GROUP BY sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account,Measure,objective,fiscal_year
 ),
+*/
+add_national_values_site AS( --transform Account field, and add Grand Total to National
+     SELECT 
+        * EXCEPT (percent_active_FY20,percent_male_fy20,percent_low_income_first_gen_fy20),
+        CASE WHEN Account = 'NATIONAL' THEN sum_male/denom_hs_admits ELSE percent_male_fy20/100 END AS percent_male_fy20,
+        CASE WHEN Account = 'NATIONAL' THEN sum_low_income_first_gen/denom_hs_admits ELSE percent_low_income_first_gen_fy20/100 END AS percent_low_income_first_gen_fy20,
+        CASE WHEN Account = 'NATIONAL' THEN sum_active_hs/denom_annual_retention ELSE percent_active_FY20/100 END AS percent_annual_retention_fy20,
+    FROM 
+        (SELECT * EXCEPT (Account,sum_male,sum_low_income_first_gen,sum_active_hs,denom_hs_admits,denom_annual_retention),
+            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
+            --percent_male_fy20/100 AS male_admits_outcome,
+            CASE WHEN Account = 'National' THEN SUM(sum_male) OVER () ELSE sum_male END AS sum_male, --pull grand total, add value only to National
+            CASE WHEN Account = 'National' THEN SUM(sum_low_income_first_gen) OVER () ELSE sum_low_income_first_gen END AS sum_low_income_first_gen, 
+            CASE WHEN Account = 'National' THEN SUM(sum_active_hs)OVER () ELSE sum_active_hs END AS sum_active_hs,
+            CASE WHEN Account = 'National' THEN SUM(denom_hs_admits)OVER () ELSE denom_hs_admits END AS denom_hs_admits,
+            CASE WHEN Account = 'National' THEN SUM(denom_annual_retention)OVER () ELSE denom_annual_retention END AS denom_annual_retention,
+        FROM recruit_and_retain_site)
+  
+),
 site_pivot_male_site AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
-            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
-            percent_male_fy20/100 AS male_admits_outcome,
-            --percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
-            --percent_active_FY20/100 AS annual_retention_outcome,
+            percent_male_fy20/100 AS percent_male_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-            fiscal_year
+            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective
         FROM add_national_values_site
         )
-    PIVOT (MAX(male_admits_outcome) FOR Account --pivot outcomes as row values
+    PIVOT (MAX(percent_male_fy20) FOR Account --pivot outcomes as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_male' --only transform data for 9th grade students that are male
     ),
@@ -203,16 +218,12 @@ site_pivot_low_income_first_gen_site AS (
     FROM
         (
         SELECT 
-            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
-            --percent_male_fy20/100 AS male_admits_outcome,
-            percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
-            --percent_active_FY20/100 AS annual_retention_outcome,
+            percent_low_income_first_gen_fy20/100 AS percent_low_income_first_gen_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_lowincome_firstgen' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-            fiscal_year
+            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective
         FROM add_national_values_site
         )
-    PIVOT (MAX(low_income_first_gen_admits_outcome) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(percent_low_income_first_gen_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_lowincome_firstgen' --only transform data for measure: 9th grade students first gen, low income
 ),
@@ -222,42 +233,43 @@ annual_retention_pivot_site AS (
     FROM
         (
         SELECT 
-            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
-            --percent_male_fy20/100 AS male_admits_outcome,
-            --percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
-            percent_active_FY20/100 AS annual_retention_outcome,
             CASE WHEN Measure IS NULL THEN 'annual_retention' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-            fiscal_year
+            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective
         FROM add_national_values_site
         )
-    PIVOT (MAX(annual_retention_outcome) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(percent_annual_retention_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
-add_national_values_region AS(
-    SELECT * EXCEPT (percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20),
-        CASE WHEN Account = 'National' AND percent_male_fy20 IS NULL THEN SUM(sum_male)/SUM(denom_hs_admits) ELSE percent_male_fy20 END AS percent_male_fy20, 
-        CASE WHEN Account = 'National' AND percent_low_income_first_gen_fy20 IS NULL THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) ELSE percent_low_income_first_gen_fy20 END AS percent_low_income_first_gen_fy20, 
-        CASE WHEN Account = 'National' AND percent_active_FY20 IS NULL THEN SUM(sum_active_hs)/SUM(denom_annual_retention) ELSE percent_active_FY20 END AS percent_active_FY20
-    FROM recruit_and_retain_region
-    GROUP BY  sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account,national,Measure,objective,fiscal_year,percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20
+add_national_values_region AS( --transform Account field, and add Grand Total to National
+     SELECT 
+        * EXCEPT (percent_active_FY20,percent_male_fy20,percent_low_income_first_gen_fy20),
+        CASE WHEN Account = 'NATIONAL' THEN sum_male/denom_hs_admits ELSE percent_male_fy20/100 END AS percent_male_fy20,
+        CASE WHEN Account = 'NATIONAL' THEN sum_low_income_first_gen/denom_hs_admits ELSE percent_low_income_first_gen_fy20/100 END AS percent_low_income_first_gen_fy20,
+        CASE WHEN Account = 'NATIONAL' THEN sum_active_hs/denom_annual_retention ELSE percent_active_FY20/100 END AS percent_annual_retention_fy20,
+    FROM 
+        (SELECT * EXCEPT (Account,sum_male,sum_low_income_first_gen,sum_active_hs,denom_hs_admits,denom_annual_retention),
+            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
+            --percent_male_fy20/100 AS male_admits_outcome,
+            CASE WHEN Account = 'National' THEN SUM(sum_male) OVER () ELSE sum_male END AS sum_male, --pull grand total, add value only to National
+            CASE WHEN Account = 'National' THEN SUM(sum_low_income_first_gen) OVER () ELSE sum_low_income_first_gen END AS sum_low_income_first_gen, 
+            CASE WHEN Account = 'National' THEN SUM(sum_active_hs)OVER () ELSE sum_active_hs END AS sum_active_hs,
+            CASE WHEN Account = 'National' THEN SUM(denom_hs_admits)OVER () ELSE denom_hs_admits END AS denom_hs_admits,
+            CASE WHEN Account = 'National' THEN SUM(denom_annual_retention)OVER () ELSE denom_annual_retention END AS denom_annual_retention,
+        FROM recruit_and_retain_region)
 ),
+
 site_pivot_male_region AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
-            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
-            percent_male_fy20/100 AS male_admits_outcome,
-            --percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
-            --percent_active_FY20/100 AS annual_retention_outcome,
+            percent_male_fy20/100 AS percent_male_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-            fiscal_year
         FROM add_national_values_region
         )
-    PIVOT (MAX(male_admits_outcome) FOR Account --pivot outcomes as row values
+    PIVOT (MAX(percent_male_fy20) FOR Account --pivot outcomes as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_male' --only transform data for 9th grade students that are male
     ),
@@ -266,17 +278,12 @@ site_pivot_low_income_first_gen_region AS (
     FROM
         (
         SELECT 
-            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
-
-            --percent_male_fy20/100 AS male_admits_outcome,
-            percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
-            --percent_active_FY20/100 AS annual_retention_outcome,
+            percent_low_income_first_gen_fy20/100 AS percent_low_income_first_gen_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_lowincome_firstgen' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-            fiscal_year
+            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective
         FROM add_national_values_region
         )
-    PIVOT (MAX(low_income_first_gen_admits_outcome) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(percent_low_income_first_gen_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_lowincome_firstgen' --only transform data for measure: 9th grade students first gen, low income
 ),
@@ -285,17 +292,13 @@ annual_retention_pivot_region AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
-        SELECT 
-            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
-            --percent_male_fy20/100 AS male_admits_outcome,
-            --percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
-            percent_active_FY20/100 AS annual_retention_outcome,
+        SELECT
+            percent_active_FY20/100 AS percent_annual_retention_fy20,
             CASE WHEN Measure IS NULL THEN 'annual_retention' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-            fiscal_year
         FROM add_national_values_region
         )
-    PIVOT (MAX(annual_retention_outcome) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(percent_annual_retention_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
