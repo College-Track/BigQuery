@@ -86,22 +86,6 @@ CREATE TEMPORARY FUNCTION mapRegion(Account STRING) AS ( --map Region based on S
             WHEN Account = 'College Track Crenshaw' THEN 'Los Angeles Region'
         END)
         ;
-CREATE TEMPORARY FUNCTION mapRegionShort (Account STRING) AS (
-        CASE
-            WHEN Account = 'East Palo Alto' THEN 'Northern California Region'
-            WHEN Account = 'Oakland' THEN 'Northern California Region'
-            WHEN Account = 'San Francisco' THEN 'Northern California Region'
-            WHEN Account = 'New Orleans' THEN 'New Orleans Region'
-            WHEN Account = 'Aurora' THEN 'Colorado Region'
-            WHEN Account = 'Boyle Heights' THEN 'Los Angeles Region'
-            WHEN Account = 'Sacramento' THEN 'Northern California Region'
-            WHEN Account = 'Watts' THEN 'Los Angeles Region'
-            WHEN Account = 'Denver' THEN 'Colorado Region'
-            WHEN Account = 'The Durant Center' THEN 'DC Region'
-            WHEN Account = 'Ward 8' THEN 'DC Region'
-            WHEN Account = 'Crenshaw' THEN 'Los Angeles Region'
-        END)
-        ;
 CREATE TEMPORARY FUNCTION mapRegionAbrev (Account STRING) AS (
     CASE
         WHEN Account LIKE '%Northern California%' THEN 'NORCAL'
@@ -110,13 +94,14 @@ CREATE TEMPORARY FUNCTION mapRegionAbrev (Account STRING) AS (
         WHEN Account LIKE '%New Orleans%' THEN 'NOLA'
         WHEN Account LIKE '%DC%' THEN 'DC'
         END
-    );
+    )
+        ;
 CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
     CASE
         WHEN Account LIKE '%Northern California%' THEN 'NORCAL'
         WHEN Account LIKE '%Colorado%' THEN 'CO'
         WHEN Account LIKE '%Los Angeles%' THEN 'LA'
-        WHEN Account LIKE '%New Orleans%' THEN 'NOLA'
+        WHEN Account LIKE '%New Orleans%' THEN 'NOLA_RG'
         WHEN Account LIKE '%DC%' THEN 'DC'
         WHEN Account LIKE '%Denver%' THEN 'DEN'
         WHEN Account LIKE '%Aurora%' THEN 'AUR'
@@ -130,13 +115,17 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
         WHEN Account LIKE '%Durant%' THEN 'PGC'
         WHEN Account LIKE '%New Orleans%' THEN 'NOLA'
         WHEN Account LIKE '%Crenshaw%' THEN 'CREN'
+        WHEN Account = 'National' THEN 'NATIONAL'
+        WHEN Account = 'National (AS LOCATION)' THEN 'NATIONAL_AS_LOCATION'
       END
-    );
+    )
+        ;
 
-CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS ( 
+CREATE TEMP TABLE fundraising_hs_capacity
+AS
         SELECT 
             * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short  
+            mapSite(Account) AS Account, --site_abbrev to site_short 
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
         WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
 
@@ -146,389 +135,53 @@ CREATE TEMP TABLE hr_financial_sustainability_hs_capacity AS (
             * EXCEPT (Account,site_short),
             mapRegion(Account) AS Account, --region abrev to region_short
         FROM `org-scorecard-286421.aggregate_data.financial_sustainability_fy20`
-        WHERE Account NOT LIKE '%College Track%' ); --only looking at values that are region_abrev;
-        
+        WHERE Account NOT LIKE '%College Track%' ;--only looking at values that are region_abrev;
+SELECT * FROM fundraising_hs_capacity;
 
-ALTER TABLE hr_financial_sustainability_hs_capacity
+ALTER TABLE fundraising_hs_capacity
 ADD COLUMN Measure STRING,
 ADD COLUMN Objective STRING;
 
---SELECT 
---    * EXCEPT (Measure, Objective), --AccountAbrev(Account) AS Account,
---    CASE WHEN Measure IS NULL THEN 'annual_fundraising' ELSE NULL END AS Measure,
---    CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-    --CASE WHEN Outcome IS NULL THEN 'annual_fundraising' ELSE NULL END AS Outcome,
---FROM testing ;
-   SELECT 
+WITH fundraising_pivot AS (
+   SELECT --pivot table to make regions and sites columns
+        *
+    FROM
+        (
+        SELECT 
+            AccountAbrev(Account) AS Account,
+            --__Capacty AS hs_capacity_outcome,
+            Fundraising_Target AS fundraising_target_outcome,
+            CASE WHEN Measure IS NULL THEN 'annual_fundraising' ELSE NULL END AS Measure,
+            CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
+        FROM fundraising_hs_capacity
+        )
+        PIVOT 
+        (MAX(fundraising_target_outcome) FOR Account
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
+       WHERE Measure = 'annual_fundraising'
+),
+capacity_pivot AS (
+   SELECT --pivot table to make regions and sites columns
         *
     FROM
         (
         SELECT 
             AccountAbrev(Account) AS Account,
             __Capacty AS hs_capacity_outcome,
-            Fundraising_Target AS fundraising_target_outcome,
-            CASE WHEN Measure IS NULL THEN 'annual_fundraising' ELSE NULL END AS Measure,
-            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
-            CASE 
-                WHEN __students IS NOT NULL 
-                THEN __students
-                ELSE NULL
-                END AS numerator
-        FROM hr_financial_sustainability_hs_capacity
+            --Fundraising_Target AS fundraising_target_outcome,
+            CASE WHEN Measure IS NULL THEN 'hs_capacity' ELSE NULL END AS Measure,
+            CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
+        FROM fundraising_hs_capacity
         )
         PIVOT 
-        (MAX(fundraising_target_outcome) FOR Account
-       IN ('DC','CO','LA','NOLA','NORCAL'))
-       WHERE Measure = 'annual_fundraising'
-
-
-
-
-/*
-WITH
-unpivot AS (
-    SELECT 
-        * 
-    FROM
-        (
-        SELECT 
-            Account,
-            Capacity_Target,
-            __Capacty AS hs_capacity_outcome,
-            Fundraising_Target AS fundraising_target_outcome,
-            CASE 
-            WHEN __students IS NOT NULL 
-            THEN __students
-            ELSE NULL
-            END AS numerator
-        FROM hr_financial_sustainability_hs_capacity
-        )
-    /*UNPIVOT INCLUDE NULLS  
-        (Outcome FOR Measure IN (hs_capacity_outcome,fundraising_target_outcome) --Create a "Measure" column 
-        ) AS UNPVt,
-    PIVOT (Max(numerator) FOR Account
-       IN (
-       
-       "DC Region",'Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region',
-        'East Palo Alto',
-        'Oakland',
-        'San Francisco',
-        'New Orleans',
-        'Aurora',
-        'Boyle Heights',
-        'Sacramento',
-        'Watts',
-        'Denver',
-        'The Durant Center',
-        'Ward 8',
-        'National')
-        ) AS pivot
-        )
- */
-      
-
- 
-/*
---This works for 2 transformations
-SELECT * 
-FROM 
-(SELECT  __Capacty, Fundraising_Target
-FROM hr_financial_sustainability_hs_capacity )
-    UNPIVOT INCLUDE NULLS  (
-    Outcome FOR Measure in (__Capacty,Fundraising_Target) 
-) AS UNPVT
-
-SELECT `Account`,
-  SPLIT(kv, ':')[OFFSET(0)] Measure,
-  SPLIT(kv, ':')[OFFSET(1)] Outcome,
-  SPLIT(kv, ':')[SAFE_OFFSET(2)] Values
-FROM hr_financial_sustainability_hs_capacity t,
-UNNEST(SPLIT(REGEXP_REPLACE(TO_JSON_STRING(t), r'[{}"]', ''))) kv
-WHERE SPLIT(kv, ':')[OFFSET(0)] != 'Account'
-AND SPLIT(kv, ':')[OFFSET(0)] NOT IN ('__students','Capacity_Target')
-AND SPLIT(kv, ':')[OFFSET(2)] IN ('__students','Capacity_Target')
-
-
-SELECT * 
-FROM
-    (SELECT Fundraising_Target,__Capacty FROM hr_financial_sustainability_hs_capacity)
-UNPIVOT INCLUDE NULLS 
-        (Fundraising_Target FOR Measure
-        IN (Outcome)
-        
-SELECT Account, __Capacty, Fundraising_Target
-FROM hr_financial_sustainability_hs_capacity 
-UNPIVOT INCLUDE NULLS  (Outcome FOR Accounts in (  __Capacty, Fundraising_Target) ) AS UNPVT
-
-*/    
-     
-     /* 
-  multi_column_unpivot:
-    values_column_set
-    FOR name_new_column
-    IN (new_column_Names_sets_to_unpivot)
-
-*/
-/*
-hr_tenure AS ( 
-    SELECT 
-        * EXCEPT (site,region), 
-        mapSite(site) as Account
-        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-        WHERE site IS NOT NULL
-
-    UNION DISTINCT
-
-    SELECT 
-        * EXCEPT (site,region), 
-        mapRegion(region) as Account
-        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-        where region IS NOT NULL
-),
-
-hr_identities AS (
-    SELECT 
-        * EXCEPT (Account,string_field_5),
-        mapRegion(Account)  AS Account --mapping site names and region abbreviations to region_short
-        FROM`org-scorecard-286421.aggregate_data.HR_outcomes_identity`
-        WHERE Account IS NOT NULL
-),
-
-join_all AS (
-SELECT 
-    DISTINCT
-    A.*,
-    B.* EXCEPT (Account),
-    C.* EXCEPT (Account)
-FROM hr_tenure AS A                    
-LEFT JOIN financial_sustainability AS B     ON A.Account = B.Account 
-LEFT JOIN hr_identities AS C                ON A.Account = C.Account    
- 
+        (MAX(hs_capacity_outcome) FOR Account
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
+       WHERE Measure = 'hs_capacity'
 )
+SELECT *
+FROM fundraising_pivot 
 
-SELECT 
-    *,
-    CASE 
-        WHEN Account LIKE '%Region%' THEN Account
-        ELSE NULL 
-        END AS Region,
-    CASE 
-        WHEN Account NOT LIKE '%Region%' THEN Account
-        ELSE NULL 
-        END AS Site,
- 
-FROM join_all
-);
-SELECT * FROM hr_financial_sustainability_hs_capacity
-;
+UNION DISTINCT 
 
---Create table based on temporary tables above, and query below
-/*
-CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.org_scorecard_fy20`
-OPTIONS
-    (
-    description= "Compiled outcomes for fy20 org scorecard"
-    )
- AS 
-*/
-/* 
-WITH 
-
-objective_1_site AS (
-    SELECT 
-        * EXCEPT (Site__Account_Name,Region__Account_Name),
-         CASE WHEN Region__Account_Name = 'NATIONAL' THEN 'National' ELSE mapRegion(Region__Account_Name) END AS Account
-        
-        FROM `org-scorecard-286421.aggregate_data.objective_1_site`
-    
-        UNION DISTINCT
-
-     SELECT 
-        * EXCEPT (Site__Account_Name,Region__Account_Name),
-        CASE WHEN Site__Account_Name = 'NATIONAL' THEN 'National' ELSE mapSite(Site__Account_Name) END AS Account
-
-        FROM `org-scorecard-286421.aggregate_data.objective_1_site`  
-),
-
-objective_1_region AS (
-    SELECT 
-        * EXCEPT (site),
-        --mapRegion(site)  AS Account2
-        Site AS Account2
-
-    FROM(
-        SELECT * EXCEPT (Region), Region AS site
-        FROM `org-scorecard-286421.aggregate_data.objective_1_region`
-        )
-),
-
-college_outcomes AS (
-    SELECT 
-            * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short 
-        FROM `org-scorecard-286421.aggregate_data.college_outcomes_fy20`
-        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
-        
-        UNION DISTINCT 
-
-    SELECT 
-            * EXCEPT (Account,site_short),
-            mapRegion(Account) AS Account --region abrev to region_short
-        FROM  `org-scorecard-286421.aggregate_data.college_outcomes_fy20`
-        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
-),
-
-college_graduates AS (
-    SELECT
-        * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short 
-        FROM `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20`
-        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
-
-        UNION DISTINCT
-
-    SELECT 
-            * EXCEPT (Account,site_short),
-            mapRegion(Account) AS Account --region abrev to region_short
-        FROM  `org-scorecard-286421.aggregate_data.college_graduates_outcomes_fy20`
-        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
-),
-
-mse_social_emotional_edits AS ( 
-    SELECT
-        * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short 
-        FROM `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20`
-        WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
-
-        UNION DISTINCT
-
-    SELECT 
-            * EXCEPT (Account,site_short),
-            mapRegion(Account) AS Account --region abrev to region_short
-        FROM  `org-scorecard-286421.aggregate_data.HS_MSE_CoVi_FY20`
-        WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
-),
-
-join_all AS (
-SELECT 
-    DISTINCT
-    A.* EXCEPT (National),
-    C.* EXCEPT (Account),
-    D.* EXCEPT (Account),
-    E.* EXCEPT (Account)
-FROM objective_1_site AS A
-LEFT JOIN objective_1_region AS B           ON A.Account = B.Account2
-LEFT JOIN mse_social_emotional_edits AS C   ON A.Account = C.Account 
-LEFT JOIN college_outcomes AS D             ON A.Account = D.Account   
-LEFT JOIN college_graduates AS E            ON A.Account = E.Account    
-),
-add_region_site AS (
-    SELECT
-        *,
-        CASE 
-        WHEN Account LIKE '%Region%' THEN Account
-        ELSE NULL 
-        END AS Region,
-    CASE 
-        WHEN Account NOT LIKE '%Region%' THEN Account
-        ELSE NULL 
-        END AS Site,
-    FROM join_all 
-),
-
-join_on_site AS(
-SELECT 
-    CASE
-        WHEN program.Account = 'East Palo Alto' THEN 1
-            WHEN program.Account = 'Oakland' THEN 2
-            WHEN program.Account = 'San Francisco' THEN 3
-            WHEN program.Account = 'New Orleans' THEN 4
-            WHEN program.Account = 'Aurora' THEN 5
-            WHEN program.Account = 'Boyle Heights' THEN 6
-            WHEN program.Account = 'Sacramento' THEN 7
-            WHEN program.Account = 'Watts' THEN 8
-            WHEN program.Account = 'Denver' THEN 9
-            WHEN program.Account = 'The Durant Center' THEN 10
-            WHEN program.Account = 'Ward 8' THEN 11
-            WHEN program.Account = 'Crenshaw' THEN 12
-            END AS site_sort,
-       program.* EXCEPT (account), 
-       hr.* EXCEPT (account,site,region)
-FROM add_region_site AS program
-LEFT JOIN hr_financial_sustainability_hs_capacity AS hr ON program.site=hr.site 
-),
-
-join_on_region AS(
-    SELECT 
-        program_hr.* EXCEPT (
-                            Capacity_Target,	
-                            __Capacty,	
-                            __students,
-                            Fundraising_Target,
-                            ENGAGEMENT_SCORE,	
-                            TENURE,
-                            Non_white,	
-                            LGBTQ,	
-                            Male,
-                            First_Gen
-                            ),
-      
-        CASE WHEN hr.__students IS NOT NULL 
-        THEN hr.__students
-        ELSE program_hr.__students
-        END AS __students,
-        
-        CASE WHEN hr.Capacity_Target IS NOT NULL 
-        THEN hr.Capacity_Target
-        ELSE program_hr.Capacity_Target
-        END AS Capacity_Target,
-        
-        CASE WHEN hr.__Capacty IS NOT NULL 
-        THEN hr.__Capacty
-        ELSE program_hr.__Capacty
-        END AS __Capacty,
-        
-        CASE WHEN hr.Fundraising_Target IS NOT NULL 
-        THEN hr.Fundraising_Target
-        ELSE program_hr.Fundraising_Target
-        END AS Fundraising_Target,
-        
-        CASE WHEN hr.ENGAGEMENT_SCORE IS NOT NULL 
-        THEN hr.ENGAGEMENT_SCORE
-        ELSE program_hr.ENGAGEMENT_SCORE
-        END AS ENGAGEMENT_SCORE,
-        
-        CASE WHEN hr.TENURE IS NOT NULL 
-        THEN hr.TENURE
-        ELSE program_hr.TENURE
-        END AS TENURE,
-        
-        CASE WHEN hr.Non_white IS NOT NULL 
-        THEN hr.Non_white
-        ELSE program_hr.Non_white
-        END AS Non_white,
-        
-        CASE WHEN hr.LGBTQ IS NOT NULL 
-        THEN hr.LGBTQ
-        ELSE program_hr.LGBTQ
-        END AS LGBTQ,
-        
-        CASE WHEN hr.Male IS NOT NULL 
-        THEN hr.Male
-        ELSE program_hr.Male
-        END AS Male,
-        
-        CASE WHEN hr.First_Gen IS NOT NULL 
-        THEN hr.First_Gen
-        ELSE program_hr.First_Gen
-        END AS First_Gen,
-        
-    FROM join_on_site program_hr
-    LEFT JOIN hr_financial_sustainability_hs_capacity AS hr 
-        ON program_hr.region = hr.region
-)
- SELECT *
- FROM join_on_region
-
-*/
+SELECT *
+FROM capacity_pivot 
