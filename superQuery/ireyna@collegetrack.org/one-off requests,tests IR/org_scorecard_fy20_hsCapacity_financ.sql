@@ -7,6 +7,7 @@ unpivot AS (
     FROM
         (
         SELECT 
+        distinct
             Capacity_Target,
             __Capacty AS hs_capacity_outcome,
             Fundraising_Target AS fundraising_target_outcome,
