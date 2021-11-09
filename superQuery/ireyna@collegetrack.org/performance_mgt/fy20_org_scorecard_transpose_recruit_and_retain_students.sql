@@ -34,4 +34,3 @@ SELECT
     B.* EXCEPT (Account)
 FROM objective_1_site AS A
 LEFT JOIN objective_1_region AS B  ON A.Account = B.Account2
-)
