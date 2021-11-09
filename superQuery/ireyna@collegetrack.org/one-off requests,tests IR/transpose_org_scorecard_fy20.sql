@@ -145,4 +145,4 @@ unpivot AS (
         )
         PIVOT 
         (Max(NUMERATOR) FOR Account
-       IN ('DC Region','Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region')
+       IN ('DC Region','Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region'))
