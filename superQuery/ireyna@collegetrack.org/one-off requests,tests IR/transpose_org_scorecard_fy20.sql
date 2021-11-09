@@ -121,7 +121,7 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
     )
         ;
 
-CREATE TEMP TABLE fundraising_hs_capacity --created temp table to add Objective and Measure columns
+CREATE TEMP TABLE fundraising_hs_capacity --create temp table to create Objective, Measure, and fiscal_year columns
 AS
         SELECT 
             * EXCEPT (site_short, Account),
@@ -146,13 +146,13 @@ UPDATE fundraising_hs_capacity --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL;
 
---Create table leveraging temporary table
---CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
---OPTIONS
---    (
---    description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
---    )
---AS
+--Create table leveraging temporary table above
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
+OPTIONS
+    (
+    description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
+    )
+AS
 
 WITH fundraising_pivot AS (
    SELECT --pivot table to make regions and sites columns instead of rows
