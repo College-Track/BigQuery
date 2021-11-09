@@ -138,11 +138,11 @@ ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
 
 SELECT * 
 FROM
-    (SELECT Account,capacity_target,annual_fundraising_target FROM hr_financial_sustainability_hs_capacity)
-UNPIVOT( (Account,capacity_target,annual_fundraising_target) FOR capacity_target
+    (SELECT Account,capacity_target FROM hr_financial_sustainability_hs_capacity)
+UNPIVOT( (Account,capacity_target) FOR capacity_target
         IN (Account)
     ) AS test
-    
+
 
 /*
 hr_tenure AS ( 
