@@ -177,7 +177,7 @@ add_national_values_site AS(
         CASE WHEN Account = 'National'  THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) END AS percent_low_income_first_gen_fy20, 
         CASE WHEN Account = 'National'  THEN SUM(sum_active_hs)/SUM(denom_annual_retention) END AS percent_active_FY20
     FROM recruit_and_retain_site 
-    GROUP BY sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account,national,Measure,objective,fiscal_year
+    GROUP BY sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account,Measure,objective,fiscal_year
 ),
 site_pivot_male_site AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
