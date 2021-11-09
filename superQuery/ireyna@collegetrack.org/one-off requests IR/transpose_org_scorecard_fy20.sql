@@ -127,14 +127,14 @@ FROM financial_sustainability);
 
 WITH
 unpivot AS (
-    SELECT * 
+    SELECT * EXCEPT (__Capacty,Fundraising_Target)
     FROM 
         (
-        SELECT *
+        SELECT __Capacty,Fundraising_Target
         FROM hr_financial_sustainability_hs_capacity 
         )
     UNPIVOT INCLUDE NULLS  
-        (Outcome FOR Measure IN (__Capacty,Fundraising_Target) --Create a "Measure" column
+        (Outcome FOR Measure IN (__Capacty,Fundraising_Target) --Create a "Measure" column 
         ) AS UNPVt
     )
     SELECT * FROM unpivot
