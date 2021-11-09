@@ -127,7 +127,7 @@ FROM financial_sustainability);
 SELECT `Fundraising_Target`,
   SPLIT(kv, ':')[OFFSET(0)] Account,
   SPLIT(kv, ':')[OFFSET(1)] Name
-FROM `project.dataset.hr_financial_sustainability_hs_capacity` t,
+FROM hr_financial_sustainability_hs_capacity t,
 UNNEST(SPLIT(REGEXP_REPLACE(TO_JSON_STRING(t), r'[{}"]', ''))) kv
 WHERE SPLIT(kv, ':')[OFFSET(0)] != 'Fundraising_Target'
 
