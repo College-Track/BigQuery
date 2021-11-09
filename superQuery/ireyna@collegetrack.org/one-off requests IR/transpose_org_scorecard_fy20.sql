@@ -129,8 +129,8 @@ SELECT *
 FROM
     (SELECT Fundraising_Target,__Capacty FROM hr_financial_sustainability_hs_capacity)
 UNPIVOT INCLUDE NULLS 
-        (Fundraising_Target FOR Outcome
-        IN (Fundraising_Target,__Capacty))
+        (Fundraising_Target FOR Measure
+        IN (Outcome))
     
      
      /* 
