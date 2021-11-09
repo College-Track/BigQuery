@@ -144,10 +144,14 @@ unpivot AS (
             END AS numerator
         FROM hr_financial_sustainability_hs_capacity
         )
-    UNPIVOT INCLUDE NULLS  
+    /*UNPIVOT INCLUDE NULLS  
         (Outcome FOR Measure IN (hs_capacity_outcome,fundraising_target_outcome) --Create a "Measure" column 
-        ) AS UNPVt
-    )
+        ) AS UNPVt,*/
+    PIVOT 
+        (Max(NUMERATOR) FOR Account
+       IN (['DC Region'],['Colorado Region'],['Los Angeles Region'],['New Orleans Region'],['Northern California Region'])
+        )
+        )
     SELECT * FROM unpivot
  
 /*
