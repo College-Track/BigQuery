@@ -162,12 +162,12 @@ UPDATE recruit_and_retain_region --Populate 'fiscal year' with 'FY20'
 INSERT INTO recruit_and_retain_region (Account) VALUES ('National') --Add "National" as a row value for Account column
         ;
 --Create table leveraging temporary table above
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.admit_demographics_annual_retention_transposed`
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.admit_demographics_annual_retention_transposed`
 OPTIONS
     (
     description="This is a transposed table for the objective: recruit and retain first-generation students from low-income communities . It only lists outcomes per region & site" 
     )
-AS*/
+AS
 
 --CTES: pivot each measure within the objective separately, then UNION        
 WITH 
