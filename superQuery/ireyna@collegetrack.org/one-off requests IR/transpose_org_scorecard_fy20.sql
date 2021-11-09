@@ -140,9 +140,11 @@ SELECT *
 FROM
     (SELECT annual_fundraising_target,capacity_target FROM hr_financial_sustainability_hs_capacity)
 UNPIVOT( (annual_fundraising_target,capacity_target) FOR Measure
-        IN (Account,capacity_target)
+        IN (annual_fundraising_target,capacity_target)
     ) AS test
-    
+      
+
+
 
 /*
 hr_tenure AS ( 
