@@ -128,14 +128,6 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
     )
         ;
 CREATE TEMP TABLE recruit_and_retain AS
-        
---Create table leveraging temporary table above
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
-OPTIONS
-    (
-    description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
-    )
-AS*/
 
 SELECT 
     * EXCEPT (Site__Account_Name,Region__Account_Name),
@@ -151,7 +143,16 @@ UPDATE recruit_and_retain --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
-        
+
+--Create table leveraging temporary table above
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.admit_demographics_annual_retention_transposed`
+OPTIONS
+    (
+    description="This is a transposed table for the objective: recruit and retain first-generation students from low-income communities . It only lists outcomes per region & site" 
+    )
+AS
+
+--CTES: pivot each measure within the objective separately, then UNION        
 WITH 
 site_pivot_male AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
@@ -214,23 +215,3 @@ UNION DISTINCT
 SELECT * FROM site_pivot_low_income_first_gen
 UNION DISTINCT
 SELECT * FROM annual_retention_pivot
-/*
-objective_1_region AS (
-    SELECT 
-        * EXCEPT (site),
-        --mapRegion(site)  AS Account2
-        Site AS Account2
-
-    FROM(
-        SELECT * EXCEPT (Region), Region AS site
-        FROM `org-scorecard-286421.aggregate_data.objective_1_region`
-        )
-)--,
---join AS (
-SELECT 
-    DISTINCT
-    A.* ,
-    B.* --EXCEPT (Account)
-FROM objective_1_site AS A
-LEFT JOIN objective_1_region AS B  ON A.Account = B.Account2
-*/
