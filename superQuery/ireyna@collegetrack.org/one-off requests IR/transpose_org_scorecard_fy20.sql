@@ -129,7 +129,7 @@ FROM
 (SELECT  __Capacty, Fundraising_Target
 FROM hr_financial_sustainability_hs_capacity )
     UNPIVOT INCLUDE NULLS  (
-    Outcome FOR Account in (__Capacty,Fundraising_Target) 
+    Outcome FOR Measure in (__Capacty,Fundraising_Target) 
 ) AS UNPVT
 
 /*SELECT `Account`,
