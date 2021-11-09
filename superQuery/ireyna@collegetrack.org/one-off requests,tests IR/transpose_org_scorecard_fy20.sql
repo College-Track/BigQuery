@@ -121,7 +121,7 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
     )
         ;
 
-CREATE TEMP TABLE fundraising_hs_capacity
+CREATE TEMP TABLE fundraising_hs_capacity --created temp table to add Objective and Measure columns
 AS
         SELECT 
             * EXCEPT (site_short, Account),
@@ -139,8 +139,16 @@ AS
 SELECT * FROM fundraising_hs_capacity;
 
 ALTER TABLE fundraising_hs_capacity
-ADD COLUMN Measure STRING,
-ADD COLUMN Objective STRING;
+    ADD COLUMN Measure STRING,
+    ADD COLUMN Objective STRING;
+
+--Create table leveraging temporary table
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
+OPTIONS
+    (
+    description="This is a transposed table for the objective: financial sustainability. It only lists outcomes per region & site" 
+    )
+AS
 
 WITH fundraising_pivot AS (
    SELECT --pivot table to make regions and sites columns instead of rows
@@ -155,11 +163,10 @@ WITH fundraising_pivot AS (
             CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
         FROM fundraising_hs_capacity
         )
-        PIVOT 
-        (MAX(fundraising_target_outcome) FOR Account
+    PIVOT (MAX(fundraising_target_outcome) FOR Account
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-       WHERE Measure = 'annual_fundraising' --only transform annual fundraising outcomes
-),
+    WHERE Measure = 'annual_fundraising' --only transform annual fundraising outcomes
+    ),
 capacity_pivot AS (
    SELECT --pivot table to make regions and sites columns instead of rows
         *
@@ -173,10 +180,9 @@ capacity_pivot AS (
             CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
         FROM fundraising_hs_capacity
         )
-        PIVOT 
-        (MAX(hs_capacity_outcome) FOR Account
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-       WHERE Measure = 'hs_capacity' --only transform hs capacity outcomes
+    PIVOT (MAX(hs_capacity_outcome) FOR Account
+        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
+    WHERE Measure = 'hs_capacity' --only transform hs capacity outcomes
 )
 SELECT *
 FROM fundraising_pivot 
@@ -185,3 +191,4 @@ UNION DISTINCT
 
 SELECT *
 FROM capacity_pivot 
+
