@@ -143,40 +143,40 @@ ADD COLUMN Measure STRING,
 ADD COLUMN Objective STRING;
 
 WITH fundraising_pivot AS (
-   SELECT --pivot table to make regions and sites columns
+   SELECT --pivot table to make regions and sites columns instead of rows
         *
     FROM
         (
         SELECT 
-            AccountAbrev(Account) AS Account,
+            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
             --__Capacty AS hs_capacity_outcome,
-            Fundraising_Target AS fundraising_target_outcome,
-            CASE WHEN Measure IS NULL THEN 'annual_fundraising' ELSE NULL END AS Measure,
+            Fundraising_Target      AS fundraising_target_outcome, --only pull funsraising outcomes for regions
+            CASE WHEN Measure IS NULL THEN 'annual_fundraising' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
         FROM fundraising_hs_capacity
         )
         PIVOT 
         (MAX(fundraising_target_outcome) FOR Account
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-       WHERE Measure = 'annual_fundraising'
+       WHERE Measure = 'annual_fundraising' --only transform annual fundraising outcomes
 ),
 capacity_pivot AS (
-   SELECT --pivot table to make regions and sites columns
+   SELECT --pivot table to make regions and sites columns instead of rows
         *
     FROM
         (
         SELECT 
-            AccountAbrev(Account) AS Account,
-            __Capacty AS hs_capacity_outcome,
+            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
+            __Capacty               AS hs_capacity_outcome, --only pull hs capacity outcomes for each region/site
             --Fundraising_Target AS fundraising_target_outcome,
-            CASE WHEN Measure IS NULL THEN 'hs_capacity' ELSE NULL END AS Measure,
+            CASE WHEN Measure IS NULL THEN 'hs_capacity' ELSE NULL END AS Measure, --populate 'Measure' column with hs_capacity to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_6' ELSE NULL END AS Objective,
         FROM fundraising_hs_capacity
         )
         PIVOT 
         (MAX(hs_capacity_outcome) FOR Account
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-       WHERE Measure = 'hs_capacity'
+       WHERE Measure = 'hs_capacity' --only transform hs capacity outcomes
 )
 SELECT *
 FROM fundraising_pivot 
