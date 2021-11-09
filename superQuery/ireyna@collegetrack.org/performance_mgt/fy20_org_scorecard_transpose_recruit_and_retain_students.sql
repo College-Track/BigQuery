@@ -177,7 +177,7 @@ add_national_values_site AS(
         CASE WHEN Account = 'National' AND percent_low_income_first_gen_fy20 IS NULL THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) ELSE percent_low_income_first_gen_fy20 END AS percent_low_income_first_gen_fy20, 
         CASE WHEN Account = 'National' AND percent_active_FY20 IS NULL THEN SUM(sum_active_hs)/SUM(denom_annual_retention) ELSE percent_active_FY20 END AS percent_active_FY20
     FROM recruit_and_retain_site 
-    GROUP BY percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20,sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account
+    GROUP BY sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account
 ),
 site_pivot_male_site AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
@@ -241,7 +241,7 @@ add_national_values_region AS(
         CASE WHEN Account = 'National' AND percent_low_income_first_gen_fy20 IS NULL THEN SUM(sum_low_income_first_gen)/SUM(denom_hs_admits) ELSE percent_low_income_first_gen_fy20 END AS percent_low_income_first_gen_fy20, 
         CASE WHEN Account = 'National' AND percent_active_FY20 IS NULL THEN SUM(sum_active_hs)/SUM(denom_annual_retention) ELSE percent_active_FY20 END AS percent_active_FY20
     FROM recruit_and_retain_region
-    GROUP BY percent_male_fy20,percent_low_income_first_gen_fy20,percent_active_FY20,sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account
+    GROUP BY sum_male,sum_low_income_first_gen,sum_active_hs,denom_annual_retention,denom_hs_admits,account
 ),
 site_pivot_male_region AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
