@@ -294,5 +294,8 @@ SELECT * FROM site_pivot_low_income_first_gen_region
 UNION DISTINCT
 SELECT * FROM annual_retention_pivot_region
 )
-SELECT site.* FROM union_site_table AS site
+SELECT 
+site.* EXCEPT (DC,CO,LA,NOLA_RG,NORCAL,NATIONAL,NATIONAL_AS_LOCATION), 
+region.DC, region.CO, region.LA, region.NOLA_RG, region.NORCAL, region.NATIONAL, region.NATIONAL_AS_LOCATION
+FROM union_site_table AS site
 LEFT JOIN union_region_table AS region ON site.measure=region.measure
