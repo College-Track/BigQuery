@@ -330,8 +330,8 @@ SELECT * FROM annual_retention_pivot_region
 )
 SELECT 
 DISTINCT
-site.* EXCEPT (DC,CO,LA,NOLA_RG,NORCAL,NATIONAL,NATIONAL_AS_LOCATION,NOLA), 
+site.* EXCEPT (DC,CO,LA,NOLA_RG,NORCAL,NATIONAL,NATIONAL_AS_LOCATION), 
 region.DC, region.CO, region.LA, region.NOLA_RG, region.NORCAL, region.NATIONAL, region.NATIONAL_AS_LOCATION,
-CASE WHEN site.NOLA IS NULL THEN region.NOLA ELSE site.NOLA END AS NOLA
+CASE WHEN region.NOLA IS NULL THEN site.NOLA ELSE region.NOLA END AS NOLA
 FROM union_site_table AS site
 LEFT JOIN union_region_table AS region ON site.measure=region.measure 
