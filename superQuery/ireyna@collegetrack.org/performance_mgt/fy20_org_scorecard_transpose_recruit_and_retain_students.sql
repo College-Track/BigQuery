@@ -152,9 +152,9 @@ UPDATE recruit_and_retain --Populate 'fiscal year' with 'FY20'
     WHERE fiscal_year IS NULL
         ;
         
-WITH site_pivot AS (
-   SELECT --pivot table to make regions and sites columns instead of rows
-        *
+WITH 
+site_pivot_male AS (
+    SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
@@ -167,11 +167,53 @@ WITH site_pivot AS (
             fiscal_year
         FROM recruit_and_retain
         )
-    PIVOT (MAX(male_admits_outcome) FOR Account
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-    WHERE Measure = 'entering_9th_grade_students_male' --only transform annual fundraising outcomes
-    )
-    SELECT * FROM site_pivot
+    PIVOT (MAX(male_admits_outcome) FOR Account --pivot outcomes as row values
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
+    WHERE Measure = 'entering_9th_grade_students_male' --only transform data for 9th grade students that are male
+    ),
+    
+site_pivot_low_income_first_gen AS (
+    SELECT *, --pivot table to make regions and sites columns instead of rows
+    FROM
+        (
+        SELECT 
+            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
+            --percent_male_fy20/100 AS male_admits_outcome,
+            percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
+            --percent_active_FY20/100 AS annual_retention_outcome,
+            CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_lowincome_firstgen' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
+            fiscal_year
+        FROM recruit_and_retain
+        )
+    PIVOT (MAX(male_admits_outcome) FOR Account --pivot outcome values as row values
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+    WHERE Measure = 'entering_9th_grade_students_lowincome_firstgen' --only transform data for measure: 9th grade students first gen, low income
+),
+
+annual_retention_pivot AS (
+    SELECT *,--pivot table to make regions and sites columns instead of rows
+    FROM
+        (
+        SELECT 
+            AccountAbrev(Account)   AS Account, --transform Accounts to abbreviations to enable pivot 
+            --percent_male_fy20/100 AS male_admits_outcome,
+            --percent_low_income_first_gen_fy20/100 AS low_income_first_gen_admits_outcome,
+            percent_active_FY20/100 AS annual_retention_outcome,
+            CASE WHEN Measure IS NULL THEN 'annual_retention' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
+            fiscal_year
+        FROM recruit_and_retain
+        )
+    PIVOT (MAX(annual_retention_outcome) FOR Account --pivot outcome values as row values
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+    WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
+)
+SELECT * FROM site_pivot_male
+UNION DISTINCT 
+SELECT * FROM site_pivot_low_income_first_gen
+UNION DISTINCT
+SELECT * FROM annual_retention_pivot
 /*
 objective_1_region AS (
     SELECT 
