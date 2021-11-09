@@ -1,16 +1,3 @@
---Using FY21_eoy_combined_metrics table to consolidate org scorecard data
-/* Added Column: fiscal_year
- ALTER TABLE `data-studio-260217.performance_mgt.org_scorecard_fy20`
-  ADD COLUMN fiscal_year STRING;
-*/
-
-/*Populated new fiscal_year column with 'FY20'
-  UPDATE
-  `data-studio-260217.performance_mgt.org_scorecard_fy20` 
-SET
-  fiscal_year = "FY20"
-WHERE 
-    fiscal_year IS NULL
  */
   
 
@@ -146,9 +133,7 @@ unpivot AS (
         SELECT `Account`,
   SPLIT(kv, ':')[OFFSET(0)] Measure,
   SPLIT(kv, ':')[OFFSET(1)] Outcome,
-  SPLIT(kv, ':')[SAFE_OFFSET(2)] Values
+ 
 FROM hr_financial_sustainability_hs_capacity t,
 UNNEST(SPLIT(REGEXP_REPLACE(TO_JSON_STRING(t), r'[{}"]', ''))) kv
 WHERE SPLIT(kv, ':')[OFFSET(0)] != 'Account'
-AND SPLIT(kv, ':')[OFFSET(0)] NOT IN ('__students','Capacity_Target')
-AND SPLIT(kv, ':')[OFFSET(2)] IN ('__students','Capacity_Target')
