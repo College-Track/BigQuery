@@ -198,7 +198,7 @@ site_pivot_male_site AS (
         (
         SELECT 
             Account,
-            percent_male_fy20/100 AS percent_male_fy20,
+            percent_male_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
             fiscal_year
@@ -215,7 +215,7 @@ site_pivot_low_income_first_gen_site AS (
         (
         SELECT 
             Account,
-            percent_low_income_first_gen_fy20/100 AS percent_low_income_first_gen_fy20,
+            percent_low_income_first_gen_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_lowincome_firstgen' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
             fiscal_year
@@ -232,7 +232,7 @@ annual_retention_pivot_site AS (
         (
         SELECT 
             Account,
-            percent_annual_retention_fy20/100 AS percent_annual_retention_fy20,
+            percent_annual_retention_fy20,
             CASE WHEN Measure IS NULL THEN 'annual_retention' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
             fiscal_year
@@ -270,7 +270,7 @@ site_pivot_male_region AS (
         (
         SELECT
             Account,
-            percent_male_fy20/100 AS percent_male_fy20,
+            percent_male_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_male' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
             fiscal_year
@@ -287,7 +287,7 @@ site_pivot_low_income_first_gen_region AS (
         (
         SELECT 
             Account,
-            percent_low_income_first_gen_fy20/100 AS percent_low_income_first_gen_fy20,
+            percent_low_income_first_gen_fy20,
             CASE WHEN Measure IS NULL THEN 'entering_9th_grade_students_lowincome_firstgen' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
             fiscal_year
@@ -304,7 +304,7 @@ annual_retention_pivot_region AS (
         (
         SELECT
             Account,
-            percent_annual_retention_fy20/100 AS percent_annual_retention_fy20,
+            percent_annual_retention_fy20,
             CASE WHEN Measure IS NULL THEN 'annual_retention' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_1' ELSE NULL END AS Objective,
             fiscal_year
