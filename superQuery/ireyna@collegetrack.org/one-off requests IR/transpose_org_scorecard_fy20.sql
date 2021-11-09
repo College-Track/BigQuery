@@ -124,6 +124,20 @@ financial_sustainability AS (
 SELECT *
 FROM financial_sustainability);
 --ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
+
+with
+unpivot AS (
+SELECT * 
+FROM 
+(SELECT  Account,__Capacty, Fundraising_Target
+FROM hr_financial_sustainability_hs_capacity )
+    UNPIVOT INCLUDE NULLS  (
+    Outcome FOR Measure in (__Capacty,Fundraising_Target)) AS UNPVt
+    )
+    SELECT * FROM unpivot
+ 
+/*
+--This works for 2 transformations
 SELECT * 
 FROM 
 (SELECT  __Capacty, Fundraising_Target
@@ -132,7 +146,7 @@ FROM hr_financial_sustainability_hs_capacity )
     Outcome FOR Measure in (__Capacty,Fundraising_Target) 
 ) AS UNPVT
 
-/*SELECT `Account`,
+SELECT `Account`,
   SPLIT(kv, ':')[OFFSET(0)] Measure,
   SPLIT(kv, ':')[OFFSET(1)] Outcome,
   SPLIT(kv, ':')[SAFE_OFFSET(2)] Values
