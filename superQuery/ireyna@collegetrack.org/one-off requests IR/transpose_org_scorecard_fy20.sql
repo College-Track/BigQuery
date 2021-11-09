@@ -125,14 +125,17 @@ SELECT *
 FROM financial_sustainability);
 --ALTER TABLE hr_financial_sustainability_hs_capacity ADD COLUMN Measure STRING;
 
-with
+WITH
 unpivot AS (
-SELECT * 
-FROM 
-(SELECT  Account,__Capacty, Fundraising_Target
-FROM hr_financial_sustainability_hs_capacity )
-    UNPIVOT INCLUDE NULLS  (
-    Outcome FOR Measure in (__Capacty,Fundraising_Target)) AS UNPVt
+    SELECT * 
+    FROM 
+        (
+        SELECT *
+        FROM hr_financial_sustainability_hs_capacity 
+        )
+    UNPIVOT INCLUDE NULLS  
+        (Outcome FOR Measure IN (__Capacty,Fundraising_Target) --Create a "Measure" column
+        ) AS UNPVt
     )
     SELECT * FROM unpivot
  
