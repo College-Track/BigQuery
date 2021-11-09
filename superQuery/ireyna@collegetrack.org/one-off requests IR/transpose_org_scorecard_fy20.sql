@@ -149,7 +149,7 @@ unpivot AS (
         ) AS UNPVt,*/
     PIVOT 
         (Max(NUMERATOR) FOR Account
-       IN ('DC Region','Colorado Region','Los Angeles Region','New Orleans Region','Northern California Region')
+       IN (Account)
         )
         )
     SELECT * FROM unpivot
