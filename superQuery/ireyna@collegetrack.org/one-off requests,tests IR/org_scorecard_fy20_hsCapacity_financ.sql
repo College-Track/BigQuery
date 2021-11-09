@@ -3,12 +3,18 @@
     SELECT
         CASE 
         WHEN sum_male IS NOT NULL THEN sum_male
+        WHEN sum_low_income_first_gen IS NOT NULL THEN sum_low_income_first_gen
+        WHEN sum_male IS NOT NULL THEN sum_male
+        WHEN sum_male IS NOT NULL THEN sum_male
+        WHEN sum_male IS NOT NULL THEN sum_male
+        WHEN sum_male IS NOT NULL THEN sum_male
+        WHEN sum_male IS NOT NULL THEN sum_male
         WHEN sum_male IS NOT NULL THEN sum_male
         WHEN sum_male IS NOT NULL THEN sum_male
         WHEN sum_male IS NOT NULL THEN sum_male
         WHEN sum_male IS NOT NULL THEN sum_male
         WHEN 
-sum_low_income_first_gen
+
 denom_hs_admits
 percent_male_fy20
 percent_low_income_first_gen_fy20
