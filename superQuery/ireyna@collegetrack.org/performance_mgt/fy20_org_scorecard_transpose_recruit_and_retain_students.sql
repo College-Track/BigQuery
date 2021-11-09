@@ -118,7 +118,7 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
         WHEN Account LIKE '%Oakland%' THEN 'OAK'
         WHEN Account LIKE '%Watts%' THEN 'WATTS'
         WHEN Account LIKE '%Boyle Heights%' THEN 'BH'
-        WHEN Account LIKE '%Ward 8%' THEN 'WARD8'
+        WHEN Account LIKE '%Ward 8%' THEN 'DC8'
         WHEN Account LIKE '%Durant%' THEN 'PGC'
         WHEN Account LIKE '%New Orleans%' THEN 'NOLA'
         WHEN Account LIKE '%Crenshaw%' THEN 'CREN'
