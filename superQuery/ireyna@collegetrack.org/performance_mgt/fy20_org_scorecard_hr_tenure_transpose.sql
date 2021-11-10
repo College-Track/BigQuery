@@ -57,7 +57,7 @@ CREATE TEMPORARY FUNCTION mapRegion(Account STRING) AS ( --map Region based on S
             WHEN Account = 'CREN' THEN 'Los Angeles Region'
             WHEN Account = 'NATIONAL' THEN 'National'
             WHEN Account = 'National' THEN 'National'
-            WHEN Account = 'NATIONAL (AS LOCATION)' THEN 'National (As Location)'
+            WHEN Account = 'NATIONAL (AS LOCATION)' THEN 'NATIONAL (AS LOCATION)'
             WHEN Account = 'NORCAL' THEN 'Northern California Region'
             WHEN Account = 'LA' THEN 'Los Angeles Region'
             WHEN Account = 'CO' THEN 'Colorado Region'
@@ -91,6 +91,7 @@ CREATE TEMPORARY FUNCTION mapRegionShort (Account STRING) AS (
             WHEN Account = 'The Durant Center' THEN 'DC Region'
             WHEN Account = 'Ward 8' THEN 'DC Region'
             WHEN Account = 'Crenshaw' THEN 'Los Angeles Region'
+            WHEN Account = 'NATIONAL (AS LOCATION)' THEN 'NATIONAL (AS LOCATION)'
         END)
         ;
 CREATE TEMPORARY FUNCTION mapRegionAbrev (Account STRING) AS (
