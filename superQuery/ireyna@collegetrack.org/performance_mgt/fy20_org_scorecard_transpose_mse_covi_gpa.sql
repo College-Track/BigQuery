@@ -243,7 +243,7 @@ social_emotional_growth_pivot_region AS (
         (
         SELECT 
             Account,
-            covi-growth AS percent_social_emotional_growth_fy20,
+            covi_growth AS percent_social_emotional_growth_fy20,
             CASE WHEN Measure IS NULL THEN 'social_emotional_growth' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
             fiscal_year
