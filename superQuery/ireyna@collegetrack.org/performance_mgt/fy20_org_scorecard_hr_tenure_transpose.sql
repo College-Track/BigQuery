@@ -158,12 +158,12 @@ UPDATE hr_tenure_region --Populate 'fiscal year' with 'FY20'
     WHERE fiscal_year IS NULL
         ;
 --Create table leveraging temporary table above
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.hr_tenure_engagement_fy20_transpose`
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.hr_tenure_engagement_fy20_transpose`
 OPTIONS
     (
     description="This is a transposed table for the objective: staff represent a diverse, high-performing, and engaged community. Diverse identities measure in hr_diverse_identities table. It only lists outcomes per region & site" 
     )
-AS*/
+AS
 --CTES: pivot each measure within the objective separately, then UNION        
 WITH 
 
