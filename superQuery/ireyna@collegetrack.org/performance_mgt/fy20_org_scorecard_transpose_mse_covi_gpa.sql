@@ -147,7 +147,7 @@ ALTER TABLE mse_social_emotional_gpa_composite_site
     ADD COLUMN Measure STRING,
     ADD COLUMN Objective STRING,
     ADD COLUMN fiscal_year STRING;
-UPDATE recruit_and_retain_site --Populate 'fiscal year' with 'FY20'
+UPDATE mse_social_emotional_gpa_composite_site --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
@@ -155,7 +155,7 @@ ALTER TABLE mse_social_emotional_gpa_composite_region
     ADD COLUMN Measure STRING,
     ADD COLUMN Objective STRING,
     ADD COLUMN fiscal_year STRING;
-UPDATE recruit_and_retain_region --Populate 'fiscal year' with 'FY20'
+UPDATE mse_social_emotional_gpa_composite_region --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
