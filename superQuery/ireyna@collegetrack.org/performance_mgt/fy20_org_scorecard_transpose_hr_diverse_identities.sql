@@ -26,7 +26,15 @@ UPDATE hr_diverse_identities --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
     ;
-    
+--Create table leveraging temporary table above
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.hr_diverse_identities_fy20_transpose`
+OPTIONS
+    (
+    description="This is a transposed table for the objective: staff represent a diverse, high-performing, and engaged community. It only lists outcomes per region & site" 
+    )
+AS
+
+
 WITH 
 
 LGBTQ_pivot AS(
