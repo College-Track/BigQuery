@@ -214,7 +214,7 @@ gpa_3_0_composite_ready_pivot_site AS (
             CASE WHEN Measure IS NULL THEN 'gpa_3_0_composite_readiness' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
             fiscal_year
-        FROM mse_social_emotional_gpa_composite_region
+        FROM mse_social_emotional_gpa_composite_site
         )
     PIVOT (MAX(percent_gpa_composite_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
