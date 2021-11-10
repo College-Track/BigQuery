@@ -57,19 +57,16 @@ determine_covi_indicators AS (
     GROUP BY
         site_short,
         region_short,
-    contact_name_c
+        contact_name_c
 )
 
-        SELECT
-            site_short,
-            region_short,
-            SUM(covi_student_grew) AS social_emotional_growth_numerator,
-            COUNT(contact_name_c) AS social_emotional_growth_denominator
-        FROM
-            determine_covi_indicators
-        GROUP BY
-            site_short,
-            region_short
+SELECT
+    site_short,
+    region_short,
+    SUM(covi_student_grew) AS social_emotional_growth_numerator,
+    COUNT(contact_name_c) AS social_emotional_growth_denominator
+FROM determine_covi_indicators
+GROUP BY site_short, region_short
            );  --pull social emotional growth denominator
 
 CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
@@ -95,7 +92,7 @@ OPTIONS
     FROM 
         (SELECT --gather org scorecard metrics to calculate outcomes in main SELECT statement, account for ZEROs
         site_sort,
-        a.site_short,
+        site_short,
         region_short,
         
     --admits: male, first-gen & low-income
