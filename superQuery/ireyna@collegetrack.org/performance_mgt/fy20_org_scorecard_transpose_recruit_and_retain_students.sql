@@ -205,7 +205,7 @@ site_pivot_male_site AS (
         FROM add_national_values_site
         )
     PIVOT (MAX(percent_male_fy20) FOR Account --pivot outcomes as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_male' --only transform data for 9th grade students that are male
     ),
     
@@ -222,7 +222,7 @@ site_pivot_low_income_first_gen_site AS (
         FROM add_national_values_site
         )
     PIVOT (MAX(percent_low_income_first_gen_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_lowincome_firstgen' --only transform data for measure: 9th grade students first gen, low income
 ),
 
@@ -239,7 +239,7 @@ annual_retention_pivot_site AS (
         FROM add_national_values_site
         )
     PIVOT (MAX(percent_annual_retention_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
 
@@ -277,7 +277,7 @@ site_pivot_male_region AS (
         FROM add_national_values_region
         )
     PIVOT (MAX(percent_male_fy20) FOR Account --pivot outcomes as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_male' --only transform data for 9th grade students that are male
     ),
     
@@ -294,7 +294,7 @@ site_pivot_low_income_first_gen_region AS (
         FROM add_national_values_region
         )
     PIVOT (MAX(percent_low_income_first_gen_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'entering_9th_grade_students_lowincome_firstgen' --only transform data for measure: 9th grade students first gen, low income
 ),
 
@@ -311,7 +311,7 @@ annual_retention_pivot_region AS (
         FROM add_national_values_region
         )
     PIVOT (MAX(percent_annual_retention_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
 union_site_table AS(
