@@ -6,7 +6,7 @@ OPTIONS
     description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
     )
     AS*/
---site breakdown
+
     SELECT 
         a.*,
         male_numerator/ninth_grade_denominator AS percent_male_fy21,
@@ -27,9 +27,9 @@ OPTIONS
         region_short,
         
     --admits: male, first-gen & low-income
-        CASE WHEN male = 0 THEN NULL ELSE male END AS male_numerator,
-        CASE WHEN low_income_and_first_gen = 0 THEN NULL ELSE low_income_and_first_gen END AS low_income_first_gen_numerator,
-        CASE WHEN ninth_grade_count = 0 THEN NULL ELSE ninth_grade_count END AS ninth_grade_denominator,
+        CASE WHEN site_short = 'San Francisco' THEN NULL WHEN male = 0 THEN NULL ELSE male END AS male_numerator,
+        CASE WHEN site_short = 'San Francisco' THEN NULL WHEN low_income_and_first_gen = 0 THEN NULL ELSE low_income_and_first_gen END AS low_income_first_gen_numerator,
+        CASE WHEN site_short = 'San Francisco' THEN NULL WHEN ninth_grade_count = 0 THEN NULL ELSE ninth_grade_count END AS ninth_grade_denominator,
     
     --annual retention
         annual_retention_numerator,
