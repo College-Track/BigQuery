@@ -1,3 +1,10 @@
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
+OPTIONS
+    (
+    description="This is a transposed table for FY20 Org Scorecard (percent) outcomes" 
+    )
+AS
+
 SELECT *
 FROM `org-scorecard-286421.transposed_tables.admit_demographics_annual_retention_transposed`
 
