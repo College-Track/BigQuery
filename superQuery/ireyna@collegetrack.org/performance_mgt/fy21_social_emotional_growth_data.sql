@@ -1,9 +1,9 @@
-CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.social_emotional_growth_fy21`
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.social_emotional_growth_fy21`
 OPTIONS
     (
     description="This table stores the fy21 numerator and denominator for social emotional growth outcome, org scorecard" 
     )
-    AS
+    AS*/
     
 WITH 
 gather_covi_data AS (
