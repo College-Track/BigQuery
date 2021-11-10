@@ -204,7 +204,7 @@ social_emotional_growth_pivot_site AS (
     WHERE Measure = 'social_emotional_growth' --only transform data for measure: 9th grade students first gen, low income
 ),
 
-gpa_3_0_composite_ready_pivot_region AS (
+gpa_3_0_composite_ready_pivot_site AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
