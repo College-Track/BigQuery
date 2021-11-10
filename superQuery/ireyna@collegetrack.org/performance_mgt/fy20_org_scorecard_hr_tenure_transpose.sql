@@ -5,7 +5,7 @@ Measures include:
  
 */
 
-CREATE TEMPORARY FUNCTION mapSite (Account STRING) AS ( --Remap abbreviated Account names to site_short
+CREATE TEMPORARY FUNCTION mapSite (Account STRING) AS ( --Remap abbreviated Account names to site
    CASE 
             WHEN Account = 'College Track East Palo Alto' THEN 'East Palo Alto'
             WHEN Account = 'College Track Oakland' THEN 'Oakland'
@@ -129,14 +129,14 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
         ;
 CREATE TEMP TABLE hr_tenure_site AS
    SELECT
-        * EXCEPT (site_short, region),
-            mapSite(Site) AS Account, --site_abbrev to site_short 
+        * EXCEPT (site, region),
+            mapSite(Site) AS Account, --site_abbrev to site 
     FROM `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
         ;
         
 CREATE TEMP TABLE hr_tenure_region AS
     SELECT 
-        * EXCEPT (region,site_short),
+        * EXCEPT (region,site),
         mapRegion(region) AS Account --region abrev to region_short
     FROM  `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
         ;
