@@ -33,7 +33,7 @@ CREATE TEMPORARY FUNCTION mapSite (Account STRING) AS ( --Remap abbreviated Acco
             WHEN Account = 'CREN' THEN 'Crenshaw'
             WHEN Account = 'NATIONAL' THEN 'National'
             WHEN Account = 'National' THEN 'National'
-            WHEN Account = 'NATIONAL (AS LOCATION)'THEN 'National (As Location)'
+            WHEN Account = 'NATIONAL (AS LOCATION)'THEN 'NATIONAL (AS LOCATION)'
        END)
        ;
 CREATE TEMPORARY FUNCTION mapRegion(Account STRING) AS ( --map Region based on Site, remap region abbreviations to region_short
