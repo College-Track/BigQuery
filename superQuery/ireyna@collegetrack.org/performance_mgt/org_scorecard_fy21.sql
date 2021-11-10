@@ -77,7 +77,7 @@ OPTIONS
     AS
 --site breakdown
     SELECT 
-        *,
+        a.*,
         male_numerator/ninth_grade_denominator AS percent_male_fy21,
         low_income_first_gen_numerator/ninth_grade_denominator AS percent_low_income_first_gen_fy21,
         annual_retention_numerator/annual_retention_denominator AS percent_annual_retention_fy21,
