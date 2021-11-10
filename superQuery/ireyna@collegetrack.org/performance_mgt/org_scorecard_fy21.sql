@@ -69,12 +69,12 @@ FROM determine_covi_indicators
 GROUP BY site_short, region_short
            );  --pull social emotional growth denominator
 
-CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 OPTIONS
     (
     description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
     )
-    AS
+    AS*/
 --site breakdown
     SELECT 
         a.*,
