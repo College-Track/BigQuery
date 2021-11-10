@@ -183,7 +183,7 @@ mses_pivot_site AS (
         FROM mse_social_emotional_gpa_composite_site
         )
     PIVOT (MAX(percent_mse_fy20) FOR Account --pivot outcomes as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
     WHERE Measure = 'mse' --only transform data for 9th grade students that are male
     ),
     
@@ -200,7 +200,7 @@ social_emotional_growth_pivot_site AS (
         FROM mse_social_emotional_gpa_composite_site
         )
     PIVOT (MAX(percent_social_emotional_growth_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'social_emotional_growth' --only transform data for measure: 9th grade students first gen, low income
 ),
 
@@ -217,7 +217,7 @@ gpa_3_0_composite_ready_pivot_site AS (
         FROM mse_social_emotional_gpa_composite_site
         )
     PIVOT (MAX(percent_gpa_composite_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'gpa_3_0_composite_readiness' --only transform data for annual_retention_outcome
 ),
 mses_pivot_site_region AS (
@@ -233,7 +233,7 @@ mses_pivot_site_region AS (
         FROM mse_social_emotional_gpa_composite_region
         )
     PIVOT (MAX(percent_mse_fy20) FOR Account --pivot outcomes as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
     WHERE Measure = 'mse' --only transform data for 9th grade students that are male
     ),
     
@@ -250,7 +250,7 @@ social_emotional_growth_pivot_region AS (
         FROM mse_social_emotional_gpa_composite_region
         )
     PIVOT (MAX(percent_social_emotional_growth_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'social_emotional_growth' --only transform data for measure: 9th grade students first gen, low income
 ),
 
@@ -267,7 +267,7 @@ gpa_3_0_composite_ready_pivot_region AS (
         FROM mse_social_emotional_gpa_composite_region
         )
     PIVOT (MAX(percent_gpa_composite_fy20) FOR Account --pivot outcome values as row values
-       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
+       IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'gpa_3_0_composite_readiness' --only transform data for annual_retention_outcome
 ),
 union_site_table AS(
