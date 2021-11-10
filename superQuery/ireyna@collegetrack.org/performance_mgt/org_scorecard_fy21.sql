@@ -95,7 +95,7 @@ OPTIONS
     FROM 
         (SELECT --gather org scorecard metrics to calculate outcomes in main SELECT statement, account for ZEROs
         site_sort,
-        site_short,
+        a.site_short,
         region_short,
         
     --admits: male, first-gen & low-income
