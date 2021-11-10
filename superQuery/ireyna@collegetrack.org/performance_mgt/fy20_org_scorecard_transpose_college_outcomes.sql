@@ -127,7 +127,7 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
       END
     )
         ;
-CREATE TEMP TABLE mse_social_emotional_gpa_composite_site AS
+CREATE TEMP TABLE college_outcomes_site AS
    SELECT
         * EXCEPT (site_short, Account),
             mapSite(Account) AS Account, --site_abbrev to site_short 
@@ -135,7 +135,7 @@ CREATE TEMP TABLE mse_social_emotional_gpa_composite_site AS
     WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
         ;
         
-CREATE TEMP TABLE mse_social_emotional_gpa_composite_region AS
+CREATE TEMP TABLE college_outcomes_region AS
     SELECT 
         * EXCEPT (Account,site_short),
         mapRegion(Account) AS Account --region abrev to region_short
@@ -143,146 +143,146 @@ CREATE TEMP TABLE mse_social_emotional_gpa_composite_region AS
     WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
         ;
 
-ALTER TABLE mse_social_emotional_gpa_composite_site
+ALTER TABLE college_outcomes_site
     ADD COLUMN Measure STRING,
     ADD COLUMN Objective STRING,
     ADD COLUMN fiscal_year STRING;
-UPDATE mse_social_emotional_gpa_composite_site --Populate 'fiscal year' with 'FY20'
+UPDATE college_outcomes_site --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
-ALTER TABLE mse_social_emotional_gpa_composite_region
+ALTER TABLE college_outcomes_region
     ADD COLUMN Measure STRING,
     ADD COLUMN Objective STRING,
     ADD COLUMN fiscal_year STRING;
-UPDATE mse_social_emotional_gpa_composite_region --Populate 'fiscal year' with 'FY20'
+UPDATE college_outcomes_region --Populate 'fiscal year' with 'FY20'
     SET fiscal_year = "FY20"
     WHERE fiscal_year IS NULL
         ;
 --Create table leveraging temporary table above
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.mse_covi_gpa_composite`
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.college_outcomes_transpose`
 OPTIONS
     (
-    description="This is a transposed table for the objective: students have a strong academic and social-emotional foundation. It only lists outcomes per region & site" 
+    description="This is a transposed table for the objective: students matriculate to, persist within, and graduate from high-quality colleges. It only lists outcomes per region & site" 
     )
 AS
 */
 --CTES: pivot each measure within the objective separately, then UNION        
 WITH 
 
-mses_pivot_site AS (
+matriculation_pivot_site AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
             AccountAbrev(Account) AS Account,
-            meaningful_summer_experiences AS percent_mse_fy20,
-            CASE WHEN Measure IS NULL THEN 'mse' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
+            Matriculate_to_Best__Good__or_Situational AS Matriculate_Best_Good_Situational_fy20,
+            CASE WHEN Measure IS NULL THEN 'matriculation' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_3' ELSE NULL END AS Objective,
             fiscal_year
-        FROM mse_social_emotional_gpa_composite_site
+        FROM college_outcomes_site
         )
-    PIVOT (MAX(percent_mse_fy20) FOR Account --pivot outcomes as row values
+    PIVOT (MAX(Matriculate_Best_Good_Situational_fy20) FOR Account --pivot outcomes as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
-    WHERE Measure = 'mse' --only transform data for 9th grade students that are male
+    WHERE Measure = 'matriculation' --only transform data for 9th grade students that are male
     ),
     
-social_emotional_growth_pivot_site AS (
+on_track_site AS (
     SELECT *, --pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
             AccountAbrev(Account) AS Account,
-            CoVi_growth AS percent_social_emotional_growth_fy20,
-            CASE WHEN Measure IS NULL THEN 'social_emotional_growth' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
+            on_track AS on_track_percent_fy20,
+            CASE WHEN Measure IS NULL THEN 'on_track' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_3' ELSE NULL END AS Objective,
             fiscal_year
-        FROM mse_social_emotional_gpa_composite_site
+        FROM college_outcomes_site
         )
-    PIVOT (MAX(percent_social_emotional_growth_fy20) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(on_track_percent_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
-    WHERE Measure = 'social_emotional_growth' --only transform data for measure: 9th grade students first gen, low income
+    WHERE Measure = 'on_track' --only transform data for measure: 9th grade students first gen, low income
 ),
 
-gpa_3_0_composite_ready_pivot_site AS (
+six_yr_grad_rate_site AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
             AccountAbrev(Account) AS Account,
-            GPA___Composite AS percent_gpa_composite_fy20,
-            CASE WHEN Measure IS NULL THEN 'gpa_3_0_composite_readiness' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
+            _6_yr_grad_rate AS six_yr_grad_rate_percent_fy20,
+            CASE WHEN Measure IS NULL THEN 'grad_rate' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_3' ELSE NULL END AS Objective,
             fiscal_year
-        FROM mse_social_emotional_gpa_composite_site
+        FROM college_outcomes_site
         )
-    PIVOT (MAX(percent_gpa_composite_fy20) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(six_yr_grad_rate_percent_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
-    WHERE Measure = 'gpa_3_0_composite_readiness' --only transform data for annual_retention_outcome
+    WHERE Measure = 'grad_rate' --only transform data for annual_retention_outcome
 ),
-mses_pivot_site_region AS (
+matriculation_pivot_site AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
             AccountAbrev(Account) AS Account,
-            meaningful_summer_experiences AS percent_mse_fy20,
-            CASE WHEN Measure IS NULL THEN 'mse' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
+            Matriculate_to_Best__Good__or_Situational AS Matriculate_Best_Good_Situational_fy20,
+            CASE WHEN Measure IS NULL THEN 'matriculation' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_3' ELSE NULL END AS Objective,
             fiscal_year
-        FROM mse_social_emotional_gpa_composite_region
+        FROM college_outcomes_region
         )
-    PIVOT (MAX(percent_mse_fy20) FOR Account --pivot outcomes as row values
+    PIVOT (MAX(Matriculate_Best_Good_Situational_fy20) FOR Account --pivot outcomes as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
-    WHERE Measure = 'mse' --only transform data for 9th grade students that are male
+    WHERE Measure = 'matriculation' --only transform data for 9th grade students that are male
     ),
     
-social_emotional_growth_pivot_region AS (
+on_track_region AS (
     SELECT *, --pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
             AccountAbrev(Account) AS Account,
-            covi_growth AS percent_social_emotional_growth_fy20,
-            CASE WHEN Measure IS NULL THEN 'social_emotional_growth' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
+            on_track AS on_track_percent_fy20,
+            CASE WHEN Measure IS NULL THEN 'on_track' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_3' ELSE NULL END AS Objective,
             fiscal_year
-        FROM mse_social_emotional_gpa_composite_region
+        FROM college_outcomes_region
         )
-    PIVOT (MAX(percent_social_emotional_growth_fy20) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(on_track_percent_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
-    WHERE Measure = 'social_emotional_growth' --only transform data for measure: 9th grade students first gen, low income
+    WHERE Measure = 'on_track' --only transform data for measure: 9th grade students first gen, low income
 ),
 
-gpa_3_0_composite_ready_pivot_region AS (
+six_yr_grad_rate_region AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
         SELECT 
             AccountAbrev(Account) AS Account,
-            GPA___Composite AS percent_gpa_composite_fy20,
-            CASE WHEN Measure IS NULL THEN 'gpa_3_0_composite_readiness' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
-            CASE WHEN Objective IS NULL THEN 'Objective_2' ELSE NULL END AS Objective,
+            _6_yr_grad_rate AS six_yr_grad_rate_percent_fy20,
+            CASE WHEN Measure IS NULL THEN 'grad_rate' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
+            CASE WHEN Objective IS NULL THEN 'Objective_3' ELSE NULL END AS Objective,
             fiscal_year
-        FROM mse_social_emotional_gpa_composite_region
+        FROM college_outcomes_region
         )
-    PIVOT (MAX(percent_gpa_composite_fy20) FOR Account --pivot outcome values as row values
+    PIVOT (MAX(six_yr_grad_rate_percent_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
-    WHERE Measure = 'gpa_3_0_composite_readiness' --only transform data for annual_retention_outcome
+    WHERE Measure = 'grad_rate' --only transform data for annual_retention_outcome
 ),
 union_site_table AS(
-SELECT * FROM mses_pivot_site
+SELECT * FROM matriculation_pivot_site
 UNION DISTINCT 
-SELECT * FROM social_emotional_growth_pivot_site
+SELECT * FROM on_track_site
 UNION DISTINCT
-SELECT * FROM gpa_3_0_composite_ready_pivot_site
+SELECT * FROM six_yr_grad_rate_site
 ),
 union_region_table AS(
-SELECT * FROM mses_pivot_site_region
+SELECT * FROM matriculation_pivot_site_region
 UNION DISTINCT 
-SELECT * FROM social_emotional_growth_pivot_region
+SELECT * FROM on_track_region
 UNION DISTINCT
-SELECT * FROM gpa_3_0_composite_ready_pivot_region
+SELECT * FROM six_yr_grad_rate_region
 )
 SELECT 
 DISTINCT
