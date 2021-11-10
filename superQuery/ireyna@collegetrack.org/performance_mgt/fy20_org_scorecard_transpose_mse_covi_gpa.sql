@@ -160,13 +160,13 @@ UPDATE mse_social_emotional_gpa_composite_region --Populate 'fiscal year' with '
     WHERE fiscal_year IS NULL
         ;
 --Create table leveraging temporary table above
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.mse_covi_gpa_composite`
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.mse_covi_gpa_composite`
 OPTIONS
     (
     description="This is a transposed table for the objective: students have a strong academic and social-emotional foundation. It only lists outcomes per region & site" 
     )
 AS
-*/
+
 --CTES: pivot each measure within the objective separately, then UNION        
 WITH 
 
