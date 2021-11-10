@@ -177,7 +177,7 @@ engagement_score_pivot_site AS (
             CASE WHEN Measure IS NULL THEN 'staff_engagement' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_5' ELSE NULL END AS Objective,
             fiscal_year
-        FROM staff_engagement_social_emotional_gpa_composite_site
+        FROM hr_tenure_site
         )
     PIVOT (MAX(percent_engagement_fy20) FOR Account --pivot outcomes as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
@@ -194,7 +194,7 @@ tenure_pivot_site AS (
             CASE WHEN Measure IS NULL THEN 'tenure' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_5' ELSE NULL END AS Objective,
             fiscal_year
-        FROM staff_engagement_social_emotional_gpa_composite_site
+        FROM hr_tenure_site
         )
     PIVOT (MAX(percent_tenure_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
@@ -211,7 +211,7 @@ engagement_score_pivot_region AS (
             CASE WHEN Measure IS NULL THEN 'staff_engagement' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_5' ELSE NULL END AS Objective,
             fiscal_year
-        FROM staff_engagement_social_emotional_gpa_composite_region
+        FROM hr_tenure_region
         )
     PIVOT (MAX(percent_engagement_fy20) FOR Account --pivot outcomes as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))--pivot location as columns
@@ -228,7 +228,7 @@ tenure_pivot_region AS (
             CASE WHEN Measure IS NULL THEN 'tenure' ELSE NULL END AS Measure, --populate 'Measure' column with annual_fundraising to isolate measure
             CASE WHEN Objective IS NULL THEN 'Objective_5' ELSE NULL END AS Objective,
             fiscal_year
-        FROM staff_engagement_social_emotional_gpa_composite_region
+        FROM hr_tenure_region
         )
     PIVOT (MAX(percent_tenure_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
@@ -242,7 +242,7 @@ UNION DISTINCT
 SELECT * FROM tenure_pivot_site
 ),
 union_region_table AS(
-SELECT * FROM engagement_score_site_pivot_region
+SELECT * FROM engagement_score_pivot_region
 UNION DISTINCT 
 SELECT * FROM tenure_pivot_region
 )
