@@ -237,12 +237,12 @@ tenure_pivot_region AS (
 
 
 union_site_table AS(
-SELECT * FROM engagement_score_site
+SELECT * FROM engagement_score_pivot_site
 UNION DISTINCT 
 SELECT * FROM tenure_pivot_site
 ),
 union_region_table AS(
-SELECT * FROM engagement_score_site_region
+SELECT * FROM engagement_score_site_pivot_region
 UNION DISTINCT 
 SELECT * FROM tenure_pivot_region
 )
