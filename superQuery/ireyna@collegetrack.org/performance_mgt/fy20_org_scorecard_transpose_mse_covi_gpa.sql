@@ -218,7 +218,7 @@ gpa_3_0_composite_ready_pivot_site AS (
         )
     PIVOT (MAX(percent_gpa_composite_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
-    WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
+    WHERE Measure = 'gpa_3_0_composite_readiness' --only transform data for annual_retention_outcome
 ),
 mses_pivot_site_region AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
@@ -268,7 +268,7 @@ gpa_3_0_composite_ready_pivot_region AS (
         )
     PIVOT (MAX(percent_gpa_composite_fy20) FOR Account --pivot outcome values as row values
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','WARD8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
-    WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
+    WHERE Measure = 'gpa_3_0_composite_readiness' --only transform data for annual_retention_outcome
 ),
 union_site_table AS(
 SELECT * FROM mses_pivot_site
