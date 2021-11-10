@@ -160,13 +160,13 @@ UPDATE college_outcomes_region --Populate 'fiscal year' with 'FY20'
     WHERE fiscal_year IS NULL
         ;
 --Create table leveraging temporary table above
-CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.college_outcomes_transpose`
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.college_outcomes_transpose`
 OPTIONS
     (
     description="This is a transposed table for the objective: students matriculate to, persist within, and graduate from high-quality colleges. It only lists outcomes per region & site" 
     )
 AS
-
+*/
 --CTES: pivot each measure within the objective separately, then UNION        
 WITH 
 
