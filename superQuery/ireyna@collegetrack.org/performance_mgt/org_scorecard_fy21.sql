@@ -10,8 +10,8 @@
         male AS male_numerator,
         low_income_and_first_gen AS low_income_first_gen_numerator,
         ninth_grade_count AS ninth_grade_denominator,
-        male/ninth_grade_count AS percent_male_admits_fy21,
-        low_income_and_first_gen/ninth_grade_count AS percent_low_income_first_gen_fy21,
+        CASE WHEN male = 0 THEN NULL ELSE (male/ninth_grade_count) END AS percent_male_admits_fy21,
+        CASE WHEN low_income_and_first_gen = 0 THEN NULL ELSE (low_income_and_first_gen/ninth_grade_count) END AS percent_low_income_first_gen_fy21,
     
     --annual retention
         annual_retention_numerator,
@@ -56,4 +56,4 @@
         
     
 
-    FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics`
+    FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics`  
