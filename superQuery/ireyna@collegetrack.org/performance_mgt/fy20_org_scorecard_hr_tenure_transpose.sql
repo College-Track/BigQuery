@@ -129,18 +129,16 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
         ;
 CREATE TEMP TABLE hr_tenure_site AS
    SELECT
-        * EXCEPT (site_short, Account),
-            mapSite(Account) AS Account, --site_abbrev to site_short 
+        * EXCEPT (site_short, region),
+            mapSite(Site) AS Account, --site_abbrev to site_short 
     FROM `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-    WHERE Account LIKE '%College Track%' -- only looking at values that are site_long
         ;
         
 CREATE TEMP TABLE hr_tenure_region AS
     SELECT 
-        * EXCEPT (Account,site_short),
-        mapRegion(Account) AS Account --region abrev to region_short
+        * EXCEPT (region,site_short),
+        mapRegion(region) AS Account --region abrev to region_short
     FROM  `org-scorecard-286421.aggregate_data.HR_outcomes_tenure_engagement`
-    WHERE Account NOT LIKE '%College Track%' --only looking at values that are region_abrev
         ;
 
 ALTER TABLE hr_tenure_site
