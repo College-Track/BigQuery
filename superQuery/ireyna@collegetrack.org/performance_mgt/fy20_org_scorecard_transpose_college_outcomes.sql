@@ -220,7 +220,7 @@ six_yr_grad_rate_site AS (
        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION')) --pivot location as columns
     WHERE Measure = 'grad_rate' --only transform data for annual_retention_outcome
 ),
-matriculation_pivot_site AS (
+matriculation_pivot_region AS (
     SELECT *,--pivot table to make regions and sites columns instead of rows
     FROM
         (
@@ -278,7 +278,7 @@ UNION DISTINCT
 SELECT * FROM six_yr_grad_rate_site
 ),
 union_region_table AS(
-SELECT * FROM matriculation_pivot_site_region
+SELECT * FROM matriculation_pivot_region
 UNION DISTINCT 
 SELECT * FROM on_track_region
 UNION DISTINCT
