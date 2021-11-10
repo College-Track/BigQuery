@@ -271,7 +271,7 @@ gpa_3_0_composite_ready_pivot_region AS (
     WHERE Measure = 'annual_retention' --only transform data for annual_retention_outcome
 ),
 union_site_table AS(
-SELECT * FROM mses_pivot_site_site
+SELECT * FROM mses_pivot_site
 UNION DISTINCT 
 SELECT * FROM social_emotional_growth_pivot_site
 UNION DISTINCT
