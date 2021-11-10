@@ -20,7 +20,7 @@
         
     --social-emotional growth
         covi_student_grew AS social_emotional_growth_numerator,
-        covi_student_grew/high_school_student_count AS percent_social_emotional_growth_fy21,
+        CASE WHEN covi_student_grew = 0 THEN NULL ELSE covi_student_grew/high_school_student_count END AS percent_social_emotional_growth_fy21,
         
         
     --GPA data: seniors 3.25+ and/or composite ready
@@ -52,7 +52,7 @@
     --meaningful summer experiences
         had_mse_numerator AS mse_numerator,
         had_mse_denominator AS mse_denominator,
-        had_mse_numerator/had_mse_denominator AS percent_mse_fy21,
+        CASE WHEN had_mse_numerator = 0 THEN NULL ELSE (had_mse_numerator/had_mse_denominator) END AS percent_mse_fy21,
         
     
 
