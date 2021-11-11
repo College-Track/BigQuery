@@ -1,11 +1,11 @@
 #Using data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
-/*
+
 CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 OPTIONS
     (
     description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
     )
-    AS*/
+    AS
     SELECT 
         *,
         male_numerator/ninth_grade_denominator AS percent_male_fy21,
