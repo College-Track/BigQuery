@@ -1,18 +1,17 @@
 #Using data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
-
+/*
 CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 OPTIONS
     (
     description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
     )
-    AS
-
+    AS*/
     SELECT 
-        a.*,
+        *,
         male_numerator/ninth_grade_denominator AS percent_male_fy21,
         low_income_first_gen_numerator/ninth_grade_denominator AS percent_low_income_first_gen_fy21,
         annual_retention_numerator/annual_retention_denominator AS percent_annual_retention_fy21,
-        a.social_emotional_growth_numerator/b.social_emotional_growth_denominator AS percent_social_emotional_growth_fy21,
+        social_emotional_growth_numerator/social_emotional_growth_denominator AS percent_social_emotional_growth_fy21,
         above_325_gpa_seniors_numerator/senior_325_gpa_only_denominator AS percent_seniors_above_325_fy21,
         senior_325_gpa_and_test_ready_numerator/senior_325_gpa_and_test_ready_denominator AS percent_seniors_above_325_and_test_ready_fy21,
         matriculated_best_good_situational_numerator/matriculation_senior_denominator AS percent_matriculate_best_good_situational_fy21,
@@ -37,8 +36,7 @@ OPTIONS
         
     --social-emotional growth
         CASE WHEN covi_student_grew = 0 THEN NULL ELSE covi_student_grew END AS social_emotional_growth_numerator,
-        high_school_student_count,
-        --covi_student_grew/high_school_student_count AS percent_social_emotional_growth_fy21,
+        CASE WHEN covi_deonominator = 0 THEN NULL ELSE covi_deonominator END AS social_emotional_growth_denominator,
         
     --GPA data: seniors 3.25+ and/or composite ready
         CASE WHEN above_325_gpa_seniors = 0 THEN NULL ELSE above_325_gpa_seniors END AS above_325_gpa_seniors_numerator,
@@ -67,5 +65,5 @@ OPTIONS
         CASE WHEN had_mse_denominator = 0 THEN NULL ELSE had_mse_denominator END AS mse_denominator
     
         FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics`  
-        ) AS A
-    LEFT JOIN `org-scorecard-286421.aggregate_data.social_emotional_growth_fy21` AS B ON a.site_short = b.site_short --to pull in social emotional growth denominator
+        ) 
+   
