@@ -35,7 +35,7 @@ CREATE TEMPORARY FUNCTION mapSiteAbbrev (site_short STRING) AS ( --Remap abbrevi
             WHEN site_short = 'NATIONAL (AS LOCATION)' THEN site_short
        END)
        ; 
---WITH unnesting AS (
+WITH unnesting AS (
     SELECT * EXCEPT (
         male_numerator, 
         low_income_first_gen_numerator, 
@@ -135,3 +135,11 @@ CREATE TEMPORARY FUNCTION mapSiteAbbrev (site_short STRING) AS ( --Remap abbrevi
         ,'percent_mse_fy21'
         ,'percent_6_year_grad_rate_fy21'
     ]) AS measure_component
+)
+
+--, map_region_and_site_to_account AS (
+    SELECT * EXCEPT (site_short,region_short), mapSiteAbbrev(site_short) AS Account --map Site to site_abbrev
+    FROM unnesting where site_short IS NOT NULL
+    UNION DISTINCT
+    SELECT * EXCEPT (site_short,region_short), mapRegionAbbrev(region_short) AS Account --map region to region_abbrev
+    FROM unnesting
