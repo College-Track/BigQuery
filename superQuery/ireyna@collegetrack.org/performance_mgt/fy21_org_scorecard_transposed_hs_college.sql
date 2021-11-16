@@ -137,9 +137,87 @@ WITH unnesting AS (
     ]) AS measure_component
 )
 
---, map_region_and_site_to_account AS (
+, map_region_and_site_to_account AS (
     SELECT * EXCEPT (site_short,region_short), mapSiteAbbrev(site_short) AS Account --map Site to site_abbrev
     FROM unnesting where site_short IS NOT NULL
     UNION DISTINCT
     SELECT * EXCEPT (site_short,region_short), mapRegionAbbrev(region_short) AS Account --map region to region_abbrev
     FROM unnesting
+)
+--, set_measure AS (
+    SELECT DISTINCT
+    a.fiscal_year,
+    Account,
+    measure_component,
+--map tranposed 'value' column to >> 'measure_component' column in the org_scorecard fy21 table (e.g. "percent_male_fy21")
+CASE WHEN (value = low_income_first_gen_numerator AND measure_component = 'low_income_first_gen_numerator') THEN value 
+        WHEN (value = ninth_grade_denominator AND measure_component = 'ninth_grade_denominator') THEN value
+        WHEN (value = male_numerator AND measure_component = 'male_numerator') THEN value
+        WHEN (value = annual_retention_numerator AND measure_component = 'annual_retention_numerator') THEN value
+        WHEN (value = annual_retention_denominator AND measure_component = 'annual_retention_denominator') THEN value
+        WHEN (value = percent_male_fy21 AND measure_component = 'percent_male_fy21') THEN value
+        WHEN (value = percent_low_income_first_gen_fy21 AND measure_component = 'percent_low_income_first_gen_fy21') THEN value
+        WHEN (value = percent_annual_retention_fy21 AND measure_component = 'percent_annual_retention_fy21') THEN value
+        WHEN (value = social_emotional_growth_numerator AND measure_component = 'social_emotional_growth_numerator') THEN value
+        WHEN (value = social_emotional_growth_denominator AND measure_component = 'social_emotional_growth_denominator') THEN value
+        WHEN (value = above_325_gpa_seniors_numerator AND measure_component = 'above_325_gpa_seniors_numerator') THEN value
+        WHEN (value = senior_325_gpa_and_test_ready_numerator AND measure_component = 'senior_325_gpa_and_test_ready_numerator') THEN value
+        WHEN (value = senior_325_gpa_only_denominator AND measure_component = 'senior_325_gpa_only_denominator') THEN value
+        WHEN (value = senior_325_gpa_and_test_ready_denominator AND measure_component = 'senior_325_gpa_and_test_ready_denominator') THEN value
+        WHEN (value = mse_numerator AND measure_component = 'mse_numerator') THEN value
+        WHEN (value = mse_denominator AND measure_component = 'mse_denominator') THEN value
+        WHEN (value = percent_seniors_above_325_fy21 AND measure_component = 'percent_seniors_above_325_fy21') THEN value
+        WHEN (value = percent_seniors_above_325_and_test_ready_fy21 AND measure_component = 'percent_seniors_above_325_and_test_ready_fy21') THEN value
+        WHEN (value = percent_social_emotional_growth_fy21 AND measure_component = 'percent_social_emotional_growth_fy21') THEN value
+        WHEN (value = percent_mse_fy21 AND measure_component = 'percent_mse_fy21') THEN value
+        WHEN (value = matriculated_best_good_situational_numerator AND measure_component = 'matriculated_best_good_situational_numerator') THEN value
+        WHEN (value = matriculation_senior_denominator AND measure_component = 'matriculation_senior_denominator') THEN value
+        WHEN (value = on_track_numerator AND measure_component = 'on_track_numerator') THEN value
+        WHEN (value = on_track_denominator AND measure_component = 'on_track_denominator') THEN value
+        WHEN (value = six_yr_grad_rate_numerator AND measure_component = 'six_yr_grad_rate_numerator') THEN value
+        WHEN (value = grade_rate_6_years_current_class_denom AND measure_component = 'grade_rate_6_years_current_class_denom') THEN value
+        WHEN (value = percent_matriculate_best_good_situational_fy21 AND measure_component = 'percent_matriculate_best_good_situational_fy21') THEN value
+        WHEN (value = percent_on_track_fy21 AND measure_component = 'percent_on_track_fy21') THEN value
+        WHEN (value = percent_6_year_grad_rate_fy21 AND measure_component = 'percent_6_year_grad_rate_fy21') THEN value
+    ELSE NULL END AS value,
+--Map Measure based on measure_component
+CASE WHEN measure_component = 'male_numerator' THEN 'recruit_and_retain'
+    WHEN measure_component = 'low_income_first_gen_numerator' THEN 'recruit_and_retain'
+    WHEN measure_component = 'ninth_grade_denominator' THEN 'recruit_and_retain'
+    WHEN measure_component = 'annual_retention_numerator' THEN 'recruit_and_retain'
+    WHEN measure_component = 'ninth_grade_denominator' THEN 'recruit_and_retain'
+    WHEN measure_component = 'annual_retention_denominator' THEN 'recruit_and_retain'
+    WHEN measure_component = 'percent_male_fy21' THEN 'recruit_and_retain'                             
+    WHEN measure_component = 'percent_low_income_first_gen_fy21' THEN 'recruit_and_retain'
+    WHEN measure_component = 'percent_annual_retention_fy21' THEN 'recruit_and_retain'     
+    WHEN measure_component = 'annual_retention_denominator' THEN 'recruit_and_retain'
+    WHEN measure_component = 'percent_male_fy21' THEN 'recruit_and_retain'                             
+    WHEN measure_component = 'percent_low_income_first_gen_fy21' THEN 'recruit_and_retain'
+    WHEN measure_component = 'percent_annual_retention_fy21' THEN 'recruit_and_retain' 
+    WHEN measure_component = 'social_emotional_growth_numerator' THEN 'social_emotional_academic_foundation'
+    WHEN measure_component = 'social_emotional_growth_denominator' THEN 'social_emotional_academic_foundation'
+    WHEN measure_component = 'percent_social_emotional_growth_fy21' THEN 'social_emotional_academic_foundation'
+    WHEN measure_component = 'above_325_gpa_seniors_numerator' THEN 'social_emotional_academic_foundation'
+    WHEN measure_component = 'senior_325_gpa_and_test_ready_numerator' THEN 'social_emotional_academic_foundation'                             
+    WHEN measure_component = 'senior_325_gpa_only_denominator' THEN 'social_emotional_academic_foundation'
+    WHEN measure_component = 'senior_325_gpa_and_test_ready_denominator' THEN 'social_emotional_academic_foundation'    
+    WHEN measure_component = 'mse_numerator' THEN 'social_emotional_academic_foundation'                             
+    WHEN measure_component = 'mse_denominator' THEN 'social_emotional_academic_foundation'
+    WHEN measure_component = 'percent_social_emotional_growth_fy21' THEN 'social_emotional_academic_foundation'
+    WHEN measure_component = 'percent_seniors_above_325_fy21' THEN 'social_emotional_academic_foundation'  
+    WHEN measure_component = 'percent_seniors_above_325_and_test_ready_fy21' THEN 'social_emotional_academic_foundation'  
+    WHEN measure_component = 'percent_mse_fy21' THEN 'social_emotional_academic_foundation'     
+    WHEN measure_component = 'matriculated_best_good_situational_numerator' THEN 'college_students'                             
+    WHEN measure_component = 'matriculation_senior_denominator' THEN 'college_students'
+    WHEN measure_component = 'on_track_numerator' THEN 'college_students'     
+    WHEN measure_component = 'on_track_denominator' THEN 'college_students'
+    WHEN measure_component = 'six_yr_grad_rate_numerator' THEN 'college_students'                             
+    WHEN measure_component = 'grade_rate_6_years_current_class_denom' THEN 'college_students'
+    WHEN measure_component = 'percent_matriculate_best_good_situational_fy21' THEN 'college_students'         
+    WHEN measure_component = 'percent_on_track_fy21' THEN 'college_students'  
+    WHEN measure_component = 'percent_6_year_grad_rate_fy21' THEN 'college_students' 
+    ELSE null 
+    END AS measure
+FROM map_region_and_site_to_account AS A
+LEFT JOIN `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` AS B ON B.fiscal_year =A.fiscal_year 
+GROUP BY Account,measure_component,value,measure,fiscal_year
