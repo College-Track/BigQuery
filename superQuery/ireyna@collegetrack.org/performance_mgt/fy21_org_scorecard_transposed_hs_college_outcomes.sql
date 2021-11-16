@@ -146,7 +146,7 @@ WITH unnesting AS (
 )
 , set_measure AS (
 SELECT DISTINCT
-    fiscal_year,
+    a.fiscal_year,
     Account,
     measure_component,
 --map tranposed 'value' column to >> 'measure_component' column in the org_scorecard fy21 table (e.g. "percent_male_fy21")
@@ -220,7 +220,7 @@ CASE WHEN (value = male_numerator AND measure_component = 'male_numerator') THEN
     END AS measure
 FROM map_region_and_site_to_account AS A
 LEFT JOIN `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`  AS B ON B.fiscal_year =A.fiscal_year 
-GROUP BY Account,measure_component,value,measure
+GROUP BY Account,measure_component,value,measure,fiscal_year
 ) 
 , map_objective AS (
 SELECT DISTINCT *, mapObjective(Measure) AS Objective
