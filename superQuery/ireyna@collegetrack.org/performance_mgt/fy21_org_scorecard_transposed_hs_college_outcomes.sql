@@ -146,6 +146,7 @@ WITH unnesting AS (
 )
 , set_measure AS (
 SELECT DISTINCT
+    fiscal_year,
     Account,
     measure_component,
 --map tranposed 'value' column to >> 'measure_component' column in the org_scorecard fy21 table (e.g. "percent_male_fy21")
