@@ -5,7 +5,7 @@ CREATE TEMPORARY FUNCTION mapObjective(Measure STRING) AS ( --Populate "Objectiv
             WHEN Measure LIKE '%social_emotional_academic_foundation%' THEN 'Objective_2'
             WHEN Measure LIKE '%college_students%' THEN 'Objective_3'
         END)
-;
+        ;
 CREATE TEMPORARY FUNCTION mapRegionAbbrev (region_short STRING) AS ( --Remap abbreviated Account names to site_short
    CASE 
             WHEN region_short = 'Northern California' THEN 'NORCAL'
@@ -144,7 +144,7 @@ WITH unnesting AS (
     SELECT * EXCEPT (site_short,region_short), mapRegionAbbrev(region_short) AS Account --map region to region_abbrev
     FROM unnesting
 )
-, set_measure AS (
+--, set_measure AS (
     SELECT DISTINCT
     a.fiscal_year,
     Account,
@@ -221,20 +221,3 @@ CASE WHEN (value = male_numerator AND measure_component = 'male_numerator') THEN
 FROM map_region_and_site_to_account AS A
 LEFT JOIN `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`  AS B ON B.fiscal_year =A.fiscal_year 
 GROUP BY Account,measure_component,value,measure,fiscal_year
-) 
-, map_objective AS (
-    SELECT DISTINCT *, mapObjective(Measure) AS Objective
-    FROM set_measure
-    WHERE value is not null
-)
-,pull_outcomes AS (
-    SELECT *
-    FROM map_objective
-    WHERE measure_component LIKE '%_fy21%' --only pull outcome/percentages for each measure
-)
-    SELECT *
-    FROM 
-        (SELECT * FROM pull_outcomes )
-    PIVOT (MAX(value) FOR Account --pivot outcomes as row values
-        IN ('EPA','OAK','SF','NOLA','AUR','BH','SAC','WATTS','DEN','PGC','DC8','CREN','DC','CO','LA','NOLA_RG','NORCAL','NATIONAL','NATIONAL_AS_LOCATION'))
-    ORDER BY Objective 
