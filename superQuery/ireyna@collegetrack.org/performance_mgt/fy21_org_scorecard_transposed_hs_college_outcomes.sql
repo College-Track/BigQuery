@@ -145,7 +145,7 @@ WITH unnesting AS (
     FROM unnesting
 )
 , set_measure AS (
-SELECT DISTINCT
+    SELECT DISTINCT
     a.fiscal_year,
     Account,
     measure_component,
@@ -223,9 +223,9 @@ LEFT JOIN `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`  AS B
 GROUP BY Account,measure_component,value,measure,fiscal_year
 ) 
 , map_objective AS (
-SELECT DISTINCT *, mapObjective(Measure) AS Objective
-FROM set_measure
-WHERE value is not null
+    SELECT DISTINCT *, mapObjective(Measure) AS Objective
+    FROM set_measure
+    WHERE value is not null
 )
 ,pull_outcomes AS (
     SELECT *
