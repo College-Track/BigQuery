@@ -137,7 +137,7 @@ WITH unnesting AS (
     ]) AS measure_component
 )
 
---, map_region_and_site_to_account AS (
+, map_region_and_site_to_account AS (
     SELECT * EXCEPT (site_short,region_short), mapSiteAbbrev(site_short) AS Account --map Site to site_abbrev
     FROM unnesting where site_short IS NOT NULL
     UNION DISTINCT
