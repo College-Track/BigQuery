@@ -1,5 +1,5 @@
-   
-    WHEN measure_component IN  ('male_numerator','ninth_grade_denominator') THEN 
+add_national_values_region AS( --transform Account field, and add Grand Total to National
+     SELECT 
         * EXCEPT (percent_active_FY20,percent_male_fy20,percent_low_income_first_gen_fy20),
         CASE WHEN Account = 'NATIONAL' THEN sum_male/denom_hs_admits ELSE percent_male_fy20/100 END AS percent_male_fy20,
         CASE WHEN Account = 'NATIONAL' THEN sum_low_income_first_gen/denom_hs_admits ELSE percent_low_income_first_gen_fy20/100 END AS percent_low_income_first_gen_fy20,
