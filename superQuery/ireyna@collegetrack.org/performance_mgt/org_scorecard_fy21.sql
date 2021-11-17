@@ -4,9 +4,9 @@ SELECT --gather org scorecard metrics to calculate outcomes in main SELECT state
         region_short,
         
     --admits: male, first-gen & low-income; San Francsico has 1 student as 9th grade, should be zero - did not recruit
-        CASE WHEN site_short = 'San Francisco' THEN NULL WHEN male = 0 THEN NULL ELSE male END AS male_numerator,
-        CASE WHEN site_short = 'San Francisco' THEN NULL WHEN low_income_and_first_gen = 0 THEN NULL ELSE low_income_and_first_gen END AS low_income_first_gen_numerator,
-        CASE WHEN site_short = 'San Francisco' THEN NULL WHEN ninth_grade_count = 0 THEN NULL ELSE ninth_grade_count END AS ninth_grade_denominator,
+        male_numerator,
+      low_income_first_gen_numerator,
+       ninth_grade_denominator,
     
     --annual retention
         annual_retention_numerator,
