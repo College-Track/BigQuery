@@ -50,7 +50,7 @@ OPTIONS
     description="This table pulls org scorecard program outcomes for fy21.  Does not include numerator / denominators. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
     )
     AS
-    */
+*/    
 WITH national_values AS( --transform Account field, and add Grand Total to National
      SELECT 
         * EXCEPT (fiscal_year
@@ -67,13 +67,13 @@ WITH national_values AS( --transform Account field, and add Grand Total to Natio
         CASE WHEN site_short = 'National' THEN male_numerator/ninth_grade_denominator ELSE percent_male_fy21 END AS percent_male_fy21,
         CASE WHEN site_short = 'National' THEN low_income_first_gen_numerator/ninth_grade_denominator ELSE percent_low_income_first_gen_fy21 END AS percent_low_income_first_gen_fy21,
         CASE WHEN site_short = 'National' THEN annual_retention_numerator/annual_retention_denominator ELSE percent_annual_retention_fy21 END AS percent_annual_retention_fy21,
-        CASE WHEN site_short = 'National' THEN mse_numerator/mse_denominator ELSE percent_male_fy21 END AS percent_mse_fy21,
-        CASE WHEN site_short = 'National' THEN social_emotional_growth_numerator/social_emotional_growth_denominator ELSE percent_male_fy21 END AS percent_social_emotional_growth_fy21,
-        CASE WHEN site_short = 'National' THEN above_325_gpa_seniors_numerator/senior_325_gpa_only_denominator ELSE percent_male_fy21 END AS percent_seniors_above_325_fy21,
-        CASE WHEN site_short = 'National' THEN senior_325_gpa_and_test_ready_numerator/senior_325_gpa_and_test_ready_denominator ELSE percent_male_fy21 END AS percent_seniors_above_325_and_test_ready_fy21,
-        CASE WHEN site_short = 'National' THEN matriculated_best_good_situational_numerator/matriculation_senior_denominator ELSE percent_male_fy21 END AS percent_matriculate_best_good_situational_fy21,
-        CASE WHEN site_short = 'National' THEN on_track_numerator/on_track_denominator ELSE percent_male_fy21 END AS percent_on_track_fy21,
-        CASE WHEN site_short = 'National' THEN six_yr_grad_rate_numerator/grade_rate_6_years_current_class_denom ELSE percent_male_fy21 END AS percent_6_year_grad_rate_fy21,
+        CASE WHEN site_short = 'National' THEN mse_numerator/mse_denominator ELSE percent_mse_fy21 END AS percent_mse_fy21,
+        CASE WHEN site_short = 'National' THEN social_emotional_growth_numerator/social_emotional_growth_denominator ELSE percent_social_emotional_growth_fy21 END AS percent_social_emotional_growth_fy21,
+        CASE WHEN site_short = 'National' THEN above_325_gpa_seniors_numerator/senior_325_gpa_only_denominator ELSE percent_seniors_above_325_fy21 END AS percent_seniors_above_325_fy21,
+        CASE WHEN site_short = 'National' THEN senior_325_gpa_and_test_ready_numerator/senior_325_gpa_and_test_ready_denominator ELSE percent_seniors_above_325_and_test_ready_fy21 END AS percent_seniors_above_325_and_test_ready_fy21,
+        CASE WHEN site_short = 'National' THEN matriculated_best_good_situational_numerator/matriculation_senior_denominator ELSE percent_matriculate_best_good_situational_fy21 END AS percent_matriculate_best_good_situational_fy21,
+        CASE WHEN site_short = 'National' THEN on_track_numerator/on_track_denominator ELSE percent_on_track_fy21 END AS percent_on_track_fy21,
+        CASE WHEN site_short = 'National' THEN six_yr_grad_rate_numerator/grade_rate_6_years_current_class_denom ELSE percent_6_year_grad_rate_fy21 END AS percent_6_year_grad_rate_fy21,
         CASE WHEN fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
     FROM 
         (SELECT * EXCEPT (male_numerator, 
@@ -233,35 +233,35 @@ AS measure_component
     Account,
     measure_component, 
 --map tranposed 'value' column to >> 'measure_component' column in the org_scorecard fy21 table (e.g. "percent_male_fy21")
-CASE WHEN (value = low_income_first_gen_numerator AND measure_component = 'low_income_first_gen_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value 
-        WHEN (value = ninth_grade_denominator AND measure_component = 'ninth_grade_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = male_numerator AND measure_component = 'male_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = annual_retention_numerator AND measure_component = 'annual_retention_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = annual_retention_denominator AND measure_component = 'annual_retention_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_male_fy21 AND measure_component = 'percent_male_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_low_income_first_gen_fy21 AND measure_component = 'percent_low_income_first_gen_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_annual_retention_fy21 AND measure_component = 'percent_annual_retention_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = social_emotional_growth_numerator AND measure_component = 'social_emotional_growth_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = social_emotional_growth_denominator AND measure_component = 'social_emotional_growth_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = above_325_gpa_seniors_numerator AND measure_component = 'above_325_gpa_seniors_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = senior_325_gpa_and_test_ready_numerator AND measure_component = 'senior_325_gpa_and_test_ready_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = senior_325_gpa_only_denominator AND measure_component = 'senior_325_gpa_only_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = senior_325_gpa_and_test_ready_denominator AND measure_component = 'senior_325_gpa_and_test_ready_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = mse_numerator AND measure_component = 'mse_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = mse_denominator AND measure_component = 'mse_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_seniors_above_325_fy21 AND measure_component = 'percent_seniors_above_325_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_seniors_above_325_and_test_ready_fy21 AND measure_component = 'percent_seniors_above_325_and_test_ready_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_social_emotional_growth_fy21 AND measure_component = 'percent_social_emotional_growth_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_mse_fy21 AND measure_component = 'percent_mse_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = matriculated_best_good_situational_numerator AND measure_component = 'matriculated_best_good_situational_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = matriculation_senior_denominator AND measure_component = 'matriculation_senior_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = on_track_numerator AND measure_component = 'on_track_numerator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = on_track_denominator AND measure_component = 'on_track_denominator' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = six_yr_grad_rate_numerator AND measure_component = 'six_yr_grad_rate_numerator AND site_short = Account') THEN value
-        WHEN (value = grade_rate_6_years_current_class_denom AND measure_component = 'grade_rate_6_years_current_class_denom' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_matriculate_best_good_situational_fy21 AND measure_component = 'percent_matriculate_best_good_situational_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_on_track_fy21 AND measure_component = 'percent_on_track_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
-        WHEN (value = percent_6_year_grad_rate_fy21 AND measure_component = 'percent_6_year_grad_rate_fy21' AND mapSiteAbbrev(site_short) = Account) THEN value
+CASE WHEN (mapSiteAbbrev(site_short) = Account AND value = low_income_first_gen_numerator AND measure_component = 'low_income_first_gen_numerator') THEN value 
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = ninth_grade_denominator AND measure_component = 'ninth_grade_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = male_numerator AND measure_component = 'male_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = annual_retention_numerator AND measure_component = 'annual_retention_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = annual_retention_denominator AND measure_component = 'annual_retention_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_male_fy21 AND measure_component = 'percent_male_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_low_income_first_gen_fy21 AND measure_component = 'percent_low_income_first_gen_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_annual_retention_fy21 AND measure_component = 'percent_annual_retention_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = social_emotional_growth_numerator AND measure_component = 'social_emotional_growth_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = social_emotional_growth_denominator AND measure_component = 'social_emotional_growth_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = above_325_gpa_seniors_numerator AND measure_component = 'above_325_gpa_seniors_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = senior_325_gpa_and_test_ready_numerator AND measure_component = 'senior_325_gpa_and_test_ready_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = senior_325_gpa_only_denominator AND measure_component = 'senior_325_gpa_only_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = senior_325_gpa_and_test_ready_denominator AND measure_component = 'senior_325_gpa_and_test_ready_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = mse_numerator AND measure_component = 'mse_numerator' ) THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = mse_denominator AND measure_component = 'mse_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_seniors_above_325_fy21 AND measure_component = 'percent_seniors_above_325_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_seniors_above_325_and_test_ready_fy21 AND measure_component = 'percent_seniors_above_325_and_test_ready_fy21' ) THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_social_emotional_growth_fy21 AND measure_component = 'percent_social_emotional_growth_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_mse_fy21 AND measure_component = 'percent_mse_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = matriculated_best_good_situational_numerator AND measure_component = 'matriculated_best_good_situational_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = matriculation_senior_denominator AND measure_component = 'matriculation_senior_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = on_track_numerator AND measure_component = 'on_track_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = on_track_denominator AND measure_component = 'on_track_denominator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = six_yr_grad_rate_numerator AND measure_component = 'six_yr_grad_rate_numerator') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = grade_rate_6_years_current_class_denom AND measure_component = 'grade_rate_6_years_current_class_denom') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_matriculate_best_good_situational_fy21 AND measure_component = 'percent_matriculate_best_good_situational_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_on_track_fy21 AND measure_component = 'percent_on_track_fy21') THEN value
+        WHEN (mapSiteAbbrev(site_short) = Account AND value = percent_6_year_grad_rate_fy21 AND measure_component = 'percent_6_year_grad_rate_fy21') THEN value
     ELSE NULL END AS value,
 --Map Measure based on measure_component
 CASE WHEN measure_component = 'male_numerator' THEN 'recruit_and_retain'
