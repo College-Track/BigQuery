@@ -4,9 +4,9 @@ SELECT --gather org scorecard metrics to calculate outcomes in main SELECT state
         region_short,
         
     --admits: male, first-gen & low-income; San Francsico has 1 student as 9th grade, should be zero - did not recruit
-        male_numerator,
-      low_income_first_gen_numerator,
-       ninth_grade_denominator,
+        male  AS male_numerator,
+        low_income_and_first_gen  AS low_income_first_gen_numerator,
+         ninth_grade_count  AS ninth_grade_denominator,
     
     --annual retention
         annual_retention_numerator,
