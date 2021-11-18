@@ -103,7 +103,7 @@ prep_orgscorecard AS (
         CASE WHEN had_mse_numerator = 0 THEN NULL ELSE had_mse_numerator END AS mse_numerator,
         CASE WHEN had_mse_denominator = 0 THEN NULL ELSE had_mse_denominator END AS mse_denominator
     
-        FROM prep_org_scorecard AS EOY
+        FROM prep_orgscorecard AS EOY
         LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C ON EOY.site_short=C.site_short
         ) ;
         
