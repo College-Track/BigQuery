@@ -1,6 +1,19 @@
 #Using data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
 #Adding columns to fy21_org_scorecard_program table
-CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS ( --create function to transform new site_or_region column to site_or_region_abrev
+
+WITH 
+add_NORCAL_values AS (
+
+SELECT 
+    * EXCEPT (site_or_region_abbrev),
+    CASE WHEN site_abrev IN ('EPA','OAK','SF','SAC') THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
+    CASE WHEN site_abrev IN ('EPA','OAK','SF','SAC') THEN SUM(ninth_grade_denominator) OVER () ELSE male_numerator END AS male_numerator,
+
+FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
+WHERE site_or_region_abbrev = 'NORCAL'
+)
+select * from add_norcal_values
+/*CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS ( --create function to transform new site_or_region column to site_or_region_abrev
     CASE
         WHEN Account LIKE '%Northern California%' THEN 'NORCAL'
         WHEN Account LIKE '%Colorado%' THEN 'CO'
@@ -51,7 +64,7 @@ OPTIONS
     AS
 */    
     
-
+/*
 #code used to add site_or_region and site_or_region_abbrev to org_scorecard_fy21_program table
 CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
     CASE
@@ -178,7 +191,7 @@ WITH prep_orgscorecard AS (
     SELECT *
     FROM aggregate_outcomes_as_percent AS EOY
    
-        
+*/        
 /* #Alter table org_scorecard_program_fy21
 ALTER TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
     ADD COLUMN fiscal_year STRING;
