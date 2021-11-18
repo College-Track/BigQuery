@@ -129,7 +129,7 @@ WITH prep_orgscorecard AS (
         LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C ON EOY.site_short=C.site_short
         )
         )
-    SELECT a.*, site_or_region,site_or_region_abbrev
+    SELECT EOY.*, site_or_region,site_or_region_abbrev
     FROM aggregate_outcomes_as_percent AS EOY
     FULL JOIN prep_orgscorecard AS new_column ON EOY.site_short = new_column.site_short
         
