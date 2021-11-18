@@ -80,6 +80,8 @@ WITH prep_orgscorecard AS (
         
     FROM 
         (SELECT DISTINCT--gather org scorecard metrics to calculate outcomes in main SELECT statement, account for ZEROs
+        site_or_region,
+        site_or_region_abbrev,
         eoy.site_sort,
         eoy.site_short,
         c.site_abrev,
@@ -131,7 +133,8 @@ WITH prep_orgscorecard AS (
                 ,covi_student_grew,covi_deonominator,above_325_gpa_seniors,above_325_gpa_and_test_ready_seniors,twelfth_grade_count
                 ,matriculated_best_good_situational,twelfth_grade_count_valid_test,twelfth_grade_count,on_track_numerator,on_track_denominator
                 ,grade_rate_6_years_current_class_numerator,grade_rate_6_years_current_class_denom,alumni_count
-                ,had_mse_numerator,mse_denominator,site_sort,site_short,site_abrev,region_short,region_abrev
+                ,had_mse_numerator,mse_denominator,site_sort,site_short,site_abrev,region_short,region_abrev,site_or_region,
+                site_or_region_abbrev
         )
         )
     SELECT *
