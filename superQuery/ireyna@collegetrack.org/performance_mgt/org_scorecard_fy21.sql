@@ -6,7 +6,7 @@ add_NORCAL_values AS (
 
 SELECT 
     site_short,site_abrev,site_or_region,site_or_region_abbrev,
-    CASE WHEN region_abrev = 'NOR CAL' AND site_or_region_abbrev IS NULL THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
+    CASE WHEN region_abrev = 'NOR CAL' AND male_numerator IS NULL THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
    -- CASE WHEN site_abrev IN ('EPA','OAK','SF','SAC') THEN SUM(ninth_grade_denominator) OVER () ELSE male_numerator END AS male_numerator,
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
