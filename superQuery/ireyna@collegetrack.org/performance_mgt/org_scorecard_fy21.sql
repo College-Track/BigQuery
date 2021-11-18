@@ -172,7 +172,7 @@ SELECT 	site_or_region,	site_sort,site_short,	site_abrev,	region_short,region_ab
 ,b.grade_rate_6_years_current_class_denom	
 ,b.alumni_count	mse_numerator
 ,b.mse_denominator	
-,b.percent_male_fy21
+
 
 
 FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` A
