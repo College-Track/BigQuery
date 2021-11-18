@@ -5,7 +5,7 @@ WITH
 add_NORCAL_values AS (
 
 SELECT 
-    site_short,site_or_region,site_or_region_abbrev,
+    site_short,site_abrev,site_or_region,site_or_region_abbrev,
     CASE WHEN site_abrev IN ('EPA','OAK','SF','SAC') THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
     CASE WHEN site_abrev IN ('EPA','OAK','SF','SAC') THEN SUM(ninth_grade_denominator) OVER () ELSE male_numerator END AS male_numerator,
 
