@@ -15,8 +15,7 @@ OPTIONS
     )
     AS
     */
-CREATE TEMP TABLE ORG_SCORECARD_FY21_ADD_COLUMN AS (SELECT site_short,region_short FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`);
-ALTER TABLE ORG_SCORECARD_FY21_ADD_COLUMN ADD COLUMN site_or_region STRING;
+CREATE TEMP TABLE ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region STRING);
 INSERT INTO ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region) VALUES  ('National'),
                                                         ('East Palo Alto'),
                                                         ('Oakland'),
@@ -34,4 +33,9 @@ INSERT INTO ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region) VALUES  ('National'),
                                                         ('Los Angeles'),
                                                         ('New Orleans_RG'),
                                                         ('Colorado'),
-                                                        ('Washington DC'); select * FROM ORG_SCORECARD_FY21_ADD_COLUMN
+                                                        ('Washington DC');
+    
+--WITH prep_orgscorecard AS (
+    SELECT EOY.* , site_or_region
+    FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics`  AS EOY
+    LEFT JOIN ORG_SCORECARD_FY21_ADD_COLUMN AS TEMP ON EOY.site_short=TEMP.site_short
