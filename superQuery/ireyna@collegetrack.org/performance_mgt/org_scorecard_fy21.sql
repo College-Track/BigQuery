@@ -130,7 +130,7 @@ WITH prep_orgscorecard AS (
         )
         )
     SELECT a.*, site_or_region,site_or_region_abbrev
-    FROM aggregate_outcomes_as_percent AS A
+    FROM aggregate_outcomes_as_percent AS EOY
     FULL JOIN prep_orgscorecard AS new_column ON EOY.site_short = new_column.site_short
         
        /*
