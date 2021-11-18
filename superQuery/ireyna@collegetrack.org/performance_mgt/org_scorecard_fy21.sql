@@ -36,8 +36,7 @@ INSERT INTO ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region) VALUES  ('National'),
                                                         ('Colorado'),
                                                         ('Washington DC');
     
-WITH 
---prep_orgscorecard AS (
+--WITH prep_orgscorecard AS (
     SELECT EOY.* , site_or_region
     FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics`  AS EOY
     LEFT JOIN ORG_SCORECARD_FY21_ADD_COLUMN AS TEMP ON EOY.site_short=TEMP.site_short AND EOY.region_short=TEMP.region_short 
