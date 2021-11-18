@@ -36,7 +36,8 @@ CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
         WHEN Account LIKE '%Crenshaw%' THEN 'CREN'
         WHEN Account = 'National' THEN 'NATIONAL'
         WHEN Account = 'National (AS LOCATION)' THEN 'NATIONAL_AS_LOCATION'
-      END;
+      END)
+      ;
 CREATE TEMP TABLE ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region STRING); --create table that stores new column to add to fy21_org_scorecard table
 INSERT INTO ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region) VALUES  ('National'), --add site_or_region column with values
                                                         ('East Palo Alto'),
