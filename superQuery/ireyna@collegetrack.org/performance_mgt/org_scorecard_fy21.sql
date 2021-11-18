@@ -92,8 +92,8 @@ WITH prep_orgscorecard AS (
         CASE WHEN ninth_grade_count = 0 THEN NULL ELSE ninth_grade_count END AS ninth_grade_denominator,
     
     --annual retention
-        CASE WHEN annual_retention_numerator = 0 THEN NULL ELSE annual_retention_numerator END AS annual_retention_numerator,
-        CASE WHEN annual_retention_denominator = 0 THEN NULL ELSE annual_retention_denominator END AS annual_retention_numerator,
+        CASE WHEN annual_retention = 0 THEN NULL ELSE annual_retention_numerator END AS annual_retention_numerator,
+        CASE WHEN annual_retention = 0 THEN NULL ELSE annual_retention_denominator END AS annual_retention_numerator,
         
     --social-emotional growth
         CASE WHEN covi_student_grew = 0 THEN NULL ELSE covi_student_grew END AS social_emotional_growth_numerator,
