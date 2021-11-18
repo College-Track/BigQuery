@@ -7,14 +7,14 @@ ALTER TABLE  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
     ;
 INSERT INTO `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` (site_or_region) VALUES ('National')
     ; */
-    
+    /*
 CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 OPTIONS
     (
     description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
     )
     AS
-    
+    */
 CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
     CASE
         WHEN Account LIKE '%Northern California%' THEN 'NORCAL'
