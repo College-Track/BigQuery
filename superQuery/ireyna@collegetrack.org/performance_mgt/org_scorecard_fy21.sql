@@ -34,4 +34,4 @@ INSERT INTO ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region) VALUES  ('National'),
                                                         ('Los Angeles'),
                                                         ('New Orleans_RG'),
                                                         ('Colorado'),
-                                                        ('Washington DC'); select * FROM org_scorecard_FY21_add_column
+                                                        ('Washington DC'); select * FROM ORG_SCORECARD_FY21_ADD_COLUMN
