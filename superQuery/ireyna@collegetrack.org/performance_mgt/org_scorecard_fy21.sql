@@ -60,5 +60,5 @@
         CASE WHEN had_mse_denominator = 0 THEN NULL ELSE had_mse_denominator END AS mse_denominator
     
         FROM  `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics` AS EOY
-        LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C ON EOY.site_short=C.site_short
+        LEFT JOIN `data-warehouse-289815.salesforce_clean.ACCOUNT_template` AS C ON EOY.site_short=C.site_short
         )
