@@ -129,7 +129,7 @@ WITH prep_orgscorecard AS (
         LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C ON EOY.site_short=C.site_short
         group by site_short, male,low_income_and_first_gen,ninth_grade_count,annual_retention_numerator,annual_retention_denominator
                 ,covi_student_grew,covi_deonominator,above_325_gpa_seniors,above_325_gpa_and_test_ready_seniors,twelfth_grade_count
-                ,twelfth_grade_count_valid_test,twelfth_grade_count,on_track_numerator,on_track_denominator
+                ,matriculated_best_good_situational,twelfth_grade_count_valid_test,twelfth_grade_count,on_track_numerator,on_track_denominator
                 ,grade_rate_6_years_current_class_numerator,grade_rate_6_years_current_class_denom,alumni_count
                 ,had_mse_numerator,mse_denominator,site_sort,site_short,site_abrev,region_short,region_abrev
         )
