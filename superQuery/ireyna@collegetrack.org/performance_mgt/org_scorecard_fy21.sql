@@ -87,13 +87,13 @@ WITH prep_orgscorecard AS (
         c.region_abrev,
         
     --admits: male, first-gen & low-income; San Francsico has 1 student as 9th grade, should be zero - did not recruit
-        male  AS male_numerator,
-        low_income_and_first_gen  AS low_income_first_gen_numerator,
-         ninth_grade_count  AS ninth_grade_denominator,
+        CASE WHEN male = 0 THEN NULL ELSE male_numerator END AS male_numerator,
+        CASE WHEN low_income_and_first_gen = 0 THEN NULL ELSE low_income_and_first_gen END AS low_income_first_gen_numerator,
+        CASE WHEN ninth_grade_count = 0 THEN NULL ELSE ninth_grade_denominator END AS ninth_grade_denominator,
     
     --annual retention
-        annual_retention_numerator,
-        annual_retention_denominator,
+        CASE WHEN annual_retention_numerator = 0 THEN NULL ELSE annual_retention_numerator END AS annual_retention_numerator,
+        CASE WHEN annual_retention_denominator = 0 THEN NULL ELSE annual_retention_denominator END AS annual_retention_numerator,
         
     --social-emotional growth
         CASE WHEN covi_student_grew = 0 THEN NULL ELSE covi_student_grew END AS social_emotional_growth_numerator,
