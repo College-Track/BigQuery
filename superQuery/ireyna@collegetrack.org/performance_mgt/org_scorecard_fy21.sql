@@ -127,7 +127,7 @@ WITH prep_orgscorecard AS (
         CASE WHEN had_mse_numerator = 0 THEN NULL ELSE had_mse_numerator END AS mse_numerator,
         CASE WHEN had_mse_denominator = 0 THEN NULL ELSE had_mse_denominator END AS mse_denominator
     
-        FROM  `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics` AS EOY
+        FROM  prep_orgscorecard AS EOY
         LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C ON EOY.site_short=C.site_short
         group by site_short, male,low_income_and_first_gen,ninth_grade_count,annual_retention_numerator,annual_retention_denominator
                 ,covi_student_grew,covi_deonominator,above_325_gpa_seniors,above_325_gpa_and_test_ready_seniors,twelfth_grade_count
