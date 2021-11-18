@@ -10,7 +10,7 @@ SELECT
    -- CASE WHEN site_abrev IN ('EPA','OAK','SF','SAC') THEN SUM(ninth_grade_denominator) OVER () ELSE male_numerator END AS male_numerator,
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
-WHERE  site_or_region_abbrev = "NORCAL"
+WHERE region_abrev = 'NOR CAL' OR site_or_region_abbrev = "NORCAL"
 )
 select * from add_norcal_values
 /*CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS ( --create function to transform new site_or_region column to site_or_region_abrev
