@@ -15,7 +15,7 @@ OPTIONS
     )
     AS
     */
-CREATE TEMP TABLE ORG_SCORECARD_FY21_ADD_COLUMN AS (SELECT * FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`);
+CREATE TEMP TABLE ORG_SCORECARD_FY21_ADD_COLUMN AS (SELECT site_short,region_short FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`);
 ALTER TABLE ORG_SCORECARD_FY21_ADD_COLUMN ADD COLUMN site_or_region STRING;
 INSERT INTO ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region) VALUES  ('National'),
                                                         ('East Palo Alto'),
