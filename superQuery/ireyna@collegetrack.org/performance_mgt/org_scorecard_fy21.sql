@@ -1,14 +1,8 @@
 #Using data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
-/*
+
 
     
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
-OPTIONS
-    (
-    description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
-    )
-    AS*/
-    
+
 CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS (
     CASE
         WHEN Account LIKE '%Northern California%' THEN 'NORCAL'
@@ -51,6 +45,14 @@ INSERT INTO ORG_SCORECARD_FY21_ADD_COLUMN (site_or_region) VALUES  ('National'),
                                                         ('New Orleans_RG'),
                                                         ('Colorado'),
                                                         ('Washington DC');
+CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
+OPTIONS
+    (
+    description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-related outcomes." 
+    )
+    AS
+    
+    
 WITH prep_orgscorecard AS (
     SELECT EOY.* , site_or_region, AccountAbrev(site_or_region) AS site_or_region_abbrev --add newly created column
     FROM `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics`  AS EOY
