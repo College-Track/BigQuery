@@ -155,24 +155,24 @@ UNION DISTINCT
 SELECT * EXCEPT (region_abrev) FROM add_nola_rg_values
 )
 SELECT 	site_or_region,	site_sort,site_short,	site_abrev,	region_short,region_abrev, b.site_or_region_abbrev
-,a.male_numerator	
-,a.low_income_first_gen_numerator	
-,a.ninth_grade_denominator	
-,a.annual_retention_numerator	
-,a.annual_retention_denominator	
-,a.social_emotional_growth_numerator	
-,a.social_emotional_growth_denominator	
-,a.above_325_gpa_seniors_numerator	senior_325_gpa_and_test_ready_numerator	
-,a.senior_325_gpa_only_denominator	senior_325_gpa_and_test_ready_denominator	
-,a.matriculated_best_good_situational_numerator	
-,a.matriculation_senior_denominator	
-,a.on_track_numerator	
-,a.on_track_denominator	
-,a.six_yr_grad_rate_numerator	
-,a.grade_rate_6_years_current_class_denom	
-,a.alumni_count	mse_numerator
-,a.mse_denominator	
-,a.percent_male_fy21
+,b.male_numerator	
+,b.low_income_first_gen_numerator	
+,b.ninth_grade_denominator	
+,b.annual_retention_numerator	
+,b.annual_retention_denominator	
+,b.social_emotional_growth_numerator	
+,b.social_emotional_growth_denominator	
+,b.above_325_gpa_seniors_numerator	senior_325_gpa_and_test_ready_numerator	
+,b.senior_325_gpa_only_denominator	senior_325_gpa_and_test_ready_denominator	
+,b.matriculated_best_good_situational_numerator	
+,b.matriculation_senior_denominator	
+,b.on_track_numerator	
+,b.on_track_denominator	
+,b.six_yr_grad_rate_numerator	
+,b.grade_rate_6_years_current_class_denom	
+,b.alumni_count	mse_numerator
+,b.mse_denominator	
+,b.percent_male_fy21
 
 
 FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` A
