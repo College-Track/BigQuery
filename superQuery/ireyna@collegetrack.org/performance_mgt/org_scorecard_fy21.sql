@@ -61,3 +61,4 @@
     
         FROM  `data-studio-260217.performance_mgt.fy21_eoy_combined_metrics` AS EOY
         LEFT JOIN `data-warehouse-289815.salesforce_clean.contact_template` AS C ON EOY.site_short=C.site_short
+        )
