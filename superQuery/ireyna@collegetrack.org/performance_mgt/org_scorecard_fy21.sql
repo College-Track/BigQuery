@@ -79,7 +79,7 @@ WITH prep_orgscorecard AS (
          
         
     FROM 
-        (SELECT --gather org scorecard metrics to calculate outcomes in main SELECT statement, account for ZEROs
+        (SELECT DISTINCT--gather org scorecard metrics to calculate outcomes in main SELECT statement, account for ZEROs
         eoy.site_sort,
         eoy.site_short,
         c.site_abrev,
