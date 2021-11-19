@@ -5,6 +5,8 @@
 WITH add_national_values  AS (
 --populte values for NATIONAL
     SELECT 
+    region_abrev,
+    site_or_region_abbrev,
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator, --pull grand total, add value only to National
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(ninth_grade_denominator) OVER () ELSE ninth_grade_denominator END AS ninth_grade_denominator,
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(low_income_first_gen_numerator) OVER () ELSE low_income_first_gen_numerator END AS low_income_first_gen_numerator,
@@ -55,8 +57,9 @@ SELECT
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'NOR CAL' OR site_or_region_abbrev = "NORCAL"
-),
-add_la_values AS (
+)
+
+, add_la_values AS (
 SELECT 
     region_abrev,site_or_region_abbrev,
 --Populate values for LA region
@@ -83,8 +86,8 @@ SELECT
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'LA' OR site_or_region_abbrev = "LA"
-),
-add_co_values AS(
+)
+, add_co_values AS(
 SELECT 
     region_abrev,site_or_region_abbrev,
 --Populate values for CO region
@@ -111,8 +114,8 @@ SELECT
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'CO' OR site_or_region_abbrev = "CO"
-),
-add_dc_values AS (
+)
+, add_dc_values AS (
 SELECT 
     region_abrev,site_or_region_abbrev,
 --Populate values for DC region
@@ -139,8 +142,8 @@ SELECT
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'DC' OR site_or_region_abbrev = "DC"
-),
-add_nola_rg_values AS (
+)
+, add_nola_rg_values AS (
 SELECT 
     region_abrev,site_or_region_abbrev,
 --Populate values for NOLA region
@@ -178,8 +181,11 @@ UNION DISTINCT
 SELECT * EXCEPT (region_abrev) FROM add_dc_values
 UNION DISTINCT
 SELECT * EXCEPT (region_abrev) FROM add_nola_rg_values
+UNION DISTINCT
+SELECT * EXCEPT (region_abrev) FROM add_national_values
+
 )
-SELECT 	site_or_region,	site_sort,site_short,	site_abrev,	region_short,region_abrev, b.site_or_region_abbrev
+SELECT 	site_or_region,	site_sort,site_short,site_abrev,region_short,region_abrev, b.site_or_region_abbrev
 ,b.male_numerator	
 ,b.low_income_first_gen_numerator	
 ,b.ninth_grade_denominator	
