@@ -1,13 +1,13 @@
 # TABLE =  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 #Using data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
 #Adding columns to fy21_org_scorecard_program table
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
+CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 OPTIONS
     (
     description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-reDCted outcomes." 
     )
     AS 
-*/
+
 
 
 WITH add_norcal_values AS (
