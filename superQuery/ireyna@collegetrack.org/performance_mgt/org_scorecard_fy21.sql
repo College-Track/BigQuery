@@ -61,7 +61,7 @@ SELECT
     CASE WHEN site_or_region_abbrev = "NORCAL" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
-
+WHERE region_abrev = 'NOR CAL' OR site_or_region_abbrev = "NORCAL"
 )
 
 , add_la_values AS (
