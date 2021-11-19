@@ -177,6 +177,8 @@ FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'NOLA' OR site_or_region_abbrev = "NOLA_RG"
 ),
 combine_regional_values AS (
+SELECT * EXCEPT (region_abrev) FROM add_national_values
+UNION DISTINCT
 SELECT * EXCEPT (region_abrev) FROM add_norcal_values
 UNION DISTINCT
 SELECT * EXCEPT (region_abrev) FROM add_la_values
@@ -186,8 +188,6 @@ UNION DISTINCT
 SELECT * EXCEPT (region_abrev) FROM add_dc_values
 UNION DISTINCT
 SELECT * EXCEPT (region_abrev) FROM add_nola_rg_values
-UNION DISTINCT
-SELECT * EXCEPT (region_abrev) FROM add_national_values
 
 )
 SELECT 	site_or_region,	site_sort,site_short,site_abrev,region_short,region_abrev, b.site_or_region_abbrev
@@ -208,8 +208,6 @@ SELECT 	site_or_region,	site_sort,site_short,site_abrev,region_short,region_abre
 ,b.grade_rate_6_years_current_class_denom	
 ,b.alumni_count	mse_numerator
 ,b.mse_denominator	
-
-
 
 FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` A
 LEFT JOIN combine_regional_values B ON a.site_or_region_abbrev=b.site_or_region_abbrev
