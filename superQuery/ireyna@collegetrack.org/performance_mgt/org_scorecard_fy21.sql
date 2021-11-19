@@ -6,8 +6,8 @@
 WITH add_national_values  AS (
 --populte values for NATIONAL
     SELECT 
-    region_abrev,
     site_or_region_abbrev,
+    CASE WHEN site_or_region = 'National' THEN 'NATIONAL' ELSE region_abrev END AS region_abrev,
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator, --pull grand total, add value only to National
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(ninth_grade_denominator) OVER () ELSE ninth_grade_denominator END AS ninth_grade_denominator,
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(low_income_first_gen_numerator) OVER () ELSE low_income_first_gen_numerator END AS low_income_first_gen_numerator,
@@ -63,7 +63,6 @@ SELECT
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'NOR CAL' OR site_or_region_abbrev = "NORCAL"
 )
-
 , add_la_values AS (
 SELECT 
     region_abrev,site_or_region_abbrev,
