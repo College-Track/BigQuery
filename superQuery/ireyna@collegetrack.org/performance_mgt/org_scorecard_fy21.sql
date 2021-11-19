@@ -1,7 +1,8 @@
 #Using data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
 #Adding columns to fy21_org_scorecard_program table
 
-
+INSERT INTO `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` (region_abrev) VALUES ('NATIONAL') --Add "NATIONAL" as a row value for site_or_region_abbrev column
+;
 WITH add_national_values  AS (
 --populte values for NATIONAL
     SELECT 
