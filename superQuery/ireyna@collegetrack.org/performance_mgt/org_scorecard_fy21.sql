@@ -28,6 +28,7 @@ WITH add_national_values  AS (
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(grade_rate_6_years_current_class_denom) OVER () ELSE grade_rate_6_years_current_class_denom END AS grade_rate_6_years_current_class_denom,
     CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
     FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
+    WHERE region_abrev IN ('NOR CAL','LA','CO','NOLA_RG','DC') OR site_or_region_abbrev = "NATIONAL"
 )
 , add_norcal_values AS (
 
@@ -56,7 +57,7 @@ SELECT
     CASE WHEN site_or_region_abbrev = "NORCAL" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
-WHERE region_abrev = 'NOR CAL' OR site_or_region_abbrev = "NORCAL"
+
 )
 
 , add_la_values AS (
