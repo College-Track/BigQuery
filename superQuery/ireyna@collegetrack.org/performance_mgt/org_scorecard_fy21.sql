@@ -1,12 +1,12 @@
 SELECT 
     *,
-    CASE WHEN site_or_region_abbrev = "National" THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
-    CASE WHEN site_or_region_abbrev = "National" THEN SUM(ninth_grade_denominator) OVER () ELSE ninth_grade_denominator END AS ninth_grade_denominator,
-    CASE WHEN site_or_region_abbrev = "National" THEN SUM(low_income_first_gen_numerator) OVER () ELSE low_income_first_gen_numerator END AS low_income_first_gen_numerator,
-    CASE WHEN site_or_region_abbrev = "National" THEN SUM(annual_retention_numerator) OVER () ELSE annual_retention_numerator END AS annual_retention_numerator,
-    CASE WHEN site_or_region_abbrev = "National" THEN SUM(annual_retention_denominator) OVER () ELSE annual_retention_denominator END AS annual_retention_denominator,
-    CASE WHEN site_or_region_abbrev = "National" THEN SUM(social_emotional_growth_numerator) OVER () ELSE social_emotional_growth_numerator END AS social_emotional_growth_numerator,
-    CASE WHEN site_or_region_abbrev = "National" THEN SUM(social_emotional_growth_denominator) OVER () ELSE social_emotional_growth_denominator END AS social_emotional_growth_denominator,
+    CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
+    CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(ninth_grade_denominator) OVER () ELSE ninth_grade_denominator END AS ninth_grade_denominator,
+    CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(low_income_first_gen_numerator) OVER () ELSE low_income_first_gen_numerator END AS low_income_first_gen_numerator,
+    CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(annual_retention_numerator) OVER () ELSE annual_retention_numerator END AS annual_retention_numerator,
+    CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(annual_retention_denominator) OVER () ELSE annual_retention_denominator END AS annual_retention_denominator,
+    CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(social_emotional_growth_numerator) OVER () ELSE social_emotional_growth_numerator END AS social_emotional_growth_numerator,
+    CASE WHEN site_or_region_abbrev = "NATIONAL" THEN SUM(social_emotional_growth_denominator) OVER () ELSE social_emotional_growth_denominator END AS social_emotional_growth_denominator,
     CASE WHEN site_or_region_abbrev = "National" THEN SUM(mse_numerator) OVER () ELSE mse_numerator END AS mse_numerator,
     CASE WHEN site_or_region_abbrev = "National" THEN SUM(mse_denominator) OVER () ELSE mse_denominator END AS mse_denominator,
     CASE WHEN site_or_region_abbrev = "National" THEN SUM(above_325_gpa_seniors_numerator) OVER () ELSE above_325_gpa_seniors_numerator END AS above_325_gpa_seniors_numerator,
@@ -22,4 +22,4 @@ SELECT
     --CASE WHEN site_or_region_abbrev = "NOLA_RG" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
-WHERE site_or_region_abbrev = "National"
+WHERE site_or_region_abbrev = 'NATIONAL'
