@@ -22,4 +22,4 @@ SELECT
     --CASE WHEN site_or_region_abbrev = "NOLA_RG" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
-WHERE site_or_region = 'National'
+WHERE region_abrev = 'National'
