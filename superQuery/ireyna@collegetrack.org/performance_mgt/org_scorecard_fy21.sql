@@ -9,7 +9,33 @@ OPTIONS
     )
     AS */
     
-WITH add_national_values AS (
+--Adding National Values to org_scorecard_program_fy21 table. Regional totals already added
+
+INSERT  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` 
+(
+        region_abrev
+        ,male_numerator
+        ,low_income_first_gen_numerator
+        ,ninth_grade_denominator
+        ,annual_retention_numerator
+        ,annual_retention_denominator
+        ,social_emotional_growth_numerator
+        ,social_emotional_growth_denominator
+        ,matriculated_best_good_situational_numerator
+        ,matriculation_senior_denominator
+        ,on_track_numerator
+        ,on_track_denominator
+        ,six_yr_grad_rate_numerator
+        ,grade_rate_6_years_current_class_denom
+        ,above_325_gpa_seniors_numerator
+        ,senior_325_gpa_and_test_ready_numerator
+        ,senior_325_gpa_only_denominator
+        ,senior_325_gpa_and_test_ready_denominator
+        ,mse_numerator
+        ,mse_denominator)
+
+
+  WITH add_national_values AS (
 SELECT 
     region_abrev,
     CASE WHEN region_abrev = "NATIONAL" THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
@@ -35,16 +61,12 @@ SELECT
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'NATIONAL' OR region_short IN ('Northern California','Colorado','Los Angeles','New Orleans','Washington DC')
-),
-national_only AS (
+)
+--national_only 
 SELECT DISTINCT
-        site_or_region
-        ,site_sort
-        ,site_short
-        ,site_abrev
-        ,region_short
-        ,a.region_abrev
-        ,site_or_region_abbrev
+       
+        a.region_abrev
+     
         ,a.male_numerator
         ,a.low_income_first_gen_numerator
         ,a.ninth_grade_denominator
@@ -67,43 +89,7 @@ SELECT DISTINCT
 
 FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` AS b
 LEFT JOIN add_national_values AS a ON a.region_abrev=b.region_abrev
-WHERE b.region_abrev = 'NATIONAL' 
-)
-
-
-SELECT *  FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
-WHERE region_abrev <> 'NATIONAL'
-INTERSECT ALL
-SELECT 
-    site_or_region
-    ,site_sort
-    ,site_short
-    ,site_abrev
-    ,region_short
-    ,a.region_abrev
-    ,site_or_region_abbrev
-    ,a.male_numerator
-    ,a.low_income_first_gen_numerator
-    ,a.ninth_grade_denominator
-    ,a.annual_retention_numerator
-    ,a.annual_retention_denominator
-    ,a.social_emotional_growth_numerator
-    ,a.social_emotional_growth_denominator
-    ,a.matriculated_best_good_situational_numerator
-    ,a.matriculation_senior_denominator
-    ,a.on_track_numerator
-    ,a.on_track_denominator
-    ,a.six_yr_grad_rate_numerator
-    ,a.grade_rate_6_years_current_class_denom
-    ,a.above_325_gpa_seniors_numerator
-    ,a.senior_325_gpa_and_test_ready_numerator
-    ,a.senior_325_gpa_only_denominator
-    ,a.senior_325_gpa_and_test_ready_denominator
-    ,a.mse_numerator
-    ,a.mse_denominator
-FROM national_only AS a
-
-
+WHERE a.region_abrev = 'NATIONAL' AND b.site_or_region ='National'
 
 ---Code used to update table with National grand totals, adding columns (e.g. fiscal_year, site_or_region), populating columns (e.g."National")
 /*CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS ( --create function to transform new site_or_region column to site_or_region_abrev
