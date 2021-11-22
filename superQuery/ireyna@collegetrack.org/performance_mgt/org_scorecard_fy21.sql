@@ -42,7 +42,33 @@ LEFT JOIN add_national_values B ON a.region_abrev=b.region_abrev*/
 SELECT *  FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev <> 'NATIONAL'
 UNION DISTINCT
-SELECT site_or_region,site_sort,site_short,site_abrev,region_short, site_or_region_abbrev,a.*
+SELECT 
+    site_or_region
+    ,site_sort
+    ,site_short
+    ,site_abrev
+    ,region_short
+    ,a.region_abrev
+    ,site_or_region_abbrev
+    ,a.male_numerator
+    ,a.low_income_first_gen_numerator
+    ,a.ninth_grade_denominator
+    ,a.annual_retention_numerator
+    ,a.annual_retention_denominator
+    ,a.social_emotional_growth_numerator
+    ,a.social_emotional_growth_denominator
+    ,a.matriculated_best_good_situational_numerator
+    ,a.matriculation_senior_denominator
+    ,a.on_track_numerator
+    ,a.on_track_denominator
+    ,a.six_yr_grad_rate_numerator
+    ,a.grade_rate_6_years_current_class_denom
+    ,a.above_325_gpa_seniors_numerator
+    ,a.senior_325_gpa_and_test_ready_numerator
+    ,a.senior_325_gpa_only_denominator
+    ,a.senior_325_gpa_and_test_ready_denominator
+    ,a.mse_numerator
+    ,a.mse_denominator
 FROM add_national_values AS a
 left join  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` AS b ON a.region_abrev=b.region_abrev
 WHERE a.region_abrev = 'NATIONAL'
