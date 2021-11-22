@@ -36,12 +36,16 @@ SELECT
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'NATIONAL' OR region_short IN ('Northern California','Colorado','Los Angeles','New Orleans','Washington DC')
 )
-
-
-SELECT 	A.*
-
+/*SELECT * 
 FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` A
-LEFT JOIN add_national_values B ON a.region_abrev=b.region_abrev
+LEFT JOIN add_national_values B ON a.region_abrev=b.region_abrev*/
+SELECT *  FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
+WHERE region_abrev <> 'NATIONAL'
+UNION DISTINCT
+SELECT site_or_region,site_sort,site_short,site_abrev,region_short, site_or_region_abbrev,a.*
+FROM add_national_values AS a
+left join  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` AS b ON a.region_abrev=b.region_abrev
+WHERE a.region_abrev = 'NATIONAL'
 
 
 
