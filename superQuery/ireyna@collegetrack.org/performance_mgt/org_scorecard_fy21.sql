@@ -1,5 +1,5 @@
 SELECT 
-    
+    *,
     CASE WHEN site_or_region_abbrev = "National" THEN SUM(male_numerator) OVER () ELSE male_numerator END AS male_numerator,
     CASE WHEN site_or_region_abbrev = "National" THEN SUM(ninth_grade_denominator) OVER () ELSE ninth_grade_denominator END AS ninth_grade_denominator,
     CASE WHEN site_or_region_abbrev = "National" THEN SUM(low_income_first_gen_numerator) OVER () ELSE low_income_first_gen_numerator END AS low_income_first_gen_numerator,
