@@ -42,7 +42,7 @@ SELECT 	A.*
 
 FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` A
 LEFT JOIN add_national_values B ON a.region_abrev=b.region_abrev
-WHERE b.region_abrev = 'NATIONAL'
+
 
 
 ---Code used to update table with National grand totals, adding columns (e.g. fiscal_year, site_or_region), populating columns (e.g."National")
