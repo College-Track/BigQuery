@@ -1,15 +1,14 @@
 # TABLE =  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 #Using data-studio-260217.performance_mgt.fy21_eoy_combined_metrics table
 #Adding columns to fy21_org_scorecard_program table
+/*
 CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 OPTIONS
     (
     description="This table pulls org scorecard program outcomes for fy21.  Numerator and denominators are included per site. Does not include graduate/employment outcomes, annual fundraising outcomes, hs capacity, or hr-reDCted outcomes." 
     )
-    AS 
-
-
-
+    AS */
+    
 WITH add_norcal_values AS (
 
 SELECT 
@@ -34,7 +33,7 @@ SELECT
     CASE WHEN site_or_region_abbrev = "NORCAL" THEN SUM(on_track_denominator) OVER () ELSE on_track_denominator END AS on_track_denominator,
     CASE WHEN site_or_region_abbrev = "NORCAL" THEN SUM(six_yr_grad_rate_numerator) OVER () ELSE six_yr_grad_rate_numerator END AS six_yr_grad_rate_numerator,
     CASE WHEN site_or_region_abbrev = "NORCAL" THEN SUM(grade_rate_6_years_current_class_denom) OVER () ELSE grade_rate_6_years_current_class_denom END AS grade_rate_6_years_current_class_denom,
-    CASE WHEN site_or_region_abbrev = "NORCAL" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
+    --CASE WHEN site_or_region_abbrev = "NORCAL" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'NOR CAL' OR site_or_region_abbrev = "NORCAL"
@@ -62,7 +61,7 @@ SELECT
     CASE WHEN site_or_region_abbrev = "LA" THEN SUM(on_track_denominator) OVER () ELSE on_track_denominator END AS on_track_denominator,
     CASE WHEN site_or_region_abbrev = "LA" THEN SUM(six_yr_grad_rate_numerator) OVER () ELSE six_yr_grad_rate_numerator END AS six_yr_grad_rate_numerator,
     CASE WHEN site_or_region_abbrev = "LA" THEN SUM(grade_rate_6_years_current_class_denom) OVER () ELSE grade_rate_6_years_current_class_denom END AS grade_rate_6_years_current_class_denom,
-    CASE WHEN site_or_region_abbrev = "LA" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
+    --CASE WHEN site_or_region_abbrev = "LA" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'LA' OR site_or_region_abbrev = "LA"
@@ -90,7 +89,7 @@ SELECT
     CASE WHEN site_or_region_abbrev = "CO" THEN SUM(on_track_denominator) OVER () ELSE on_track_denominator END AS on_track_denominator,
     CASE WHEN site_or_region_abbrev = "CO" THEN SUM(six_yr_grad_rate_numerator) OVER () ELSE six_yr_grad_rate_numerator END AS six_yr_grad_rate_numerator,
     CASE WHEN site_or_region_abbrev = "CO" THEN SUM(grade_rate_6_years_current_class_denom) OVER () ELSE grade_rate_6_years_current_class_denom END AS grade_rate_6_years_current_class_denom,
-    CASE WHEN site_or_region_abbrev = "CO" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
+    --CASE WHEN site_or_region_abbrev = "CO" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'CO' OR site_or_region_abbrev = "CO"
@@ -118,7 +117,7 @@ SELECT
     CASE WHEN site_or_region_abbrev = "DC" THEN SUM(on_track_denominator) OVER () ELSE on_track_denominator END AS on_track_denominator,
     CASE WHEN site_or_region_abbrev = "DC" THEN SUM(six_yr_grad_rate_numerator) OVER () ELSE six_yr_grad_rate_numerator END AS six_yr_grad_rate_numerator,
     CASE WHEN site_or_region_abbrev = "DC" THEN SUM(grade_rate_6_years_current_class_denom) OVER () ELSE grade_rate_6_years_current_class_denom END AS grade_rate_6_years_current_class_denom,
-    CASE WHEN site_or_region_abbrev = "DC" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
+    --CASE WHEN site_or_region_abbrev = "DC" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'DC' OR site_or_region_abbrev = "DC"
@@ -146,7 +145,7 @@ SELECT
     CASE WHEN site_or_region_abbrev = "NOLA_RG" THEN SUM(on_track_denominator) OVER () ELSE on_track_denominator END AS on_track_denominator,
     CASE WHEN site_or_region_abbrev = "NOLA_RG" THEN SUM(six_yr_grad_rate_numerator) OVER () ELSE six_yr_grad_rate_numerator END AS six_yr_grad_rate_numerator,
     CASE WHEN site_or_region_abbrev = "NOLA_RG" THEN SUM(grade_rate_6_years_current_class_denom) OVER () ELSE grade_rate_6_years_current_class_denom END AS grade_rate_6_years_current_class_denom,
-    CASE WHEN site_or_region_abbrev = "NOLA_RG" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
+    --CASE WHEN site_or_region_abbrev = "NOLA_RG" THEN SUM(alumni_count) OVER () ELSE alumni_count END AS alumni_count
 
 FROM  `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21`
 WHERE region_abrev = 'NOLA' OR site_or_region_abbrev = "NOLA_RG"
@@ -171,19 +170,26 @@ SELECT 	site_or_region,	site_sort,site_short,site_abrev,region_short,region_abre
 ,b.annual_retention_denominator	
 ,b.social_emotional_growth_numerator	
 ,b.social_emotional_growth_denominator	
-,b.above_325_gpa_seniors_numerator	senior_325_gpa_and_test_ready_numerator	
-,b.senior_325_gpa_only_denominator	senior_325_gpa_and_test_ready_denominator	
+,b.above_325_gpa_seniors_numerator	
+,b.senior_325_gpa_and_test_ready_numerator	
+,b.senior_325_gpa_only_denominator	
+,b.senior_325_gpa_and_test_ready_denominator	
 ,b.matriculated_best_good_situational_numerator	
 ,b.matriculation_senior_denominator	
 ,b.on_track_numerator	
 ,b.on_track_denominator	
 ,b.six_yr_grad_rate_numerator	
 ,b.grade_rate_6_years_current_class_denom	
-,b.alumni_count	mse_numerator
+--,b.alumni_count	
+,b.mse_numerator
 ,b.mse_denominator	
 
 FROM `org-scorecard-286421.aggregate_data.org_scorecard_program_fy21` A
 LEFT JOIN combine_regional_values B ON a.site_or_region_abbrev=b.site_or_region_abbrev
+
+
+
+---Code used to update table with National grand totals, adding columns (e.g. fiscal_year, site_or_region), populating columns (e.g."National")
 /*CREATE TEMPORARY FUNCTION AccountAbrev (Account STRING) AS ( --create function to transform new site_or_region column to site_or_region_abrev
     CASE
         WHEN Account LIKE '%Northern California%' THEN 'NORCAL'
