@@ -9,7 +9,7 @@ OPTIONS
     
 --#5 populate outcomes into Measures manually added
 SELECT 
-        *,
+        * EXCEPT (PGC,AUR,BH,CREN,DEN,EPA,NOLA,OAK,SAC,SF,WATTS,DC8),
         CASE WHEN Measure = 'percent_hs_capacity_fy21' AND PGC IS NULL THEN .82 END AS PGC,
         CASE WHEN Measure = 'percent_hs_capacity_fy21' AND AUR IS NULL THEN .91 END AS AUR,
         CASE WHEN Measure = 'percent_hs_capacity_fy21' AND BH IS NULL THEN .87 END AS BH,
