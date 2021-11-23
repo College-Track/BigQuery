@@ -1,6 +1,7 @@
 --Houses all org scorecard outcomes across fiscal years as a tranposed table for the DS Overview Page
 
-SELECT Objective
+SELECT 
+Objective
 ,fiscal_year
 ,EPA
 ,OAK
@@ -25,7 +26,8 @@ SELECT Objective
  
 FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` 
 UNION ALL
-SELECT Objective
+SELECT 
+Objective
 ,fiscal_year
 ,EPA
 ,OAK
