@@ -10,18 +10,18 @@ OPTIONS
 --#5 populate outcomes into Measures manually added
 SELECT 
         * EXCEPT (PGC,AUR,BH,CREN,DEN,EPA,NOLA,OAK,SAC,SF,WATTS,DC8),
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND PGC IS NULL THEN .82 END AS PGC,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND AUR IS NULL THEN .91 END AS AUR,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND BH IS NULL THEN .87 END AS BH,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND CREN IS NULL THEN .85 END AS CREN,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND DEN IS NULL THEN .19 END AS DEN,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND EPA IS NULL THEN .70 END AS EPA,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND NOLA IS NULL THEN 1.02 END AS NOLA,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND OAK IS NULL THEN .88 END AS OAK,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND SAC IS NULL THEN .81 END AS SAC,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND SF IS NULL THEN .69 END AS SF,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND WATTS IS NULL THEN .87 END AS WATTS,
-        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND DC8 IS NULL THEN 1.02 END AS DC8,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND PGC IS NULL THEN .82 ELSE PGC END AS PGC,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND AUR IS NULL THEN .91 ELSE AUR END AS AUR,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND BH IS NULL THEN .87 ELSE BH END AS BH,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND CREN IS NULL THEN .85 ELSE CREN END AS CREN,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND DEN IS NULL THEN .19 ELSE DEN END AS DEN,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND EPA IS NULL THEN .70 ELSE EPA END AS EPA,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND NOLA IS NULL THEN 1.02 ELSE NOLA END AS NOLA,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND OAK IS NULL THEN .88 ELSE OAK END AS OAK,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND SAC IS NULL THEN .81 ELSE SAC END AS SAC,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND SF IS NULL THEN .69 ELSE SF END AS SF,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND WATTS IS NULL THEN .87 ELSE WATTS END AS WATTS,
+        CASE WHEN Measure = 'percent_hs_capacity_fy21' AND DC8 IS NULL THEN 1.02 ELSE DC8 END AS DC8,
 FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
 
 
