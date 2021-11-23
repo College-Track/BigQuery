@@ -5,9 +5,24 @@ OPTIONS
     description="This is a transposed table for college and high school outcomes for the FY21 org scorecard. Table was created wide in SQL (data-studio-260217:performance_mgt.org_scorecard_program_fy21), and transposed manually in excel. Uploaded as a CSV" 
     )
     AS */
---Add measures shared from other teams, or pulled outside of Salesforce in FY21 (HR data, Fundraising, Alumni data, HS Capacity)
 
-/*INSERT INTO  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` (Measure) VALUES  
+
+
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
+OPTIONS
+    (
+    description="This is a transposed table for college and high school outcomes for the FY21 org scorecard. Table was created wide in SQL (data-studio-260217:performance_mgt.org_scorecard_program_fy21), and transposed manually in excel. Uploaded as a CSV" 
+    )
+    AS*/
+    
+--#3 Add NATIONAL_AS_LOCATION as a column for HR outcomes
+
+ALTER TABLE  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
+ADD COLUMN NATIONAL_AS_LOCATION STRING
+
+/*
+--#1 Add Measures shared from other teams, or pulled outside of Salesforce in FY21 (HR data, Fundraising, Alumni data, HS Capacity)
+INSERT INTO  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` (Measure) VALUES  
                                                                         ('percent_employment_grad_school_fy21')
                                                                         ,('percent_gainful_employment_fy21')
                                                                         ,('percent_meaningful_employment')
@@ -20,36 +35,8 @@ OPTIONS
                                                                         ,('percent_annual_fundraising_target_fy21')
                                                                         ,('hs_capacity_fy21')
 
-                                                                       ;*/
-CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
-OPTIONS
-    (
-    description="This is a transposed table for college and high school outcomes for the FY21 org scorecard. Table was created wide in SQL (data-studio-260217:performance_mgt.org_scorecard_program_fy21), and transposed manually in excel. Uploaded as a CSV" 
-    )
-    AS
-SELECT 
-        * EXCEPT (Objective),
-        CASE 
-            WHEN Measure = 'percent_employment_grad_school_fy21' THEN 'Objective_4'
-            WHEN Measure = 'percent_gainful_employment_fy21' THEN 'Objective_4'
-            WHEN Measure = 'percent_meaningful_employment' THEN 'Objective_4'
-            WHEN Measure = 'percent_lgbtq_hr_fy21' THEN 'Objective_5'
-            WHEN Measure = 'percent_non_white_hr_fy21' THEN 'Objective_5'
-            WHEN Measure = 'percent_first_gen_hr_fy21' THEN 'Objective_5'
-            WHEN Measure = 'percent_male_hr_fy21' THEN 'Objective_5'
-            WHEN Measure = 'percent_tenure_fy21' THEN 'Objective_5'
-            WHEN Measure = 'percent_staff_engagement_fy21' THEN 'Objective_5'
-            WHEN Measure = 'percent_hs_capacity_fy21' THEN 'Objective_6'
-            WHEN Measure = 'percent_annual_fundraising_target_fy21' THEN 'Objective_6'
-        ELSE Objective
-        END AS Objective,
-        
-            
-        
-FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
-
-
-/*
+                                                                       ;
+--#2 Adding Objective to each Measure
 SELECT 
             *,
             CASE WHEN Measure IN    (
@@ -93,5 +80,26 @@ SELECT
                 ELSE NULL 
                 END AS Objective
             
+FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
+
+
+--#3 Add Objective for each newly added Measure provided by other teams, or calculated outside of BQ    
+SELECT 
+        * EXCEPT (Objective),
+        CASE 
+            WHEN Measure = 'percent_employment_grad_school_fy21' THEN 'Objective_4'
+            WHEN Measure = 'percent_gainful_employment_fy21' THEN 'Objective_4'
+            WHEN Measure = 'percent_meaningful_employment' THEN 'Objective_4'
+            WHEN Measure = 'percent_lgbtq_hr_fy21' THEN 'Objective_5'
+            WHEN Measure = 'percent_non_white_hr_fy21' THEN 'Objective_5'
+            WHEN Measure = 'percent_first_gen_hr_fy21' THEN 'Objective_5'
+            WHEN Measure = 'percent_male_hr_fy21' THEN 'Objective_5'
+            WHEN Measure = 'percent_tenure_fy21' THEN 'Objective_5'
+            WHEN Measure = 'percent_staff_engagement_fy21' THEN 'Objective_5'
+            WHEN Measure = 'percent_hs_capacity_fy21' THEN 'Objective_6'
+            WHEN Measure = 'percent_annual_fundraising_target_fy21' THEN 'Objective_6'
+        ELSE Objective
+        END AS Objective,
+        
 FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
 */
