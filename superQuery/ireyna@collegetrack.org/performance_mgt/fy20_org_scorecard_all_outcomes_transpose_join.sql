@@ -1,64 +1,19 @@
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
-OPTIONS
-    (
-    description="This is a transposed table for FY20 Org Scorecard (percent) outcomes" 
-    )
-AS*/
-WITH
-compile_fy20_outcomes AS (
-SELECT *
-FROM `org-scorecard-286421.transposed_tables.admit_demographics_annual_retention_transposed`
-
-UNION DISTINCT 
-
-SELECT *
-FROM `org-scorecard-286421.transposed_tables.mse_covi_gpa_composite`
-
-UNION DISTINCT
-
-SELECT *
-FROM `org-scorecard-286421.transposed_tables.college_graduates_fy20_transpose`
-
-UNION DISTINCT 
-
-SELECT *
-FROM `org-scorecard-286421.transposed_tables.college_outcomes_transpose`
-
-UNION DISTINCT 
-
-SELECT *
-FROM `org-scorecard-286421.transposed_tables.financial_sustainability_hs_capacity_transposed`
-
-UNION DISTINCT 
-
-SELECT *
-FROM  `org-scorecard-286421.transposed_tables.hr_tenure_engagement_fy20_transpose`
-
-UNION DISTINCT
-
-SELECT *
-FROM `org-scorecard-286421.transposed_tables.hr_diverse_identities_fy20_transpose`
-)
 SELECT 
-    *,
+    * EXCEPT (Measure),
     CASE 
-        WHEN Measure = 'annual_fundraising' THEN 'Annual Fundraising target (100%)'  
-        WHEN Measure = 'hs_capacity' THEN 'High school capacity enrolled (95%)' 
-        WHEN Measure = 'gpa_3_0_composite_readiness' THEN 'Seniors with GPA 3.25+ and Composite Ready (55%)' 
-        WHEN Measure = 'entering_9th_grade_students_male' THEN '9th grade students are male (50%)' 
-        WHEN Measure = 'entering_9th_grade_students_lowincome_firstgen' THEN '9th grade students are low-income and first-generation (80%)'  
-        WHEN Measure = 'on_track' THEN 'Students with enough credits accumulated to graduate in 6 years (80%)' 
-        WHEN Measure = 'grad_rate' THEN 'Students graduating from college within 6 years (70%)' 
-        WHEN Measure = 'employment_grad_school' THEN 'Graduates with full-time employment or enrolled in graduate school within 6 months of graduation (65%)'  
-        WHEN Measure = 'gainful_employment_standard' THEN 'Graduates meeting gainful employment standard (85%)'  
-        WHEN Measure = 'meaningful_employment' THEN 'Graduates with meaningful employment (85%)'  
-        WHEN Measure = 'matriculation' THEN 'Students matriculating to Best Fit, Good Fit, or Situational Best Fit colleges (50%)'  
-        WHEN Measure = 'tenure' THEN 'Staff with full-time tenure of 3+ years in organization (35%)' 
-        WHEN Measure = 'mse' THEN 'Students with meaningful summer experiences (85%)' 
-        WHEN Measure = 'annual_retention' THEN 'High school students retained annually (90%)' 
-        WHEN Measure = 'staff_engagement' THEN 'Staff engagement score above average nonprofit benchmark (Y)' 
-        WHEN Measure = 'social_emotional_growth' THEN 'Students growing toward average or above social-emotional strengths' 
-        WHEN Measure IN ('first_gen,lgbtq,non_white,male') THEN 'Strategy Team representing a spectrum of identities above average nonprofit benchmarks*' 
-        ELSE NULL
-        END AS measure_datastudio,
+        WHEN Measure = 'hs_capacity' THEN 'percent_hs_capacity'
+        WHEN Measure = 'gpa_3_0_composite_readiness' THEN 'percent_seniors_above_325_and_test_ready'
+        WHEN Measure = 'entering_9th_grade_students_male' THEN 'percent_male'
+        WHEN Measure = 'entering_9th_grade_students_lowincome_firstgen' THEN  'percent_low_income_first_gen'
+        WHEN Measure = 'on_track' THEN  'percent_on_track'
+        WHEN Measure = 'grad_rate' THEN 'percent_6_year_grad_rate'
+        WHEN Measure = 'employment_grad_school' THEN 'percent_employment_grad_school'
+        WHEN Measure = 'gainful_employment_standard' THEN 'percent_gainful_employment' 
+        WHEN Measure = 'meaningful_employment' THEN 'percent_meaningful_employment'
+        WHEN Measure = 'matriculation' THEN 'percent_matriculated_best_good_situational'
+        WHEN Measure = 'mse' THEN 'percent_mse'
+        WHEN Measure = 'annual_retention' THEN  'percent_annual_retention'
+        WHEN Measure = 'social_emotional_growth' THEN 'percent_social_emotional_growth'
+        ELSE Measure
+        END AS Measure
 FROM  `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
