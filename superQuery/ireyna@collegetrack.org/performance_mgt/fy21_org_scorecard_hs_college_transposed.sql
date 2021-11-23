@@ -21,14 +21,19 @@ OPTIONS
                                                                         ,('hs_capacity_fy21')
 
                                                                        ;*/
-
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
+OPTIONS
+    (
+    description="This is a transposed table for college and high school outcomes for the FY21 org scorecard. Table was created wide in SQL (data-studio-260217:performance_mgt.org_scorecard_program_fy21), and transposed manually in excel. Uploaded as a CSV" 
+    )
+    AS
 SELECT 
         * EXCEPT (Objective),
         CASE 
             WHEN Measure = 'percent_employment_grad_school_fy21' THEN 'Objective_4'
             WHEN Measure = 'percent_gainful_employment_fy21' THEN 'Objective_4'
             WHEN Measure = 'percent_meaningful_employment' THEN 'Objective_4'
-            WHEN Measure = 'lgbtq_hr_fy21' THEN 'Objective_5'
+            WHEN Measure = 'percent_lgbtq_hr_fy21' THEN 'Objective_5'
             WHEN Measure = 'percent_non_white_hr_fy21' THEN 'Objective_5'
             WHEN Measure = 'percent_first_gen_hr_fy21' THEN 'Objective_5'
             WHEN Measure = 'percent_male_hr_fy21' THEN 'Objective_5'
