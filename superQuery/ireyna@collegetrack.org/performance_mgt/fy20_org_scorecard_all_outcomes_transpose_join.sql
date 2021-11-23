@@ -1,9 +1,9 @@
-CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
+/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
 OPTIONS
     (
     description="This is a transposed table for FY20 Org Scorecard (percent) outcomes" 
     )
-AS
+AS*/
 WITH
 compile_fy20_outcomes AS (
 SELECT *
