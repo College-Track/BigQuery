@@ -1,6 +1,11 @@
 --Add Objective column and values to table: fy21_org_scorecard_hs_college_transposed
-
-
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
+OPTIONS
+    (
+    description="This is a transposed table for college and high school outcomes for the FY21 org scorecard. Table was created wide in SQL (data-studio-260217:performance_mgt.org_scorecard_program_fy21), and transposed manually in excel. Uploaded as a CSV" 
+    )
+    AS 
+    
 SELECT 
             *,
             CASE WHEN Measure IN    (
