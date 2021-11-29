@@ -71,9 +71,9 @@ SELECT
          
     FROM  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
 ),
-regions_and_national AS (
+regions_and_national AS ( --ADD REGIONAL AND NATIONAL NUMERATOR AND DENOMINATOR
 SELECT 
-    * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL,NATIONAL_AS_LOCATION),
+    * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL),
     CASE 
         WHEN Measure = 'hs_capacity_denominator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC 
         WHEN Measure = 'hs_capacity_numerator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC
@@ -105,9 +105,44 @@ SELECT
         ELSE NATIONAL
         END AS NATIONAL
 FROM add_measures
+),
+regional_national_percents AS ( --populate hs capacity %s
+SELECT 
+    * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL),
+    CASE 
+        WHEN Measure = 'percent_hs_capacity_fy21' AND NORCAL IS NULL
+        THEN  787/1019
+        ELSE NORCAL
+        END AS NORCAL,
+    CASE 
+        WHEN Measure = 'percent_hs_capacity_fy21' AND LA IS NULL
+        THEN 501/577
+        ELSE LA
+        END AS LA,
+    CASE 
+        WHEN Measure = 'percent_hs_capacity_fy21' AND CO IS NULL 
+        THEN 240/400
+        ELSE CO
+        END AS CO,
+    CASE 
+        WHEN Measure = 'percent_hs_capacity_fy21' AND NOLA_RG IS NULL 
+        THEN 230/234
+        ELSE NOLA_RG
+        END AS NOLA_RG,
+    CASE 
+        WHEN Measure = 'percent_hs_capacity_fy21' AND DC IS NULL 
+        THEN 268/297
+        ELSE DC
+        END AS DC,
+    CASE 
+        WHEN Measure = 'percent_hs_capacity_fy21' AND NATIONAL IS NULL 
+        THEN 2030/2523
+        ELSE NATIONAL
+        END AS NATIONAL
+FROM regions_and_national
 )
-select *
-from regions_and_national
+SELECT *
+FROM regional_national_percents
 /*      
 --#1 Add Measures shared from other teams, or pulled outside of Salesforce in FY21 (HR data, Fundraising, Alumni data, HS Capacity)
 INSERT INTO  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` (Measure) VALUES  
