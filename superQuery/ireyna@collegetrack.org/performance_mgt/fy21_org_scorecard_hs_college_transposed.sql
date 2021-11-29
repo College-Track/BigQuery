@@ -92,10 +92,10 @@ SELECT
         WHEN Measure = 'hs_capacity_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
         WHEN Measure = 'mse_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
         WHEN Measure = 'mse_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
-        WHEN Measure = 'above_325_gpa_seniors_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
-        WHEN Measure = 'senior_325_gpa_only_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
-        WHEN Measure = 'senior_325_gpa_and_test_ready_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
-        WHEN Measure = 'senior_325_gpa_and_test_ready_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'above_325_gpa_seniors_numerator' AND LA IS NULL THEN BH+WATTS
+        WHEN Measure = 'senior_325_gpa_only_denominator' AND LA IS NULL THEN BH+WATTS
+        WHEN Measure = 'senior_325_gpa_and_test_ready_numerator' AND LA IS NULL THEN BH+WATTS 
+        WHEN Measure = 'senior_325_gpa_and_test_ready_denominator' AND LA IS NULL THEN BH+WATTS 
         ELSE LA
         END AS LA,
     CASE 
