@@ -11,52 +11,64 @@ OPTIONS
 WITH add_measures AS (
 SELECT 
         * EXCEPT (PGC,AUR,BH,CREN,DEN,EPA,NOLA,OAK,SAC,SF,WATTS,DC8,fiscal_year,Objective),
-        --HS capacity %, hs capcaity numerator, hs capacity denominator
+        --HS capacity %, hs capcaity numerator, hs capacity denominator, tenure
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND PGC IS NULL THEN  .0
             WHEN Measure = 'percent_hs_capacity_fy21' AND PGC IS NULL THEN .82 
             WHEN Measure = 'hs_capacity_numerator' AND PGC IS NULL THEN 146 
             WHEN Measure = 'hs_capacity_denominator' AND PGC IS NULL THEN 177 ELSE PGC END AS PGC,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND AUR IS NULL THEN  .25
             WHEN Measure = 'percent_hs_capacity_fy21' AND AUR IS NULL THEN .91 
             WHEN Measure = 'hs_capacity_numerator' AND AUR IS NULL THEN 208 
             WHEN Measure = 'hs_capacity_denominator' AND AUR IS NULL THEN 230 ELSE AUR END AS AUR,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND BH IS NULL THEN  .50
             WHEN Measure = 'percent_hs_capacity_fy21' AND BH IS NULL THEN .87 
             WHEN Measure = 'hs_capacity_numerator' AND BH IS NULL THEN 250
             WHEN Measure = 'hs_capacity_denominator' AND BH IS NULL THEN 287 ELSE BH END AS BH,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND CREN IS NULL THEN  .0
             WHEN Measure = 'percent_hs_capacity_fy21' AND CREN IS NULL THEN .85 
             WHEN Measure = 'hs_capacity_numerator' AND CREN IS NULL THEN 51 
             WHEN Measure = 'hs_capacity_denominator' AND CREN IS NULL THEN 60 ELSE CREN END AS CREN,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND DEN IS NULL THEN  .0
             WHEN Measure = 'percent_hs_capacity_fy21' AND DEN IS NULL THEN .19 
             WHEN Measure = 'hs_capacity_numerator' AND DEN IS NULL THEN 32
             WHEN Measure = 'hs_capacity_denominator' AND DEN IS NULL THEN 170 ELSE DEN END AS DEN,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND EPA IS NULL THEN  .0
             WHEN Measure = 'percent_hs_capacity_fy21' AND EPA IS NULL THEN .70 
             WHEN Measure = 'hs_capacity_numerator' AND EPA IS NULL THEN 161
             WHEN Measure = 'hs_capacity_denominator' AND EPA IS NULL THEN 230 ELSE EPA END AS EPA,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND NOLA IS NULL THEN  .625
             WHEN Measure = 'percent_hs_capacity_fy21' AND NOLA IS NULL THEN 1.02
             WHEN Measure = 'hs_capacity_numerator' AND NOLA IS NULL THEN 234
             WHEN Measure = 'hs_capacity_denominator' AND NOLA IS NULL THEN 230 ELSE NOLA END AS NOLA,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND OAK IS NULL THEN  .778
             WHEN Measure = 'percent_hs_capacity_fy21' AND OAK IS NULL THEN .88 
             WHEN Measure = 'hs_capacity_numerator' AND OAK IS NULL THEN 254
             WHEN Measure = 'hs_capacity_denominator' AND OAK IS NULL THEN 287 ELSE OAK END AS OAK,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND SAC IS NULL THEN  .429
             WHEN Measure = 'percent_hs_capacity_fy21' AND SAC IS NULL THEN .81 
             WHEN Measure = 'hs_capacity_numerator' AND SAC IS NULL THEN 185
             WHEN Measure = 'hs_capacity_denominator' AND SAC IS NULL THEN 230 ELSE SAC END AS SAC,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND SF IS NULL THEN  .556
             WHEN Measure = 'percent_hs_capacity_fy21' AND SF IS NULL THEN .69 
             WHEN Measure = 'hs_capacity_numerator' AND SF IS NULL THEN 187
             WHEN Measure = 'hs_capacity_denominator' AND SF IS NULL THEN 272 ELSE SF END AS SF,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND WATTS IS NULL THEN  1
             WHEN Measure = 'percent_hs_capacity_fy21' AND WATTS IS NULL THEN .87 
             WHEN Measure = 'hs_capacity_numerator' AND WATTS IS NULL THEN 200
             WHEN Measure = 'hs_capacity_denominator' AND WATTS IS NULL THEN 230 ELSE WATTS END AS WATTS,
         CASE 
+            WHEN Measure = 'percent_tenure_fy21' AND DC8 IS NULL THEN  .0
             WHEN Measure = 'percent_hs_capacity_fy21' AND DC8 IS NULL THEN 1.02 
             WHEN Measure = 'hs_capacity_numerator' AND DC8 IS NULL THEN 122
             WHEN Measure = 'hs_capacity_denominator' AND DC8 IS NULL THEN 120 ELSE DC8 END AS DC8,
@@ -147,33 +159,33 @@ regional_national_percents AS ( --populate hs capacity %s
 SELECT 
     * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL,fiscal_year),
     CASE 
-        WHEN Measure = 'percent_hs_capacity_fy21' AND NORCAL IS NULL
-        THEN  787/1019
+        WHEN Measure = 'percent_hs_capacity_fy21' AND NORCAL IS NULL THEN  787/1019
+        WHEN Measure = 'percent_tenure_fy21' AND NORCAL IS NULL THEN  .515
         ELSE NORCAL
         END AS NORCAL,
     CASE 
-        WHEN Measure = 'percent_hs_capacity_fy21' AND LA IS NULL
-        THEN 501/577
+        WHEN Measure = 'percent_hs_capacity_fy21' AND LA IS NULL THEN 501/577
+        WHEN Measure = 'percent_tenure_fy21' AND LA IS NULL THEN  .368
         ELSE LA
         END AS LA,
     CASE 
-        WHEN Measure = 'percent_hs_capacity_fy21' AND CO IS NULL 
-        THEN 240/400
+        WHEN Measure = 'percent_hs_capacity_fy21' AND CO IS NULL THEN 240/400
+        WHEN Measure = 'percent_tenure_fy21' AND CO IS NULL THEN  .214
         ELSE CO
         END AS CO,
     CASE 
-        WHEN Measure = 'percent_hs_capacity_fy21' AND NOLA_RG IS NULL 
-        THEN 230/234
+        WHEN Measure = 'percent_hs_capacity_fy21' AND NOLA_RG IS NULL THEN 230/234
+        WHEN Measure = 'percent_tenure_fy21' AND NOLA_RG IS NULL THEN .556 
         ELSE NOLA_RG
         END AS NOLA_RG,
     CASE 
-        WHEN Measure = 'percent_hs_capacity_fy21' AND DC IS NULL 
-        THEN 268/297
+        WHEN Measure = 'percent_hs_capacity_fy21' AND DC IS NULL THEN 268/297
+        WHEN Measure = 'percent_tenure_fy21' AND DC IS NULL THEN .077 
         ELSE DC
         END AS DC,
     CASE 
-        WHEN Measure = 'percent_hs_capacity_fy21' AND NATIONAL IS NULL 
-        THEN 2030/2523
+        WHEN Measure = 'percent_hs_capacity_fy21' AND NATIONAL IS NULL THEN 2030/2523
+        WHEN Measure = 'percent_tenure_fy21' AND NATIONAL IS NULL THEN .429 
         ELSE NATIONAL
         END AS NATIONAL,
     CASE WHEN Measure = 'percent_hs_capacity_fy21' AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
