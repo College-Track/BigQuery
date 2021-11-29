@@ -8,9 +8,8 @@ OPTIONS
 
     
 --#5 populate outcomes into Measures manually added
+WITH add_measures AS (
 SELECT 
-CASE WHEN Measure = 'hs_capacity_denominator' THEN EPA+OAK+SF+SAC END AS NORCAL
-FROM (SELECT
         * EXCEPT (PGC,AUR,BH,CREN,DEN,EPA,NOLA,OAK,SAC,SF,WATTS,DC8,fiscal_year,Objective),
         --HS capacity %, hs capcaity numerator, hs capacity denominator
         CASE 
@@ -70,7 +69,45 @@ FROM (SELECT
             
         --Add regional and National totals
          
-    FROM  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`)
+    FROM  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
+),
+regions_and_national AS (
+SELECT 
+    * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL,NATIONAL_AS_LOCATION),
+    CASE 
+        WHEN Measure = 'hs_capacity_denominator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC 
+        WHEN Measure = 'hs_capacity_numerator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC
+        ELSE NORCAL
+        END AS NORCAL,
+    CASE 
+        WHEN Measure = 'hs_capacity_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'hs_capacity_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
+        ELSE LA
+        END AS LA,
+    CASE 
+        WHEN Measure = 'hs_capacity_denominator' AND CO IS NULL THEN AUR+DEN
+        WHEN Measure = 'hs_capacity_numerator' AND CO IS NULL THEN AUR+DEN
+        ELSE CO
+        END AS CO,
+    CASE 
+        WHEN Measure = 'hs_capacity_denominator' AND NOLA_RG IS NULL THEN NOLA
+        WHEN Measure = 'hs_capacity_numerator' AND NOLA_RG IS NULL THEN NOLA
+        ELSE NOLA_RG
+        END AS NOLA_RG,
+    CASE 
+        WHEN Measure = 'hs_capacity_denominator' AND DC IS NULL THEN PGC+DC8
+        WHEN Measure = 'hs_capacity_numerator' AND DC IS NULL THEN PGC+DC8
+        ELSE DC
+        END AS DC,
+    CASE 
+        WHEN Measure = 'hs_capacity_denominator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+CREN+AUR+DEN+NOLA+PGC+DC8
+        WHEN Measure = 'hs_capacity_numerator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+CREN+AUR+DEN+NOLA+PGC+DC8
+        ELSE NATIONAL
+        END AS NATIONAL
+FROM add_measures
+)
+select *
+from regions_and_national
 /*      
 --#1 Add Measures shared from other teams, or pulled outside of Salesforce in FY21 (HR data, Fundraising, Alumni data, HS Capacity)
 INSERT INTO  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` (Measure) VALUES  
