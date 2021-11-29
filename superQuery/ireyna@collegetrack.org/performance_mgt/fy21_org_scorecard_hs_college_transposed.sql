@@ -24,13 +24,38 @@ SELECT
         CASE WHEN Measure = 'percent_hs_capacity_fy21' AND WATTS IS NULL THEN .87 ELSE WATTS END AS WATTS,
         CASE WHEN Measure = 'percent_hs_capacity_fy21' AND DC8 IS NULL THEN 1.02 ELSE DC8 END AS DC8,
     
-#6 Add Columns: NUM AND DENOM FOR HS CAPACITY
-INSERT INTO  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` (Measure) VALUES  
-                                                                        ('hs_capacity_numerator')
-                                                                        ,('hs_capacity_denominator')
-
---NEED TO ADD COLUMNS: NUM AND DENOM FOR HS CAPACITY
-/*
+        --HS capacity numerator
+        CASE WHEN Measure = 'hs_capacity_numerator' AND PGC IS NULL THEN 146 ELSE PGC END AS PGC,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND AUR IS NULL THEN 208 ELSE AUR END AS AUR,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND BH IS NULL THEN 250 ELSE BH END AS BH,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND CREN IS NULL THEN 51 ELSE CREN END AS CREN,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND DEN IS NULL THEN 32 ELSE DEN END AS DEN,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND EPA IS NULL THEN 161 ELSE EPA END AS EPA,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND NOLA IS NULL THEN 234 ELSE NOLA END AS NOLA,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND OAK IS NULL THEN 254 ELSE OAK END AS OAK,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND SAC IS NULL THEN 185 ELSE SAC END AS SAC,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND SF IS NULL THEN 187 ELSE SF END AS SF,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND WATTS IS NULL THEN 200 ELSE WATTS END AS WATTS,
+        CASE WHEN Measure = 'hs_capacity_numerator' AND DC8 IS NULL THEN 122 ELSE DC8 END AS DC8,
+        
+        --HS capacity denominator
+        CASE WHEN Measure = 'hs_capacity_denominator' AND PGC IS NULL THEN 177 ELSE PGC END AS PGC,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND AUR IS NULL THEN 230 ELSE AUR END AS AUR,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND BH IS NULL THEN 287 ELSE BH END AS BH,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND CREN IS NULL THEN 60 ELSE CREN END AS CREN,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND DEN IS NULL THEN 170 ELSE DEN END AS DEN,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND EPA IS NULL THEN 230 ELSE EPA END AS EPA,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND NOLA IS NULL THEN 230 ELSE NOLA END AS NOLA,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND OAK IS NULL THEN 287 ELSE OAK END AS OAK,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND SAC IS NULL THEN 230 ELSE SAC END AS SAC,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND SF IS NULL THEN 272 ELSE SF END AS SF,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND WATTS IS NULL THEN 230 ELSE WATTS END AS WATTS,
+        CASE WHEN Measure = 'hs_capacity_denominator' AND DC8 IS NULL THEN 120 ELSE DC8 END AS DC8,
+        
+        CASE WHEN Measure IN ('hs_capacity_numerator','hs_capacity_denominator') AND Objective IS NULL THEN 'Objective_6' ELSE Objective END AS Objective,
+        CASE WHEN Measure IN ('hs_capacity_numerator','hs_capacity_denominator') AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
+    FROM  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
+/*      
 --#1 Add Measures shared from other teams, or pulled outside of Salesforce in FY21 (HR data, Fundraising, Alumni data, HS Capacity)
 INSERT INTO  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` (Measure) VALUES  
                                                                         ('percent_employment_grad_school_fy21')
@@ -117,4 +142,8 @@ FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_trans
 ALTER TABLE  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
 ADD COLUMN NATIONAL_AS_LOCATION FLOAT64
 
+#6 Add Columns: NUM AND DENOM FOR HS CAPACITY
+INSERT INTO  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed` (Measure) VALUES  
+                                                                        ('hs_capacity_numerator')
+                                                                        ,('hs_capacity_denominator')
 */
