@@ -71,39 +71,76 @@ SELECT
          
     FROM  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
 ),
-regions_and_national AS ( --ADD REGIONAL AND NATIONAL NUMERATOR AND DENOMINATOR
+regions_and_national AS ( --Adding regional and nat'l num/denom for hs capacity, mses
 SELECT 
     * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL),
+    
+    --hs capacity regional sums
     CASE 
         WHEN Measure = 'hs_capacity_denominator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC 
         WHEN Measure = 'hs_capacity_numerator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC
+        WHEN Measure = 'mse_numerator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC 
+        WHEN Measure = 'mse_denominator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC
+        WHEN Measure = 'above_325_gpa_seniors_numerator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC 
+        WHEN Measure = 'senior_325_gpa_only_denominator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC
+        WHEN Measure = 'senior_325_gpa_and_test_ready_numerator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC 
+        WHEN Measure = 'senior_325_gpa_and_test_ready_denominator' AND NORCAL IS NULL THEN EPA+OAK+SF+SAC
         ELSE NORCAL
         END AS NORCAL,
     CASE 
         WHEN Measure = 'hs_capacity_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
         WHEN Measure = 'hs_capacity_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'mse_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'mse_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'above_325_gpa_seniors_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'senior_325_gpa_only_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'senior_325_gpa_and_test_ready_numerator' AND LA IS NULL THEN BH+WATTS+CREN 
+        WHEN Measure = 'senior_325_gpa_and_test_ready_denominator' AND LA IS NULL THEN BH+WATTS+CREN 
         ELSE LA
         END AS LA,
     CASE 
         WHEN Measure = 'hs_capacity_denominator' AND CO IS NULL THEN AUR+DEN
         WHEN Measure = 'hs_capacity_numerator' AND CO IS NULL THEN AUR+DEN
+        WHEN Measure = 'mse_numerator' AND CO IS NULL THEN AUR+DEN
+        WHEN Measure = 'mse_denominator' AND CO IS NULL THEN AUR+DEN
+        WHEN Measure = 'above_325_gpa_seniors_numerator' AND CO IS NULL THEN AUR+DEN
+        WHEN Measure = 'senior_325_gpa_only_denominator' AND CO IS NULL THEN AUR+DEN
+        WHEN Measure = 'senior_325_gpa_and_test_ready_numerator' AND CO IS NULL THEN AUR+DEN
+        WHEN Measure = 'senior_325_gpa_and_test_ready_denominator' AND CO IS NULL THEN AUR+DEN
         ELSE CO
         END AS CO,
     CASE 
         WHEN Measure = 'hs_capacity_denominator' AND NOLA_RG IS NULL THEN NOLA
         WHEN Measure = 'hs_capacity_numerator' AND NOLA_RG IS NULL THEN NOLA
+        WHEN Measure = 'mse_numerator' AND NOLA_RG IS NULL THEN NOLA
+        WHEN Measure = 'mse_denominator' AND NOLA_RG IS NULL THEN NOLA
+        WHEN Measure = 'above_325_gpa_seniors_numerator' AND NOLA_RG IS NULL THEN NOLA
+        WHEN Measure = 'senior_325_gpa_only_denominator' AND NOLA_RG IS NULL THEN NOLA
+        WHEN Measure = 'senior_325_gpa_and_test_ready_numerator' AND NOLA_RG IS NULL THEN NOLA
+        WHEN Measure = 'senior_325_gpa_and_test_ready_denominator' AND NOLA_RG IS NULL THEN NOLA
         ELSE NOLA_RG
         END AS NOLA_RG,
     CASE 
         WHEN Measure = 'hs_capacity_denominator' AND DC IS NULL THEN PGC+DC8
         WHEN Measure = 'hs_capacity_numerator' AND DC IS NULL THEN PGC+DC8
+        WHEN Measure = 'mse_numerator' AND DC IS NULL THEN PGC+DC8
+        WHEN Measure = 'mse_denominator' AND DC IS NULL THEN PGC+DC8
         ELSE DC
         END AS DC,
     CASE 
         WHEN Measure = 'hs_capacity_denominator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+CREN+AUR+DEN+NOLA+PGC+DC8
         WHEN Measure = 'hs_capacity_numerator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+CREN+AUR+DEN+NOLA+PGC+DC8
+        WHEN Measure = 'mse_numerator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+CREN+AUR+DEN+NOLA+PGC+DC8
+        WHEN Measure = 'mse_denominator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+CREN+AUR+DEN+NOLA+PGC+DC8
+        WHEN Measure = 'above_325_gpa_seniors_numerator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+AUR+DEN+NOLA
+        WHEN Measure = 'senior_325_gpa_only_denominator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+AUR+DEN+NOLA
+        WHEN Measure = 'senior_325_gpa_and_test_ready_numerator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+AUR+DEN+NOLA
+        WHEN Measure = 'senior_325_gpa_and_test_ready_denominator' AND NATIONAL IS NULL THEN EPA+OAK+SF+SAC+BH+WATTS+AUR+DEN+NOLA
         ELSE NATIONAL
-        END AS NATIONAL
+        END AS NATIONAL,
+        
+
+    
 FROM add_measures
 ),
 regional_national_percents AS ( --populate hs capacity %s
