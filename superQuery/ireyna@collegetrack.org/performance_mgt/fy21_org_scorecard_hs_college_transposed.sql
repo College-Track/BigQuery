@@ -65,7 +65,7 @@ SELECT
         CASE WHEN Measure IN ('hs_capacity_numerator','hs_capacity_denominator') AND Objective IS NULL THEN 'Objective_6' ELSE Objective END AS Objective,
         CASE 
             WHEN Measure IN ('hs_capacity_numerator','hs_capacity_denominator') AND fiscal_year IS NULL THEN 'FY21' 
-            WHEN Measure LIKE '%fy_21%' AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
+            WHEN Measure LIKE '%fy21%' AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
             
         --Add regional and National totals
          
@@ -108,7 +108,7 @@ FROM add_measures
 ),
 regional_national_percents AS ( --populate hs capacity %s
 SELECT 
-    * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL),
+    * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL,fiscal_year),
     CASE 
         WHEN Measure = 'percent_hs_capacity_fy21' AND NORCAL IS NULL
         THEN  787/1019
@@ -138,7 +138,9 @@ SELECT
         WHEN Measure = 'percent_hs_capacity_fy21' AND NATIONAL IS NULL 
         THEN 2030/2523
         ELSE NATIONAL
-        END AS NATIONAL
+        END AS NATIONAL,
+    CASE WHEN Measure = 'percent_hs_capacity_fy21' AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
+     
 FROM regions_and_national
 )
 SELECT *
