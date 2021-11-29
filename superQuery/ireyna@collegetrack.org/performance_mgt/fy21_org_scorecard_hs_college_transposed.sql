@@ -10,7 +10,7 @@ OPTIONS
 --#5 populate outcomes into Measures manually added
 SELECT 
         * EXCEPT (PGC,AUR,BH,CREN,DEN,EPA,NOLA,OAK,SAC,SF,WATTS,DC8,fiscal_year,Objective),
-        --HS capacity %
+        --HS capacity %, hs capcaity numerator, hs capacity denominator
         CASE 
             WHEN Measure = 'percent_hs_capacity_fy21' AND PGC IS NULL THEN .82 
             WHEN Measure = 'hs_capacity_numerator' AND PGC IS NULL THEN 146 
@@ -62,7 +62,12 @@ SELECT
 
         
         CASE WHEN Measure IN ('hs_capacity_numerator','hs_capacity_denominator') AND Objective IS NULL THEN 'Objective_6' ELSE Objective END AS Objective,
-        CASE WHEN Measure IN ('hs_capacity_numerator','hs_capacity_denominator') AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
+        CASE 
+            WHEN Measure IN ('hs_capacity_numerator','hs_capacity_denominator') AND fiscal_year IS NULL THEN 'FY21' 
+            WHEN Measure LIKE '%fy_21%' AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year,
+            
+        --Add regional and National totals
+         CASE WHEN Measure = 'hs_capacity_denominator' THEN EPA+OAK+SF+SAC END AS NORCAL
     FROM  `org-scorecard-286421.transposed_tables.fy21_org_scorecard_hs_college_transposed`
 /*      
 --#1 Add Measures shared from other teams, or pulled outside of Salesforce in FY21 (HR data, Fundraising, Alumni data, HS Capacity)
