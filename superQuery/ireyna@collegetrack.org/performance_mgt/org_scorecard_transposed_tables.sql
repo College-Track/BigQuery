@@ -6,6 +6,63 @@ OPTIONS
     )
     AS */
    
+
+SELECT
+Objective
+,Measure
+,measure_datastudio
+,fiscal_year
+,EPA
+,OAK
+,SF
+,NOLA
+,AUR
+,BH
+,SAC
+,WATTS
+,DEN
+,PGC
+,DC8
+,CREN
+,DC
+,CO
+,LA
+,NOLA_RG
+,NORCAL
+,NATIONAL
+,NATIONAL_AS_LOCATION
+FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_outcomes_transposed`
+
+UNION ALL
+
+SELECT
+Objective
+,Measure
+,measure_datastudio
+,fiscal_year
+,EPA
+,OAK
+,SF
+,NOLA
+,AUR
+,BH
+,SAC
+,WATTS
+,DEN
+,PGC
+,DC8
+,CREN
+,DC
+,CO
+,LA
+,NOLA_RG
+,NORCAL
+,NATIONAL
+,NATIONAL_AS_LOCATION
+FROM `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
+
+/*
+--Step #1: Clean up Measure columns for FY21
 WITH clean_up_fy21 AS (
 SELECT 
 Objective
@@ -93,56 +150,4 @@ Objective
     
 FROM `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
 )
-SELECT
-Objective
-,Measure
-,measure_datastudio
-,fiscal_year
-,EPA
-,OAK
-,SF
-,NOLA
-,AUR
-,BH
-,SAC
-,WATTS
-,DEN
-,PGC
-,DC8
-,CREN
-,DC
-,CO
-,LA
-,NOLA_RG
-,NORCAL
-,NATIONAL
-,NATIONAL_AS_LOCATION
-FROM clean_up_fy21
-
-UNION ALL
-
-SELECT
-Objective
-,Measure
-,measure_datastudio
-,fiscal_year
-,EPA
-,OAK
-,SF
-,NOLA
-,AUR
-,BH
-,SAC
-,WATTS
-,DEN
-,PGC
-,DC8
-,CREN
-,DC
-,CO
-,LA
-,NOLA_RG
-,NORCAL
-,NATIONAL
-,NATIONAL_AS_LOCATION
-FROM clean_up_fy20
+*/
