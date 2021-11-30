@@ -10,6 +10,7 @@ WITH clean_up_fy21 AS (
 SELECT 
 Objective
 ,fiscal_year
+,measure_datastudio
 ,EPA
 ,OAK
 ,SF
@@ -59,6 +60,7 @@ clean_up_fy20 AS (
 SELECT 
 Objective
 ,fiscal_year
+,measure_datastudio
 ,EPA
 ,OAK
 ,SF
@@ -94,6 +96,7 @@ FROM `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
 SELECT
 Objective
 ,Measure
+,measure_datastudio
 ,fiscal_year
 ,EPA
 ,OAK
@@ -121,6 +124,7 @@ UNION ALL
 SELECT
 Objective
 ,Measure
+,measure_datastudio
 ,fiscal_year
 ,EPA
 ,OAK
