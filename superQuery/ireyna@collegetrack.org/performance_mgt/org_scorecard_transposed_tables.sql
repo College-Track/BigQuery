@@ -1,12 +1,12 @@
 --Houses all org scorecard outcomes across fiscal years as a tranposed table for the DS Overview Page
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`
 OPTIONS
     (
     description="This is a transposed table that houses outcomes for all available FY"
     )
     AS 
-   */
---#7 Populate NULL values in column: measure_datastudio
+   
+
 SELECT 
     * EXCEPT (measure_datastudio),
     CASE 
