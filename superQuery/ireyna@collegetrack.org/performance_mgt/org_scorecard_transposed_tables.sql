@@ -1,6 +1,13 @@
+--Houses all org scorecard outcomes across fiscal years as a tranposed table for the DS Overview Page
+--CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_overview_all_fy`
+--OPTIONS
+--    (
+--    description="This is a transposed table that houses outcomes for all available FY"--
+--    )
+--    AS 
+WITH clean_up_fy21 AS (
 SELECT 
-* EXCEPT (Measure)
-,Objective
+Objective
 ,fiscal_year
 ,EPA
 ,OAK
@@ -44,3 +51,91 @@ SELECT
     END AS Measure
     
 FROM `org-scorecard-286421.transposed_tables.fy21_org_scorecard_outcomes_transposed`
+),
+clean_up_fy20 AS (
+SELECT 
+Objective
+,fiscal_year
+,EPA
+,OAK
+,SF
+,NOLA
+,AUR
+,BH
+,SAC
+,WATTS
+,DEN
+,PGC
+,DC8
+,CREN
+,DC
+,CO
+,LA
+,NOLA_RG
+,NORCAL
+,NATIONAL
+,NATIONAL_AS_LOCATION
+,CASE 
+    WHEN Measure = 'non_white' THEN 'percent_non_white_hr'
+    WHEN Measure = 'first_gen' THEN 'percent_first_gen_hr'
+    WHEN Measure = 'lgbtq' THEN 'percent_lgbtq_hr'
+    WHEN Measure = 'annual_fundraising' THEN 'percent_annual_fundraising_target'
+    WHEN Measure = 'male' THEN 'percent_male_hr'
+    WHEN Measure = 'tenure' THEN 'percent_tenure'
+    WHEN Measure = 'staff_engagement' THEN 'percent_staff_engagement'
+    ELSE Measure
+    END AS Measure
+    
+FROM `org-scorecard-286421.transposed_tables.org_scorecard_fy20_overview`
+)
+SELECT
+Objective
+,Measure
+,fiscal_year
+,EPA
+,OAK
+,SF
+,NOLA
+,AUR
+,BH
+,SAC
+,WATTS
+,DEN
+,PGC
+,DC8
+,CREN
+,DC
+,CO
+,LA
+,NOLA_RG
+,NORCAL
+,NATIONAL
+,NATIONAL_AS_LOCATION
+FROM clean_up_fy21
+
+UNION ALL
+
+SELECT
+Objective
+,Measure
+,fiscal_year
+,EPA
+,OAK
+,SF
+,NOLA
+,AUR
+,BH
+,SAC
+,WATTS
+,DEN
+,PGC
+,DC8
+,CREN
+,DC
+,CO
+,LA
+,NOLA_RG
+,NORCAL
+,NATIONAL
+,NATIONAL_AS_LOCATION
+FROM clean_up_fy20
