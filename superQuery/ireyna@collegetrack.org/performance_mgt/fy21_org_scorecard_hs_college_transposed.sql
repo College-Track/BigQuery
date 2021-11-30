@@ -194,6 +194,10 @@ regional_national_percents AS ( --populate hs capacity %s
 SELECT 
     * EXCEPT (DC,CO,NOLA_RG,LA,NORCAL,NATIONAL,NATIONAL_AS_LOCATION,fiscal_year),
     CASE 
+        WHEN Measure = 'percent_seniors_above_325_fy21' AND NORCAL IS NULL THEN  .692
+        WHEN Measure = 'percent_seniors_above_325_and_test_ready_fy21' AND NORCAL IS NULL THEN  .292
+        WHEN Measure = 'percent_mse_fy21' AND NORCAL IS NULL THEN  .923
+        
         WHEN Measure = 'percent_hs_capacity_fy21' AND NORCAL IS NULL THEN  787/1019
         WHEN Measure = 'percent_tenure_fy21' AND NORCAL IS NULL THEN  .515
         WHEN Measure = 'percent_employment_grad_school_fy21' AND NORCAL IS NULL THEN .5
@@ -202,6 +206,10 @@ SELECT
         ELSE NORCAL
         END AS NORCAL,
     CASE 
+        WHEN Measure = 'percent_seniors_above_325_fy21' AND LA IS NULL THEN  .587
+        WHEN Measure = 'percent_seniors_above_325_and_test_ready_fy21' AND LA IS NULL THEN  .238
+        WHEN Measure = 'percent_mse_fy21' AND LA IS NULL THEN  .505
+        
         WHEN Measure = 'percent_hs_capacity_fy21' AND LA IS NULL THEN 501/577
         WHEN Measure = 'percent_tenure_fy21' AND LA IS NULL THEN  .368
         WHEN Measure = 'percent_employment_grad_school_fy21' AND LA IS NULL THEN .5
@@ -210,6 +218,10 @@ SELECT
         ELSE LA
         END AS LA,
     CASE 
+        WHEN Measure = 'percent_seniors_above_325_fy21' AND CO IS NULL THEN  .852
+        WHEN Measure = 'percent_seniors_above_325_and_test_ready_fy21' AND CO IS NULL THEN  .698
+        WHEN Measure = 'percent_mse_fy21' AND CO IS NULL THEN  .855
+    
         WHEN Measure = 'percent_hs_capacity_fy21' AND CO IS NULL THEN 240/400
         WHEN Measure = 'percent_tenure_fy21' AND CO IS NULL THEN  .214
         WHEN Measure = 'percent_employment_grad_school_fy21' AND CO IS NULL THEN .5
@@ -226,6 +238,8 @@ SELECT
         ELSE NOLA_RG
         END AS NOLA_RG,
     CASE 
+        WHEN Measure = 'percent_mse_fy21' AND DC IS NULL THEN  .471
+        
         WHEN Measure = 'percent_hs_capacity_fy21' AND DC IS NULL THEN 268/297
         WHEN Measure = 'percent_tenure_fy21' AND DC IS NULL THEN .077 
         ELSE DC
