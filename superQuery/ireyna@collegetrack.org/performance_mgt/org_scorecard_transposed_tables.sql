@@ -1,10 +1,10 @@
 --Houses all org scorecard outcomes across fiscal years as a tranposed table for the DS Overview Page
---CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_overview_all_fy`
---OPTIONS
---    (
---    description="This is a transposed table that houses outcomes for all available FY"--
---    )
---    AS 
+CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_overview_all_fy`
+OPTIONS
+    (
+    description="This is a transposed table that houses outcomes for all available FY"
+    )
+    AS 
 WITH clean_up_fy21 AS (
 SELECT 
 Objective
@@ -31,6 +31,8 @@ Objective
 ,CASE 
     WHEN Measure = 'percent_non_white_hr_fy21' THEN 'percent_non_white'
     WHEN Measure = 'percent_lgbtq_hr_fy21' THEN 'percent_lgbtq_hr'
+    WHEN Measure = 'percent_male_hr_fy21' THEN 'percent_male_hr'
+    WHEN Measure = 'percent_first_gen_hr_fy21' THEN 'percent_first_gen_hr'
     WHEN Measure = 'percent_6_year_grad_rate_fy21' THEN 'percent_6_year_grad_rate'
     WHEN Measure = 'percent_gainful_employment_fy21' THEN 'percent_gainful_employment'
     WHEN Measure = 'percent_annual_fundraising_target_fy21' THEN 'percent_annual_fundraising_target'
