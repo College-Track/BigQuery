@@ -266,7 +266,10 @@ SELECT
         ELSE NATIONAL_AS_LOCATION
         END AS NATIONAL_AS_LOCATION,
         
-    CASE WHEN Measure = 'percent_hs_capacity_fy21' AND fiscal_year IS NULL THEN 'FY21' ELSE fiscal_year END AS fiscal_year
+    CASE 
+        WHEN Measure = 'percent_hs_capacity_fy21' AND fiscal_year IS NULL THEN 'FY21' 
+        WHEN Measure = 'percent_meaningful_employment' AND fiscal_year IS NULL THEN 'FY21' 
+        ELSE fiscal_year END AS fiscal_year
      
 FROM regions_and_national
 )
