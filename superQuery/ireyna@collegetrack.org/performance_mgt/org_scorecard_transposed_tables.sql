@@ -6,10 +6,11 @@ OPTIONS
     )
     AS 
    */
-INSERT `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` (Measure,measure_datastudio,Objective,fiscal_year,NATIONAL)
-VALUES 
-    ('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY20',.5) --FY20 outcome
-    ,('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY21',.25) --FY21 outcome
+
+SELECT 
+    Measure,
+    CASE WHEN Measure = '9th grade students are low-income and first-generation (80%)' AND fiscal_year = 'FY21' THEN .75 ELSE NATIONAL END AS NATIONAL
+FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` 
 
 
 /*
