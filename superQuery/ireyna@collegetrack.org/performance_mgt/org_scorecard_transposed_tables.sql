@@ -1,10 +1,10 @@
 --Houses all org scorecard outcomes across fiscal years as a tranposed table for the DS Overview Page
-/*CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`
+CREATE OR REPLACE TABLE `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`
 OPTIONS
     (
     description="This is a transposed table that houses outcomes for all available FY"
     )
-    AS*/ 
+    AS
    
 --Correcting incorrect FY20 outcomes for the tranposed table all FYs
 SELECT 
