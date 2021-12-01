@@ -6,13 +6,22 @@ OPTIONS
     )
     AS 
    */
-
+--Correcting incorrect FY20 outcomes for the tranposed table all FYs
 SELECT 
     Measure,fiscal_year,
-    CASE WHEN measure_datastudio = '9th grade students are low-income and first-generation (80%)' AND fiscal_year = 'FY21' THEN .75 ELSE NATIONAL END AS NATIONAL
+    CASE WHEN measure_datastudio = '9th grade students are low-income and first-generation (80%)' AND fiscal_year = 'FY20' THEN .75 ELSE NATIONAL END AS NATIONAL, --instead of 74%
+    CASE 
+        WHEN measure_datastudio = 'Staff with full-time tenure of 3+ years in organization (35%)' AND fiscal_year = 'FY20' THEN .38 --instead of 33%
+        WHEN measure_datastudio = 'High school capacity enrolled (95%) ' AND fiscal_year = 'FY20' THEN .98 --instead of NULL
+        ELSE NOLA 
+        END AS NOLA,
+    CASE WHEN measure_datastudio = 'Students graduating from college within 6 years (70%)' AND fiscal_year = 'FY20' THEN .67 ELSE NORCAL END AS NORCAL, --instead of 66%
     
 FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` 
 WHERE measure_datastudio = '9th grade students are low-income and first-generation (80%)' 
+
+--Also update org_scorecard_fy20_overview with values above
+
 
 /*
 --Step #1: Clean up Measure columns for FY21 - remove "fy21"
