@@ -11,8 +11,8 @@ SELECT
     * EXCEPT (NATIONAL,NORCAL,NOLA),
     CASE WHEN measure_datastudio = '9th grade students are low-income and first-generation (80%)' AND fiscal_year = 'FY20' THEN .75 ELSE NATIONAL END AS NATIONAL, --instead of 74%
     CASE 
-        WHEN measure_datastudio = 'Staff with full-time tenure of 3+ years in organization (35%)' AND fiscal_year = 'FY20' THEN .38 --instead of 33%
-        --WHEN measure_datastudio = 'High school capacity enrolled (95%)' AND fiscal_year = 'FY20' THEN .98 --instead of NULL
+        --WHEN measure_datastudio = 'Staff with full-time tenure of 3+ years in organization (35%)' AND fiscal_year = 'FY20' THEN .38 --instead of 33%
+        WHEN measure_datastudio = 'High school capacity enrolled (95%)' AND fiscal_year = 'FY20' THEN .98 --instead of NULL
         ELSE NOLA 
         END AS NOLA,
     CASE WHEN measure_datastudio = 'Students graduating from college within 6 years (70%)' AND fiscal_year = 'FY20' THEN .67 ELSE NORCAL END AS NORCAL, --instead of 66%
