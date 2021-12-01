@@ -18,7 +18,7 @@ SELECT
     CASE WHEN measure_datastudio = 'Students graduating from college within 6 years (70%)' AND fiscal_year = 'FY20' THEN .67 ELSE NORCAL END AS NORCAL, --instead of 66%
     
 FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` 
-WHERE measure_datastudio = 'High school capacity enrolled (95%)'
+WHERE measure_datastudio ='Students graduating from college within 6 years (70%)'
 
 --Also update org_scorecard_fy20_overview with values above
 
