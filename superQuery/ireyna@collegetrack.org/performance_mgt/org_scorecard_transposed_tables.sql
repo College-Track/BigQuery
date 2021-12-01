@@ -6,11 +6,10 @@ OPTIONS
     )
     AS 
    */
+SELECT * EXCEPT (fiscal_year),
+    CASE WHEN  Measure = 'percent_identities_strategy_team' AND NATIONAL = .25 THEN 'FY21' ELSE fiscal_year END AS fiscal_year
+FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` 
 
-INSERT `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` (Measure,measure_datastudio,Objective,fiscal_year,NATIONAL)
-VALUES 
-    ('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY20',.5) --FY20 outcome
-    ,('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY2',.25) --FY21 outcome
 
 /*
 --Step #1: Clean up Measure columns for FY21 - remove "fy21"
