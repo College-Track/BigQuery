@@ -10,7 +10,7 @@ OPTIONS
 INSERT `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` (Measure,measure_datastudio,Objective,fiscal_year,NATIONAL)
 VALUES 
     ('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY20',.5) --FY20 outcome
-    ,('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY20',.25) --FY21 outcome
+    ,('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY2',.25) --FY21 outcome
 
 /*
 --Step #1: Clean up Measure columns for FY21 - remove "fy21"
