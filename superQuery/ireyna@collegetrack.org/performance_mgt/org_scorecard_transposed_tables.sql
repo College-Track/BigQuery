@@ -6,9 +6,8 @@ OPTIONS
     )
     AS 
    */
-SELECT * EXCEPT (fiscal_year),
-    CASE WHEN  Measure = 'percent_identities_strategy_team' AND NATIONAL = .25 AND fiscal_year = 'FY20' THEN 'FY21' ELSE fiscal_year END AS fiscal_year
-FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` 
+ DELETE FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`  WHERE Measure = 'percent_identities_strategy_team' ;
+ 
 
 
 /*
