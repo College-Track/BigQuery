@@ -7,13 +7,10 @@ OPTIONS
     AS 
    */
 
-SELECT 
-    * EXCEPT (measure_datastudio),
-    CASE 
-        WHEN Measure = 'percent_seniors_above_325' AND fiscal_year = 'FY21' AND measure_datastudio IS NULL THEN 'Seniors with GPA 3.25+'
-        ELSE measure_datastudio
-        END AS measure_datastudio
-FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`
+INSERT `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` (Measure,measure_datastudio,Objective,fiscal_year,NATIONAL)
+VALUES 
+    ('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY20',.5) --FY20 outcome
+    ,('percent_identities_strategy_team ','Strategy Team representing a spectrum of identities above average nonprofit benchmarks*', 'Objective_5','FY20',.25) --FY21 outcome
 
 /*
 --Step #1: Clean up Measure columns for FY21 - remove "fy21"
