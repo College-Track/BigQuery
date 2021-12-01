@@ -10,9 +10,9 @@ OPTIONS
 SELECT 
     Measure,
     CASE WHEN Measure = '9th grade students are low-income and first-generation (80%)' AND fiscal_year = 'FY21' THEN .75 ELSE NATIONAL END AS NATIONAL
-    WHERE Measure = '9th grade students are low-income and first-generation (80%)'  = '9th grade students are low-income and first-generation (80%)' su
+    
 FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy` 
-
+WHERE Measure = '9th grade students are low-income and first-generation (80%)' 
 
 /*
 --Step #1: Clean up Measure columns for FY21 - remove "fy21"
