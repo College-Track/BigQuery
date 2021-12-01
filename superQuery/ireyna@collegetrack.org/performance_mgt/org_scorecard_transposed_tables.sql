@@ -6,7 +6,7 @@ OPTIONS
     )
     AS 
    */
- DELETE FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`  WHERE Measure = 'percent_identities_strategy_team' ;
+ DELETE FROM `org-scorecard-286421.transposed_tables.org_scorecard_overview_all_fy`  WHERE Measure = 'percent_identities_strategy_team' 
  
 
 
