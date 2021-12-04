@@ -1,11 +1,13 @@
 --Combine Org Scorecard outcomes for FY20-current year, unpivoted
+
+/*
 CREATE OR REPLACE TABLE `org-scorecard-286421.aggregate_data.org_scorecard_outcomes`
 OPTIONS
     (
     description="This table pulls Org Scorecard outcomes, numerators (where applicable), denominator (where applicable)" 
     )
     AS 
-
+*/
 
 WITH
 
