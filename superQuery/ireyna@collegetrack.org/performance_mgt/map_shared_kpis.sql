@@ -3,14 +3,14 @@
 #for regional
 #for non-program roles
 
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_targets_to_shared_kpis`
 OPTIONS
     (
     description= "This table maps submitted targets to KPIs shared across roles within Teams/Functions"
     )
 AS
-
+*/
 
 WITH gather_all_kpis AS (
 SELECT role, kpis_by_role,
@@ -23,7 +23,6 @@ CASE
         WHEN function = "Employee Experience" THEN "Employee_Experience"
         WHEN function = "Talent Acquisition" THEN "Talent_Acquisition"
         WHEN function = "Talent Development" THEN "Talent_Development"
-        WHEN function = "Fund Raising" THEN "Fund_Raising"
         WHEN function = "Strategic Initiatives" THEN "Strategic_Initiatives"
         ELSE function 
         END AS function
@@ -53,7 +52,7 @@ CASE
     END AS target_fy22
 FROM `data-warehouse-289815.google_sheets.audit_kpi_target_submissions` kpi_targets
 WHERE email_kpi <> "test@collegetrack.org"
-AND disregard_entry_op_hard_coded IS NULL
+AND indicator_disregard_entry_op_hard_coded IS NULL
 ),
 
 prep_national_targets_by_role AS (
@@ -139,9 +138,3 @@ group by region_kpi,target_fy22,team_kpi,role ,kpis_by_role,email_kpi
 
 SELECT national_targets_shared_by_role.*
 FROM national_targets_shared_by_role
-UNION ALL
-SELECT regional_targets_shared_by_role.*
-FROM regional_targets_shared_by_role
-UNION ALL
-SELECT site_targets_shared_by_role.*
-FROM site_targets_shared_by_role
