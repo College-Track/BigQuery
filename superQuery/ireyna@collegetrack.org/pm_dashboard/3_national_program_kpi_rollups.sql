@@ -1,11 +1,11 @@
 
-
+/*
 CREATE
 OR REPLACE TABLE `data-studio-260217.performance_mgt.fy22_national_kpis`  OPTIONS (
   description = "KPIs submitted by National teams for FY22. This also rolls up the numerator and denominator for National KPIs that are based on weighted Program KPI targets. References List of KPIs by role Ghseet, and Targets submitted thru FormAssembly Team KPI"
 )
 AS
-
+*/
 
 
 WITH 
@@ -131,7 +131,9 @@ GROUP BY
 ,sum_program_student_count AS(
 SELECT  
     kpis_by_role,
-    SUM(program_target_numerator_sum)/SUM(program_student_sum) AS target_fy22 --national rollup (see subquery for logic)
+    SUM(program_target_numerator_sum)/SUM(program_student_sum) AS target_fy22, --national rollup (see subquery for logic)
+    program_target_numerator_sum,
+    program_student_sum AS program_student_sum_denom
 FROM 
     (
         SELECT 
@@ -152,7 +154,9 @@ FROM
         GROUP BY kpis_by_role,target_fy22,student_count,target_numerator,count_of_targets
     )
 GROUP BY 
-    kpis_by_role
+    kpis_by_role,
+    program_target_numerator_sum,
+    program_student_sum
     --site_or_region #bring back in to see which sites set targets for each KPI that rolls up
 )
 --Pull in fy22 targets for National rollups and pull in field: indicator_program_rollup_for_national (from identify_program_rollups_for_national CTE)
@@ -164,7 +168,9 @@ DISTINCT
         CASE WHEN indicator_program_rollup_for_national = 1 THEN natl_rollups.national_rollup_kpi ELSE team_kpis.kpis_by_role END AS kpis_by_role,
         natl_rollups.indicator_program_rollup_for_national,
         team_kpis.national,
-        team_kpis.hr_people
+        team_kpis.hr_people,
+        program_target_numerator_sum,
+        program_student_sum_denom
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN sum_program_student_count AS sum_student
     ON sum_student.kpis_by_role = team_kpis.kpis_by_role
@@ -182,4 +188,6 @@ target_fy22,
 hr_people,
 national,
 development,
-indicator_program_rollup_for_national
+indicator_program_rollup_for_national,
+program_target_numerator_sum,
+        program_student_sum_denom
