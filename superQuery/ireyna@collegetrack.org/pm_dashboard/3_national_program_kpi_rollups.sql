@@ -132,8 +132,7 @@ GROUP BY
 SELECT  
     kpis_by_role,
     SUM(program_target_numerator_sum)/SUM(program_student_sum) AS target_fy22, --national rollup (see subquery for logic)
-    program_target_numerator_sum,
-    program_student_sum AS program_student_sum_denom
+  
 FROM 
     (
         SELECT 
@@ -154,9 +153,7 @@ FROM
         GROUP BY kpis_by_role,target_fy22,student_count,target_numerator,count_of_targets
     )
 GROUP BY 
-    kpis_by_role,
-    program_target_numerator_sum,
-    program_student_sum
+    kpis_by_role
     --site_or_region #bring back in to see which sites set targets for each KPI that rolls up
 )
 --Pull in fy22 targets for National rollups and pull in field: indicator_program_rollup_for_national (from identify_program_rollups_for_national CTE)
