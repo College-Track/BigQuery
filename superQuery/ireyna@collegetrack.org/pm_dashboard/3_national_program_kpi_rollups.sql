@@ -169,8 +169,8 @@ DISTINCT
         natl_rollups.indicator_program_rollup_for_national,
         team_kpis.national,
         team_kpis.hr_people,
-        SUM(program_target_numerator_sum),
-        SUM(program_student_sum_denom)
+        program_target_numerator_sum,
+        program_student_sum_denom
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN sum_program_student_count AS sum_student
     ON sum_student.kpis_by_role = team_kpis.kpis_by_role
@@ -188,4 +188,6 @@ target_fy22,
 hr_people,
 national,
 development,
-indicator_program_rollup_for_national
+indicator_program_rollup_for_national,
+program_target_numerator_sum,
+        program_student_sum_denom
