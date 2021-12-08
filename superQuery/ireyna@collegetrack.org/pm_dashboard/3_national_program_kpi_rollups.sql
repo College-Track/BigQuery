@@ -163,7 +163,8 @@ DISTINCT
         CASE WHEN sum_student.target_fy22 IS NOT NULL THEN sum_student.target_fy22 ELSE team_kpis.target_fy22 END AS target_fy22,
         CASE WHEN indicator_program_rollup_for_national = 1 THEN natl_rollups.national_rollup_kpi ELSE team_kpis.kpis_by_role END AS kpis_by_role,
         natl_rollups.indicator_program_rollup_for_national,
-
+        team_kpis.national,
+        team_kpis.hr_people
 FROM  `data-studio-260217.performance_mgt.fy22_team_kpis` AS team_kpis
 LEFT JOIN sum_program_student_count AS sum_student
     ON sum_student.kpis_by_role = team_kpis.kpis_by_role
