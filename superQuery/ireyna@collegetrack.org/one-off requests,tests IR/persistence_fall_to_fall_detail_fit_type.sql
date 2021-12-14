@@ -224,13 +224,18 @@ enrollment_indicators AS (
     SELECT 
         *,
         CASE 
+            WHEN fit_type_fall_2020_21 IN ("Best Fit","Situational","Good Fit","Local Affordable") 
+            THEN 'enrolled in affordable option last year'
+            ELSE NULL
+        END AS affordable_enrollment_last_yr,
+        CASE 
             WHEN alumni_persistence = 'Graduated' 
             THEN 1
             WHEN fit_type_fall_2020_21 IN ("Best Fit","Situational","Good Fit","Local Affordable") 
                 AND fit_type_fall_2021_22 IN ("Best Fit","Situational","Good Fit","Local Affordable") 
             THEN 1 -- "Persisting - Affordable College Enrollment"
             ELSE 0 -- "Did not persist to affordable option"
-            END AS persisted_with_affordable_enrollment_or_graduated,
+            END AS persisted_with_affordable_enrollment_or_graduated, --student must have been enrolled in Affordable option last year
         CASE 
             WHEN alumni_persistence = 'Graduated' 
             THEN 1
@@ -238,6 +243,6 @@ enrollment_indicators AS (
                 AND fit_type_fall_2021_22 = "Best Fit"
             THEN 1 
             ELSE 0
-        END AS persisted_best_fit_enrollment_or_graduated
+        END AS persisted_best_fit_enrollment_or_graduated --student must have been enrolled in Affordable option last year
         
     FROM persistence_indicator 
