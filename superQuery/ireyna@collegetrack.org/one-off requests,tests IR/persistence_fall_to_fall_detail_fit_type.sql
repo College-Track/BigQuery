@@ -225,8 +225,8 @@ enrollment_indicators AS (
         *,
         CASE 
             WHEN fit_type_fall_2020_21 IN ("Best Fit","Situational","Good Fit","Local Affordable") 
-            THEN 'enrolled in affordable option last year'
-            ELSE NULL
+            THEN 1
+            ELSE 0
         END AS affordable_enrollment_last_yr,
         CASE 
             WHEN alumni_persistence = 'Graduated' 
