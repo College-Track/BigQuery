@@ -7,6 +7,7 @@ SELECT
     GAS_Name AS academic_term,
     at_id,
     AT_Enrollment_Status_c,
+    fit_type_current_c,
     fit_type_at_c,
     situational_best_fit_c,
     situational_best_fit_context_c
