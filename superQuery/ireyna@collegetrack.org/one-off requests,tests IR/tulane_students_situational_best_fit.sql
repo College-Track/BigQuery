@@ -3,6 +3,7 @@ SELECT
     full_name_c,
     high_school_graduating_class_c,
     site_short,
+    AT_School_Name,
     AT_Grade_c,
     GAS_Name AS academic_term,
     at_id,
