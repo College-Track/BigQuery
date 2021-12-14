@@ -10,7 +10,8 @@ SELECT
     fit_type_current_c,
     fit_type_at_c,
     situational_best_fit_c,
-    situational_best_fit_context_c
+    situational_best_fit_context_c,
+    current_cc_advisor_c,
     
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at 
 
