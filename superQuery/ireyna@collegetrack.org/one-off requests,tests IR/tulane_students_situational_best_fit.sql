@@ -4,7 +4,7 @@ SELECT
     high_school_graduating_class_c,
     site_short,
     AT_Grade_c,
-    AT_Name,
+    global_academic_semester_c,
     at_id,
     fit_type_at_c,
     situational_best_fit_c,
