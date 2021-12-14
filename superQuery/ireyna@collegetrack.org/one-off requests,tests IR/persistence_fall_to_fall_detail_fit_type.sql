@@ -1,7 +1,6 @@
 WITH
 
-#Gather last year's data
-gather_at_data_2020_21 AS ( 
+gather_at_data_2020_21 AS (
 
 SELECT 
     #contact data
@@ -20,8 +19,7 @@ SELECT
 
     #academic term data
     at_enrollment_status_c,
-    Current_School_Type_c_degree,
-    Current_school_name,
+    at_school_name AS College_Name_2020_21,
     CASE   
         WHEN at_enrollment_status_c IN ("Full-time","Part-time") THEN fit_type_at_c 
         ELSE at_enrollment_status_c 
@@ -45,7 +43,6 @@ SELECT
     AND enrolled_in_any_college_c
     ),
 
-#Gather this fall's data
 gather_at_data_2021_22 AS (
 
 SELECT 
@@ -58,15 +55,11 @@ SELECT
     school_predominant_degree_awarded_c,
     term_c,
     
-
     #academic term data
     at_enrollment_status_c AS enrollment_status_2021_22,
-    Current_School_Type_c_degree,
-    Current_school_name,
-    
-    #if student is enrolled FT/PT, then render Fit Type
-    CASE   
-        WHEN at_enrollment_status_c IN ("Full-time","Part-time") THEN fit_type_current_c 
+    at_school_name AS College_Name_2021_22,
+     CASE   
+        WHEN at_enrollment_status_c IN ("Full-time","Part-time") THEN fit_type_current_c --if student is enrolled FT/PT then render Fit Type
         ELSE at_enrollment_status_c 
      END AS fit_type_fall_2021_22,
     enrolled_in_a_2_year_college_c AS enrolled_in_a_2_year_college_2021_22,
@@ -84,6 +77,7 @@ SELECT
         AND AT_RecordType_ID = '01246000000RNnHAAW' #college/university semesters
         AND AY_Name ='AY 2021-22' #compare Fall-to-Fall enrollment: Fall 2020-21 to Fall 2022-21
         AND term_c = 'Fall'
+    --AND contact_at.College_Track_Status_Name IN ('Active: Post-Secondary','CT Alumni')
 ),
 
 combine_groups AS (
@@ -98,6 +92,8 @@ combine_groups AS (
         academic_year_4_year_degree_earned_c,
         college_track_status_name,
         student_audit_status_c,
+        College_Name_2020_21,
+        College_Name_2021_22,
         fit_type_fall_2020_21,
         fit_type_fall_2021_22,
         enrollment_status_2021_22,
@@ -123,6 +119,8 @@ combine_groups AS (
         dreamer_verified_status,
         fall_ay,
         fall_2020_21.student_audit_status_c,
+        College_Name_2020_21,
+        College_Name_2021_22,
         enrolled_in_a_2_year_college_2020_21,
         enrolled_in_a_4_year_college_2020_21,
         enrolled_in_a_2_year_college_2021_22,
@@ -135,7 +133,6 @@ combine_groups AS (
         academic_year_4_year_degree_earned_c
     ),
 
-#Create enrollment indicators to leverage when creating persistence indicators
 enrollment_indicators AS (
     SELECT
         full_name_c,
@@ -148,6 +145,8 @@ enrollment_indicators AS (
         academic_year_4_year_degree_earned_c,
         site_short,
         region_short,
+        College_Name_2020_21,
+        College_Name_2021_22,
         fit_type_fall_2020_21,
         fit_type_fall_2021_22,
         enrollment_status_2021_22,
@@ -188,7 +187,6 @@ enrollment_indicators AS (
     FROM combine_groups
     )
 
-#Create various persistence indicators to provide extra layer of detail as to why student may not have persisted 
 , persistence_indicator AS (
     SELECT 
         *,
