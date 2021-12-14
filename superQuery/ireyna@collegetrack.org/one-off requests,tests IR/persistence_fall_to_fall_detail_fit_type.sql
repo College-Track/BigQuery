@@ -156,29 +156,29 @@ enrollment_indicators AS (
         enrollment_status_2021_22,
 
     CASE 
-        WHEN student_audit_status_c = "Active: Post-Secondary"
-        AND enrolled_in_a_2_year_college_2020_21 = TRUE --Fall 2020-21 AY
+       -- WHEN student_audit_status_c = "Active: Post-Secondary" AND
+        WHEN enrolled_in_a_2_year_college_2020_21 = TRUE --Fall 2020-21 AY
         THEN 1 --2 year
         ELSE 0
     END AS enrollment_2_yr_2020_21,
 
     CASE 
-        WHEN student_audit_status_c = "Active: Post-Secondary"
-        AND enrolled_in_a_4_year_college_2020_21 = TRUE --Fall 2020-21 AY
+        --WHEN student_audit_status_c = "Active: Post-Secondary" AND
+        WHEN enrolled_in_a_4_year_college_2020_21 = TRUE --Fall 2020-21 AY
         THEN 1 --4 year
         ELSE 0
     END AS enrollment_4_yr_2020_21,
     
     CASE 
-        WHEN college_track_status_name = "Active: Post-Secondary"
-        AND enrolled_in_a_2_year_college_2021_22 = TRUE --Fall 2021-22 AY
+        --WHEN college_track_status_name = "Active: Post-Secondary" AND
+        WHEN enrolled_in_a_2_year_college_2021_22 = TRUE --Fall 2021-22 AY
         THEN 1 --2 year
         ELSE 0
     END AS enrollment_2_yr_2021_22,
 
     CASE 
-        WHEN college_track_status_name = "Active: Post-Secondary"
-        AND enrolled_in_a_4_year_college_2021_22 = TRUE --Fall 2021-22 AY
+        --WHEN college_track_status_name = "Active: Post-Secondary" AND
+        WHEN enrolled_in_a_4_year_college_2021_22 = TRUE --Fall 2021-22 AY
         THEN 1 --4 year
         ELSE 0
     END AS enrollment_4_yr_2021_22, 
