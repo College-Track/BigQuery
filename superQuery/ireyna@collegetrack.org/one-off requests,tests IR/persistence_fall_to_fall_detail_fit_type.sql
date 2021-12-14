@@ -195,6 +195,11 @@ enrollment_indicators AS (
     SELECT 
         *,
         CASE 
+            WHEN fit_type_fall_2020_21 IN ("Best Fit","Situational","Good Fit","Local Affordable") 
+            THEN 1
+            ELSE 0
+        END AS affordable_enrollment_last_yr,
+        CASE 
             WHEN alumni_persistence = 'Graduated'
             THEN 1
             WHEN enrollment_4_yr_2020_21 = 1 AND enrollment_4_yr_2021_22 = 1 -- enrolled in 4 year Fall to Fall
@@ -223,11 +228,6 @@ enrollment_indicators AS (
 )
     SELECT 
         *,
-        CASE 
-            WHEN fit_type_fall_2020_21 IN ("Best Fit","Situational","Good Fit","Local Affordable") 
-            THEN 1
-            ELSE 0
-        END AS affordable_enrollment_last_yr,
         CASE 
             WHEN alumni_persistence = 'Graduated' 
             THEN 1
