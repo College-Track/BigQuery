@@ -20,6 +20,8 @@ SELECT
     #academic term data
     at_enrollment_status_c,
     at_school_name AS College_Name_2020_21,
+    
+    #Show me the fit type from last year's Fall enrollment if student FT/PT
     CASE   
         WHEN at_enrollment_status_c IN ("Full-time","Part-time") THEN fit_type_at_c 
         ELSE at_enrollment_status_c 
@@ -58,6 +60,8 @@ SELECT
     #academic term data
     at_enrollment_status_c AS enrollment_status_2021_22,
     at_school_name AS College_Name_2021_22,
+    
+    #Show me the fit type from current year's Fall enrollment if student FT/PT
      CASE   
         WHEN at_enrollment_status_c IN ("Full-time","Part-time") THEN fit_type_current_c --if student is enrolled FT/PT then render Fit Type
         ELSE at_enrollment_status_c 
