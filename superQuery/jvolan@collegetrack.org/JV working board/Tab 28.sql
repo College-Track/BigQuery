@@ -9,4 +9,4 @@
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AY_Name = "AY 2020-21"
     AND term_c IN ("Spring","Summer")
-    AND AT_Record_Type_Name = "College / University"
+    AND AT_Record_Type_Name IN ("College/University")
