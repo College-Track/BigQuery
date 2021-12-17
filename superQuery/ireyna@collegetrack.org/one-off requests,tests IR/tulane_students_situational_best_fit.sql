@@ -12,7 +12,8 @@ SELECT
     fit_type_at_c,
     situational_best_fit_c,
     situational_best_fit_context_c,
-    cc_advisor_c
+    cc_advisor_c,
+    start_date_c
     
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at 
 
