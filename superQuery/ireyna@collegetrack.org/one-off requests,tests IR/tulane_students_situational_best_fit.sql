@@ -23,6 +23,6 @@ WHERE
     AND AT_School_Name = 'Tulane University of Louisiana'
     --AND situational_best_fit_c <> 'DOOR'
   
-    AND AY_Start_Date <= '2020-09-01'
+    AND start_date_c <= '2020-09-01'
     --AND fit_type_at_c NOT IN ('Best Fit','Situational')
     --AND AT_Enrollment_Status_c IN ('Full-time','Part-time')
