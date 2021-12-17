@@ -18,8 +18,9 @@ WITH gather_ATs AS
     AND high_school_graduating_class_c IN ("2020","2019","2018","2017","2016")
 )
     SELECT
+    site,
     Contact_Id,
     Max(indicator_graduated_or_on_track_at_c) AS on_track_sp_summer_combine,
 
     FROM gather_ATs
-    GROUP BY Contact_Id
+    GROUP BY site, Contact_Id
