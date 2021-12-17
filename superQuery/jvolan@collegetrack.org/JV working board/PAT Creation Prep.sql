@@ -138,8 +138,8 @@
     'a1b46000000dRR9'AS global_academic_year,
 --update each term
     CASE
-        WHEN (global_academic_semester_c LIKE '%Quarter%'
-        OR global_academic_semester_c LIKE '%Trimester%') THEN 'a3646000000dMXyAAM'
+        WHEN (calendar_type_c LIKE '%Quarter%'
+        OR calendar_type_c LIKE '%Trimester%') THEN 'a3646000000dMXyAAM'
         ELSE 'a3646000000dMXvAAM'
     END AS global_academic_semester,
     College_Track_Status_Name,
