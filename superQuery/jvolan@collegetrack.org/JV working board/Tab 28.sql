@@ -1,10 +1,12 @@
-
+WITH gather_ATs AS
+(
     SELECT
     Contact_Id,
     site,
-    on_track_c,
+    indicator_graduated_or_on_track_at_c,
     credits_accumulated_c,
     term_c,
+    start_date_c,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE AY_Name = "AY 2020-21"
@@ -12,3 +14,10 @@
     AND term_c = "Spring"
     OR (term_c = "Summer"
     AND credits_accumulated_c >0)
+)
+    SELECT
+    Contact_Id,
+    Max(indicator_graduated_or_on_track_at_c),
+
+    FROM gather_ATs
+    GROUP BY Contact_Id
