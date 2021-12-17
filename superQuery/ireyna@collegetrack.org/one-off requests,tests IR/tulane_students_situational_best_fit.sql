@@ -21,7 +21,7 @@ FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at
 WHERE
     indicator_completed_Ct_hs_program_c = TRUE
     AND AT_School_Name = 'Tulane University of Louisiana'
-    AND start_date_c <= '2020-09-01'
+    AND start_date_c <= '2021-02-01'
     --AND fit_type_at_c <> 'Situational'
     --AND fit_type_at_c NOT IN ('Best Fit','Situational')
     --AND AT_Enrollment_Status_c IN ('Full-time','Part-time')
