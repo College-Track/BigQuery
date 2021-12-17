@@ -14,7 +14,7 @@ SELECT
     situational_best_fit_context_c,
     cc_advisor_c,
     start_date_c,
-     DATE(AY_Name) AS AY_Start_Date
+     AY_Start_Date
     
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at 
 
@@ -23,6 +23,6 @@ WHERE
     AND AT_School_Name = 'Tulane University of Louisiana'
     AND situational_best_fit_c <> 'DOOR'
   
-    AND AY_Start_Date < '2020-09-01'
+    AND DATE(AY_Start_Date) < '2020-09-01'
     --AND fit_type_at_c NOT IN ('Best Fit','Situational')
     --AND AT_Enrollment_Status_c IN ('Full-time','Part-time')
