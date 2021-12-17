@@ -22,6 +22,6 @@ WHERE
     indicator_completed_Ct_hs_program_c = TRUE
     AND AT_School_Name = 'Tulane University of Louisiana'
     AND start_date_c <= '2020-09-01'
-    AND situational_best_fit_c NOT LIKE '%DOOR%'
+    AND situational_best_fit_c ='DOOR'
     --AND fit_type_at_c NOT IN ('Best Fit','Situational')
     --AND AT_Enrollment_Status_c IN ('Full-time','Part-time')
