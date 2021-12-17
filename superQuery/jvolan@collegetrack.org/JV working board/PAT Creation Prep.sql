@@ -136,10 +136,11 @@
      '01246000000RNnHAAW' AS record_type_id,
 -- update each summer, once a year (or make key in bigquery)
     'a1b46000000dRR9'AS global_academic_year,
+--update each term
     CASE
         WHEN (global_academic_semester_c LIKE '%Quarter%'
-        OR global_academic_semester_c LIKE '%Trimester%') THEN 'a3646000000dMXx'
-        ELSE 'a3646000000dMXu'
+        OR global_academic_semester_c LIKE '%Trimester%') THEN 'a3646000000dMXyAAM'
+        ELSE 'a3646000000dMXvAAM'
     END AS global_academic_semester,
     College_Track_Status_Name,
     indicator_years_since_hs_grad_to_date_c
