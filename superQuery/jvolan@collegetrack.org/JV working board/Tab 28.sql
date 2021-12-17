@@ -15,7 +15,7 @@ WITH gather_ATs AS
     OR (term_c = "Summer"
     AND credits_accumulated_c >0)
     AND indicator_completed_ct_hs_program_c = TRUE
-    AND indicator_years_since_hs_grad_to_date_c < 6
+    AND high_school_graduating_class_c IN ("2020","2019","2018","2017","2016")
 )
     SELECT
     Contact_Id,
