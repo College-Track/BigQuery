@@ -14,10 +14,11 @@ WITH gather_ATs AS
     AND term_c = "Spring"
     OR (term_c = "Summer"
     AND credits_accumulated_c >0)
+    AND indicator_completed_ct_hs_program_c = TRUE
 )
     SELECT
     Contact_Id,
-    Max(indicator_graduated_or_on_track_at_c),
+    Max(indicator_graduated_or_on_track_at_c) AS on_track_sp_summer_combine,
 
     FROM gather_ATs
     GROUP BY Contact_Id
