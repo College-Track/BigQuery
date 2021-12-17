@@ -14,7 +14,7 @@ SELECT
     situational_best_fit_context_c,
     cc_advisor_c,
     start_date_c,
-    AY_Start_Date
+     CAST(AY_Start_Date AS DATE) AS AY_Start_Date
     
 FROM `data-warehouse-289815.salesforce_clean.contact_at_template` AS contact_at 
 
