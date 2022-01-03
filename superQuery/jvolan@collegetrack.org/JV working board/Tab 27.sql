@@ -20,7 +20,7 @@ WITH gather_at_attendance AS
     site_short,
     high_school_graduating_class_c,
     EXTRACT(WEEK FROM date_c) AS week_date,
-    ROUND(SUM(Attendance_Numerator_c)/SUM(Attendance_Denominator_c),2) AS daily_attendance_rate
+    ROUND(SUM(Attendance_Numerator_c)/SUM(Attendance_Denominator_c),2) AS weekly_attendance_rate
 
     FROM
     gather_at_attendance
