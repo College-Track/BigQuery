@@ -49,6 +49,7 @@ join_data AS
     FROM gather_new_approved_sla gsla
     LEFT JOIN gather_students gs ON Contact_Id = gsla.student_c
     LEFT JOIN gather_bb_apps gbb ON gbb.student_c = gsla.student_c
+    
 ),
 
 dummy_row_add AS
