@@ -13,6 +13,8 @@ WITH gather_new_approved_sla AS
     WHERE eligible_for_bank_book_service_earnings_c = TRUE
     AND status_c = "Approved"
     AND op_needs_manual_processing_c = TRUE
+        --TEMP TROUBLESHOOTING PLACEHOLDER
+    AND contact_id_c = 'a3D8Y000001v9hAUAQ'
     ORDER BY student_c,created_date ASC
 ),
 
@@ -24,8 +26,7 @@ gather_students AS
     current_academic_semester_c,
     
     FROM `data-warehouse-289815.salesforce_clean.contact_template`
-    --TEMP TROUBLESHOOTING PLACEHOLDER
-    WHERE Contact_Id = 'a3D8Y000001v9hAUAQ'
+    
 ),
 
 gather_bb_apps AS    
