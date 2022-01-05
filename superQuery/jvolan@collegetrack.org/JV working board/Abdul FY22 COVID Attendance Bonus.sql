@@ -1,5 +1,6 @@
 SELECT
     Contact_Id,
+    attendance_rate_c,
     CASE
         WHEN attendance_rate_c >= .8 THEN 1 
         ELSE 0
