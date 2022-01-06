@@ -113,13 +113,8 @@ running_1600_cap_calc AS
     (PARTITION BY Contact_Id
     ORDER BY Contact_Id, created_date ASC) AS running_cs_1600_cap_value
     FROM dummy_row_add
-)
+),
 
-    SELECT
-    *
-    FROM running_1600_cap_calc
-
-/*
 --this compares total hours/eligble bb dollars from newly approved SLAs vs student's 1600 cap to determine how much, if any, new service BB earnings the student will get
 bb_earn_calc AS
 (
@@ -138,8 +133,13 @@ bb_earn_calc AS
     END,2) AS bb_earnings_amount
     
     FROM running_1600_cap_calc
-),
-
+)
+    SELECT
+    *
+    FROM 
+    bb_earn_calc
+    
+/*
 --this is used to determine if the new hours + students already existing total CS BB hours pulled at beginining of query should result in any $100 service bonus awards
 --as a reminder those are awarded starting when students hit 200 hours (they get $100) and then another $100 for every next 100 hours
 bonus_cs_hours_calc AS
