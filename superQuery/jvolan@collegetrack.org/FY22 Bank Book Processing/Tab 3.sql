@@ -67,13 +67,8 @@ join_data AS
     LEFT JOIN gather_students gs ON Contact_Id = gsla.student_c
     LEFT JOIN cs_1600_cap csc ON csc.student_c = gsla.student_c
     
-)
+),
 
-    SELECT
-    *
-    FROM join_data
-
-/*
 -- need to review the next 3 CTEs with BR, as he and I went back and forth on this strategy. want to make sure it's solid and we understand what we did here. I need a refresher
 dummy_row_add AS
 (
@@ -107,8 +102,13 @@ dummy_row_add AS
 
     FROM join_data
     GROUP BY Contact_Id
-),
+)
 
+    SELECT
+    *
+    FROM dummy_row_add
+
+/*
 running_1600_cap_calc AS
 (
     SELECT
