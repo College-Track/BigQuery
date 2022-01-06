@@ -12,6 +12,7 @@ WITH gather_students AS
 
     FROM `data-warehouse-289815.salesforce_clean.contact_at_template`
     WHERE 
+    --update as needed for each processing batch
     GAS_Name IN ("Fall 2021-22 (Semester)")
     AND student_audit_status_c IN ("Current CT HS Student","Onboarding")
     AND attended_workshops_c > 0
@@ -24,11 +25,25 @@ gather_bb_apps AS
     SELECT
     student_c,
     id AS bb_app_id,
-    MAX(total_service_earnings_c + total_ct_advised_earnings_c) AS total_service_plus_ct_advised_earnings,
-    MAX(1600 - (total_service_earnings_c + total_ct_advised_earnings_c)) AS available_1600_cap
+    total_service_earnings_c,
+    CASE
+        WHEN total_ct_advised_earnings_c IS NULL THEN 0
+        ELSE total_ct_advised_earnings_c
+    END AS total_ct_advised_earnings_c
     
     FROM `data-warehouse-289815.salesforce_clean.scholarship_application_clean`
     WHERE scholarship_application_record_type_name = "Bank Book"
+),
+
+prep_bb_apps AS
+(
+    SELECT
+    student_c,
+    bb_app_id,
+    MAX(total_service_earnings_c + total_ct_advised_earnings_c) AS total_service_plus_ct_advised_earnings,
+    MAX(1600 - (total_service_earnings_c + total_ct_advised_earnings_c)) AS available_1600_cap
+    
+    FROM gather_bb_apps
     GROUP BY student_c, bb_app_id
 ),
 
@@ -38,7 +53,7 @@ join_data AS
     * except (student_c),
 
     FROM gather_students
-    LEFT JOIN gather_bb_apps ON student_c = Contact_Id
+    LEFT JOIN prep_bb_apps ON student_c = Contact_Id
 ),
 
 upload_prep AS
