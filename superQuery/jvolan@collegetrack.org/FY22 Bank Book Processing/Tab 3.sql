@@ -102,13 +102,8 @@ dummy_row_add AS
 
     FROM join_data
     GROUP BY Contact_Id
-)
+),
 
-    SELECT
-    *
-    FROM dummy_row_add
-
-/*
 running_1600_cap_calc AS
 (
     SELECT
@@ -118,8 +113,13 @@ running_1600_cap_calc AS
     (PARTITION BY Contact_Id
     ORDER BY Contact_Id, created_date ASC) AS running_cs_1600_cap_value
     FROM dummy_row_add
-),
+)
 
+    SELECT
+    *
+    FROM running_1600_cap_calc
+
+/*
 --this compares total hours/eligble bb dollars from newly approved SLAs vs student's 1600 cap to determine how much, if any, new service BB earnings the student will get
 bb_earn_calc AS
 (
