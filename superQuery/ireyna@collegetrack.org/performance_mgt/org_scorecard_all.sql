@@ -10,4 +10,6 @@ OPTIONS
     AS 
 
 
-SELECT * FROM `org-scorecard-286421.aggregate_data.org_scorecard_outcomes_all_fy_01_10_22`
+
+
+SELECT * FROM `org-scorecard-286421.aggregate_data.org_scorecard_outcomes_all_fy_01_10_2022`
