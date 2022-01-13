@@ -3,7 +3,7 @@
 
 
 --Create fy20_impact_framework_long
-/*
+
 CREATE OR REPLACE TABLE `data-warehouse-289815.performance_mgt.fy20_impact_framework_long`
 OPTIONS
     (
@@ -11,7 +11,7 @@ OPTIONS
     "This table is a transposed version of data-warehouse-289815.performance_mgt.fy20_impact_framework_wide.  Stores numerator, denominator and outcome of each measure for FY20. Based on 19/20 Source Data tab in the IF. This table is a transposed version of: https://docs.google.com/spreadsheets/d/1XtgByrDYWb4ILEgrGKbiaH0KCgIDuoDqMjfZ96pyrGw/edit?usp=sharing "
     )
     AS 
-*/
+
 WITH
 
 unpivot_table AS (
