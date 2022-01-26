@@ -1,11 +1,11 @@
-
+/*
 CREATE OR REPLACE TABLE `data-studio-260217.college_applications.college_application_filtered_table`
 OPTIONS
     (
     description= "Filtered College Application and Contact data. Acceptance and Enrollment data appended"
     )
 AS
-
+*/
 
 WITH 
 filtered_data AS #contact data with college application data (no admission or acceptance data in this table)
@@ -107,10 +107,18 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt #pull in HS name f
         ON C.npsp_primary_affiliation_c = accnt.id 
 LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt_2 #pull in college name in application 
         ON CA.College_University_c  = accnt_2.id    
-    
-WHERE high_school_graduating_class_c = '2021'
+
+--Need to make this dynamic to pull in students transitioning to PS in the Summer    
+WHERE 
+    (C.grade_c = '12th Grade' AND C.College_Track_Status_Name = 'Current CT HS Student') --Current 12th grade students
+   -- OR
+   -- (high_school_graduating_class_c = '2021'AND indicator_completed_ct_hs_program_c = TRUE) --historical 12th grade HS classes
+
+--Apply this in WHERE clause before the Post-Secondary Record Type transition happens for rising freshman 
+/*
 AND student_audit_status_c = 'Current CT HS Student'
 AND indicator_years_since_hs_grad_to_date_c = -.34
+*/
 ),
 
 acceptance_data AS 
