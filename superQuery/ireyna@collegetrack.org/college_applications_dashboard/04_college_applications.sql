@@ -9,7 +9,7 @@ AS
 SELECT DISTINCT 
     reporting_group.*,
     college_application_data.* EXCEPT (
-                contact_id_accepted,
+                --contact_id_accepted,
                 college_name_on_app_for_case_statement, 
                 application_status_app_table, 
                 fit_type_accepted,
