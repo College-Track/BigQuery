@@ -14,6 +14,7 @@ SELECT DISTINCT
                 application_status_app_table, 
                 fit_type_accepted,
                 fit_type_enrolled_c,
+                College_Fit_Type_Applied,
                 College_Fit_Type_Applied_sort,
                 fit_type_accepted_tight,
                 college_app_id_contact,
@@ -101,6 +102,14 @@ SELECT DISTINCT
         WHEN college_application_data.admission_status_c IS NULL THEN "Admission Status Not Yet Updated"
         ELSE college_application_data.admission_status_c
     END AS admission_status, 
+    
+    CASE
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (college_application_data.Predominant_Degree_Awarded_c IN ("Predominantly associate's-degree granting", "Predominantly certificate-degree granting", "Not classified")))  THEN "None - 2-year or technical"
+        WHEN ((College_Fit_Type_Applied_c = "None") AND (college_application_data.Predominant_Degree_Awarded_c = "Predominantly bachelor's-degree granting")) THEN "None - 4-year"
+        WHEN college_application_data.application_status = 'No College Application' THEN 'No College Application'
+        WHEN College_Fit_Type_Applied_c IS NULL THEN 'Has Not Yet Applied'
+        ELSE College_Fit_Type_Applied_c
+    END AS College_Fit_Type_Applied,
     
     CASE
         WHEN (contact_id_status_not_applied IS NOT NULL OR college_application_data.application_status IS NULL) THEN 'Has Not Applied'
