@@ -10,7 +10,7 @@ AS*/
 WITH
 acceptance_data AS 
 (
-SELECT
+SELECT DISTINCT 
     student_c AS contact_id_accepted, #contact id
     accnt.name AS school_name_accepted,
     app.id AS college_accepted_app_id,
@@ -49,7 +49,7 @@ WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted 
 
 --combine accetpance and admission data to college application data
 acceptance_and_admission AS (
-SELECT
+SELECT DISTINCT
     app.name,
     app.Student_c AS contact_id_app_table, # With Applications on Application Progress (Overview) table. Pulls in all students with apps regardless of Application Status
     app.application_status_c AS application_status_app_table, 
