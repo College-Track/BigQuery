@@ -10,7 +10,7 @@ AS*/
 WITH
 acceptance_data AS 
 (
-SELECT DISTINCT 
+SELECT  
     student_c AS contact_id_accepted, #contact id
     accnt.name AS school_name_accepted,
     app.id AS college_accepted_app_id,
@@ -49,7 +49,7 @@ WHERE app.admission_status_c IN ("Accepted", "Accepted and Enrolled", "Accepted 
 
 --combine accetpance and admission data to college application data
 acceptance_and_admission AS (
-SELECT DISTINCT
+SELECT 
     app.name,
     app.Student_c AS contact_id_app_table, # With Applications on Application Progress (Overview) table. Pulls in all students with apps regardless of Application Status
     app.application_status_c AS application_status_app_table, 
@@ -197,7 +197,7 @@ LEFT JOIN `data-warehouse-289815.salesforce.account` AS accnt
 LEFT JOIN acceptance_data AS acceptance
     ON app.student_c = acceptance.contact_id_accepted
 )
-SELECT 
+SELECT DISTINCT
     filtered_data.*,
     college_application_data.*,
     CASE WHEN 
